@@ -5,9 +5,6 @@ It was built for educational purposes.
 
 ### Features
 - User Authentication & Authorization.
-- Product Catalog: Browse Dyson products with search and filter functionality.
-- Shopping Cart: Add, remove, and manage items for purchase.
-
 
 ### Stack
 - Frontend: React, TypeScript
@@ -37,7 +34,7 @@ Ensure you have the following installed:
 
 4. Start the development server:
 
-   ```$ npm start```
+   ```$ npm run dev```
 
 5. Build the project for production:
 
