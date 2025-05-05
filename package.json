@@ -2,6 +2,9 @@
   "name": "e-commerce-dyson",
   "private": true,
   "version": "0.0.0",
+  "description": "Final task eCommerce Application: Dyson Store",
+  "main": "./app/index.tsx",
+  "keywords": ["react", "mui", "tsx", "commercetools"],
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -40,7 +43,18 @@
     "prettier": "3.5.3",
     "typescript": "~5.7.2",
     "typescript-eslint": "^8.26.1",
-    "vite": "^6.3.1",
-    "vitest": "^3.1.2"
-  }
-}
+
+    "vite": "^6.3.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/morven2018/eCommerce-dyson"
+  },
+  "license": "ISC",
+  "author": "morven2018",
+  "contributors": [
+    "Ihar-Batura",
+    "Yuliafire"
+  ],
+  "homepage": "https://github.com/morven2018/eCommerce-dyson"
+
