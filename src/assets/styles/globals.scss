@@ -39,3 +39,9 @@ $base-weight: 400;
 $subheader-weight: 500;
 $btn-weight: 500;
 $fast-catalog-weight: 300;
+
+:root {
+  padding: 0;
+  font-family: $font-family;
+  font-weight: $base-weight;
+}
