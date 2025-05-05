@@ -30,3 +30,5 @@ export enum Typography {
   CopyrightStepper = '14px',
   Label = '12px',
 }
+
+export const BorderRadius = '5px';
