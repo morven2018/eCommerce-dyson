@@ -10,17 +10,18 @@ import {
   ListItemText,
   Toolbar,
 } from '@mui/material';
-import { BorderRadius, Colors } from '../../../shared/constants/style-enums';
+// import { BorderRadius, Colors } from '../../../shared/constants/style-enums';
 import { CustomContainer } from '../../ui/container';
 // import { Link } from 'react-router-dom';
 
 import logo from '../../../assets/icons/logo-dyson.svg';
-import { Sizes } from './header-style';
+// import { Sizes } from './header-style';
 import { NavText } from '../../../shared/constants/text-fields';
 
 import emptyCart from '../../../assets/icons/cart.svg';
 import cart from '../../../assets/icons/cart-with-smth.svg';
 import profile from '../../../assets/icons/profile.svg';
+import './header.scss';
 
 const isCartEmpty = true;
 const isUserUnauthorized = true;
@@ -63,7 +64,7 @@ const ItemList: React.FC<INavItems> = ({ text, icon, onclick }) => {
   if (icon)
     return (
       <ListItem>
-        <ListItemButton onClick={onclick} sx={{ padding: '8px 16px' }}>
+        <ListItemButton onClick={onclick}>
           <ListItemIcon>
             <img src={icon} alt={text} />
           </ListItemIcon>
@@ -74,10 +75,7 @@ const ItemList: React.FC<INavItems> = ({ text, icon, onclick }) => {
     return (
       <ListItem>
         <ListItemButton onClick={onclick}>
-          <ListItemText
-            primary={<NonBreakingText text={text} />}
-            sx={{ '.MuiTypography-root': { whiteSpace: 'nowrap' } }}
-          />
+          <ListItemText primary={<NonBreakingText text={text} />} />
         </ListItemButton>
       </ListItem>
     );
@@ -89,7 +87,7 @@ const NonBreakingText = ({ text }: { text: string }) => (
 
 export const Header: React.FC = () => {
   const NavMenu = (
-    <List sx={{ display: 'flex', flexDirection: 'row', padding: 0 }}>
+    <List>
       {navItems.map((item) => (
         <ItemList key={item.text} {...item}></ItemList>
       ))}
@@ -97,24 +95,10 @@ export const Header: React.FC = () => {
   );
 
   return (
-    <AppBar
-      position="static"
-      sx={{
-        backgroundColor: Colors.PrimaryBlack,
-        color: Colors.PrimaryWhite,
-        boxShadow: 'none',
-        borderRadius: BorderRadius,
-        height: Sizes.Header,
-        padding: 0,
-      }}
-    >
-      <CustomContainer maxWidth="xl">
-        <Box sx={{ display: 'flex', flexDirection: 'column', padding: 0 }}>
-          <Box
-            sx={{
-              height: Sizes.SubHeader,
-            }}
-          >
+    <AppBar position="static" className="header">
+      <CustomContainer maxWidth="xl" className="content">
+        <Box>
+          <Box className="subheader">
             <Toolbar
               sx={{
                 display: 'flex',
@@ -137,13 +121,13 @@ export const Header: React.FC = () => {
                   component="img"
                   src={logo}
                   alt="To home page dyson"
-                  sx={{ height: Sizes.LogoHeight, width: 'auto' }}
+                  className="logo"
                 />
               </IconButton>
               <Box component="nav">{NavMenu}</Box>
             </Toolbar>
           </Box>
-          <Box sx={{ height: Sizes.SubHeader }}>fast catalog</Box>
+          <Box className="subheader">fast catalog</Box>
         </Box>
       </CustomContainer>
     </AppBar>
