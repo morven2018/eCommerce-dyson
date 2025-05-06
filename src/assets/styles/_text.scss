@@ -1,0 +1,31 @@
+@use './globals' as *;
+
+h1 {
+  font-size: 20px;
+  line-height: 130%;
+  letter-spacing: 0.05em;
+}
+
+h2 {
+  font-size: 18px;
+  text-align: center;
+  letter-spacing: 0.03em;
+}
+
+h3 {
+  font-size: 14px;
+  text-align: center;
+  letter-spacing: 0.03em;
+}
+
+h4 {
+  font-size: 16px;
+  text-transform: none;
+  letter-spacing: 0.03em;
+}
+
+p {
+  font-size: 16px;
+  line-height: 148%;
+  letter-spacing: 0.05em;
+}
