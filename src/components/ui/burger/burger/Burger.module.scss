@@ -1,6 +1,6 @@
-@use '../../../assets/styles/globals.scss' as *;
+@use '../../../../assets/styles/globals' as *;
 
-.ham1 {
+.burger {
   cursor: pointer;
   transition: transform 400ms;
   transform-origin: center;

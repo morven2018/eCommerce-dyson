@@ -9,7 +9,7 @@ interface BurgerProps {
 export const Burger: React.FC<BurgerProps> = ({ isActive, onClick }) => {
   return (
     <svg
-      className={`${styles.ham1} ${isActive ? styles.active : ''}`}
+      className={`${styles.burger} ${isActive ? styles.active : ''}`}
       viewBox="0 0 100 100"
       width="36"
       onClick={onClick}
