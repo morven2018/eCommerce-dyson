@@ -1,3 +1,4 @@
+import Footer from '../../components/layout/footer/Footer';
 import { Link } from 'react-router-dom';
 
 export const AboutPage = () => {
@@ -7,6 +8,7 @@ export const AboutPage = () => {
       <div>
         Go <Link to={'/'}>home</Link>
       </div>
+      <Footer></Footer>
     </>
   );
 };

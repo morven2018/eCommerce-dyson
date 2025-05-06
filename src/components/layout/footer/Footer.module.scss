@@ -1,0 +1,58 @@
+@use '../../../assets/styles/globals' as *;
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+  width: 100%;
+  max-width: 1440px;
+  padding: 30px 20px;
+  background: url(../../../assets/images/footer.png) center center / cover
+    no-repeat;
+}
+
+.bigContainer {
+  display: flex;
+  gap: 30px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  padding: 12px 16px;
+  text-align: start;
+  color: $button-dark;
+}
+
+.link {
+  margin: 12px 0 12px 16px;
+  text-decoration: none;
+  color: $text;
+
+  &:hover {
+    @media (hover: hover) {
+      text-decoration: underline;
+    }
+  }
+}
+
+.description {
+  text-align: center;
+  color: $text;
+}
+
+@media (max-width: 500px) {
+  .footer {
+    background: url(../../../assets/images/footer-small.png) center center /
+      cover no-repeat;
+  }
+
+  .bigContainer {
+    flex-direction: column;
+  }
+}

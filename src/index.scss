@@ -1,1 +1,11 @@
-@import 'normalize.css/normalize.css';
+@use './assets/styles/globals' as *;
+
+@use './assets/styles/normalize' as *;
+@use './assets/styles/base' as *;
+@use './assets/styles/text' as *;
+
+#root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
