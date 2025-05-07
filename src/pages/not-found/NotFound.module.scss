@@ -11,10 +11,11 @@ $breakpoint4: 450px;
 $breakpoint5: 350px;
 
 .main {
+  width: 100%;
+
   background-image: url('../../assets/images/404.png');
   background-size: 200vw auto;
   background-position: -500px -500px;
-  width: 100%;
 
   .content {
     display: flex;
@@ -28,35 +29,39 @@ $breakpoint5: 350px;
 }
 
 .pageHeader {
+  display: block;
+
+  max-width: $header-width;
+  margin-bottom: 120px;
+
   font-size: $typography-header;
   font-weight: $base-weight;
-  color: $primary-white;
-  display: block;
-  max-width: $header-width;
-
   text-align: left;
   line-height: $line-height;
-  margin-bottom: 120px;
+  color: $primary-white;
 }
 
 .buttonWrapper {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+
   max-width: $button-container;
   width: 100%;
 
   .button {
-    background-color: $light-header;
-    color: $primary-black;
     width: $button-width;
     height: $button-height;
+
     border-radius: $border-radius;
     border: none;
+    background-color: $light-header;
+
+    color: $primary-black;
 
     &:hover {
-      color: $controls;
       background-color: $primary-white;
+      color: $controls;
     }
   }
 }
@@ -95,8 +100,8 @@ $breakpoint5: 350px;
 
 @media screen and (max-width: $breakpoint4) {
   .pageHeader {
-    font-size: $typography-header-mobile;
     margin-bottom: 24px;
+    font-size: $typography-header-mobile;
   }
 }
 @media screen and (max-width: $breakpoint4) {
@@ -105,6 +110,6 @@ $breakpoint5: 350px;
     background-position: -300px 0;
   }
   .content {
-    padding-bottom: 90px;
+    padding-bottom: 0px;
   }
 }
