@@ -1,8 +1,9 @@
 @use '../../../assets/styles/globals.scss' as *;
 
-$header-height: 144px;
+$header-height: 148px;
 $logo-height: 28px;
-$mobile-width: 720px;
+$mobile-width: 700px;
+$mobile-width2: 750px;
 
 .header {
   background: $primary-black;
@@ -68,7 +69,8 @@ $mobile-width: 720px;
   nav {
     display: none;
   }
-
+}
+@media screen and (max-width: $mobile-width2) {
   @media (pointer: fine) {
     .subheaderCatalog {
       display: none;
