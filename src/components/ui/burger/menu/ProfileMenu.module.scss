@@ -6,8 +6,8 @@ $mobile-width: 700px;
 .menuList {
   width: $width;
   max-width: 100%;
-  overflow: hidden;
   border-radius: $border-radius;
+  overflow: hidden;
 
   ul {
     background-color: $primary-black;
@@ -18,26 +18,16 @@ $mobile-width: 700px;
       text-decoration: underline;
     }
   }
-
-  &::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 14px;
-    width: 10px;
-    height: 10px;
-    background: #fff;
-    transform: translateY(-50%) rotate(45deg);
-    z-index: 0;
-  }
 }
 
 .menuItem {
   padding: 10px 16px;
   margin: 0 4px;
+
   border-radius: $border-radius;
-  transition: background-color 0.2s ease;
   text-transform: uppercase;
+
+  transition: background-color 0.2s ease;
 }
 
 @media screen and (min-width: $mobile-width) {

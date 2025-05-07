@@ -3,14 +3,11 @@
 $mobile-width: 700px;
 
 .burger {
+  display: none;
   cursor: pointer;
+
   transition: transform 400ms;
   transform-origin: center;
-  display: none;
-
-  @media screen and (max-width: $mobile-width) {
-    display: block;
-  }
 
   path {
     fill: none;
@@ -41,6 +38,10 @@ $mobile-width: 700px;
       opacity: 0;
       transform: scaleX(0);
     }
+  }
+
+  @media screen and (max-width: $mobile-width) {
+    display: block;
   }
 }
 

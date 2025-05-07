@@ -6,17 +6,20 @@ $mobile-width: 700px;
 $mobile-width2: 750px;
 
 .header {
-  background: $primary-black;
-  color: $primary-white;
-  box-shadow: none;
-  border-radius: $border-radius;
   height: $header-height;
   width: 100vw;
+
+  border-radius: $border-radius;
+  box-shadow: none;
+
+  background: $primary-black;
+  color: $primary-white;
 }
 
 .content {
   display: flex;
   flex-direction: column;
+
   max-width: $content-width;
   margin: 0 auto;
 }
@@ -24,6 +27,7 @@ $mobile-width2: 750px;
 .itemList {
   display: flex;
   flex-direction: row;
+
   text-decoration: none;
   text-transform: uppercase;
 
@@ -46,6 +50,7 @@ $mobile-width2: 750px;
   min-width: $logo-height;
   width: $logo-height;
   height: $logo-height;
+
   display: flex;
   justify-content: center;
   align-items: center;
@@ -61,6 +66,7 @@ $mobile-width2: 750px;
   flex-direction: row;
   justify-content: space-between;
 }
+
 .buttons {
   white-space: nowrap;
 }

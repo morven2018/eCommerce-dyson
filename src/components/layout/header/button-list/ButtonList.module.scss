@@ -8,14 +8,17 @@ $icon-height: 36px;
 ul.buttonList {
   display: flex;
   flex-direction: row;
-  padding: 2px 27px;
   justify-content: space-between;
 
+  padding: 2px 27px;
+
   & > .fastCatalogItem {
-    padding: 6px 16px;
-    border-radius: $border-radius;
-    width: auto;
     display: flex;
+
+    width: auto;
+    padding: 6px 16px;
+
+    border-radius: $border-radius;
 
     &:hover {
       border: 1px solid $primary-white;
