@@ -2,7 +2,7 @@ import styles from './Help.module.scss';
 
 export default function Help() {
   return (
-    <section className={styles.media}>
+    <section className={styles.help}>
       <div className={styles.container}>
         <h2 className={styles.title}>Help Center</h2>
         <div className={styles.wrapper}>
