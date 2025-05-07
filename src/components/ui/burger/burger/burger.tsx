@@ -3,7 +3,7 @@ import styles from './Burger.module.scss'; // Или ваш файл стиле�
 
 interface BurgerProps {
   isActive: boolean;
-  onClick: () => void;
+  onClick?: () => void;
 }
 
 export const Burger: React.FC<BurgerProps> = ({ isActive, onClick }) => {

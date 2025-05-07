@@ -1,6 +1,5 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
-  AppBar,
   Box,
   IconButton,
   List,
@@ -10,25 +9,27 @@ import {
   ListItemText,
   Toolbar,
 } from '@mui/material';
-// import { BorderRadius, Colors } from '../../../shared/constants/style-enums';
-import { CustomContainer } from '../../ui/container';
-// import { Link } from 'react-router-dom';
 
 import logo from '../../../assets/icons/logo-dyson.svg';
-// import { Sizes } from './header-style';
 import { NavText } from '../../../shared/constants/text-fields';
 
 import emptyCart from '../../../assets/icons/cart.svg';
 import cart from '../../../assets/icons/cart-with-smth.svg';
 import profile from '../../../assets/icons/profile.svg';
-import './header.scss';
+
+import { Link, useNavigate } from 'react-router-dom';
+
+import { Burger } from '../../ui/burger/burger/burger';
+import styles from './Header.module.scss';
+import { ProfileMenu } from '../../ui/burger/menu/profile-menu';
 
 const isCartEmpty = true;
 const isUserUnauthorized = true;
 
-interface INavItems {
+export interface INavItems {
   text: string;
   icon: string;
+  path: string;
   onclick: () => void;
 }
 
@@ -36,37 +37,57 @@ const navItems = [
   {
     text: NavText.Catalog,
     icon: '',
+    path: '/catalog',
     onclick: () => {},
   },
   {
     text: NavText.About,
     icon: '',
+    path: '/about',
     onclick: () => {},
   },
   {
     text: isUserUnauthorized ? NavText.Register : NavText.Logout,
     icon: '',
+    path: isUserUnauthorized ? '/register' : '/',
     onclick: () => {},
   },
   {
     text: isUserUnauthorized ? NavText.Login : NavText.Profile,
     icon: isUserUnauthorized ? '' : profile,
+    path: isUserUnauthorized ? '/login' : '/profile',
     onclick: () => {},
   },
   {
     text: NavText.Cart,
     icon: isCartEmpty ? emptyCart : cart,
+    path: '/cart',
     onclick: () => {},
   },
 ];
 
-const ItemList: React.FC<INavItems> = ({ text, icon, onclick }) => {
+export const ItemList: React.FC<INavItems> = ({
+  text,
+  icon,
+  path,
+  onclick,
+}) => {
+  const navigate = useNavigate();
+
+  const handleClick = () => {
+    onclick();
+    navigate(path);
+  };
+
   if (icon)
     return (
       <ListItem>
-        <ListItemButton onClick={onclick}>
-          <ListItemIcon>
-            <img src={icon} alt={text} />
+        <ListItemButton onClick={handleClick}>
+          <ListItemIcon
+            className={styles.iconWrapper}
+            sx={{ minWidth: '28px' }}
+          >
+            <img src={icon} alt={text} className={styles.icon} />
           </ListItemIcon>
         </ListItemButton>
       </ListItem>
@@ -74,7 +95,7 @@ const ItemList: React.FC<INavItems> = ({ text, icon, onclick }) => {
   else
     return (
       <ListItem>
-        <ListItemButton onClick={onclick}>
+        <ListItemButton onClick={handleClick}>
           <ListItemText primary={<NonBreakingText text={text} />} />
         </ListItemButton>
       </ListItem>
@@ -82,12 +103,25 @@ const ItemList: React.FC<INavItems> = ({ text, icon, onclick }) => {
 };
 
 const NonBreakingText = ({ text }: { text: string }) => (
-  <span style={{ whiteSpace: 'nowrap' }}>{text}</span>
+  <span className={styles.buttons}>{text}</span>
 );
 
 export const Header: React.FC = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+
+  const toggleMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+    setIsMenuOpen(!isMenuOpen);
+  };
+
+  const handleMenuClose = () => {
+    setAnchorEl(null);
+    setIsMenuOpen(false);
+  };
+
   const NavMenu = (
-    <List>
+    <List className={styles.itemList}>
       {navItems.map((item) => (
         <ItemList key={item.text} {...item}></ItemList>
       ))}
@@ -95,41 +129,40 @@ export const Header: React.FC = () => {
   );
 
   return (
-    <AppBar position="static" className="header">
-      <CustomContainer maxWidth="xl" className="content">
+    <header className={styles.header}>
+      <div className={styles.content}>
         <Box>
-          <Box className="subheader">
-            <Toolbar
-              sx={{
-                display: 'flex',
-                flexDirection: 'row',
-                justifyContent: 'space-between',
-                padding: 0,
-              }}
-            >
-              {' '}
-              <IconButton
-                edge="start"
-                color="inherit"
-                aria-label="home"
-                component="a"
-                href="./index.html"
-                // component={Link}
-                // to="/"
-              >
+          <Box className={styles.subheader}>
+            <Toolbar className={styles.toolbar}>
+              <Link to="/">
                 <Box
                   component="img"
                   src={logo}
                   alt="To home page dyson"
-                  className="logo"
+                  className={styles.logo}
                 />
+              </Link>
+              <IconButton
+                edge="start"
+                color="inherit"
+                aria-label="menu"
+                onClick={toggleMenu}
+                className={styles.burgerButton}
+              >
+                <Burger isActive={isMenuOpen} />
               </IconButton>
               <Box component="nav">{NavMenu}</Box>
             </Toolbar>
           </Box>
-          <Box className="subheader">fast catalog</Box>
+          <Box className={styles.subheader}>fast catalog</Box>
         </Box>
-      </CustomContainer>
-    </AppBar>
+      </div>
+      <ProfileMenu
+        anchorEl={anchorEl}
+        open={Boolean(anchorEl) && isMenuOpen}
+        onClose={handleMenuClose}
+        items={navItems}
+      />
+    </header>
   );
 };

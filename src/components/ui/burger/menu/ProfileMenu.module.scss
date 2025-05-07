@@ -1,0 +1,47 @@
+@use '../../../../assets/styles/globals' as *;
+
+$width: 220px;
+$mobile-width: 700px;
+
+.menuList {
+  width: $width;
+  max-width: 100%;
+  overflow: hidden;
+  border-radius: $border-radius;
+
+  ul {
+    background-color: $primary-black;
+    box-shadow: 0px 4px 12px $primary-white;
+    color: $primary-white;
+
+    .listItem:hover {
+      text-decoration: underline;
+    }
+  }
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 14px;
+    width: 10px;
+    height: 10px;
+    background: #fff;
+    transform: translateY(-50%) rotate(45deg);
+    z-index: 0;
+  }
+}
+
+.menuItem {
+  padding: 10px 16px;
+  margin: 0 4px;
+  border-radius: $border-radius;
+  transition: background-color 0.2s ease;
+  text-transform: uppercase;
+}
+
+@media screen and (min-width: $mobile-width) {
+  .menuList {
+    display: none;
+  }
+}

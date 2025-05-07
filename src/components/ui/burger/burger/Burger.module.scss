@@ -1,9 +1,16 @@
 @use '../../../../assets/styles/globals' as *;
 
+$mobile-width: 700px;
+
 .burger {
   cursor: pointer;
   transition: transform 400ms;
   transform-origin: center;
+  display: none;
+
+  @media screen and (max-width: $mobile-width) {
+    display: block;
+  }
 
   path {
     fill: none;
