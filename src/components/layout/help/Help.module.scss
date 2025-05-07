@@ -1,0 +1,77 @@
+@use '../../../assets/styles/globals' as *;
+
+.media {
+  width: 100%;
+  max-width: 90rem;
+  min-height: 38.5625rem;
+  padding: 80px 40px;
+  background: url(../../../assets/images/support.png) center center / cover
+    no-repeat;
+  margin: 0 auto;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.title {
+  font-size: $typography-header;
+  color: $primary-black;
+  text-align: center;
+}
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin-top: 6.25rem;
+}
+
+.paragraph {
+  max-width: 26.25rem;
+  color: $primary-black;
+  font-size: $typography-text;
+}
+
+.linksContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1.5625rem;
+}
+
+.linkText {
+  font-weight: $subheader-weight;
+  color: $typography-text;
+}
+
+.link {
+  text-decoration: none;
+  transition: transform 0.3s ease;
+  color: $primary-black;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+}
+
+@media (max-width: 700px) {
+  .title {
+    font-size: $typography-header-mobile;
+  }
+
+  .wrapper {
+    flex-direction: column;
+    align-items: center;
+    gap: 3.125rem;
+    margin-top: 2.25rem;
+  }
+
+  .linksContainer {
+    align-self: flex-start;
+    margin-left: 1.875rem;
+  }
+}
