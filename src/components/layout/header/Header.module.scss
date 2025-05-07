@@ -1,16 +1,8 @@
-/* export enum Sizes {
-  Header = '144px',
-  SubHeader = '72px',
-  BodyContainer = '1200px',
-  LogoHeight = '28px',
-  LogoWidth = '74px',
-} */
-
 @use '../../../assets/styles/globals.scss' as *;
 
 $header-height: 144px;
 $logo-height: 28px;
-$mobile-width: 700px;
+$mobile-width: 720px;
 
 .header {
   background: $primary-black;
@@ -34,12 +26,13 @@ $mobile-width: 700px;
   text-decoration: none;
   text-transform: uppercase;
 
-  &:hover {
+  .item:hover {
     text-decoration: underline;
   }
 }
 
-.subheader {
+.subheader,
+.subheaderCatalog {
   height: calc($header-height / 2);
 }
 
@@ -74,5 +67,14 @@ $mobile-width: 700px;
 @media screen and (max-width: $mobile-width) {
   nav {
     display: none;
+  }
+
+  @media (pointer: fine) {
+    .subheaderCatalog {
+      display: none;
+    }
+    .header {
+      height: calc($header-height / 2);
+    }
   }
 }

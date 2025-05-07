@@ -22,6 +22,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Burger } from '../../ui/burger/burger/burger';
 import styles from './Header.module.scss';
 import { ProfileMenu } from '../../ui/burger/menu/profile-menu';
+import { ButtonList } from './button-list/button-list';
 
 const isCartEmpty = true;
 const isUserUnauthorized = true;
@@ -66,12 +67,7 @@ const navItems = [
   },
 ];
 
-export const ItemList: React.FC<INavItems> = ({
-  text,
-  icon,
-  path,
-  onclick,
-}) => {
+const ItemList: React.FC<INavItems> = ({ text, icon, path, onclick }) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -81,7 +77,7 @@ export const ItemList: React.FC<INavItems> = ({
 
   if (icon)
     return (
-      <ListItem>
+      <ListItem className={styles.item}>
         <ListItemButton onClick={handleClick}>
           <ListItemIcon
             className={styles.iconWrapper}
@@ -94,7 +90,7 @@ export const ItemList: React.FC<INavItems> = ({
     );
   else
     return (
-      <ListItem>
+      <ListItem className={styles.item}>
         <ListItemButton onClick={handleClick}>
           <ListItemText primary={<NonBreakingText text={text} />} />
         </ListItemButton>
@@ -154,7 +150,9 @@ export const Header: React.FC = () => {
               <Box component="nav">{NavMenu}</Box>
             </Toolbar>
           </Box>
-          <Box className={styles.subheader}>fast catalog</Box>
+          <Box className={styles.subheaderCatalog}>
+            <ButtonList></ButtonList>
+          </Box>
         </Box>
       </div>
       <ProfileMenu
