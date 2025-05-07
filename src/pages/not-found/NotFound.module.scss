@@ -104,12 +104,14 @@ $breakpoint5: 350px;
     font-size: $typography-header-mobile;
   }
 }
-@media screen and (max-width: $breakpoint4) {
+
+@media screen and (max-width: $breakpoint5) {
   .main {
-    background-size: 300vw auto;
-    background-position: -300px 0;
-  }
-  .content {
-    padding-bottom: 0px;
+    background-size: 800px auto;
+    background-position: -150px 0;
+
+    .content {
+      padding-bottom: 50px;
+    }
   }
 }
