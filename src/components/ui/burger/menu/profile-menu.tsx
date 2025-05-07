@@ -1,9 +1,9 @@
 import React from 'react';
 import { ListItemText, Menu, MenuItem } from '@mui/material';
 
-// import { Link } from 'react-router-dom';
 import styles from './ProfileMenu.module.scss';
 import { INavItems } from '../../../layout/header/header';
+import { useNavigate } from 'react-router-dom';
 
 interface ProfileMenuProps {
   anchorEl: HTMLElement | null;
@@ -18,6 +18,7 @@ export const ProfileMenu: React.FC<ProfileMenuProps> = ({
   onClose,
   items,
 }) => {
+  const navigate = useNavigate();
   return (
     <Menu
       anchorEl={anchorEl}
@@ -36,6 +37,7 @@ export const ProfileMenu: React.FC<ProfileMenuProps> = ({
           onClick={() => {
             onClose();
             item.onclick();
+            navigate(item.path);
           }}
           className={styles.menuItem}
         >
