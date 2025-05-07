@@ -1,4 +1,4 @@
-$primary-black: 'rgba(0, 0, 0, 0.8)';
+$primary-black: rgba(0, 0, 0, 0.8);
 $primary-white: #ffffff;
 $secondary-light: #ced3dc;
 $button-dark: #192a51;
@@ -32,13 +32,15 @@ $typography-card-header: 20px;
 $typography-text: 16px;
 $typography-copyright-stepper: 14px;
 
-$border-radius: '5px';
+$border-radius: 5px;
 
 $font-family: 'Roboto', sans-serif;
 $base-weight: 400;
 $subheader-weight: 500;
 $btn-weight: 500;
 $fast-catalog-weight: 300;
+
+$content-width: 1200px;
 
 :root {
   padding: 0;
