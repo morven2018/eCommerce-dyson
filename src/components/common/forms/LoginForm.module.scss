@@ -1,0 +1,49 @@
+@use '../../../assets/styles/globals' as *;
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  max-width: 540px;
+  padding: 40px 20px;
+  margin: 40px auto 140px;
+  border: 2px solid $primary-black;
+  background-color: $form-background;
+}
+
+.button {
+  border-radius: $border-radius;
+  text-transform: uppercase;
+  color: $primary-white;
+  background-color: $button-dark;
+  cursor: pointer;
+}
+
+.text {
+  text-align: center;
+  & > * {
+    text-decoration: none;
+  }
+}
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  background-color: $media-background;
+  border-radius: 50%;
+  transition: transform 0.3s ease;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+}
+
+@media (max-width: 500px) {
+  .form {
+    padding: 20px 5px;
+  }
+}
