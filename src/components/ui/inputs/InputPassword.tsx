@@ -5,24 +5,30 @@ import {
   OutlinedInput,
   InputAdornment,
   IconButton,
+  FormHelperText,
 } from '@mui/material';
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 
 interface State {
-  password: string;
   showPassword: boolean;
 }
 
-export default function InputPassword() {
+type InputPasswordProps = {
+  value?: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  error?: boolean;
+  helperText?: string | null;
+};
+
+export default function InputPassword({
+  value,
+  onChange,
+  error,
+  helperText,
+}: InputPasswordProps) {
   const [values, setValues] = React.useState<State>({
-    password: '',
     showPassword: false,
   });
-
-  const handleChange =
-    (prop: keyof State) => (event: React.ChangeEvent<HTMLInputElement>) => {
-      setValues({ ...values, [prop]: event.target.value });
-    };
 
   const handleClickShowPassword = () => {
     setValues({ ...values, showPassword: !values.showPassword });
@@ -35,13 +41,13 @@ export default function InputPassword() {
   };
 
   return (
-    <FormControl variant="outlined">
+    <FormControl variant="outlined" error={error}>
       <InputLabel htmlFor="form-password">Password</InputLabel>
       <OutlinedInput
         id="form-password"
         type={values.showPassword ? 'text' : 'password'}
-        value={values.password}
-        onChange={handleChange('password')}
+        value={value ?? ''}
+        onChange={onChange}
         label="Password"
         endAdornment={
           <InputAdornment position="end">
@@ -56,6 +62,7 @@ export default function InputPassword() {
           </InputAdornment>
         }
       />
+      {helperText && <FormHelperText>{helperText}</FormHelperText>}
     </FormControl>
   );
 }
