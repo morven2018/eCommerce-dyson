@@ -1,0 +1,70 @@
+@use '../../../assets/styles/globals' as *;
+
+.bestseller {
+  width: 100%;
+  max-width: 90rem;
+  min-height: 48.75rem;
+  padding: 80px 40px;
+  background: url(../../../assets/images/bestseller.png) center center / cover
+    no-repeat;
+  margin: 0 auto;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  gap: 100px;
+}
+
+.title {
+  font-size: $typography-subheader;
+  color: $primary-white;
+  text-align: left;
+}
+
+.subtitle {
+  font-size: $typography-header-mobile;
+  color: $primary-white;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-around;
+  gap: 40px;
+}
+
+.paragraph {
+  max-width: 23.875rem;
+  color: $primary-white;
+  font-size: $typography-text;
+  line-height: 220%;
+}
+
+.button {
+  text-transform: uppercase;
+  padding: 8px 22px;
+  width: 13.75rem;
+  height: 2.625rem;
+  background: #ced3dc;
+  box-shadow:
+    0px 1px 10px rgba(0, 0, 0, 0.12),
+    0px 4px 5px rgba(0, 0, 0, 0.14),
+    0px 2px 4px -1px rgba(0, 0, 0, 0.2);
+  border-radius: 4px;
+  cursor: pointer;
+  transition:all ease 0.3s;
+
+  &:hover {
+    background: grey;
+    color: #fff;
+  }
+}
+
+@media (max-width: 500px) {
+  .title {
+    font-size: $typography-header-mobile;
+  }
+}

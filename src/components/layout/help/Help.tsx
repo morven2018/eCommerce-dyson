@@ -7,9 +7,10 @@ export default function Help() {
         <h2 className={styles.title}>Help Center</h2>
         <div className={styles.wrapper}>
           <p className={styles.paragraph}>
-            Welcome to Dyson's Support Center! We're here to assist with your
-            queries, troubleshooting, and product care. Explore our resources or
-            contact us for personalized help with your Dyson products.
+            Welcome to Dyson&apos;s Support Center! We&apos;re here to assist
+            with your queries, troubleshooting, and product care. Explore our
+            resources or contact us for personalized help with your Dyson
+            products.
           </p>
           <div className={styles.linksContainer}>
             <span className={styles.linkText}>Contact us</span>

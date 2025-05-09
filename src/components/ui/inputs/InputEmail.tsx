@@ -1,23 +1,35 @@
 import React from 'react';
-import { FormControl, InputLabel, OutlinedInput } from '@mui/material';
+import {
+  FormControl,
+  InputLabel,
+  OutlinedInput,
+  FormHelperText,
+} from '@mui/material';
 
-export default function InputEmail() {
-  const [email, setEmail] = React.useState('');
+type InputEmailProps = {
+  value?: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  error?: boolean;
+  helperText?: string | null;
+};
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(event.target.value);
-  };
-
+export default function InputEmail({
+  value,
+  onChange,
+  error,
+  helperText,
+}: InputEmailProps) {
   return (
-    <FormControl variant="outlined" fullWidth>
+    <FormControl variant="outlined" fullWidth error={error}>
       <InputLabel htmlFor="form-email">Email</InputLabel>
       <OutlinedInput
         id="form-email"
         type="email"
-        value={email}
-        onChange={handleChange}
+        value={value ?? ''}
+        onChange={onChange}
         label="Email"
       />
+      {helperText && <FormHelperText>{helperText}</FormHelperText>}
     </FormControl>
   );
 }
