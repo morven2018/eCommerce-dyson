@@ -56,11 +56,11 @@
   border-radius: 4px;
   cursor: pointer;
   transition:all ease 0.3s;
-}
 
-.button:hover {
-   background: grey;
-   color: #fff;
+  &:hover {
+    background: grey;
+    color: #fff;
+  }
 }
 
 @media (max-width: 500px) {
