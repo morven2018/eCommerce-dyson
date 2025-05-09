@@ -56,7 +56,7 @@ export default function Footer() {
         </div>
       </div>
       <div className={styles.description}>
-        © RS School 2025, This is a non-commercial educational project built
+        © RS School 2025. This is a non-commercial educational project built
         for learning purposes.
       </div>
     </footer>
