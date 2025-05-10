@@ -6,7 +6,7 @@ export default function Footer() {
     <footer className={styles.footer}>
       <div className={styles.bigContainer}>
         <div className={styles.container}>
-          <h4 className={styles.title}>Catalog</h4>
+          <h4 className={styles.title}>Catalog:</h4>
           <Link to={'/'} className={styles.link}>
             Vacuums & floor cleaners
           </Link>
@@ -24,11 +24,11 @@ export default function Footer() {
           </Link>
         </div>
         <div className={styles.container}>
-          <h4 className={styles.title}>See also</h4>
-          <Link to={'/'} className={styles.link}>
+          <h4 className={styles.title}>See also:</h4>
+          <Link to={'/about'} className={styles.link}>
             About us
           </Link>
-          <h4 className={styles.title}>Our contacts</h4>
+          <h4 className={styles.title}>Connect with our team:</h4>
           <a
             href="https://github.com/morven2018"
             rel="noreferrer"
@@ -38,7 +38,7 @@ export default function Footer() {
             Team Lead: Alena
           </a>
           <a
-            href="https://github.com/morven2018"
+            href="https://github.com/Ihar-Batura"
             rel="noreferrer"
             target="_blank"
             className={styles.link}
@@ -46,7 +46,7 @@ export default function Footer() {
             Frontend Developer: Igor
           </a>
           <a
-            href="https://github.com/morven2018"
+            href="https://github.com/yuliafire"
             rel="noreferrer"
             target="_blank"
             className={styles.link}
