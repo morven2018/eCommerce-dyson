@@ -36,6 +36,10 @@ $mobile-width2: 750px;
   }
 }
 
+.subheader {
+  border-bottom: 2px solid $primary-black;
+}
+
 .subheader,
 .subheaderCatalog {
   height: calc($header-height / 2);

@@ -2,8 +2,7 @@
 
 .bestseller {
   width: 100%;
-  max-width: 90rem;
-  min-height: 48.75rem;
+  max-width: 1440px;
   padding: 80px 40px;
   background: url(../../../assets/images/bestseller.png) center center / cover
     no-repeat;
@@ -55,11 +54,11 @@
     0px 2px 4px -1px rgba(0, 0, 0, 0.2);
   border-radius: 4px;
   cursor: pointer;
-  transition:all ease 0.3s;
+  transition: all ease 0.3s;
 
   &:hover {
-    background: grey;
-    color: #fff;
+    background: rgb(128, 128, 128);
+    color: $primary-white;
   }
 }
 

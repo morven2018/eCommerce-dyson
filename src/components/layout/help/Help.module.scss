@@ -44,14 +44,16 @@
 }
 
 .linkText {
+  font-size: 18px;
   font-weight: $subheader-weight;
-  color: $typography-text;
+  color: $primary-white;
 }
 
 .link {
   text-decoration: none;
+  font-weight: 600;
+  color: $secondary-light;
   transition: transform 0.3s ease;
-  color: $primary-black;
 
   &:hover {
     transform: scale(1.1);

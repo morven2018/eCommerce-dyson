@@ -1,10 +1,10 @@
-@use '../../assets/styles/globals' as *;
+@use '../../../assets/styles/globals' as *;
 
 $header-width: 500px;
 $button-container: 550px;
 $button-width: 250px;
 $button-height: 34px;
-$breakpoint1: 1200px;
+$breakpoint1: 1440px;
 $breakpoint2: 850px;
 $breakpoint3: 760px;
 $breakpoint4: 450px;
@@ -12,10 +12,10 @@ $breakpoint5: 350px;
 
 .main {
   width: 100%;
+  max-width: 1440px;
 
-  background-image: url('../../assets/images/404.png');
-  background-size: 200vw auto;
-  background-position: -500px -500px;
+  background: url('../../../assets/images/404.png') center center / cover
+    no-repeat;
 
   .content {
     display: flex;
@@ -66,16 +66,8 @@ $breakpoint5: 350px;
   }
 }
 
-@media screen and (max-width: $breakpoint1) {
-  .main {
-    background-position: -300px -150px;
-  }
-}
-
 @media screen and (max-width: $breakpoint2) {
   .main {
-    background-position: -300px 0;
-
     .content {
       align-items: center;
     }
@@ -89,10 +81,6 @@ $breakpoint5: 350px;
 }
 
 @media screen and (max-width: $breakpoint3) {
-  .main {
-    background-size: 300vw auto;
-    background-position: -300px -10vh;
-  }
   .content {
     padding-bottom: 150px;
   }
@@ -107,9 +95,6 @@ $breakpoint5: 350px;
 
 @media screen and (max-width: $breakpoint5) {
   .main {
-    background-size: 800px auto;
-    background-position: -150px 0;
-
     .content {
       padding-bottom: 50px;
     }

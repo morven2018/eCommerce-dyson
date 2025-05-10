@@ -19,6 +19,8 @@ ul.buttonList {
     padding: 6px 16px;
 
     border-radius: $border-radius;
+    border: 1px solid transparent;
+    transition: all 0.5s ease-in;
 
     &:hover {
       border: 1px solid $primary-white;
