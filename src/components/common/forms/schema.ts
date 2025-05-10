@@ -5,7 +5,7 @@ export const defaultSchema = yup.object({
     .string()
     .required()
     .test(
-      'mail trim',
+      'email trim',
       'Email address must not contain leading or trailing whitespace',
       (value) => {
         return value === value?.trim();
@@ -24,6 +24,7 @@ export const defaultSchema = yup.object({
   password: yup
     .string()
     .required('Password is a required field')
+    .min(8, 'Password should be at least 8 characters long')
     .test(
       'password trim',
       'Password address must not contain leading or trailing whitespace',
@@ -31,12 +32,17 @@ export const defaultSchema = yup.object({
         return value === value?.trim();
       }
     )
-    .matches(/[A-Z]{1}/, 'Must contain at least one uppercase letter (A-Z)')
-    .matches(/[a-z]{1}/, 'Must contain at least one lowercase letter (a-z)')
-    .matches(/[0-9]{1}/, 'Must contain at least one digit (0-9)')
+    .matches(
+      /[A-Z]{1}/,
+      'Password must contain at least one uppercase letter (A-Z)'
+    )
+    .matches(
+      /[a-z]{1}/,
+      'Password must contain at least one lowercase letter (a-z)'
+    )
+    .matches(/[0-9]{1}/, 'Password must contain at least one digit (0-9)')
     .matches(
       /[!@#$%^&*]{1}/,
-      'Must contain at least one special character (e.g., !@#$%^&*)'
-    )
-    .min(8, 'Password should be at least 8 characters long'),
+      'Password must contain at least one special character (e.g., !@#$%^&*)'
+    ),
 });
