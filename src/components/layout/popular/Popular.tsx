@@ -36,11 +36,7 @@ export default function Popular() {
           </div>
         </div>
         <div className={styles.card}>
-          <img
-            src={fave2}
-            alt="Dyson OnTrac"
-            className={styles.cardImage}
-          />
+          <img src={fave2} alt="Dyson OnTrac" className={styles.cardImage} />
           <div className={styles.cardContent}>
             <div className={styles.title}>
               <h3 className={styles.cardHeader}>Dyson OnTrac™</h3>

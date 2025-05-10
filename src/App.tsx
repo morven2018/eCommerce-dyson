@@ -1,22 +1,16 @@
-import { Route, Routes, Link } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 import { HomePage } from './pages/home/Home';
 import { LoginPage } from './pages/auth/login/Login';
 import { RegisterPage } from './pages/auth/register/Register';
 import { AboutPage } from './pages/about/About';
 import { NotFoundPage } from './pages/not-found/Notfound';
-import { Header } from './components/layout/header/header';
+import { Header } from './components/layout/header/Header';
+import Footer from './components/layout/footer/Footer';
 
 export function App() {
   return (
     <>
-      <Header></Header>
-      <header>
-        <Link to="/">Home</Link>
-        <Link to="/about">About</Link>
-        <Link to="/login">Login</Link>
-        <Link to="/register">Register</Link>
-      </header>
-
+      <Header />
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/about" element={<AboutPage />} />
@@ -24,6 +18,7 @@ export function App() {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
+      <Footer />
     </>
   );
 }

@@ -7,26 +7,30 @@
   align-items: center;
   gap: 40px;
   width: 100%;
-  max-width: 1440px;
+
   padding: 30px 20px;
   background: url(../../../assets/images/footer.png) center center / cover
     no-repeat;
 }
 
 .bigContainer {
+  width: 100%;
+  max-width: 1440px;
   display: flex;
-  gap: 30px;
+  justify-content: space-around;
 }
 
 .container {
   display: flex;
   flex-direction: column;
+  align-items: center;
 }
 
 .title {
   padding: 12px 16px;
   text-align: start;
   color: $button-dark;
+  font-size: 18px;
 }
 
 .link {
@@ -44,6 +48,7 @@
 .description {
   text-align: center;
   color: $text;
+  font-size: 18px;
 }
 
 @media (max-width: 500px) {
