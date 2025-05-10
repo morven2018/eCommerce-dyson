@@ -1,12 +1,11 @@
 import Login from '../../../components/layout/login/Login';
-import Footer from '../../../components/layout/footer/Footer';
+import Help from '../../../components/layout/help/Help';
 
 export const LoginPage = () => {
   return (
     <>
-      <h2>Page Login</h2>
-      <Login></Login>
-      <Footer></Footer>
+      <Login />
+      <Help />
     </>
   );
 };

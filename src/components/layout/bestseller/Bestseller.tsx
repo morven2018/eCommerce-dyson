@@ -1,10 +1,7 @@
 import styles from './Bestseller.module.scss';
+import { Link } from 'react-router-dom';
 
 export default function Bestseller() {
-  const handleShopNow = () => {
-    window.location.href = 'https://www.dyson.com/vacuum-cleaners/v8-absolute';
-  };
-
   return (
     <section className={styles.bestseller}>
       <div className={styles.container}>
@@ -20,14 +17,15 @@ export default function Bestseller() {
           </p>
         </div>
 
-        <button
-          type="button"
-          className={styles.button}
-          onClick={handleShopNow}
-          aria-label="Shop now for Dyson V8 Absolute vacuum"
-        >
-          Shop Now
-        </button>
+        <Link to={'/'}>
+          <button
+            type="button"
+            className={styles.button}
+            aria-label="Shop now for Dyson V8 Absolute vacuum"
+          >
+            Shop Now
+          </button>
+        </Link>
       </div>
     </section>
   );

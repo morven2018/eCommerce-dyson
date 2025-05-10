@@ -2,7 +2,7 @@ import React from 'react';
 import { ListItemText, Menu, MenuItem } from '@mui/material';
 
 import styles from './ProfileMenu.module.scss';
-import { INavItems } from '../../../layout/header/header';
+import { INavItems } from '../../../layout/header/Header';
 import { useNavigate } from 'react-router-dom';
 
 interface ProfileMenuProps {

@@ -22,7 +22,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { Burger } from '../../ui/burger/burger/burger';
 import styles from './Header.module.scss';
 import { ProfileMenu } from '../../ui/burger/menu/profile-menu';
-import { ButtonList } from './button-list/button-list';
+import { ButtonList } from './button-list/ButtonList';
 
 const isCartEmpty = true;
 const isUserUnauthorized = true;
