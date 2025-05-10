@@ -46,7 +46,7 @@ export default function InputPassword({
       <OutlinedInput
         id="form-password"
         type={values.showPassword ? 'text' : 'password'}
-        value={value ?? ''}
+        value={value}
         onChange={onChange}
         label="Password"
         endAdornment={

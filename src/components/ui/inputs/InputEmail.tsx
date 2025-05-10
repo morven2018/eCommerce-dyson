@@ -10,7 +10,7 @@ type InputEmailProps = {
   value?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   error?: boolean;
-  helperText?: string | null;
+  helperText?: string | undefined;
 };
 
 export default function InputEmail({
@@ -24,8 +24,8 @@ export default function InputEmail({
       <InputLabel htmlFor="form-email">Email</InputLabel>
       <OutlinedInput
         id="form-email"
-        type="email"
-        value={value ?? ''}
+        type="text"
+        value={value}
         onChange={onChange}
         label="Email"
       />

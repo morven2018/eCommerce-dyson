@@ -2,61 +2,70 @@ import styles from './LoginForm.module.scss';
 import InputEmail from '../../ui/inputs/InputEmail';
 import InputPassword from '../../ui/inputs/InputPassword';
 import { Link } from 'react-router-dom';
-import {
-  useForm,
-  Controller,
-  SubmitHandler,
-  useFormState,
-} from 'react-hook-form';
-import { loginValidation, passwordValidation } from './validation';
-
-type Inputs = {
-  email: string;
-  password: string;
-};
+import { useForm, Controller } from 'react-hook-form';
+import { defaultSchema } from './schema';
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from 'yup';
 
 export default function LoginForm() {
-  const { handleSubmit, control } = useForm<Inputs>({ mode: 'onChange' });
-  const { errors } = useFormState({ control });
-  const onSubmit: SubmitHandler<Inputs> = (data) => console.log(data);
+  const form = useForm({
+    resolver: yupResolver(defaultSchema),
+    defaultValues: {
+      email: '',
+      password: '',
+    },
+  });
+
+  const submitForm = (data: yup.InferType<typeof defaultSchema>) => {
+    console.log('formData', data);
+  };
 
   return (
     <form
       className={styles.form}
       autoComplete="off"
-      onSubmit={handleSubmit(onSubmit)}
+      onSubmit={form.handleSubmit(submitForm)}
     >
       <Controller
-        control={control}
+        control={form.control}
         name="email"
-        rules={loginValidation}
         render={({ field }) => {
           return (
             <InputEmail
               {...field}
-              error={!!errors.email}
-              helperText={errors.email?.message}
+              error={!!form.formState.errors.email}
+              helperText={form.formState.errors.email?.message}
+              value={form.getValues('email')}
+              onChange={(e) => {
+                form.setValue('email', e.target.value);
+                form.trigger('email');
+              }}
             />
           );
         }}
       />
-
       <Controller
-        control={control}
+        control={form.control}
         name="password"
-        rules={passwordValidation}
         render={({ field }) => {
           return (
             <InputPassword
               {...field}
-              error={!!errors.password}
-              helperText={errors.password?.message}
+              error={!!form.formState.errors.password}
+              helperText={form.formState.errors.password?.message}
+              value={form.getValues('password')}
+              onChange={(e) => {
+                form.setValue('password', e.target.value);
+                form.trigger('password');
+              }}
             />
           );
         }}
       />
 
-      <button className={`${styles.button} 'button'`}>Sign in</button>
+      <button type="submit" className={styles.button}>
+        Sign in
+      </button>
       <p className={styles.text}>
         Forgot password. Click to reset. <a href="#">Reset Password</a>
       </p>
