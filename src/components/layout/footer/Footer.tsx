@@ -7,19 +7,19 @@ export default function Footer() {
       <div className={styles.bigContainer}>
         <div className={styles.container}>
           <h4 className={styles.title}>Catalog</h4>
-          <Link to={'/'} className={styles.link}>
+          <Link to={'/catalog/vacuums'} className={styles.link}>
             Vacuums & floor cleaners
           </Link>
-          <Link to={'/'} className={styles.link}>
+          <Link to={'/catalog/heater'} className={styles.link}>
             Air purifiers & heaters
           </Link>
-          <Link to={'/'} className={styles.link}>
+          <Link to={'/catalog/headphones'}className={styles.link}>
             Headphones
           </Link>
-          <Link to={'/'} className={styles.link}>
+          <Link to={'/catalog/hair-care'} className={styles.link}>
             Hair beauty{' '}
           </Link>
-          <Link to={'/'} className={styles.link}>
+          <Link to={'/catalog/lighting'} className={styles.link}>
             Lighting
           </Link>
         </div>
