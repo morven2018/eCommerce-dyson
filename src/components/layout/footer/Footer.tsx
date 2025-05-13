@@ -13,7 +13,7 @@ export default function Footer() {
           <Link to={'/catalog/heater'} className={styles.link}>
             Air purifiers & heaters
           </Link>
-          <Link to={'/catalog/headphones'}className={styles.link}>
+          <Link to={'/catalog/headphones'} className={styles.link}>
             Headphones
           </Link>
           <Link to={'/catalog/hair-care'} className={styles.link}>

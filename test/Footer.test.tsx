@@ -10,7 +10,6 @@ const LocationDisplay = () => {
   const location = useLocation();
   return <div data-testid="location">{location.pathname}</div>;
 };
-
 describe('Footer Component', () => {
   it('renders © RS School 2025', () => {
     render(
