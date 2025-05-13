@@ -5,6 +5,8 @@ export default defineConfig({
     globals: true, // Разрешает использование глобальных переменных (например, describe, it)
     environment: 'jsdom', // Устанавливает среду выполнения тестов (для React нужен jsdom)
     setupFiles: './test/setupTests', // Файл для настройки тестов (опционально)
+
+   
     coverage: {
       provider: 'v8', // Используем v8 для анализа покрытия кода
       reporter: ['text', 'html'], // Формат отчетов
