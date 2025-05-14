@@ -1,9 +1,9 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { cleanup, render, screen } from '@testing-library/react';
 import { MemoryRouter, useLocation } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/vitest';
-import { describe, it, expect } from 'vitest';
+import { describe, it, expect, afterEach } from 'vitest';
 import { Header } from '../src/components/layout/header/Header';
 
 const LocationDisplay = () => {
@@ -12,6 +12,10 @@ const LocationDisplay = () => {
 };
 
 describe('Header Component', () => {
+  afterEach(() => {
+    cleanup();
+  });
+
   it('renders logo link with correct href', () => {
     render(
       <MemoryRouter>
@@ -80,7 +84,7 @@ describe('Header Component', () => {
 
     expect(screen.queryByRole('menu')).not.toBeInTheDocument();
 
-    const burgerButton = screen.getByRole('button', { name: /menu/i });
+    const burgerButton = screen.getByRole('button', { name: 'menu' });
     await user.click(burgerButton);
 
     const menu = screen.getByRole('menu');
