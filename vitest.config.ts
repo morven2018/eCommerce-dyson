@@ -2,17 +2,17 @@ import { defineConfig } from 'vitest/config';
 
 export default defineConfig({
   test: {
-    globals: true, // Разрешает использование глобальных переменных (например, describe, it)
-    environment: 'jsdom', // Устанавливает среду выполнения тестов (для React нужен jsdom)
-    setupFiles: './test/setupTests', // Файл для настройки тестов (опционально)
+    globals: true,
+    environment: 'jsdom',
+    setupFiles: './test/setupTests',
     coverage: {
-      provider: 'v8', // Используем v8 для анализа покрытия кода
-      reporter: ['text', 'html'], // Формат отчетов
+      provider: 'v8',
+      reporter: ['text', 'html'],
       thresholds: {
-        lines: 25, // Минимальный процент покрытия строк
-        functions: 25, // Минимальный процент покрытия функций
-        branches: 25, // Минимальный процент покрытия веток
-        statements: 25, // Минимальный процент покрытия операторов
+        lines: 25,
+        functions: 25,
+        branches: 25,
+        statements: 25,
       },
     },
   },
