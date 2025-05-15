@@ -1,0 +1,76 @@
+@use '../../../assets/styles/globals' as *;
+
+.strengths {
+  width: 100%;
+  max-width: 1440px;
+  padding: 80px 40px;
+  margin: 0 auto;
+  background: $whitesmoke;
+}
+
+.wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 40px;
+}
+
+.container {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+.sectionTitle {
+  font-size: $typography-header;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  max-width: 16.625rem;
+  min-height: 27.0625rem;
+  background: $primary-black;
+  border-radius: 10px;
+}
+
+.cardImage {
+  border-radius: 10px;
+}
+
+.cardContent {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 20px;
+}
+
+.cardHeader {
+  font-size: $typography-card-header;
+  color: $primary-white;
+}
+
+.line {
+  border: 1px solid $whitesmoke;
+}
+
+.cardText {
+  color: $whitesmoke;
+  font-size: $typography-text;
+}
+
+@media (min-width: 501px) and (max-width: 1000px) {
+  .container {
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 500px) {
+  .container {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto;
+  }
+}
