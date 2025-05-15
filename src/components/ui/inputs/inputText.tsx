@@ -1,39 +1,59 @@
 import React from 'react';
-import { FormControl, InputLabel, OutlinedInput } from '@mui/material';
+import {
+  FormControl,
+  InputLabel,
+  OutlinedInput,
+  FormHelperText,
+} from '@mui/material';
 
 interface InputFieldProps {
   id: string;
   label: string;
   value: string;
-  onChange: (value: string) => void;
-  type?: React.HTMLInputTypeAttribute;
+  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  onBlur?: (event: React.FocusEvent<HTMLInputElement>) => void;
+  name?: string;
   fullWidth?: boolean;
+  error?: boolean;
+  helperText?: string;
+  required?: boolean;
+  disabled?: boolean;
 }
 
-const InputField: React.FC<InputFieldProps> = ({
+export const InputText = ({
   id,
   label,
   value,
   onChange,
-  type = 'text',
+  onBlur,
+  name,
   fullWidth = true,
-}) => {
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    onChange(event.target.value);
-  };
-
+  error = false,
+  helperText,
+  required = false,
+  disabled = false,
+}: InputFieldProps) => {
   return (
-    <FormControl variant="outlined" fullWidth={fullWidth}>
+    <FormControl
+      variant="outlined"
+      fullWidth={fullWidth}
+      error={error}
+      required={required}
+      disabled={disabled}
+    >
       <InputLabel htmlFor={id}>{label}</InputLabel>
       <OutlinedInput
         id={id}
-        type={type}
+        name={name}
+        type="text"
         value={value}
-        onChange={handleChange}
+        onChange={onChange}
+        onBlur={onBlur}
         label={label}
       />
+      {helperText && <FormHelperText>{helperText}</FormHelperText>}
     </FormControl>
   );
 };
 
-export default InputField;
+InputText.displayName = 'InputText';
