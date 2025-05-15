@@ -6,9 +6,9 @@ import Media from '../../components/layout/media/Media';
 export const HomePage = () => {
   return (
     <>
-      <Strengths />
       <Bestseller />
       <Popular />
+      <Strengths />
       <Media />
     </>
   );
