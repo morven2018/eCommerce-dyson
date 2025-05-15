@@ -6,6 +6,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { defaultSchema } from './schema';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
+import { userAuthorization } from '../../../shared/api/commerce-tools/authorization';
 
 export default function LoginForm() {
   const form = useForm({
@@ -18,6 +19,7 @@ export default function LoginForm() {
 
   const submitForm = (data: yup.InferType<typeof defaultSchema>) => {
     console.log('formData', data);
+    userAuthorization(data);
   };
 
   return (
