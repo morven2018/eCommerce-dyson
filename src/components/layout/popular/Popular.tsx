@@ -29,9 +29,9 @@ export default function Popular() {
             <a
               href="#"
               className={styles.cardButton}
-              aria-label="Explose Dyson Purifier"
+              aria-label="Buy Dyson Purifier"
             >
-              Read More
+              Shop now
             </a>
           </div>
         </div>
@@ -54,9 +54,9 @@ export default function Popular() {
             <a
               href="#"
               className={styles.cardButton}
-              aria-label="Explose Dyson OnTrac"
+              aria-label="Buy Dyson OnTrac"
             >
-              Read More
+               Shop now
             </a>
           </div>
         </div>
@@ -78,9 +78,9 @@ export default function Popular() {
             <a
               href="#"
               className={styles.cardButton}
-              aria-label="Explose Dyson Airstrait"
+              aria-label="Buy Dyson Airstrait"
             >
-              Read More
+               Shop now
             </a>
           </div>
         </div>
