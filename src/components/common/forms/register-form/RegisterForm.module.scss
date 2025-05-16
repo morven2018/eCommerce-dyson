@@ -1,0 +1,73 @@
+@use '../../../../assets/styles/globals.scss' as *;
+
+.registerForm {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 60px 80px;
+  gap: 17px;
+  border: 1px solid $primary-black;
+  width: 100%;
+  max-width: 800px;
+  padding: 60px 80px;
+  background-color: $form-background;
+
+  .input:focus {
+    border-color: $controls;
+  }
+
+  label {
+    color: $label;
+    font-size: $typography-label;
+
+    :focus {
+      color: $label;
+    }
+  }
+
+  h5 {
+    font-weight: 400;
+    font-size: $typography-big-text;
+    color: $text;
+  }
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    width: 100%;
+  }
+  .button {
+    background-color: $button-dark;
+    border-radius: $border-radius;
+    color: $primary-white;
+    height: 56px;
+
+    &:disabled {
+      background-color: $disable-button-dark;
+      color: $primary-white;
+    }
+  }
+}
+.stepper {
+  width: 100%;
+}
+.stepItem {
+  & > span {
+    display: flex;
+    flex-direction: row;
+  }
+}
+
+.password,
+.buttonBox {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 4fr 2fr;
+  gap: 32px;
+}
+
+.buttonBox {
+  grid-template-columns: 2fr 2fr;
+}

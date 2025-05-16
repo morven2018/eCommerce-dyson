@@ -1,23 +1,35 @@
 import React from 'react';
-import { FormControl, InputLabel, OutlinedInput } from '@mui/material';
+import {
+  FormControl,
+  InputLabel,
+  OutlinedInput,
+  FormHelperText,
+} from '@mui/material';
 
-export default function InputPhone() {
-  const [phone, setPhone] = React.useState('');
+type InputPhoneProps = {
+  value?: string;
+  onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  error?: boolean;
+  helperText?: string | undefined;
+};
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPhone(event.target.value);
-  };
-
+export default function InputPhone({
+  value,
+  onChange,
+  error,
+  helperText,
+}: InputPhoneProps) {
   return (
-    <FormControl variant="outlined" fullWidth>
-      <InputLabel htmlFor="form-phone">Phone number</InputLabel>{' '}
+    <FormControl variant="outlined" fullWidth error={error}>
+      <InputLabel htmlFor="form-phone">Phone number</InputLabel>
       <OutlinedInput
         id="form-phone"
-        type="tel"
-        value={phone}
-        onChange={handleChange}
+        type="phone"
+        value={value ?? ''}
+        onChange={onChange}
         label="Phone number"
       />
+      {helperText && <FormHelperText>{helperText}</FormHelperText>}
     </FormControl>
   );
 }

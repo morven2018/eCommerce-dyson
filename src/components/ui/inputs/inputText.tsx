@@ -1,3 +1,5 @@
+import styles from '../../common/forms/register-form/RegisterForm.module.scss';
+
 import React from 'react';
 import {
   FormControl,
@@ -41,7 +43,9 @@ export const InputText = ({
       required={required}
       disabled={disabled}
     >
-      <InputLabel htmlFor={id}>{label}</InputLabel>
+      <InputLabel htmlFor={id} className={styles.label}>
+        {label}
+      </InputLabel>
       <OutlinedInput
         id={id}
         name={name}
@@ -50,6 +54,7 @@ export const InputText = ({
         onChange={onChange}
         onBlur={onBlur}
         label={label}
+        className={styles.input}
       />
       {helperText && <FormHelperText>{helperText}</FormHelperText>}
     </FormControl>

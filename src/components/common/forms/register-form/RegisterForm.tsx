@@ -28,6 +28,10 @@ import InputPhone from '../../../ui/inputs/inputPhone';
 import InputDate from '../../../ui/inputs/datePicker';
 import dayjs from 'dayjs';
 import { CountrySelect } from '../../../ui/inputs/selectCountry';
+import styles from './RegisterForm.module.scss';
+import { Stepper, Step, StepLabel } from '@mui/material';
+
+const steps = ['Contact Information', 'Shipping Address', 'Billing Address'];
 
 interface FormData {
   email: string;
@@ -144,7 +148,7 @@ function isBillingField(field: string): field is BillingField {
 
 const Step1 = ({ control, errors, setValue, onNext, isValid }: Step1Props) => {
   return (
-    <div>
+    <div className={styles.form}>
       <h5>Contact Information</h5>
 
       <Controller
@@ -160,7 +164,7 @@ const Step1 = ({ control, errors, setValue, onNext, isValid }: Step1Props) => {
         )}
       />
 
-      <div>
+      <div className={styles.password}>
         <Controller
           name="password"
           control={control}
@@ -176,10 +180,11 @@ const Step1 = ({ control, errors, setValue, onNext, isValid }: Step1Props) => {
         <Button
           onClick={() =>
             setValue('password', generatePassword(), {
-              shouldValidate: true,
+              shouldValidate: false,
             })
           }
           variant="outlined"
+          className={styles.button}
         >
           generate
         </Button>
@@ -245,7 +250,7 @@ const Step1 = ({ control, errors, setValue, onNext, isValid }: Step1Props) => {
       />
 
       <Button
-        className="next-button"
+        className={styles.button}
         variant="contained"
         onClick={onNext}
         style={{ marginTop: '20px' }}
@@ -259,7 +264,7 @@ const Step1 = ({ control, errors, setValue, onNext, isValid }: Step1Props) => {
 
 const Step2 = ({ control, errors, onNext, onPrev, isValid }: Step2Props) => {
   return (
-    <div>
+    <div className={styles.form}>
       <h5>Shipping Information</h5>
 
       <Controller
@@ -346,9 +351,9 @@ const Step2 = ({ control, errors, onNext, onPrev, isValid }: Step2Props) => {
         )}
       />
 
-      <div>
+      <div className={styles.buttonBox}>
         <Button
-          className="prev-button"
+          className={styles.button}
           variant="contained"
           onClick={onPrev}
           style={{ marginTop: '20px' }}
@@ -357,7 +362,7 @@ const Step2 = ({ control, errors, onNext, onPrev, isValid }: Step2Props) => {
         </Button>
 
         <Button
-          className="next-button"
+          className={styles.button}
           variant="contained"
           onClick={onNext}
           style={{ marginTop: '20px' }}
@@ -398,7 +403,7 @@ const Step3 = ({ control, errors, onPrev, isValid, setValue }: Step3Props) => {
     }
   };
   return (
-    <div>
+    <div className={styles.form}>
       <h5>Billing address</h5>
 
       <FormControlLabel
@@ -496,9 +501,9 @@ const Step3 = ({ control, errors, onPrev, isValid, setValue }: Step3Props) => {
         )}
       />
 
-      <div>
+      <div className={styles.buttonBox}>
         <Button
-          className="prev-button"
+          className={styles.button}
           variant="contained"
           onClick={onPrev}
           style={{ marginTop: '20px' }}
@@ -507,7 +512,7 @@ const Step3 = ({ control, errors, onPrev, isValid, setValue }: Step3Props) => {
         </Button>
 
         <Button
-          className="submit-button"
+          className={styles.button}
           type="submit"
           variant="contained"
           style={{ marginTop: '20px' }}
@@ -521,7 +526,7 @@ const Step3 = ({ control, errors, onPrev, isValid, setValue }: Step3Props) => {
 };
 
 export const RegisterForm = () => {
-  const [step, setStep] = useState(1);
+  const [activeStep, setActiveStep] = useState(0);
   const [step1Valid, setStep1Valid] = useState(false);
   const [step2Valid, setStep2Valid] = useState(false);
   const [step3Valid, setStep3Valid] = useState(false);
@@ -590,41 +595,41 @@ export const RegisterForm = () => {
 
   useEffect(() => {
     const subscription = watch((_, { name }) => {
-      if (step === 1 && name && isContactField(name)) {
+      if (activeStep === 0 && name && isContactField(name)) {
         trigger(contactFields).then((isValid) => setStep1Valid(isValid));
       }
     });
     return () => subscription.unsubscribe();
-  }, [watch, step, trigger, contactFields]);
+  }, [watch, activeStep, trigger, contactFields]);
 
   useEffect(() => {
     const subscription = watch((_, { name }) => {
-      if (step === 2 && name && isShippingField(name)) {
+      if (activeStep === 1 && name && isShippingField(name)) {
         trigger(shippingFields).then((isValid) => setStep2Valid(isValid));
       }
     });
     return () => subscription.unsubscribe();
-  }, [watch, step, trigger, shippingFields]);
+  }, [watch, activeStep, trigger, shippingFields]);
 
   useEffect(() => {
     const subscription = watch((_, { name }) => {
-      if (step === 3 && name && isBillingField(name)) {
+      if (activeStep === 2 && name && isBillingField(name)) {
         trigger(billingFields).then((isValid) => setStep3Valid(isValid));
       }
     });
     return () => subscription.unsubscribe();
-  }, [watch, step, trigger, billingFields]);
+  }, [watch, activeStep, trigger, billingFields]);
 
   const nextStep = async () => {
     let isStepValid = false;
     const formValues = watch();
 
-    switch (step) {
-      case 1:
+    switch (activeStep) {
+      case 0:
         isStepValid = await trigger(contactFields);
         setStep1Valid(isStepValid);
         break;
-      case 2:
+      case 1:
         isStepValid = await trigger(shippingFields);
         setStep2Valid(isStepValid);
         if (isStepValid) {
@@ -639,20 +644,20 @@ export const RegisterForm = () => {
           });
         }
         break;
-      case 3:
+      case 2:
         isStepValid = await trigger(billingFields);
         setStep3Valid(isStepValid);
         break;
     }
 
     if (isStepValid) {
-      console.log('Step', step, 'data:', formValues);
-      setStep(step + 1);
+      console.log('Step', activeStep, 'data:', formValues);
+      setActiveStep(activeStep + 1);
     }
   };
 
   const prevStep = () => {
-    setStep(step - 1);
+    setActiveStep(activeStep - 1);
   };
 
   const onSubmit = (data: FormData) => {
@@ -660,8 +665,8 @@ export const RegisterForm = () => {
   };
 
   const renderStep = () => {
-    switch (step) {
-      case 1:
+    switch (activeStep) {
+      case 0:
         return (
           <Step1
             control={control}
@@ -671,7 +676,7 @@ export const RegisterForm = () => {
             isValid={step1Valid}
           />
         );
-      case 2:
+      case 1:
         return (
           <Step2
             control={control}
@@ -681,7 +686,7 @@ export const RegisterForm = () => {
             isValid={step2Valid}
           />
         );
-      case 3:
+      case 2:
         return (
           <Step3
             control={control}
@@ -699,9 +704,20 @@ export const RegisterForm = () => {
   return (
     <Box
       component="form"
+      className={styles.registerForm}
       onSubmit={handleSubmit(onSubmit)}
-      style={{ maxWidth: '500px', margin: '0 auto' }}
     >
+      <Stepper
+        activeStep={activeStep}
+        sx={{ mb: 4 }}
+        className={styles.stepper}
+      >
+        {steps.map((label) => (
+          <Step key={label} className={styles.stepItem}>
+            <StepLabel>{label}</StepLabel>
+          </Step>
+        ))}
+      </Stepper>
       {renderStep()}
     </Box>
   );
