@@ -10,7 +10,7 @@ type InputPhoneProps = {
   value?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   error?: boolean;
-  helperText?: string | undefined;
+  helperText: string | undefined;
 };
 
 export default function InputPhone({
@@ -18,7 +18,7 @@ export default function InputPhone({
   onChange,
   error,
   helperText,
-}: InputPhoneProps) {
+}: Readonly<InputPhoneProps>) {
   return (
     <FormControl variant="outlined" fullWidth error={error}>
       <InputLabel htmlFor="form-phone">Phone number</InputLabel>

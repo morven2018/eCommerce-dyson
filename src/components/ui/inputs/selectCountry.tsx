@@ -50,7 +50,7 @@ export function CountrySelect<T extends FieldValues>({
   label,
   error,
   countries = DEFAULT_COUNTRIES,
-}: CountrySelectProps<T>) {
+}: Readonly<CountrySelectProps<T>>) {
   return (
     <FormControl fullWidth margin="normal">
       <InputLabel id={`${String(name)}-label`}>{label}</InputLabel>

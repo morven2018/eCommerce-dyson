@@ -22,7 +22,7 @@ export default function InputDate({
   helperText = '',
   label = 'Date of birth',
   required = false,
-}: InputDateProps) {
+}: Readonly<InputDateProps>) {
   return (
     <FormControl fullWidth error={error} required={required}>
       <LocalizationProvider dateAdapter={AdapterDayjs}>

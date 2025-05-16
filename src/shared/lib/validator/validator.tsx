@@ -2,21 +2,21 @@ import dayjs from 'dayjs';
 import * as yup from 'yup';
 
 const zipCodeRegexes: { [key: string]: RegExp } = {
-  gb: /^([A-Z]{1,2}[0-9][A-Z0-9]? ?[0-9][A-Z]{2})$/,
-  de: /^([0-9]{5})$/,
-  fr: /^([0-9]{5})$/,
-  it: /^([0-9]{5})$/,
-  es: /^([0-9]{5})$/,
-  nl: /^([0-9]{4} ?[A-Z]{2})$/,
-  be: /^([0-9]{4})$/,
-  ch: /^([0-9]{4})$/,
-  at: /^([0-9]{4})$/,
-  pt: /^([0-9]{4}-[0-9]{3})$/,
-  se: /^([0-9]{3} ?[0-9]{2})$/,
-  no: /^([0-9]{4})$/,
-  fi: /^([0-9]{5})$/,
-  dk: /^([0-9]{4})$/,
-  ie: /^[AC-FHKNPRTVWXY][0-9]{2}[0-9AC-FHKNPRTVWXY]{4}$/,
+  gb: /^([A-Z]{1,2}\d[A-Z0-9]? ?[0-9][A-Z]{2})$/,
+  de: /^(\d{5})$/,
+  fr: /^(\d{5})$/,
+  it: /^(\d{5})$/,
+  es: /^(\d{5})$/,
+  nl: /^(\d{4} ?[A-Z]{2})$/,
+  be: /^(\d{4})$/,
+  ch: /^(\d{4})$/,
+  at: /^(\d{4})$/,
+  pt: /^(\d{4}-\d{3})$/,
+  se: /^(\d{3} ?\d{2})$/,
+  no: /^(\d{4})$/,
+  fi: /^(\d{5})$/,
+  dk: /^(\d{4})$/,
+  ie: /^[AC-FHKNPRTVWXY]\d{2}[0-9AC-FHKNPRTVWXY]{4}$/,
 };
 
 export const emailValidationSchema = yup
@@ -25,7 +25,7 @@ export const emailValidationSchema = yup
   .test(
     'no-spaces',
     'Email must not have leading/trailing spaces',
-    (value) => !value || !/^\s|\s$/.test(value)
+    (value) => !value || !/(^\s)|(\s$)/.test(value)
   )
   .test(
     'contains-at-and-dot',
@@ -46,7 +46,7 @@ export const passwordValidationSchema = yup
   .string()
   .required('This field is mandatory')
   .min(8, 'Password must be at least 8 characters')
-  .matches(/[0-9]/, 'Password must contain at least 1 digit')
+  .matches(/\d/, 'Password must contain at least 1 digit')
   .matches(/[A-Z]/, 'Password must have 1 uppercase letter')
   .matches(/[a-z]/, 'Password must have 1 lowercase letter')
   .matches(/^[a-zA-Z0-9]+$/, 'Password must only contain letters and digits');
@@ -69,12 +69,12 @@ export const textValidationSchema = yup
   .test(
     'not-only-spaces',
     'Field must be at least 3-characters, no spaces',
-    (value) => !/^\s+$/.test(value || '')
+    (value) => !/^\s+$/.test(value ?? '')
   )
   .test(
     'no-special-chars',
     'Field must not contain special characters',
-    (value) => /^[a-zA-Z а-яА-Я]+$/.test(value || '')
+    (value) => /^[a-zA-Z а-яА-Я]+$/.test(value ?? '')
   );
 
 export const textValidationSchema2 = yup
@@ -84,7 +84,7 @@ export const textValidationSchema2 = yup
   .test(
     'not-only-spaces',
     'Field must be at least 3-characters, no spaces',
-    (value) => !/^\s+$/.test(value || '')
+    (value) => !/^\s+$/.test(value ?? '')
   );
 
 export const birthValidationSchema = yup
