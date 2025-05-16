@@ -9,15 +9,15 @@ export default function generatePassword() {
 
   const randomUppercase = uppercase[randomValues[0] % uppercase.length];
   const randomNumbers = [
-    numbers[randomValues[1] % numbers.length],
-    numbers[randomValues[2] % numbers.length],
+    numbers[Number(randomValues[1] % numbers.length)],
+    numbers[Number(randomValues[2] % numbers.length)],
   ];
   const randomLowercase = Array(7)
     .fill(null)
     .map((_, index) => lowercase[randomValues[index + 3] % lowercase.length]);
 
   const allChars = [randomUppercase, ...randomNumbers, ...randomLowercase];
-  const shuffled = allChars.sort(() => Math.random() - 0.5);
+  const shuffled = allChars.sort((item) => (Number(item) % 2 === 0 ? -1 : 1));
 
   return shuffled.join('');
 }
