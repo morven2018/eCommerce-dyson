@@ -629,8 +629,6 @@ export const RegisterForm = () => {
 
   const nextStep = async () => {
     let isStepValid = false;
-    const formValues = watch();
-
     switch (activeStep) {
       case 0:
         isStepValid = await trigger(contactFields);
@@ -657,10 +655,7 @@ export const RegisterForm = () => {
         break;
     }
 
-    if (isStepValid) {
-      console.log('Step', activeStep, 'data:', formValues);
-      setActiveStep(activeStep + 1);
-    }
+    if (isStepValid) setActiveStep(activeStep + 1);
   };
 
   const prevStep = () => {

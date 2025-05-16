@@ -23,7 +23,7 @@ interface CountrySelectProps<T extends FieldValues> {
   name: Path<T>;
   label: string;
   error?: FieldError;
-  countries?: Country[]; // Made optional since we have default countries
+  countries?: Country[];
 }
 
 const DEFAULT_COUNTRIES: Country[] = [
