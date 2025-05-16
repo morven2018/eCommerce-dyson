@@ -10,7 +10,6 @@
   border: 1px solid $primary-black;
   width: 100%;
   max-width: 800px;
-  padding: 60px 80px;
   background-color: $form-background;
 
   .input:focus {
@@ -43,6 +42,7 @@
     border-radius: $border-radius;
     color: $primary-white;
     height: 56px;
+    border: none;
 
     &:disabled {
       background-color: $disable-button-dark;

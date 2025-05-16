@@ -11,7 +11,6 @@ type InputDateProps = {
   error?: boolean;
   helperText?: string;
   label?: string;
-  minAge?: number;
   required?: boolean;
 };
 

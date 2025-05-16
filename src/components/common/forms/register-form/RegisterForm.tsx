@@ -1,4 +1,12 @@
-import { Box, Button, Checkbox, FormControlLabel } from '@mui/material';
+import {
+  Box,
+  Button,
+  Checkbox,
+  FormControlLabel,
+  Stepper,
+  Step,
+  StepLabel,
+} from '@mui/material';
 import { useEffect, useMemo, useState } from 'react';
 import {
   useForm,
@@ -29,7 +37,6 @@ import InputDate from '../../../ui/inputs/datePicker';
 import dayjs from 'dayjs';
 import { CountrySelect } from '../../../ui/inputs/selectCountry';
 import styles from './RegisterForm.module.scss';
-import { Stepper, Step, StepLabel } from '@mui/material';
 
 const steps = ['Contact Information', 'Shipping Address', 'Billing Address'];
 
@@ -274,7 +281,7 @@ const Step2 = ({ control, errors, onNext, onPrev, isValid }: Step2Props) => {
           <FormControlLabel
             control={
               <Checkbox
-                checked={field.value || false}
+                checked={field.value ?? false}
                 onChange={(e) => field.onChange(e.target.checked)}
                 color="primary"
               />
@@ -328,7 +335,7 @@ const Step2 = ({ control, errors, onNext, onPrev, isValid }: Step2Props) => {
           <InputText
             id="streetLine2"
             label="Street Address Line 2"
-            value={field.value || ''}
+            value={field.value ?? ''}
             onChange={field.onChange}
             error={!!fieldState.error}
             helperText={fieldState.error?.message}
@@ -385,20 +392,20 @@ const Step3 = ({ control, errors, onPrev, isValid, setValue }: Step3Props) => {
     if (checked) {
       setValue(
         'billingAddress.country',
-        formValues.shippingAddress?.country || ''
+        formValues.shippingAddress?.country ?? ''
       );
-      setValue('billingAddress.city', formValues.shippingAddress?.city || '');
+      setValue('billingAddress.city', formValues.shippingAddress?.city ?? '');
       setValue(
         'billingAddress.street',
-        formValues.shippingAddress?.street || ''
+        formValues.shippingAddress?.street ?? ''
       );
       setValue(
         'billingAddress.streetLine2',
-        formValues.shippingAddress?.streetLine2 || ''
+        formValues.shippingAddress?.streetLine2 ?? ''
       );
       setValue(
         'billingAddress.zipCode',
-        formValues.shippingAddress?.zipCode || ''
+        formValues.shippingAddress?.zipCode ?? ''
       );
     }
   };
@@ -424,7 +431,7 @@ const Step3 = ({ control, errors, onPrev, isValid, setValue }: Step3Props) => {
           <FormControlLabel
             control={
               <Checkbox
-                checked={field.value || false}
+                checked={field.value ?? false}
                 onChange={(e) => field.onChange(e.target.checked)}
                 color="primary"
               />
@@ -478,7 +485,7 @@ const Step3 = ({ control, errors, onPrev, isValid, setValue }: Step3Props) => {
           <InputText
             id="streetLine2"
             label="Street Address Line 2"
-            value={field.value || ''}
+            value={field.value ?? ''}
             onChange={field.onChange}
             error={!!fieldState.error}
             helperText={fieldState.error?.message}

@@ -25,7 +25,7 @@ export default function InputPassword({
   onChange,
   error,
   helperText,
-}: InputPasswordProps) {
+}: Readonly<InputPasswordProps>) {
   const [values, setValues] = React.useState<State>({
     showPassword: false,
   });
