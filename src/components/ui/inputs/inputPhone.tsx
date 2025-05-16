@@ -6,30 +6,28 @@ import {
   FormHelperText,
 } from '@mui/material';
 
-type InputEmailProps = {
+type InputPhoneProps = {
   value?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   error?: boolean;
   helperText: string | undefined;
-
 };
 
-export default function InputEmail({
+export default function InputPhone({
   value,
   onChange,
   error,
   helperText,
-}: Readonly<InputEmailProps>) {
-
+}: Readonly<InputPhoneProps>) {
   return (
     <FormControl variant="outlined" fullWidth error={error}>
-      <InputLabel htmlFor="form-email">Email</InputLabel>
+      <InputLabel htmlFor="form-phone">Phone number</InputLabel>
       <OutlinedInput
-        id="form-email"
-        type="text"
-        value={value}
+        id="form-phone"
+        type="phone"
+        value={value ?? ''}
         onChange={onChange}
-        label="Email"
+        label="Phone number"
       />
       {helperText && <FormHelperText>{helperText}</FormHelperText>}
     </FormControl>

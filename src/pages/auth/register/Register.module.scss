@@ -1,0 +1,32 @@
+@use '../../../assets/styles/globals' as *;
+
+$header-width: 500px;
+
+.pageHeader {
+  display: block;
+
+  max-width: $header-width;
+  margin-bottom: 120px;
+
+  font-size: $typography-header;
+  font-weight: $base-weight;
+  text-align: left;
+  line-height: $line-height;
+  color: $button-dark;
+}
+
+.form {
+  background-color: $form-background;
+  border-radius: $border-radius;
+  border: 1px solid $primary-black;
+}
+
+.subheader {
+  font-size: $typography-subheader;
+  color: $text;
+}
+
+.passwordWrapper {
+  display: flex;
+  flex-direction: row;
+}
