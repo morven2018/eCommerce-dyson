@@ -21,10 +21,11 @@
     "@mui/material": "^7.0.2",
     "@mui/x-date-pickers": "^8.3.0",
     "dayjs": "^1.11.13",
+    "buffer": "^6.0.3",
     "normalize.css": "^8.0.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
-    "react-hook-form": "^7.56.2",
+    "react-hook-form": "^7.56.3",
     "react-router-dom": "^7.5.3",
     "yup": "^1.6.1"
   },

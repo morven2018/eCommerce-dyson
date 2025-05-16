@@ -26,6 +26,7 @@ export default function InputPassword({
   error,
   helperText,
 }: Readonly<InputPasswordProps>) {
+
   const [values, setValues] = React.useState<State>({
     showPassword: false,
   });
@@ -46,7 +47,7 @@ export default function InputPassword({
       <OutlinedInput
         id="form-password"
         type={values.showPassword ? 'text' : 'password'}
-        value={value ?? ''}
+        value={value}
         onChange={onChange}
         label="Password"
         endAdornment={

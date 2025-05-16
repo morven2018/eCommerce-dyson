@@ -7,36 +7,64 @@
   align-items: center;
   gap: 40px;
   width: 100%;
-  max-width: 1440px;
   padding: 30px 20px;
   background: url(../../../assets/images/footer.png) center center / cover
     no-repeat;
 }
 
 .bigContainer {
+  width: 100%;
+  max-width: 1440px;
   display: flex;
-  gap: 30px;
+  justify-content: space-around;
 }
 
-.container {
+.container,
+.contactsContainer {
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
 }
 
-.title {
+.teamContainer {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  text-align: right;
+}
+
+.title,
+.contactsTitle,
+.teamTitle {
   padding: 12px 16px;
   text-align: start;
   color: $button-dark;
+  font-size: 18px;
+}
+
+.teamMember {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.name {
+  font-weight: bold;
+  color: $footer-dark;
+  text-decoration: underline;
+  text-decoration: none;
 }
 
 .link {
   margin: 12px 0 12px 16px;
   text-decoration: none;
   color: $text;
+  cursor: pointer;
+  transition: all ease 0.3s;
 
   &:hover {
     @media (hover: hover) {
-      text-decoration: underline;
+      transform: scale(1.05);
     }
   }
 }
@@ -44,6 +72,29 @@
 .description {
   text-align: center;
   color: $text;
+}
+
+.githubIcon {
+  vertical-align: middle;
+  margin-right: 6px;
+  margin-bottom: 3px;
+}
+
+@media (min-width: 501px) and (max-width: 650px) {
+  .bigContainer {
+    flex-direction: column;
+  }
+
+  .contactsContainer,
+  .teamContainer {
+    align-items: flex-end;
+    text-align: right;
+  }
+
+  .contactsTitle,
+  .teamTitle {
+    padding: 12px 0px;
+  }
 }
 
 @media (max-width: 500px) {
@@ -54,5 +105,20 @@
 
   .bigContainer {
     flex-direction: column;
+  }
+
+  .contactsContainer,
+  .teamContainer {
+    align-items: flex-end;
+    text-align: right;
+  }
+
+  .contactsTitle,
+  .teamTitle {
+    padding: 12px 0px;
+  }
+
+  .description {
+    font-size: 14px;
   }
 }

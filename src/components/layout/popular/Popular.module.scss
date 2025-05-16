@@ -1,0 +1,96 @@
+@use '../../../assets/styles/globals' as *;
+
+.popular {
+  width: 100%;
+  max-width: 1440px;
+  padding: 80px 40px;
+  margin: 0 auto;
+  background: $primary-black;
+}
+
+.container {
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+}
+
+.card {
+  display: flex;
+  flex-direction: column;
+  max-width: 21.625rem;
+  min-height: 27.0625rem;
+  background-color: $primary-white;
+  border-radius: 10px;
+}
+
+.cardImage {
+  border-radius: 10px;
+}
+
+.cardContent {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 20px;
+}
+
+.title {
+  display: flex;
+  flex-direction: column;
+}
+
+.cardHeader {
+  font-size: $typography-card-header;
+}
+
+.subheader {
+  font-size: $typography-card-subheader;
+}
+
+.line {
+  border: 1px solid $primary-black;
+}
+
+.cardText {
+  color: $primary-black;
+  font-size: $typography-text;
+}
+
+.cardButton {
+  font-size: $btn-typography;
+  color: $primary-black;
+  text-decoration: none;
+  text-transform: uppercase;
+  align-self: flex-end;
+  cursor: pointer;
+  transition: all ease 0.3s;
+
+  &:hover {
+    transform: scale(105%);
+    font-weight: bold;
+  }
+}
+
+@media (min-width: 1001px) {
+  .container {
+    gap: 45px;
+    align-items: center;
+    justify-content: center;
+  }
+}
+
+@media (min-width: 701px) and (max-width: 1000px) {
+  .container {
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+  }
+}
+
+@media (max-width: 700px) {
+  .container {
+    flex-direction: column;
+    align-items: center;
+    gap: 25px;
+  }
+}

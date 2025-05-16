@@ -1,0 +1,14 @@
+@use '../../../assets/styles/globals' as *;
+
+.login {
+  width: 100%;
+  max-width: 1440px;
+  padding: 20px 10px;
+  background-color: $primary-white;
+}
+
+.title {
+  margin-top: 40px;
+  text-align: center;
+  color: $button-dark;
+}
