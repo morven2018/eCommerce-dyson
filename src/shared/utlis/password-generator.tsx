@@ -3,11 +3,14 @@ export default function generatePassword() {
   const uppercase = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
   const numbers = '0123456789';
 
-  const randomUppercase =
-    uppercase[Math.floor(Math.random() * uppercase.length)];
+  const crypto = window.crypto || window.Crypto;
+  const randomValues = new Uint32Array(12);
+  crypto.getRandomValues(randomValues);
+
+  const randomUppercase = uppercase[randomValues[0] % uppercase.length];
   const randomNumbers = [
-    numbers[Math.floor(Math.random() * numbers.length)],
-    numbers[Math.floor(Math.random() * numbers.length)],
+    numbers[randomValues[0] % uppercase.length],
+    numbers[randomValues[0] % uppercase.length],
   ];
   const randomLowercase = Array(7)
     .fill(null)
