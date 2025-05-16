@@ -1,11 +1,12 @@
-import { Box, Button, Typography } from '@mui/material';
-import { useEffect, useState } from 'react';
+import { Box, Button, Checkbox, FormControlLabel } from '@mui/material';
+import { useEffect, useMemo, useState } from 'react';
 import {
   useForm,
   Controller,
   Control,
   FieldErrors,
   UseFormSetValue,
+  useWatch,
 } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -19,33 +20,14 @@ import {
   passwordValidationSchema,
   phoneValidationSchema,
   textValidationSchema,
+  textValidationSchema2,
+  zipCodeValidationSchema,
 } from '../../../../shared/lib/validator/validator';
 import generatePassword from '../../../../shared/utlis/password-generator';
 import InputPhone from '../../../ui/inputs/inputPhone';
 import InputDate from '../../../ui/inputs/datePicker';
 import dayjs from 'dayjs';
-
-const addressSchema = yup.object().shape({
-  country: yup
-    .string()
-    .required('Страна обязательна')
-    .min(2, 'Слишком короткое название')
-    .max(50, 'Слишком длинное название'),
-  city: yup
-    .string()
-    .required('Город обязателен')
-    .min(2, 'Слишком короткое название')
-    .max(50, 'Слишком длинное название'),
-  street: yup
-    .string()
-    .required('Улица обязательна')
-    .min(5, 'Слишком короткий адрес')
-    .max(100, 'Слишком длинный адрес'),
-  zipCode: yup
-    .string()
-    .required('Индекс обязателен')
-    .matches(/^\d{5,6}(?:[-\s]\d{4})?$/, 'Некорректный формат индекса'),
-});
+import { CountrySelect } from '../../../ui/inputs/selectCountry';
 
 interface FormData {
   email: string;
@@ -55,20 +37,56 @@ interface FormData {
   lastName: string;
   dayOfBirth: Date;
   shippingAddress: {
+    defaultAddress?: boolean;
     country: string;
     city: string;
     street: string;
+    streetLine2?: string;
     zipCode: string;
   };
   billingAddress: {
+    dataFromShipping?: boolean;
+    defaultAddress?: boolean;
     country: string;
     city: string;
     street: string;
+    streetLine2?: string;
     zipCode: string;
   };
 }
 
-const formSchema = yup.object().shape({
+interface BaseStepProps {
+  control: Control<FormData>;
+  errors: FieldErrors<FormData>;
+  isValid: boolean;
+}
+
+interface Step1Props extends BaseStepProps {
+  setValue: UseFormSetValue<FormData>;
+  onNext: () => Promise<void>;
+}
+
+interface Step2Props extends BaseStepProps {
+  onNext: () => Promise<void>;
+  onPrev: () => void;
+}
+
+interface Step3Props extends BaseStepProps {
+  onPrev: () => void;
+  setValue: UseFormSetValue<FormData>;
+}
+
+const addressSchema = yup.object().shape({
+  dataFromShipping: yup.boolean().optional(),
+  defaultAddress: yup.boolean().optional(),
+  country: yup.string().required('This field is mandatory'),
+  city: textValidationSchema,
+  street: textValidationSchema2,
+  streetLine2: yup.string().optional(),
+  zipCode: zipCodeValidationSchema,
+});
+
+const formSchema: yup.ObjectSchema<FormData> = yup.object().shape({
   email: emailValidationSchema,
   password: passwordValidationSchema,
   phone: phoneValidationSchema,
@@ -79,22 +97,55 @@ const formSchema = yup.object().shape({
   billingAddress: addressSchema,
 });
 
-const Step1 = ({
-  control,
-  errors,
-  setValue,
-  onNext,
-  isValid,
-}: {
-  control: Control<FormData>;
-  errors: FieldErrors<FormData>;
-  setValue: UseFormSetValue<FormData>;
-  onNext: () => Promise<void>;
-  isValid: boolean;
-}) => {
+type ContactField =
+  | 'email'
+  | 'password'
+  | 'phone'
+  | 'firstName'
+  | 'lastName'
+  | 'dayOfBirth';
+type ShippingField =
+  `shippingAddress.${'country' | 'city' | 'street' | 'streetLine2' | 'zipCode' | 'defaultAddress'}`;
+type BillingField =
+  `billingAddress.${'country' | 'city' | 'street' | 'streetLine2' | 'zipCode' | 'defaultAddress' | 'dataFromShipping'}`;
+
+const contactFields: ContactField[] = [
+  'email',
+  'password',
+  'phone',
+  'firstName',
+  'lastName',
+  'dayOfBirth',
+];
+const shippingFields: ShippingField[] = [
+  'shippingAddress.country',
+  'shippingAddress.city',
+  'shippingAddress.street',
+  'shippingAddress.zipCode',
+];
+const billingFields: BillingField[] = [
+  'billingAddress.country',
+  'billingAddress.city',
+  'billingAddress.street',
+  'billingAddress.zipCode',
+];
+
+function isContactField(field: string): field is ContactField {
+  return contactFields.some((validField) => validField === field);
+}
+
+function isShippingField(field: string): field is ShippingField {
+  return shippingFields.some((validField) => validField === field);
+}
+
+function isBillingField(field: string): field is BillingField {
+  return billingFields.some((validField) => validField === field);
+}
+
+const Step1 = ({ control, errors, setValue, onNext, isValid }: Step1Props) => {
   return (
     <div>
-      <h6>Contact Information</h6>
+      <h5>Contact Information</h5>
 
       <Controller
         name="email"
@@ -158,7 +209,6 @@ const Step1 = ({
             onChange={field.onChange}
             error={!!fieldState.error}
             helperText={fieldState.error?.message}
-            required
           />
         )}
       />
@@ -174,7 +224,6 @@ const Step1 = ({
             onChange={field.onChange}
             error={!!fieldState.error}
             helperText={fieldState.error?.message}
-            required
           />
         )}
       />
@@ -191,7 +240,6 @@ const Step1 = ({
             onBlur={field.onBlur}
             error={!!fieldState.error}
             helperText={fieldState.error?.message}
-            required
           />
         )}
       />
@@ -209,101 +257,263 @@ const Step1 = ({
   );
 };
 
-const AddressStep = ({
-  control,
-  onPrev,
-  onNext,
-  type,
-  isValid,
-}: {
-  control: Control<FormData>;
-  errors: FieldErrors<FormData>;
-  onPrev: () => void;
-  onNext: () => Promise<void>;
-  type: 'shipping' | 'billing';
-  isValid: boolean;
-}) => {
-  const prefix = `${type}Address` as const;
-  const title = type === 'shipping' ? 'Адрес доставки' : 'Платежный адрес';
-
+const Step2 = ({ control, errors, onNext, onPrev, isValid }: Step2Props) => {
   return (
     <div>
-      <Typography variant="h6">{title}</Typography>
+      <h5>Shipping Information</h5>
 
       <Controller
-        name={`${prefix}.country`}
+        name="shippingAddress.defaultAddress"
+        control={control}
+        render={({ field }) => (
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={field.value || false}
+                onChange={(e) => field.onChange(e.target.checked)}
+                color="primary"
+              />
+            }
+            label="Set as default address"
+          />
+        )}
+      />
+
+      <CountrySelect
+        control={control}
+        name="shippingAddress.country"
+        label="Country"
+        error={errors.shippingAddress?.country}
+      />
+
+      <Controller
+        name="shippingAddress.city"
         control={control}
         render={({ field, fieldState }) => (
           <InputText
-            id={`${prefix}-country`}
-            label="Страна"
+            id="city-billing"
+            label="City"
             value={field.value}
             onChange={field.onChange}
             error={!!fieldState.error}
             helperText={fieldState.error?.message}
-            required
           />
         )}
       />
 
       <Controller
-        name={`${prefix}.city`}
+        name="shippingAddress.street"
         control={control}
         render={({ field, fieldState }) => (
           <InputText
-            id={`${prefix}-city`}
-            label="Город"
+            id="street-billing"
+            label="Street Address"
             value={field.value}
             onChange={field.onChange}
             error={!!fieldState.error}
             helperText={fieldState.error?.message}
-            required
           />
         )}
       />
 
       <Controller
-        name={`${prefix}.street`}
+        name="shippingAddress.streetLine2"
         control={control}
         render={({ field, fieldState }) => (
           <InputText
-            id={`${prefix}-street`}
-            label="Улица"
-            value={field.value}
+            id="streetLine2"
+            label="Street Address Line 2"
+            value={field.value || ''}
             onChange={field.onChange}
             error={!!fieldState.error}
             helperText={fieldState.error?.message}
-            required
           />
         )}
       />
 
       <Controller
-        name={`${prefix}.zipCode`}
+        name="shippingAddress.zipCode"
         control={control}
         render={({ field, fieldState }) => (
           <InputText
-            id={`${prefix}-zipCode`}
-            label="Почтовый индекс"
+            id="zipCode-billing"
+            label="Zip code"
             value={field.value}
             onChange={field.onChange}
             error={!!fieldState.error}
             helperText={fieldState.error?.message}
-            required
           />
         )}
       />
 
-      <div style={{ display: 'flex', gap: '10px', marginTop: '20px' }}>
-        <Button onClick={onPrev}>Назад</Button>
-        <Button variant="contained" onClick={onNext}>
-          {type === 'shipping' ? 'Продолжить' : 'Проверить'}
+      <div>
+        <Button
+          className="prev-button"
+          variant="contained"
+          onClick={onPrev}
+          style={{ marginTop: '20px' }}
+        >
+          Previous
+        </Button>
+
+        <Button
+          className="next-button"
+          variant="contained"
+          onClick={onNext}
+          style={{ marginTop: '20px' }}
+          disabled={!isValid}
+        >
+          Next
         </Button>
       </div>
-      <div style={{ display: 'flex', gap: '10px', marginTop: '20px' }}>
-        <Button onClick={onPrev}>Назад</Button>
-        <Button variant="contained" onClick={onNext} disabled={!isValid}>
-          {type === 'shipping' ? 'Продолжить' : 'Проверить'}
+    </div>
+  );
+};
+
+const Step3 = ({ control, errors, onPrev, isValid, setValue }: Step3Props) => {
+  const formValues = useWatch({ control });
+  const [copyFromShipping, setCopyFromShipping] = useState(false);
+
+  const handleCopyChange = (checked: boolean) => {
+    setCopyFromShipping(checked);
+
+    if (checked) {
+      setValue(
+        'billingAddress.country',
+        formValues.shippingAddress?.country || ''
+      );
+      setValue('billingAddress.city', formValues.shippingAddress?.city || '');
+      setValue(
+        'billingAddress.street',
+        formValues.shippingAddress?.street || ''
+      );
+      setValue(
+        'billingAddress.streetLine2',
+        formValues.shippingAddress?.streetLine2 || ''
+      );
+      setValue(
+        'billingAddress.zipCode',
+        formValues.shippingAddress?.zipCode || ''
+      );
+    }
+  };
+  return (
+    <div>
+      <h5>Billing address</h5>
+
+      <FormControlLabel
+        control={
+          <Checkbox
+            checked={copyFromShipping}
+            onChange={(e) => handleCopyChange(e.target.checked)}
+            color="primary"
+          />
+        }
+        label="Use data from shipping address"
+      />
+
+      <Controller
+        name="billingAddress.defaultAddress"
+        control={control}
+        render={({ field }) => (
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={field.value || false}
+                onChange={(e) => field.onChange(e.target.checked)}
+                color="primary"
+              />
+            }
+            label="Set as default address"
+          />
+        )}
+      />
+
+      <CountrySelect
+        control={control}
+        name="billingAddress.country"
+        label="Country"
+        error={errors.billingAddress?.country}
+      />
+
+      <Controller
+        name="billingAddress.city"
+        control={control}
+        render={({ field, fieldState }) => (
+          <InputText
+            id="city"
+            label="City"
+            value={field.value}
+            onChange={field.onChange}
+            error={!!fieldState.error}
+            helperText={fieldState.error?.message}
+          />
+        )}
+      />
+
+      <Controller
+        name="billingAddress.street"
+        control={control}
+        render={({ field, fieldState }) => (
+          <InputText
+            id="street"
+            label="Street Address"
+            value={field.value}
+            onChange={field.onChange}
+            error={!!fieldState.error}
+            helperText={fieldState.error?.message}
+          />
+        )}
+      />
+
+      <Controller
+        name="billingAddress.streetLine2"
+        control={control}
+        render={({ field, fieldState }) => (
+          <InputText
+            id="streetLine2"
+            label="Street Address Line 2"
+            value={field.value || ''}
+            onChange={field.onChange}
+            error={!!fieldState.error}
+            helperText={fieldState.error?.message}
+          />
+        )}
+      />
+
+      <Controller
+        name="billingAddress.zipCode"
+        control={control}
+        render={({ field, fieldState }) => (
+          <InputText
+            id="zipCode"
+            label="Zip code"
+            value={field.value}
+            onChange={field.onChange}
+            error={!!fieldState.error}
+            helperText={fieldState.error?.message}
+          />
+        )}
+      />
+
+      <div>
+        <Button
+          className="prev-button"
+          variant="contained"
+          onClick={onPrev}
+          style={{ marginTop: '20px' }}
+        >
+          Previous
+        </Button>
+
+        <Button
+          className="submit-button"
+          type="submit"
+          variant="contained"
+          style={{ marginTop: '20px' }}
+          disabled={!isValid}
+        >
+          Register
         </Button>
       </div>
     </div>
@@ -334,74 +544,76 @@ export const RegisterForm = () => {
       lastName: '',
       dayOfBirth: new Date(),
       shippingAddress: {
+        defaultAddress: false,
         country: '',
         city: '',
         street: '',
+        streetLine2: '',
         zipCode: '',
       },
       billingAddress: {
+        dataFromShipping: false,
+        defaultAddress: false,
         country: '',
         city: '',
         street: '',
+        streetLine2: '',
         zipCode: '',
       },
     },
   });
 
-  useEffect(() => {
-    const subscription = watch((value, { name }) => {
-      if (
-        step === 1 &&
-        name &&
-        [
-          'email',
-          'password',
-          'phone',
-          'firstName',
-          'lastName',
-          'dayOfBirth',
-        ].includes(name)
-      ) {
-        trigger([
-          'email',
-          'password',
-          'phone',
-          'firstName',
-          'lastName',
-          'dayOfBirth',
-        ]).then((isValid) => setStep1Valid(isValid));
-      }
-    });
-    return () => subscription.unsubscribe();
-  }, [watch, step, trigger]);
+  const contactFields = useMemo<ContactField[]>(
+    () => ['email', 'password', 'phone', 'firstName', 'lastName', 'dayOfBirth'],
+    []
+  );
+
+  const shippingFields = useMemo<ShippingField[]>(
+    () => [
+      'shippingAddress.country',
+      'shippingAddress.city',
+      'shippingAddress.street',
+      'shippingAddress.zipCode',
+    ],
+    []
+  );
+
+  const billingFields = useMemo<BillingField[]>(
+    () => [
+      'billingAddress.country',
+      'billingAddress.city',
+      'billingAddress.street',
+      'billingAddress.zipCode',
+    ],
+    []
+  );
 
   useEffect(() => {
-    const subscription = watch((value, { name }) => {
-      if (step === 2 && name && name.startsWith('shippingAddress')) {
-        trigger([
-          'shippingAddress.country',
-          'shippingAddress.city',
-          'shippingAddress.street',
-          'shippingAddress.zipCode',
-        ]).then((isValid) => setStep2Valid(isValid));
+    const subscription = watch((_, { name }) => {
+      if (step === 1 && name && isContactField(name)) {
+        trigger(contactFields).then((isValid) => setStep1Valid(isValid));
       }
     });
     return () => subscription.unsubscribe();
-  }, [watch, step, trigger]);
+  }, [watch, step, trigger, contactFields]);
 
   useEffect(() => {
-    const subscription = watch((value, { name }) => {
-      if (step === 3 && name && name.startsWith('billingAddress')) {
-        trigger([
-          'billingAddress.country',
-          'billingAddress.city',
-          'billingAddress.street',
-          'billingAddress.zipCode',
-        ]).then((isValid) => setStep3Valid(isValid));
+    const subscription = watch((_, { name }) => {
+      if (step === 2 && name && isShippingField(name)) {
+        trigger(shippingFields).then((isValid) => setStep2Valid(isValid));
       }
     });
     return () => subscription.unsubscribe();
-  }, [watch, step, trigger]);
+  }, [watch, step, trigger, shippingFields]);
+
+  useEffect(() => {
+    const subscription = watch((_, { name }) => {
+      if (step === 3 && name && isBillingField(name)) {
+        trigger(billingFields).then((isValid) => setStep3Valid(isValid));
+      }
+    });
+    return () => subscription.unsubscribe();
+  }, [watch, step, trigger, billingFields]);
 
   const nextStep = async () => {
     let isStepValid = false;
@@ -409,52 +621,32 @@ export const RegisterForm = () => {
 
     switch (step) {
       case 1:
-        console.log({
-          email: formValues.email,
-          password: formValues.password,
-          phone: formValues.phone,
-          firstName: formValues.firstName,
-          lastName: formValues.lastName,
-          dayOfBirth: formValues.dayOfBirth,
-        });
+        isStepValid = await trigger(contactFields);
+        setStep1Valid(isStepValid);
         break;
       case 2:
-        console.log(formValues.shippingAddress);
+        isStepValid = await trigger(shippingFields);
+        setStep2Valid(isStepValid);
+        if (isStepValid) {
+          setValue('billingAddress', {
+            country: '',
+            city: '',
+            street: '',
+            streetLine2: '',
+            zipCode: '',
+            dataFromShipping: false,
+            defaultAddress: false,
+          });
+        }
         break;
       case 3:
-        console.log(formValues.billingAddress);
+        isStepValid = await trigger(billingFields);
+        setStep3Valid(isStepValid);
         break;
-    }
-
-    if (step === 1) {
-      isStepValid = await trigger([
-        'email',
-        'password',
-        'phone',
-        'firstName',
-        'lastName',
-        'dayOfBirth',
-      ]);
-      setStep1Valid(isStepValid);
-    } else if (step === 2) {
-      isStepValid = await trigger([
-        'shippingAddress.country',
-        'shippingAddress.city',
-        'shippingAddress.street',
-        'shippingAddress.zipCode',
-      ]);
-      setStep2Valid(isStepValid);
-    } else if (step === 3) {
-      isStepValid = await trigger([
-        'billingAddress.country',
-        'billingAddress.city',
-        'billingAddress.street',
-        'billingAddress.zipCode',
-      ]);
-      setStep3Valid(isStepValid);
     }
 
     if (isStepValid) {
+      console.log('Step', step, 'data:', formValues);
       setStep(step + 1);
     }
   };
@@ -464,7 +656,7 @@ export const RegisterForm = () => {
   };
 
   const onSubmit = (data: FormData) => {
-    console.log(data);
+    console.log('Form submitted:', data);
   };
 
   const renderStep = () => {
@@ -481,24 +673,22 @@ export const RegisterForm = () => {
         );
       case 2:
         return (
-          <AddressStep
+          <Step2
             control={control}
             errors={errors}
-            onPrev={prevStep}
             onNext={nextStep}
-            type="shipping"
+            onPrev={prevStep}
             isValid={step2Valid}
           />
         );
       case 3:
         return (
-          <AddressStep
+          <Step3
             control={control}
             errors={errors}
             onPrev={prevStep}
-            onNext={nextStep}
-            type="billing"
             isValid={step3Valid}
+            setValue={setValue}
           />
         );
       default:
