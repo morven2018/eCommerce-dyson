@@ -281,6 +281,7 @@ const Step2 = ({ control, errors, onNext, onPrev, isValid }: Step2Props) => {
         control={control}
         render={({ field }) => (
           <FormControlLabel
+            className={styles.checkbox}
             control={
               <Checkbox
                 checked={field.value ?? false}
@@ -418,6 +419,7 @@ const Step3 = ({ control, errors, onPrev, isValid, setValue }: Step3Props) => {
       <FormControlLabel
         control={
           <Checkbox
+            className={styles.checkbox}
             checked={copyFromShipping}
             onChange={(e) => handleCopyChange(e.target.checked)}
             color="primary"
@@ -431,6 +433,7 @@ const Step3 = ({ control, errors, onPrev, isValid, setValue }: Step3Props) => {
         control={control}
         render={({ field }) => (
           <FormControlLabel
+            className={styles.checkbox}
             control={
               <Checkbox
                 checked={field.value ?? false}
@@ -731,12 +734,17 @@ export const RegisterForm = () => {
               },
             },
           },
+          '@media (max-width: 700px)': {
+            '& .MuiStepLabel-labelContainer': {
+              display: 'none',
+            },
+          },
         }}
         className={styles.stepper}
       >
         {steps.map((label) => (
-          <Step key={label} className={styles.stepItem}>
-            <StepLabel className={styles.stepLabel}>{label}</StepLabel>
+          <Step key={label}>
+            <StepLabel>{label}</StepLabel>
           </Step>
         ))}
       </Stepper>

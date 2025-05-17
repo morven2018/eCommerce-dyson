@@ -2,6 +2,7 @@
 
 $breakpoint800: 800px;
 $breakpoint700: 700px;
+$breakpoint500: 500px;
 
 .registerForm {
   display: flex;
@@ -32,6 +33,7 @@ $breakpoint700: 700px;
     font-weight: 400;
     font-size: $typography-big-text;
     color: $text;
+    padding: 10px 16px;
   }
 
   .form {
@@ -55,6 +57,22 @@ $breakpoint700: 700px;
 }
 .stepper {
   width: 100%;
+
+  .Mui-active {
+    .MuiStepIcon-root {
+      circle {
+        fill: #192a51;
+      }
+    }
+  }
+
+  .Mui-completed {
+    .MuiSvgIcon-root {
+      path:first-of-type {
+        fill: #192a51;
+      }
+    }
+  }
 }
 .stepItem {
   & > span {
@@ -81,11 +99,34 @@ $breakpoint700: 700px;
   }
 }
 
-@media screen and (max-width: $breakpoint700) {
+@media screen and (max-width: $breakpoint800) {
   .stepper {
-    width: 100%;
+    max-width: 240px;
   }
-  .stepLabel {
-    display: none;
+}
+
+@media screen and (max-width: $breakpoint500) {
+  .registerForm {
+    padding: 30px 10px;
+  }
+
+  .checkbox {
+    padding-left: 10px;
+  }
+
+  .password,
+  .buttonBox {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 2fr 2fr;
+    gap: 0;
+  }
+
+  .password {
+    gap: 20px;
+  }
+  h5 {
+    text-align: center;
   }
 }
