@@ -12,7 +12,9 @@ describe('Bestseller Component', () => {
       </MemoryRouter>
     );
 
-    expect(screen.getByRole('heading', { name: /Bestseller/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: /Bestseller/i })
+    ).toBeInTheDocument();
     expect(screen.getByText(/Dyson V8 Absolute vacuum/i)).toBeInTheDocument();
 
     const paragraph = screen.getByText(
