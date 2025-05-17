@@ -37,7 +37,7 @@ import InputDate from '../../../ui/inputs/datePicker';
 import dayjs from 'dayjs';
 import { CountrySelect } from '../../../ui/inputs/selectCountry';
 import styles from './RegisterForm.module.scss';
-import { register } from '../../../../shared/api/commerce-tools/new-customer';
+import { register } from '../../../../shared/api/commerce-tools/newCustomer';
 import ShowDialog from '../../../ui/modals/Modal';
 
 const steps = ['Contact Information', 'Shipping Address', 'Billing Address'];
@@ -281,6 +281,7 @@ const Step2 = ({ control, errors, onNext, onPrev, isValid }: Step2Props) => {
         control={control}
         render={({ field }) => (
           <FormControlLabel
+            className={styles.checkbox}
             control={
               <Checkbox
                 checked={field.value ?? false}
@@ -418,6 +419,7 @@ const Step3 = ({ control, errors, onPrev, isValid, setValue }: Step3Props) => {
       <FormControlLabel
         control={
           <Checkbox
+            className={styles.checkbox}
             checked={copyFromShipping}
             onChange={(e) => handleCopyChange(e.target.checked)}
             color="primary"
@@ -431,6 +433,7 @@ const Step3 = ({ control, errors, onPrev, isValid, setValue }: Step3Props) => {
         control={control}
         render={({ field }) => (
           <FormControlLabel
+            className={styles.checkbox}
             control={
               <Checkbox
                 checked={field.value ?? false}
@@ -720,11 +723,27 @@ export const RegisterForm = () => {
     >
       <Stepper
         activeStep={activeStep}
-        sx={{ mb: 4 }}
+        sx={{
+          '& .Mui-active .MuiStepIcon-root circle': {
+            fill: '#192a51',
+          },
+          '& .Mui-completed': {
+            '& .MuiSvgIcon-root': {
+              '& path:first-of-type': {
+                fill: '#192a51',
+              },
+            },
+          },
+          '@media (max-width: 700px)': {
+            '& .MuiStepLabel-labelContainer': {
+              display: 'none',
+            },
+          },
+        }}
         className={styles.stepper}
       >
         {steps.map((label) => (
-          <Step key={label} className={styles.stepItem}>
+          <Step key={label}>
             <StepLabel>{label}</StepLabel>
           </Step>
         ))}
