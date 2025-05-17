@@ -26,7 +26,7 @@ interface CountrySelectProps<T extends FieldValues> {
   countries?: Country[];
 }
 
-const DEFAULT_COUNTRIES: Country[] = [
+export const DEFAULT_COUNTRIES: Country[] = [
   { code: 'gb', name: 'United Kingdom' },
   { code: 'de', name: 'Germany' },
   { code: 'fr', name: 'France' },

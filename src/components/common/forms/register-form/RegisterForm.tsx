@@ -37,10 +37,11 @@ import InputDate from '../../../ui/inputs/datePicker';
 import dayjs from 'dayjs';
 import { CountrySelect } from '../../../ui/inputs/selectCountry';
 import styles from './RegisterForm.module.scss';
+import { register } from '../../../../shared/api/commerce-tools/new-customer';
 
 const steps = ['Contact Information', 'Shipping Address', 'Billing Address'];
 
-interface FormData {
+export interface IFormData {
   email: string;
   password: string;
   phone: string;
@@ -67,13 +68,13 @@ interface FormData {
 }
 
 interface BaseStepProps {
-  control: Control<FormData>;
-  errors: FieldErrors<FormData>;
+  control: Control<IFormData>;
+  errors: FieldErrors<IFormData>;
   isValid: boolean;
 }
 
 interface Step1Props extends BaseStepProps {
-  setValue: UseFormSetValue<FormData>;
+  setValue: UseFormSetValue<IFormData>;
   onNext: () => Promise<void>;
 }
 
@@ -84,7 +85,7 @@ interface Step2Props extends BaseStepProps {
 
 interface Step3Props extends BaseStepProps {
   onPrev: () => void;
-  setValue: UseFormSetValue<FormData>;
+  setValue: UseFormSetValue<IFormData>;
 }
 
 const addressSchema = yup.object().shape({
@@ -97,7 +98,7 @@ const addressSchema = yup.object().shape({
   zipCode: zipCodeValidationSchema,
 });
 
-const formSchema: yup.ObjectSchema<FormData> = yup.object().shape({
+const formSchema: yup.ObjectSchema<IFormData> = yup.object().shape({
   email: emailValidationSchema,
   password: passwordValidationSchema,
   phone: phoneValidationSchema,
@@ -545,7 +546,7 @@ export const RegisterForm = () => {
     trigger,
     setValue,
     watch,
-  } = useForm<FormData>({
+  } = useForm<IFormData>({
     resolver: yupResolver(formSchema),
     mode: 'onChange',
     defaultValues: {
@@ -662,8 +663,9 @@ export const RegisterForm = () => {
     setActiveStep(activeStep - 1);
   };
 
-  const onSubmit = (data: FormData) => {
+  const onSubmit = (data: IFormData) => {
     console.log('Form submitted:', data);
+    register(data);
   };
 
   const renderStep = () => {
