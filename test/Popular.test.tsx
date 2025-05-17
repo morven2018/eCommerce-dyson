@@ -31,10 +31,10 @@ describe('Popular Component', () => {
     const buttons = [
       screen.getByRole('link', { name: 'Buy Dyson Purifier' }),
       screen.getByRole('link', { name: 'Buy Dyson OnTrac' }),
-      screen.getByRole('link', { name: 'Buy Dyson Airstrait' })
+      screen.getByRole('link', { name: 'Buy Dyson Airstrait' }),
     ];
 
-    buttons.forEach(button => {
+    buttons.forEach((button) => {
       expect(button).toHaveTextContent('Shop now');
       expect(button).toHaveAttribute('href', '#');
     });
