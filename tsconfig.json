@@ -5,6 +5,8 @@
     { "path": "./tsconfig.node.json" }
   ],
   "compilerOptions": {
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
     "types": ["vitest/globals", "@testing-library/jest-dom"]
   }
 }
