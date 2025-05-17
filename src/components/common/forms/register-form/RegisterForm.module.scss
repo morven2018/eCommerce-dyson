@@ -1,5 +1,8 @@
 @use '../../../../assets/styles/globals.scss' as *;
 
+$breakpoint800: 800px;
+$breakpoint700: 700px;
+
 .registerForm {
   display: flex;
   flex-direction: column;
@@ -70,4 +73,19 @@
 
 .buttonBox {
   grid-template-columns: 2fr 2fr;
+}
+
+@media screen and (max-width: $breakpoint800) {
+  .registerForm {
+    padding: 60px 40px;
+  }
+}
+
+@media screen and (max-width: $breakpoint700) {
+  .stepper {
+    width: 100%;
+  }
+  .stepLabel {
+    display: none;
+  }
 }

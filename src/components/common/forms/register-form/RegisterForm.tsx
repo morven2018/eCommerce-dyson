@@ -37,7 +37,7 @@ import InputDate from '../../../ui/inputs/datePicker';
 import dayjs from 'dayjs';
 import { CountrySelect } from '../../../ui/inputs/selectCountry';
 import styles from './RegisterForm.module.scss';
-import { register } from '../../../../shared/api/commerce-tools/new-customer';
+import { register } from '../../../../shared/api/commerce-tools/newCustomer';
 import ShowDialog from '../../../ui/modals/Modal';
 
 const steps = ['Contact Information', 'Shipping Address', 'Billing Address'];
@@ -720,12 +720,23 @@ export const RegisterForm = () => {
     >
       <Stepper
         activeStep={activeStep}
-        sx={{ mb: 4 }}
+        sx={{
+          '& .Mui-active .MuiStepIcon-root circle': {
+            fill: '#192a51',
+          },
+          '& .Mui-completed': {
+            '& .MuiSvgIcon-root': {
+              '& path:first-of-type': {
+                fill: '#192a51',
+              },
+            },
+          },
+        }}
         className={styles.stepper}
       >
         {steps.map((label) => (
           <Step key={label} className={styles.stepItem}>
-            <StepLabel>{label}</StepLabel>
+            <StepLabel className={styles.stepLabel}>{label}</StepLabel>
           </Step>
         ))}
       </Stepper>
