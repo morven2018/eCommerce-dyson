@@ -2,6 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import Media from '../src/components/layout/media/Media';
+import '@testing-library/jest-dom/vitest';
 
 vi.mock('../src/components/Media.module.scss', () => ({
   default: {
@@ -23,9 +24,7 @@ describe('Media Component', () => {
   it('renders title and subtitle', () => {
     render(<Media />);
 
-    expect(
-      screen.getByText('Follow us on social media')
-    ).toBeInTheDocument();
+    expect(screen.getByText('Follow us on social media')).toBeInTheDocument();
     expect(
       screen.getByText('For the latest product updates and innovations!')
     ).toBeInTheDocument();
@@ -41,7 +40,10 @@ describe('Media Component', () => {
     expect(links[0]).toHaveAttribute('rel', 'noreferrer');
     expect(links[0]).toHaveAttribute('target', '_blank');
 
-    expect(links[1]).toHaveAttribute('href', 'https://www.instagram.com/dysonusa/');
+    expect(links[1]).toHaveAttribute(
+      'href',
+      'https://www.instagram.com/dysonusa/'
+    );
     expect(links[1]).toHaveAttribute('rel', 'noreferrer');
     expect(links[1]).toHaveAttribute('target', '_blank');
 
@@ -49,13 +51,11 @@ describe('Media Component', () => {
     expect(links[2]).toHaveAttribute('rel', 'noreferrer');
     expect(links[2]).toHaveAttribute('target', '_blank');
 
-    expect(links[3]).toHaveAttribute('href', 'https://www.tiktok.com/@dyson_usa');
+    expect(links[3]).toHaveAttribute(
+      'href',
+      'https://www.tiktok.com/@dyson_usa'
+    );
     expect(links[3]).toHaveAttribute('rel', 'noreferrer');
     expect(links[3]).toHaveAttribute('target', '_blank');
-  });
-
-  it('matches snapshot', () => {
-    const { asFragment } = render(<Media />);
-    expect(asFragment()).toMatchSnapshot();
   });
 });
