@@ -12,37 +12,18 @@ import {
   Path,
   FieldValues,
 } from 'react-hook-form';
-
-interface Country {
-  code: string;
-  name: string;
-}
+import {
+  DEFAULT_COUNTRIES,
+  ICountry,
+} from '../../../shared/constants/countries';
 
 interface CountrySelectProps<T extends FieldValues> {
   control: Control<T>;
   name: Path<T>;
   label: string;
   error?: FieldError;
-  countries?: Country[];
+  countries?: ICountry[];
 }
-
-export const DEFAULT_COUNTRIES: Country[] = [
-  { code: 'gb', name: 'United Kingdom' },
-  { code: 'de', name: 'Germany' },
-  { code: 'fr', name: 'France' },
-  { code: 'it', name: 'Italy' },
-  { code: 'es', name: 'Spain' },
-  { code: 'nl', name: 'Netherlands' },
-  { code: 'be', name: 'Belgium' },
-  { code: 'ch', name: 'Switzerland' },
-  { code: 'at', name: 'Austria' },
-  { code: 'pt', name: 'Portugal' },
-  { code: 'se', name: 'Sweden' },
-  { code: 'no', name: 'Norway' },
-  { code: 'fi', name: 'Finland' },
-  { code: 'dk', name: 'Denmark' },
-  { code: 'ie', name: 'Ireland' },
-];
 
 export function CountrySelect<T extends FieldValues>({
   control,

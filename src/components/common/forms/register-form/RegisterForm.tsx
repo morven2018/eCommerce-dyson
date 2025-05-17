@@ -38,6 +38,7 @@ import dayjs from 'dayjs';
 import { CountrySelect } from '../../../ui/inputs/selectCountry';
 import styles from './RegisterForm.module.scss';
 import { register } from '../../../../shared/api/commerce-tools/new-customer';
+import ShowDialog from '../../../ui/modals/Modal';
 
 const steps = ['Contact Information', 'Shipping Address', 'Billing Address'];
 
@@ -538,6 +539,7 @@ export const RegisterForm = () => {
   const [step1Valid, setStep1Valid] = useState(false);
   const [step2Valid, setStep2Valid] = useState(false);
   const [step3Valid, setStep3Valid] = useState(false);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const {
     control,
@@ -663,9 +665,14 @@ export const RegisterForm = () => {
     setActiveStep(activeStep - 1);
   };
 
-  const onSubmit = (data: IFormData) => {
-    console.log('Form submitted:', data);
-    register(data);
+  const onSubmit = async (data: IFormData) => {
+    try {
+      await register(data);
+    } catch (error: unknown) {
+      setErrorMessage(
+        error instanceof Error ? error.message : 'Registration failed'
+      );
+    }
   };
 
   const renderStep = () => {
@@ -723,6 +730,7 @@ export const RegisterForm = () => {
         ))}
       </Stepper>
       {renderStep()}
+      {errorMessage && <ShowDialog message={errorMessage} />}
     </Box>
   );
 };
