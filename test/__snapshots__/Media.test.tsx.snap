@@ -1,0 +1,64 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Media Component > matches snapshot 1`] = `
+<DocumentFragment>
+  <section
+    class="_media_ea1127"
+  >
+    <h2
+      class="_title_ea1127"
+    >
+      Follow us on social media
+    </h2>
+    <div
+      class="_subtitle_ea1127"
+    >
+      For the latest product updates and innovations!
+    </div>
+    <div
+      class="_container_ea1127"
+    >
+      <a
+        class="_link_ea1127 _linkX_ea1127"
+        href="https://x.com/dyson"
+        rel="noreferrer"
+        target="_blank"
+      >
+        <span
+          class="_icon_ea1127 _iconX_ea1127"
+        />
+      </a>
+      <a
+        class="_link_ea1127"
+        href="https://www.instagram.com/dysonusa/"
+        rel="noreferrer"
+        target="_blank"
+      >
+        <span
+          class="_icon_ea1127 _iconI_ea1127"
+        />
+      </a>
+      <a
+        class="_link_ea1127"
+        href="https://www.youtube.com/dyson"
+        rel="noreferrer"
+        target="_blank"
+      >
+        <span
+          class="_icon_ea1127 _iconY_ea1127"
+        />
+      </a>
+      <a
+        class="_link_ea1127"
+        href="https://www.tiktok.com/@dyson_usa"
+        rel="noreferrer"
+        target="_blank"
+      >
+        <span
+          class="_icon_ea1127 _iconT_ea1127"
+        />
+      </a>
+    </div>
+  </section>
+</DocumentFragment>
+`;
