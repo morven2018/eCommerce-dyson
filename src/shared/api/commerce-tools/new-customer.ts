@@ -154,6 +154,12 @@ export async function register(data: IFormData) {
         ],
         shippingAddresses: [0],
         billingAddresses: [1],
+        defaultShippingAddress: data.shippingAddress.defaultAddress
+          ? 0
+          : undefined,
+        defaultBillingAddress: data.billingAddress.defaultAddress
+          ? 1
+          : undefined,
       };
 
       const newCustomer = await createCustomer(customerData, authToken);
