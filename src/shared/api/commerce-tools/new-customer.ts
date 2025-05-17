@@ -110,7 +110,6 @@ async function createCustomer(
 
   if (!response.ok) {
     const error = await response.json();
-    console.error('Customer creation error:', error);
     throw new Error(
       `We couldn't complete your registration right now. Please try again later. If the problem continues, contact support@example.com: ${error.message}`
     );
@@ -120,7 +119,6 @@ async function createCustomer(
 }
 
 export async function register(data: IFormData) {
-  console.log('Config loaded:', commercetoolsConfig);
   const authToken = await getToken();
   if (typeof authToken === 'string') {
     const exists = await checkCustomerExists(data.email, authToken);
@@ -167,7 +165,6 @@ export async function register(data: IFormData) {
     };
 
     const newCustomer = await createCustomer(customerData, authToken);
-    console.log('Customer successfully registered:', newCustomer);
     return newCustomer;
   }
 }
