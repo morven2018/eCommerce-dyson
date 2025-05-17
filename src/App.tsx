@@ -4,7 +4,7 @@ import { LoginPage } from './pages/auth/login/Login';
 import { RegisterPage } from './pages/auth/register/Register';
 import { AboutPage } from './pages/about/About';
 import { NotFoundPage } from './pages/not-found/Notfound';
-import { Header } from './components/layout/header/Header';
+import { Header } from './components/layout/header/header';
 import Footer from './components/layout/footer/Footer';
 
 export function App() {

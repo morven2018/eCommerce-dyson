@@ -5,7 +5,7 @@ import hair from '../../../../assets/icons/hair-care.svg';
 import heater from '../../../../assets/icons/heater.svg';
 import headphone from '../../../../assets/icons/headphone.svg';
 import light from '../../../../assets/icons/lighting.svg';
-import { INavItems } from '../Header';
+import { INavItems } from '../header';
 import { FastCatalog } from '../../../../shared/constants/text-fields';
 import {
   List,
@@ -18,7 +18,7 @@ import { Link } from 'react-router-dom';
 
 export type INavItemsWithoutOnClick = Omit<INavItems, 'onclick'>;
 
-export const catalogItems = [
+const catalogItems = [
   {
     text: FastCatalog.Vacuums,
     icon: vacuums,

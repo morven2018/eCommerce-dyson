@@ -56,7 +56,7 @@ export default function Popular() {
               className={styles.cardButton}
               aria-label="Buy Dyson OnTrac"
             >
-               Shop now
+              Shop now
             </a>
           </div>
         </div>
@@ -80,7 +80,7 @@ export default function Popular() {
               className={styles.cardButton}
               aria-label="Buy Dyson Airstrait"
             >
-               Shop now
+              Shop now
             </a>
           </div>
         </div>
