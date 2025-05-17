@@ -19,6 +19,7 @@ export default function Bestseller() {
 
         <Link to={'/'}>
           <button
+            role="button"
             type="button"
             className={styles.button}
             aria-label="Shop now for Dyson V8 Absolute vacuum"
