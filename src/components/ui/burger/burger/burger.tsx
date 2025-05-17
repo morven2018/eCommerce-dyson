@@ -1,5 +1,5 @@
 import React from 'react';
-import styles from './Burger.module.scss'; // Или ваш файл стилей
+import styles from './Burger.module.scss';
 
 interface BurgerProps {
   isActive: boolean;
@@ -9,6 +9,8 @@ interface BurgerProps {
 export const Burger: React.FC<BurgerProps> = ({ isActive, onClick }) => {
   return (
     <svg
+      role="button"
+      aria-label="Toggle menu"
       className={`${styles.burger} ${isActive ? styles.active : ''}`}
       viewBox="0 0 100 100"
       width="36"
