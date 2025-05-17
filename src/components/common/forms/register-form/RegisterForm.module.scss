@@ -52,6 +52,7 @@ $breakpoint500: 500px;
     &:disabled {
       background-color: $disable-button-dark;
       color: $primary-white;
+      cursor: not-allowed;
     }
   }
 }
