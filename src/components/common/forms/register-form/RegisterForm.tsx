@@ -16,6 +16,7 @@ import {
   UseFormSetValue,
   useWatch,
 } from 'react-hook-form';
+import { Link } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import InputEmail from '../../../ui/inputs/InputEmail';
@@ -267,6 +268,10 @@ const Step1 = ({ control, errors, setValue, onNext, isValid }: Step1Props) => {
       >
         Next
       </Button>
+
+      <p className={styles.text}>
+        Already register? <Link to={'/login'}>Click here</Link>
+      </p>
     </div>
   );
 };
@@ -381,6 +386,9 @@ const Step2 = ({ control, errors, onNext, onPrev, isValid }: Step2Props) => {
           Next
         </Button>
       </div>
+      <p className={styles.text}>
+        Already register? <Link to={'/login'}>Click here</Link>
+      </p>
     </div>
   );
 };
@@ -533,6 +541,9 @@ const Step3 = ({ control, errors, onPrev, isValid, setValue }: Step3Props) => {
           Register
         </Button>
       </div>
+      <p className={styles.text}>
+        Already register? <Link to={'/login'}>Click here</Link>
+      </p>
     </div>
   );
 };

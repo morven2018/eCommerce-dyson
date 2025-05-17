@@ -131,3 +131,10 @@ $breakpoint500: 500px;
     text-align: center;
   }
 }
+
+.text {
+  text-align: center;
+  & > * {
+    text-decoration: none;
+  }
+}
