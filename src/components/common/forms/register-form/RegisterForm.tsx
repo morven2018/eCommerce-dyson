@@ -114,7 +114,7 @@ const debounce = <T extends unknown[]>(
   func: (...args: T) => void,
   wait: number
 ) => {
-  let timeout: NodeJS.Timeout;
+  let timeout: ReturnType<typeof setTimeout>;
   return (...args: T) => {
     clearTimeout(timeout);
     timeout = setTimeout(() => func(...args), wait);
@@ -713,7 +713,7 @@ export const RegisterForm = () => {
   >(updateStepValidity, 300);
 
   useEffect(() => {
-    const subscription = watch((value, { name }) => {
+    const subscription = watch((_, { name }) => {
       if (name) {
         let stepIndex = -1;
         if (contactFields.includes(name as ContactField)) stepIndex = 0;
