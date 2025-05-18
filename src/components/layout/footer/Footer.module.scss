@@ -63,7 +63,7 @@
   transition: all ease 0.3s;
 
   &:hover {
-    @media (hover: hover) {
+    @media (hover: hover) and (pointer: fine) {
       transform: scale(1.05);
     }
   }
