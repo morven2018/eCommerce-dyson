@@ -58,8 +58,8 @@
 
   &:hover {
     @media (hover: hover) and (pointer: fine) {
-        background: rgb(128, 128, 128);
-        color: $primary-white;
+      background: rgb(128, 128, 128);
+      color: $primary-white;
     }
   }
 }
