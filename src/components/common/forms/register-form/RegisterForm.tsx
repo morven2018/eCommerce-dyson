@@ -7,7 +7,7 @@ import {
   Step,
   StepLabel,
 } from '@mui/material';
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   useForm,
   Controller,
@@ -15,6 +15,8 @@ import {
   FieldErrors,
   UseFormSetValue,
   useWatch,
+  Path,
+  PathValue,
 } from 'react-hook-form';
 import { Link } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
@@ -22,7 +24,6 @@ import * as yup from 'yup';
 import InputEmail from '../../../ui/inputs/InputEmail';
 import InputPassword from '../../../ui/inputs/InputPassword';
 import { InputText } from '../../../ui/inputs/inputText';
-import '../../../../pages/auth/register/Register.module.scss';
 import {
   birthValidationSchema,
   emailValidationSchema,
@@ -50,23 +51,18 @@ export interface IFormData {
   firstName: string;
   lastName: string;
   dayOfBirth: Date;
-  shippingAddress: {
-    defaultAddress?: boolean;
-    country: string;
-    city: string;
-    street: string;
-    streetLine2?: string;
-    zipCode: string;
-  };
-  billingAddress: {
-    dataFromShipping?: boolean;
-    defaultAddress?: boolean;
-    country: string;
-    city: string;
-    street: string;
-    streetLine2?: string;
-    zipCode: string;
-  };
+  shippingAddress: IAddress;
+  billingAddress: IAddress;
+}
+
+interface IAddress {
+  dataFromShipping?: boolean;
+  defaultAddress?: boolean;
+  country: string;
+  city: string;
+  street: string;
+  streetLine2?: string;
+  zipCode: string;
 }
 
 interface BaseStepProps {
@@ -77,17 +73,20 @@ interface BaseStepProps {
 
 interface Step1Props extends BaseStepProps {
   setValue: UseFormSetValue<IFormData>;
-  onNext: () => Promise<void>;
+  onNext: () => void;
 }
 
 interface Step2Props extends BaseStepProps {
-  onNext: () => Promise<void>;
+  onNext: () => void;
   onPrev: () => void;
+  setValue: UseFormSetValue<IFormData>;
+  trigger: (fields?: Path<IFormData>[]) => Promise<boolean>;
 }
 
 interface Step3Props extends BaseStepProps {
   onPrev: () => void;
   setValue: UseFormSetValue<IFormData>;
+  trigger: (fields?: Path<IFormData>[]) => Promise<boolean>;
 }
 
 const addressSchema = yup.object().shape({
@@ -111,17 +110,25 @@ const formSchema: yup.ObjectSchema<IFormData> = yup.object().shape({
   billingAddress: addressSchema,
 });
 
-type ContactField =
-  | 'email'
-  | 'password'
-  | 'phone'
-  | 'firstName'
-  | 'lastName'
-  | 'dayOfBirth';
-type ShippingField =
-  `shippingAddress.${'country' | 'city' | 'street' | 'streetLine2' | 'zipCode' | 'defaultAddress'}`;
-type BillingField =
-  `billingAddress.${'country' | 'city' | 'street' | 'streetLine2' | 'zipCode' | 'defaultAddress' | 'dataFromShipping'}`;
+const debounce = <T extends unknown[]>(
+  func: (...args: T) => void,
+  wait: number
+) => {
+  let timeout: NodeJS.Timeout;
+  return (...args: T) => {
+    clearTimeout(timeout);
+    timeout = setTimeout(() => func(...args), wait);
+  };
+};
+
+type ContactField = Path<
+  Pick<
+    IFormData,
+    'email' | 'password' | 'phone' | 'firstName' | 'lastName' | 'dayOfBirth'
+  >
+>;
+type ShippingField = Path<{ shippingAddress: IFormData['shippingAddress'] }>;
+type BillingField = Path<{ billingAddress: IFormData['billingAddress'] }>;
 
 const contactFields: ContactField[] = [
   'email',
@@ -131,32 +138,34 @@ const contactFields: ContactField[] = [
   'lastName',
   'dayOfBirth',
 ];
+
 const shippingFields: ShippingField[] = [
   'shippingAddress.country',
   'shippingAddress.city',
   'shippingAddress.street',
+  'shippingAddress.streetLine2',
   'shippingAddress.zipCode',
+  'shippingAddress.defaultAddress',
 ];
+
 const billingFields: BillingField[] = [
   'billingAddress.country',
   'billingAddress.city',
   'billingAddress.street',
+  'billingAddress.streetLine2',
   'billingAddress.zipCode',
+  'billingAddress.defaultAddress',
+  'billingAddress.dataFromShipping',
 ];
 
-function isContactField(field: string): field is ContactField {
-  return contactFields.some((validField) => validField === field);
-}
-
-function isShippingField(field: string): field is ShippingField {
-  return shippingFields.some((validField) => validField === field);
-}
-
-function isBillingField(field: string): field is BillingField {
-  return billingFields.some((validField) => validField === field);
-}
-
 const Step1 = ({ control, errors, setValue, onNext, isValid }: Step1Props) => {
+  const handleFieldChange = (
+    fieldName: Path<IFormData>,
+    value: string | boolean | Date
+  ) => {
+    setValue(fieldName, value, { shouldValidate: true });
+  };
+
   return (
     <div className={styles.form}>
       <h5>Contact Information</h5>
@@ -167,7 +176,7 @@ const Step1 = ({ control, errors, setValue, onNext, isValid }: Step1Props) => {
         render={({ field }) => (
           <InputEmail
             value={field.value}
-            onChange={field.onChange}
+            onChange={(e) => handleFieldChange('email', e.target.value)}
             error={!!errors.email}
             helperText={errors.email?.message}
           />
@@ -181,22 +190,21 @@ const Step1 = ({ control, errors, setValue, onNext, isValid }: Step1Props) => {
           render={({ field }) => (
             <InputPassword
               value={field.value}
-              onChange={field.onChange}
+              onChange={(e) => handleFieldChange('password', e.target.value)}
               error={!!errors.password}
               helperText={errors.password?.message}
             />
           )}
         />
         <Button
-          onClick={() =>
-            setValue('password', generatePassword(), {
-              shouldValidate: false,
-            })
-          }
+          onClick={() => {
+            const newPassword = generatePassword();
+            handleFieldChange('password', newPassword);
+          }}
           variant="outlined"
           className={styles.button}
         >
-          generate
+          Generate
         </Button>
       </div>
 
@@ -206,7 +214,11 @@ const Step1 = ({ control, errors, setValue, onNext, isValid }: Step1Props) => {
         render={({ field }) => (
           <InputPhone
             value={field.value}
-            onChange={field.onChange}
+            onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+              const value = e.target.value;
+              field.onChange(value);
+              setValue('phone', value, { shouldValidate: true });
+            }}
             error={!!errors.phone}
             helperText={errors.phone?.message}
           />
@@ -221,7 +233,7 @@ const Step1 = ({ control, errors, setValue, onNext, isValid }: Step1Props) => {
             id="first-name"
             label="First name"
             value={field.value}
-            onChange={field.onChange}
+            onChange={(e) => handleFieldChange('firstName', e.target.value)}
             error={!!fieldState.error}
             helperText={fieldState.error?.message}
           />
@@ -236,7 +248,7 @@ const Step1 = ({ control, errors, setValue, onNext, isValid }: Step1Props) => {
             id="last-name"
             label="Last name"
             value={field.value}
-            onChange={field.onChange}
+            onChange={(e) => handleFieldChange('lastName', e.target.value)}
             error={!!fieldState.error}
             helperText={fieldState.error?.message}
           />
@@ -250,33 +262,59 @@ const Step1 = ({ control, errors, setValue, onNext, isValid }: Step1Props) => {
           <InputDate
             value={field.value ? dayjs(field.value) : null}
             onChange={(date) => {
-              field.onChange(date?.toDate() ?? null);
+              if (date) {
+                const dateValue = date.toDate();
+                field.onChange(dateValue);
+                setValue('dayOfBirth', dateValue, { shouldValidate: true });
+              }
             }}
-            onBlur={field.onBlur}
             error={!!fieldState.error}
             helperText={fieldState.error?.message}
           />
         )}
       />
-
       <Button
         className={styles.button}
         variant="contained"
         onClick={onNext}
-        style={{ marginTop: '20px' }}
         disabled={!isValid}
+        style={{ marginTop: '20px' }}
       >
         Next
       </Button>
 
       <p className={styles.text}>
-        Already register? <Link to={'/login'}>Click here</Link>
+        Already registered? <Link to="/login">Click here</Link>
       </p>
     </div>
   );
 };
 
-const Step2 = ({ control, errors, onNext, onPrev, isValid }: Step2Props) => {
+const Step2 = ({
+  control,
+  errors,
+  onNext,
+  onPrev,
+  isValid,
+  setValue,
+  trigger,
+}: Step2Props) => {
+  const handleFieldChange = <T extends ShippingField>(
+    fieldName: T,
+    value: PathValue<IFormData, T>
+  ) => {
+    setValue(fieldName, value, { shouldValidate: true });
+
+    if (fieldName === 'shippingAddress.country') {
+      trigger([
+        'shippingAddress.country',
+        'shippingAddress.city',
+        'shippingAddress.street',
+        'shippingAddress.zipCode',
+      ]);
+    }
+  };
+
   return (
     <div className={styles.form}>
       <h5>Shipping Information</h5>
@@ -290,7 +328,12 @@ const Step2 = ({ control, errors, onNext, onPrev, isValid }: Step2Props) => {
             control={
               <Checkbox
                 checked={field.value ?? false}
-                onChange={(e) => field.onChange(e.target.checked)}
+                onChange={(e) =>
+                  handleFieldChange(
+                    'shippingAddress.defaultAddress',
+                    e.target.checked
+                  )
+                }
                 color="primary"
               />
             }
@@ -304,6 +347,9 @@ const Step2 = ({ control, errors, onNext, onPrev, isValid }: Step2Props) => {
         name="shippingAddress.country"
         label="Country"
         error={errors.shippingAddress?.country}
+        onChange={(value: string) => {
+          handleFieldChange('shippingAddress.country', value);
+        }}
       />
 
       <Controller
@@ -314,7 +360,9 @@ const Step2 = ({ control, errors, onNext, onPrev, isValid }: Step2Props) => {
             id="city-billing"
             label="City"
             value={field.value}
-            onChange={field.onChange}
+            onChange={(e) =>
+              handleFieldChange('shippingAddress.city', e.target.value)
+            }
             error={!!fieldState.error}
             helperText={fieldState.error?.message}
           />
@@ -329,7 +377,9 @@ const Step2 = ({ control, errors, onNext, onPrev, isValid }: Step2Props) => {
             id="street-billing"
             label="Street Address"
             value={field.value}
-            onChange={field.onChange}
+            onChange={(e) =>
+              handleFieldChange('shippingAddress.street', e.target.value)
+            }
             error={!!fieldState.error}
             helperText={fieldState.error?.message}
           />
@@ -344,7 +394,9 @@ const Step2 = ({ control, errors, onNext, onPrev, isValid }: Step2Props) => {
             id="streetLine2"
             label="Street Address Line 2"
             value={field.value ?? ''}
-            onChange={field.onChange}
+            onChange={(e) =>
+              handleFieldChange('shippingAddress.streetLine2', e.target.value)
+            }
             error={!!fieldState.error}
             helperText={fieldState.error?.message}
           />
@@ -359,7 +411,9 @@ const Step2 = ({ control, errors, onNext, onPrev, isValid }: Step2Props) => {
             id="zipCode-billing"
             label="Zip code"
             value={field.value}
-            onChange={field.onChange}
+            onChange={(e) =>
+              handleFieldChange('shippingAddress.zipCode', e.target.value)
+            }
             error={!!fieldState.error}
             helperText={fieldState.error?.message}
           />
@@ -386,9 +440,6 @@ const Step2 = ({ control, errors, onNext, onPrev, isValid }: Step2Props) => {
           Next
         </Button>
       </div>
-      <p className={styles.text}>
-        Already register? <Link to={'/login'}>Click here</Link>
-      </p>
     </div>
   );
 };
@@ -397,29 +448,51 @@ const Step3 = ({ control, errors, onPrev, isValid, setValue }: Step3Props) => {
   const formValues = useWatch({ control });
   const [copyFromShipping, setCopyFromShipping] = useState(false);
 
+  type AddressType = {
+    dataFromShipping?: boolean;
+    defaultAddress?: boolean;
+    country: string;
+    city: string;
+    street: string;
+    streetLine2?: string;
+    zipCode: string;
+  };
+
+  const handleFieldChange = (
+    fieldName: BillingField,
+    value: string | boolean | AddressType
+  ) => {
+    setValue(fieldName, value, { shouldValidate: true });
+  };
+
   const handleCopyChange = (checked: boolean) => {
     setCopyFromShipping(checked);
+    handleFieldChange('billingAddress.dataFromShipping', checked);
 
     if (checked) {
-      setValue(
+      handleFieldChange(
         'billingAddress.country',
         formValues.shippingAddress?.country ?? ''
       );
-      setValue('billingAddress.city', formValues.shippingAddress?.city ?? '');
-      setValue(
+      handleFieldChange(
+        'billingAddress.city',
+        formValues.shippingAddress?.city ?? ''
+      );
+      handleFieldChange(
         'billingAddress.street',
         formValues.shippingAddress?.street ?? ''
       );
-      setValue(
+      handleFieldChange(
         'billingAddress.streetLine2',
         formValues.shippingAddress?.streetLine2 ?? ''
       );
-      setValue(
+      handleFieldChange(
         'billingAddress.zipCode',
         formValues.shippingAddress?.zipCode ?? ''
       );
     }
   };
+
   return (
     <div className={styles.form}>
       <h5>Billing address</h5>
@@ -445,7 +518,12 @@ const Step3 = ({ control, errors, onPrev, isValid, setValue }: Step3Props) => {
             control={
               <Checkbox
                 checked={field.value ?? false}
-                onChange={(e) => field.onChange(e.target.checked)}
+                onChange={(e) =>
+                  handleFieldChange(
+                    'billingAddress.defaultAddress',
+                    e.target.checked
+                  )
+                }
                 color="primary"
               />
             }
@@ -456,9 +534,9 @@ const Step3 = ({ control, errors, onPrev, isValid, setValue }: Step3Props) => {
 
       <CountrySelect
         control={control}
-        name="billingAddress.country"
+        name="shippingAddress.country"
         label="Country"
-        error={errors.billingAddress?.country}
+        error={errors.shippingAddress?.country}
       />
 
       <Controller
@@ -469,9 +547,12 @@ const Step3 = ({ control, errors, onPrev, isValid, setValue }: Step3Props) => {
             id="city"
             label="City"
             value={field.value}
-            onChange={field.onChange}
+            onChange={(e) =>
+              handleFieldChange('billingAddress.city', e.target.value)
+            }
             error={!!fieldState.error}
             helperText={fieldState.error?.message}
+            disabled={copyFromShipping}
           />
         )}
       />
@@ -484,9 +565,12 @@ const Step3 = ({ control, errors, onPrev, isValid, setValue }: Step3Props) => {
             id="street"
             label="Street Address"
             value={field.value}
-            onChange={field.onChange}
+            onChange={(e) =>
+              handleFieldChange('billingAddress.street', e.target.value)
+            }
             error={!!fieldState.error}
             helperText={fieldState.error?.message}
+            disabled={copyFromShipping}
           />
         )}
       />
@@ -499,9 +583,12 @@ const Step3 = ({ control, errors, onPrev, isValid, setValue }: Step3Props) => {
             id="streetLine2"
             label="Street Address Line 2"
             value={field.value ?? ''}
-            onChange={field.onChange}
+            onChange={(e) =>
+              handleFieldChange('billingAddress.streetLine2', e.target.value)
+            }
             error={!!fieldState.error}
             helperText={fieldState.error?.message}
+            disabled={copyFromShipping}
           />
         )}
       />
@@ -514,9 +601,12 @@ const Step3 = ({ control, errors, onPrev, isValid, setValue }: Step3Props) => {
             id="zipCode"
             label="Zip code"
             value={field.value}
-            onChange={field.onChange}
+            onChange={(e) =>
+              handleFieldChange('billingAddress.zipCode', e.target.value)
+            }
             error={!!fieldState.error}
             helperText={fieldState.error?.message}
+            disabled={copyFromShipping}
           />
         )}
       />
@@ -541,18 +631,13 @@ const Step3 = ({ control, errors, onPrev, isValid, setValue }: Step3Props) => {
           Register
         </Button>
       </div>
-      <p className={styles.text}>
-        Already register? <Link to={'/login'}>Click here</Link>
-      </p>
     </div>
   );
 };
 
 export const RegisterForm = () => {
   const [activeStep, setActiveStep] = useState(0);
-  const [step1Valid, setStep1Valid] = useState(false);
-  const [step2Valid, setStep2Valid] = useState(false);
-  const [step3Valid, setStep3Valid] = useState(false);
+  const [stepsValidity, setStepsValidity] = useState([false, false, false]);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
   const {
@@ -592,87 +677,62 @@ export const RegisterForm = () => {
     },
   });
 
-  const contactFields = useMemo<ContactField[]>(
-    () => ['email', 'password', 'phone', 'firstName', 'lastName', 'dayOfBirth'],
-    []
-  );
-
-  const shippingFields = useMemo<ShippingField[]>(
-    () => [
-      'shippingAddress.country',
-      'shippingAddress.city',
-      'shippingAddress.street',
-      'shippingAddress.zipCode',
-    ],
-    []
-  );
-
-  const billingFields = useMemo<BillingField[]>(
-    () => [
-      'billingAddress.country',
-      'billingAddress.city',
-      'billingAddress.street',
-      'billingAddress.zipCode',
-    ],
-    []
-  );
-
-  useEffect(() => {
-    const subscription = watch((_, { name }) => {
-      if (activeStep === 0 && name && isContactField(name)) {
-        trigger(contactFields).then((isValid) => setStep1Valid(isValid));
+  const updateStepValidity = async (
+    stepIndex: number,
+    fieldName?: Path<IFormData>
+  ) => {
+    let fields: Path<IFormData>[] = [];
+    if (fieldName) {
+      fields = [fieldName];
+    } else {
+      switch (stepIndex) {
+        case 0:
+          fields = contactFields;
+          break;
+        case 1:
+          fields = shippingFields;
+          break;
+        case 2:
+          fields = billingFields;
+          break;
+        default:
+          return;
       }
-    });
-    return () => subscription.unsubscribe();
-  }, [watch, activeStep, trigger, contactFields]);
-
-  useEffect(() => {
-    const subscription = watch((_, { name }) => {
-      if (activeStep === 1 && name && isShippingField(name)) {
-        trigger(shippingFields).then((isValid) => setStep2Valid(isValid));
-      }
-    });
-    return () => subscription.unsubscribe();
-  }, [watch, activeStep, trigger, shippingFields]);
-
-  useEffect(() => {
-    const subscription = watch((_, { name }) => {
-      if (activeStep === 2 && name && isBillingField(name)) {
-        trigger(billingFields).then((isValid) => setStep3Valid(isValid));
-      }
-    });
-    return () => subscription.unsubscribe();
-  }, [watch, activeStep, trigger, billingFields]);
-
-  const nextStep = async () => {
-    let isStepValid = false;
-    switch (activeStep) {
-      case 0:
-        isStepValid = await trigger(contactFields);
-        setStep1Valid(isStepValid);
-        break;
-      case 1:
-        isStepValid = await trigger(shippingFields);
-        setStep2Valid(isStepValid);
-        if (isStepValid) {
-          setValue('billingAddress', {
-            country: '',
-            city: '',
-            street: '',
-            streetLine2: '',
-            zipCode: '',
-            dataFromShipping: false,
-            defaultAddress: false,
-          });
-        }
-        break;
-      case 2:
-        isStepValid = await trigger(billingFields);
-        setStep3Valid(isStepValid);
-        break;
     }
 
-    if (isStepValid) setActiveStep(activeStep + 1);
+    const isValid = await trigger(fields);
+    setStepsValidity((prev) => {
+      const newValidity = [...prev];
+      newValidity[stepIndex] = isValid;
+      return newValidity;
+    });
+  };
+
+  const debouncedUpdateStepValidity = debounce<
+    [number, Path<IFormData> | undefined]
+  >(updateStepValidity, 300);
+
+  useEffect(() => {
+    const subscription = watch((value, { name }) => {
+      if (name) {
+        let stepIndex = -1;
+        if (contactFields.includes(name as ContactField)) stepIndex = 0;
+        else if (shippingFields.includes(name as ShippingField)) stepIndex = 1;
+        else if (billingFields.includes(name as BillingField)) stepIndex = 2;
+
+        if (stepIndex >= 0) {
+          debouncedUpdateStepValidity(stepIndex, name as Path<IFormData>);
+        }
+      }
+    });
+    return () => subscription.unsubscribe();
+  }, [watch, activeStep]);
+
+  const nextStep = async () => {
+    const isValid = await trigger(shippingFields);
+    if (isValid) {
+      setActiveStep(activeStep + 1);
+    }
   };
 
   const prevStep = () => {
@@ -686,43 +746,6 @@ export const RegisterForm = () => {
       setErrorMessage(
         error instanceof Error ? error.message : 'Registration failed'
       );
-    }
-  };
-
-  const renderStep = () => {
-    switch (activeStep) {
-      case 0:
-        return (
-          <Step1
-            control={control}
-            errors={errors}
-            setValue={setValue}
-            onNext={nextStep}
-            isValid={step1Valid}
-          />
-        );
-      case 1:
-        return (
-          <Step2
-            control={control}
-            errors={errors}
-            onNext={nextStep}
-            onPrev={prevStep}
-            isValid={step2Valid}
-          />
-        );
-      case 2:
-        return (
-          <Step3
-            control={control}
-            errors={errors}
-            onPrev={prevStep}
-            isValid={step3Valid}
-            setValue={setValue}
-          />
-        );
-      default:
-        return null;
     }
   };
 
@@ -759,7 +782,40 @@ export const RegisterForm = () => {
           </Step>
         ))}
       </Stepper>
-      {renderStep()}
+
+      {activeStep === 0 && (
+        <Step1
+          control={control}
+          errors={errors}
+          setValue={setValue}
+          onNext={nextStep}
+          isValid={stepsValidity[0]}
+        />
+      )}
+
+      {activeStep === 1 && (
+        <Step2
+          control={control}
+          errors={errors}
+          onNext={nextStep}
+          onPrev={prevStep}
+          isValid={stepsValidity[1]}
+          setValue={setValue}
+          trigger={trigger}
+        />
+      )}
+
+      {activeStep === 2 && (
+        <Step3
+          control={control}
+          errors={errors}
+          onPrev={prevStep}
+          isValid={stepsValidity[2]}
+          setValue={setValue}
+          trigger={trigger}
+        />
+      )}
+
       {errorMessage && <ShowDialog message={errorMessage} />}
     </Box>
   );

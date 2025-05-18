@@ -22,7 +22,9 @@ interface CountrySelectProps<T extends FieldValues> {
   name: Path<T>;
   label: string;
   error?: FieldError;
+  onChange?: (value: string) => void;
   countries?: ICountry[];
+  disabled?: boolean;
 }
 
 export function CountrySelect<T extends FieldValues>({
