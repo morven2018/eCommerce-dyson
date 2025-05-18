@@ -18,7 +18,6 @@ export default function LoginForm() {
   });
 
   const submitForm = (data: yup.InferType<typeof defaultSchema>) => {
-    console.log('formData', data);
     userAuthorization(data);
   };
 
@@ -65,9 +64,14 @@ export default function LoginForm() {
         }}
       />
 
-      <button type="submit" className={styles.button}>
+      <button
+        type="submit"
+        className={styles.button}
+        disabled={!form.formState.isValid}
+      >
         Sign in
       </button>
+
       <p className={styles.text}>
         Forgot password. Click to reset. <a href="#">Reset Password</a>
       </p>

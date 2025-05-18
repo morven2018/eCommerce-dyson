@@ -2,7 +2,7 @@ import React from 'react';
 import { ListItemText, Menu, MenuItem } from '@mui/material';
 
 import styles from './ProfileMenu.module.scss';
-import { INavItems } from '../../../layout/header/Header';
+import { INavItems } from '../../../layout/header/header';
 import { useNavigate } from 'react-router-dom';
 
 interface ProfileMenuProps {
@@ -36,7 +36,7 @@ export const ProfileMenu: React.FC<ProfileMenuProps> = ({
           key={`${item.text}`}
           onClick={() => {
             onClose();
-            item.onclick();
+            item.onClick();
             navigate(item.path);
           }}
           className={styles.menuItem}

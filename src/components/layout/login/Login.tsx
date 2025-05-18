@@ -5,7 +5,7 @@ export default function Login() {
   return (
     <section className={styles.login}>
       <h2 className={styles.title}>Login</h2>
-      <LoginForm></LoginForm>
+      <LoginForm />
     </section>
   );
 }

@@ -13,11 +13,20 @@
 }
 
 .button {
+  height: 56px;
+  margin-top: 10px;
+  background-color: $button-dark;
+  border: none;
   border-radius: $border-radius;
   text-transform: uppercase;
   color: $primary-white;
-  background-color: $button-dark;
   cursor: pointer;
+
+  &:disabled {
+    background-color: $disable-button-dark;
+    color: $primary-white;
+    cursor: not-allowed;
+  }
 }
 
 .text {
