@@ -66,8 +66,10 @@
   transition: all ease 0.3s;
 
   &:hover {
-    transform: scale(105%);
-    font-weight: bold;
+    @media (hover: hover) and (pointer: fine) {
+        transform: scale(105%);
+        font-weight: bold;
+    }
   }
 }
 
