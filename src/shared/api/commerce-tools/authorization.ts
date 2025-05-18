@@ -1,5 +1,6 @@
 import { Buffer } from 'buffer';
 import { commercetoolsConfig } from './config';
+import { openDialog } from '../../../services/DialogService';
 
 interface UserData {
   email: string;
@@ -48,14 +49,24 @@ export async function userAuthorization(
 
     if (!response.ok) {
       const errorDetails = await response.json();
-      throw new Error(`Auth failed: ${JSON.stringify(errorDetails)}`);
+      const errorMessage = errorDetails.message;
+      throw new Error(`Auth failed: ${errorMessage}`);
     }
 
     const result: AuthTokenResponse = await response.json();
-    console.log('Authentication successful:', result);
+    const dialogMessage = 'Authorized successfully';
+    openDialog(dialogMessage);
     return result;
   } catch (error) {
-    console.error('Error during customer authorization:', error);
+    let message = 'Error customer authorization';
+
+    if (error instanceof Error) {
+      message = error.message;
+    } else if (typeof error === 'string') {
+      message = error;
+    }
+
+    openDialog(message);
 
     return null;
   }
