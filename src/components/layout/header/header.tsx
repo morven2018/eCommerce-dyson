@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   IconButton,
@@ -24,87 +24,93 @@ import styles from './Header.module.scss';
 import { ProfileMenu } from '../../ui/burger/menu/profile-menu';
 import { ButtonList } from './button-list/button-list';
 
-const isCartEmpty = true;
-const isUserUnauthorized = true;
-
 export interface INavItems {
   text: string;
   icon: string;
   path: string;
-  onclick: () => void;
+  onClick: () => void;
 }
 
-const navItems = [
-  {
-    text: NavText.Catalog,
-    icon: '',
-    path: '/catalog',
-    onclick: () => {},
-  },
-  {
-    text: NavText.About,
-    icon: '',
-    path: '/about',
-    onclick: () => {},
-  },
-  {
-    text: isUserUnauthorized ? NavText.Register : NavText.Logout,
-    icon: '',
-    path: isUserUnauthorized ? '/register' : '/',
-    onclick: () => {},
-  },
-  {
-    text: isUserUnauthorized ? NavText.Login : NavText.Profile,
-    icon: isUserUnauthorized ? '' : profile,
-    path: isUserUnauthorized ? '/login' : '/profile',
-    onclick: () => {},
-  },
-  {
-    text: NavText.Cart,
-    icon: isCartEmpty ? emptyCart : cart,
-    path: '/cart',
-    onclick: () => {},
-  },
-];
+const NonBreakingText = ({ text }: { text: string }) => (
+  <span className={styles.buttons}>{text}</span>
+);
 
-const ItemList: React.FC<INavItems> = ({ text, icon, path, onclick }) => {
+const ItemList: React.FC<INavItems> = ({ text, icon, path, onClick }) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
-    onclick();
+    onClick();
     navigate(path);
   };
 
-  if (icon)
-    return (
-      <ListItem className={styles.item}>
-        <ListItemButton onClick={handleClick}>
+  return (
+    <ListItem className={styles.item} disablePadding>
+      <ListItemButton onClick={handleClick}>
+        {icon ? (
           <ListItemIcon
             className={styles.iconWrapper}
             sx={{ minWidth: '28px' }}
           >
             <img src={icon} alt={text} className={styles.icon} />
           </ListItemIcon>
-        </ListItemButton>
-      </ListItem>
-    );
-  else
-    return (
-      <ListItem className={styles.item}>
-        <ListItemButton onClick={handleClick}>
+        ) : (
           <ListItemText primary={<NonBreakingText text={text} />} />
-        </ListItemButton>
-      </ListItem>
-    );
+        )}
+      </ListItemButton>
+    </ListItem>
+  );
 };
 
-const NonBreakingText = ({ text }: { text: string }) => (
-  <span className={styles.buttons}>{text}</span>
-);
-
 export const Header: React.FC = () => {
+  const [isUserUnauthorized, setIsUserUnauthorized] = useState(true);
+  const [isCartEmpty] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+  const [navItems, setNavItems] = useState<INavItems[]>([]);
+
+  const toggleAuthStatus = () => {
+    setIsUserUnauthorized((prev) => !prev);
+  };
+
+  const updateNavItems = () => {
+    const updatedItems = [
+      {
+        text: NavText.Catalog,
+        icon: '',
+        path: '/catalog',
+        onClick: () => {},
+      },
+      {
+        text: NavText.About,
+        icon: '',
+        path: '/about',
+        onClick: () => {},
+      },
+      {
+        text: isUserUnauthorized ? NavText.Register : NavText.Logout,
+        icon: '',
+        path: isUserUnauthorized ? '/register' : '/',
+        onClick: isUserUnauthorized ? () => {} : toggleAuthStatus,
+      },
+      {
+        text: isUserUnauthorized ? NavText.Login : NavText.Profile,
+        icon: isUserUnauthorized ? '' : profile,
+        path: isUserUnauthorized ? '/login' : '/profile',
+        onClick: isUserUnauthorized ? toggleAuthStatus : () => {},
+      },
+      {
+        text: NavText.Cart,
+        icon: isCartEmpty ? emptyCart : cart,
+        path: '/cart',
+        onClick: () => {},
+      },
+    ];
+    setNavItems(updatedItems);
+  };
+
+  useEffect(() => {
+    updateNavItems();
+  }, [isUserUnauthorized, isCartEmpty]);
 
   const toggleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -115,14 +121,6 @@ export const Header: React.FC = () => {
     setAnchorEl(null);
     setIsMenuOpen(false);
   };
-
-  const NavMenu = (
-    <List className={styles.itemList}>
-      {navItems.map((item) => (
-        <ItemList key={item.text} {...item}></ItemList>
-      ))}
-    </List>
-  );
 
   return (
     <header className={styles.header}>
@@ -147,11 +145,17 @@ export const Header: React.FC = () => {
               >
                 <Burger isActive={isMenuOpen} />
               </IconButton>
-              <Box component="nav">{NavMenu}</Box>
+              <Box component="nav">
+                <List className={styles.itemList}>
+                  {navItems.map((item) => (
+                    <ItemList key={`${item.text}-${item.path}`} {...item} />
+                  ))}
+                </List>
+              </Box>
             </Toolbar>
           </Box>
           <Box className={styles.subheaderCatalog}>
-            <ButtonList></ButtonList>
+            <ButtonList />
           </Box>
         </Box>
       </div>
