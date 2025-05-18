@@ -1,4 +1,5 @@
 import { Buffer } from 'buffer';
+import { commercetoolsConfig } from './config';
 
 interface AnonymousTokenResponse {
   access_token: string;
@@ -10,11 +11,11 @@ interface AnonymousTokenResponse {
 
 export const getAnonymousSessionToken =
   async (): Promise<AnonymousTokenResponse | null> => {
-    const authUrl = 'https://auth.us-central1.gcp.commercetools.com';
-    const projectKey = 'ecdyson';
+    const authUrl = commercetoolsConfig.authUrl;
+    const projectKey = commercetoolsConfig.projectKey;
     const url = `${authUrl}/oauth/${projectKey}/anonymous/token`;
-    const clientId = 'l9RCU1C8YJODP-E1WBco_lnI';
-    const clientSecret = 'AbwcgFey9bzc1JdyYfvgCs7C2hGnOgA8';
+    const clientId = commercetoolsConfig.clientId;
+    const clientSecret = commercetoolsConfig.clientSecret;
 
     const basicAuth = Buffer.from(`${clientId}:${clientSecret}`).toString(
       'base64'
