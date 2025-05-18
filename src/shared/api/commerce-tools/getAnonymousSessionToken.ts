@@ -1,5 +1,6 @@
 import { Buffer } from 'buffer';
 import { commercetoolsConfig } from './config';
+import { openDialog } from '../../../services/DialogService';
 
 interface AnonymousTokenResponse {
   access_token: string;
@@ -40,12 +41,21 @@ export const getAnonymousSessionToken =
 
       if (!response.ok) {
         const errorDetails = await response.json();
-        throw new Error(`Auth failed: ${JSON.stringify(errorDetails)}`);
+        const errorMessage = errorDetails.message;
+        throw new Error(`Auth failed: ${errorMessage}`);
       }
 
       return await response.json();
     } catch (error) {
-      console.error('Token request failed:', error);
+      let message = 'Error customer authorization';
+
+      if (error instanceof Error) {
+        message = error.message;
+      } else if (typeof error === 'string') {
+        message = error;
+      }
+
+      openDialog(message);
       return null;
     }
   };
