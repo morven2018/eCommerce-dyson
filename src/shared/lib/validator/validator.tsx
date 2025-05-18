@@ -49,7 +49,14 @@ export const passwordValidationSchema = yup
   .matches(/\d/, 'Password must contain at least 1 digit')
   .matches(/[A-Z]/, 'Password must have 1 uppercase letter')
   .matches(/[a-z]/, 'Password must have 1 lowercase letter')
-  .matches(/^[a-zA-Z0-9]+$/, 'Password must only contain letters and digits');
+  .matches(
+    /[!@#$%^&*]/,
+    'Password must contain at least one special character (e.g., !@#$%^&*)'
+  )
+  .matches(
+    /^[a-zA-Z0-9!@#$%^&*]+$/,
+    'Password must only contain letters, digits and special character'
+  );
 
 export const phoneValidationSchema = yup
   .string()
