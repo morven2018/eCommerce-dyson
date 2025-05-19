@@ -666,7 +666,10 @@ export const RegisterForm = () => {
   const navigate = useNavigate();
   const [activeStep, setActiveStep] = useState(0);
   const [stepsValidity, setStepsValidity] = useState([false, false, false]);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<{
+    text: string;
+    isExistingUser?: boolean;
+  } | null>(null);
 
   const {
     control,
@@ -775,6 +778,8 @@ export const RegisterForm = () => {
   };
 
   const onSubmit = async (data: IFormData) => {
+    const existMsg =
+      'Customer with this email already exists. Please login instead';
     try {
       const result = await register(data);
       if (result) {
@@ -785,9 +790,12 @@ export const RegisterForm = () => {
         if (authResponse) navigate('/');
       }
     } catch (error: unknown) {
-      setErrorMessage(
-        error instanceof Error ? error.message : 'Registration failed'
-      );
+      const message =
+        error instanceof Error ? error.message : 'Registration failed';
+      setErrorMessage({
+        text: message,
+        isExistingUser: message === existMsg,
+      });
     }
   };
 
@@ -860,8 +868,19 @@ export const RegisterForm = () => {
 
       {errorMessage && (
         <ShowDialog
-          message={errorMessage}
+          message={errorMessage.text}
           onClose={() => setErrorMessage(null)}
+          additionalButton={
+            errorMessage.isExistingUser && (
+              <Button
+                component={Link}
+                to="/login"
+                onClick={() => setErrorMessage(null)}
+              >
+                Login
+              </Button>
+            )
+          }
         />
       )}
     </Box>
