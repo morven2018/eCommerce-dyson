@@ -23,6 +23,7 @@ import { Burger } from '../../ui/burger/burger/burger';
 import styles from './Header.module.scss';
 import { ProfileMenu } from '../../ui/burger/menu/profile-menu';
 import { ButtonList } from './button-list/ButtonList';
+import { useAuth } from '../../../shared/context/auth-hooks';
 
 const isCartEmpty = true;
 const isUserUnauthorized = true;
@@ -103,8 +104,63 @@ const NonBreakingText = ({ text }: { text: string }) => (
 );
 
 export const Header: React.FC = () => {
+<<<<<<< HEAD
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+=======
+  const { isUserUnauthorized, setIsUserUnauthorized } = useAuth();
+  const [isCartEmpty] = useState(true);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+  const [navItems, setNavItems] = useState<INavItems[]>([]);
+
+  const toggleAuthStatus = () => {
+    if (!isUserUnauthorized) {
+      localStorage.removeItem('authDysonToken');
+    }
+    setIsUserUnauthorized(!isUserUnauthorized);
+  };
+
+  const updateNavItems = () => {
+    const updatedItems = [
+      {
+        text: NavText.Catalog,
+        icon: '',
+        path: '/catalog',
+        onClick: () => {},
+      },
+      {
+        text: NavText.About,
+        icon: '',
+        path: '/about',
+        onClick: () => {},
+      },
+      {
+        text: isUserUnauthorized ? NavText.Register : NavText.Logout,
+        icon: '',
+        path: isUserUnauthorized ? '/register' : '/',
+        onClick: isUserUnauthorized ? () => {} : toggleAuthStatus,
+      },
+      {
+        text: isUserUnauthorized ? NavText.Login : NavText.Profile,
+        icon: isUserUnauthorized ? '' : profile,
+        path: isUserUnauthorized ? '/login' : '/profile',
+        onClick: () => {},
+      },
+      {
+        text: NavText.Cart,
+        icon: isCartEmpty ? emptyCart : cart,
+        path: '/cart',
+        onClick: () => {},
+      },
+    ];
+    setNavItems(updatedItems);
+  };
+
+  useEffect(() => {
+    updateNavItems();
+  }, [isUserUnauthorized, isCartEmpty]);
+>>>>>>> a470c9aecc885c16c22ac841d1d590c7ccef0b44
 
   const toggleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
