@@ -210,6 +210,7 @@ const Step1 = ({ control, errors, setValue, onNext, isValid }: Step1Props) => {
           }}
           variant="outlined"
           className={styles.button}
+          aria-label="generate"
         >
           Generate
         </Button>
@@ -376,6 +377,7 @@ const Step2 = ({
           <InputText
             id="city-billing"
             label="City"
+            aria-label="City"
             value={field.value}
             onChange={(e) =>
               handleFieldChange('shippingAddress.city', e.target.value)
