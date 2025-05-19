@@ -4,6 +4,7 @@ import { MemoryRouter } from 'react-router-dom';
 import '@testing-library/jest-dom/vitest';
 import { describe, it, expect, vi } from 'vitest';
 import LoginForm from '../src/components/common/forms/LoginForm';
+import { AuthContext } from '../src/shared/context/auth-hooks';
 
 vi.mock('@mui/icons-material', () => ({
   default: () => <span>MockIcon</span>,
@@ -26,12 +27,34 @@ vi.mock('react-router-dom', async () => {
   };
 });
 
+vi.mock('../src/shared/context/auth-hooks', async () => {
+  const actual = await vi.importActual('../src/shared/context/auth-hooks');
+  return {
+    ...actual,
+    useAuth: () => {
+      console.log('Mocking useAuth');
+      return React.useContext(AuthContext);
+    },
+  };
+});
+
+const MockAuthProvider = ({ children }: { children: React.ReactNode }) => {
+  const [isUserUnauthorized, setIsUserUnauthorized] = React.useState(true);
+  return (
+    <AuthContext.Provider value={{ isUserUnauthorized, setIsUserUnauthorized }}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
+
 describe('LoginForm Component', () => {
   it('renders the form with submit button and text', () => {
     render(
-      <MemoryRouter>
-        <LoginForm />
-      </MemoryRouter>
+      <MockAuthProvider>
+        <MemoryRouter>
+          <LoginForm />
+        </MemoryRouter>
+      </MockAuthProvider>
     );
 
     const submitButton = screen.getByRole('button', { name: /sign in/i });
@@ -46,20 +69,27 @@ describe('LoginForm Component', () => {
 
   it('renders email and password inputs', () => {
     render(
-      <MemoryRouter>
-        <LoginForm />
-      </MemoryRouter>
+      <MockAuthProvider>
+        <MemoryRouter>
+          <LoginForm />
+        </MemoryRouter>
+      </MockAuthProvider>
     );
 
     const emailInput = screen.getByRole('textbox', { name: /email/i });
     expect(emailInput).toBeInTheDocument();
+
+    const passwordInput = screen.getByLabelText('Password');
+    expect(passwordInput).toBeInTheDocument();
   });
 
   it('renders register link with correct href', () => {
     render(
-      <MemoryRouter>
-        <LoginForm />
-      </MemoryRouter>
+      <MockAuthProvider>
+        <MemoryRouter>
+          <LoginForm />
+        </MemoryRouter>
+      </MockAuthProvider>
     );
 
     const registerLink = screen.getByTestId('mock-link');
@@ -70,9 +100,11 @@ describe('LoginForm Component', () => {
 
   it('renders reset password link', () => {
     render(
-      <MemoryRouter>
-        <LoginForm />
-      </MemoryRouter>
+      <MockAuthProvider>
+        <MemoryRouter>
+          <LoginForm />
+        </MemoryRouter>
+      </MockAuthProvider>
     );
 
     const resetLink = screen.getByRole('link', { name: /reset password/i });

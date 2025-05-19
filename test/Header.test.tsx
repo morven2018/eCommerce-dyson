@@ -3,8 +3,27 @@ import { cleanup, render, screen } from '@testing-library/react';
 import { MemoryRouter, useLocation } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
 import '@testing-library/jest-dom/vitest';
-import { describe, it, expect, afterEach } from 'vitest';
+import { describe, it, expect, afterEach, vi } from 'vitest';
 import { Header } from '../src/components/layout/header/Header';
+import { AuthContext } from '../src/shared/context/auth-context';
+
+const MockAuthProvider = ({ children }: { children: React.ReactNode }) => {
+  const [isUserUnauthorized, setIsUserUnauthorized] = React.useState(true);
+
+  return (
+    <AuthContext.Provider value={{ isUserUnauthorized, setIsUserUnauthorized }}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
+
+vi.mock('../../../shared/context/auth-hooks', async () => {
+  const actual = await vi.importActual('../src/shared/context/auth-hooks');
+  return {
+    ...actual,
+    useAuth: () => React.useContext(AuthContext),
+  };
+});
 
 const LocationDisplay = () => {
   const location = useLocation();
@@ -14,13 +33,16 @@ const LocationDisplay = () => {
 describe('Header Component', () => {
   afterEach(() => {
     cleanup();
+    vi.restoreAllMocks();
   });
 
   it('renders logo link with correct href', () => {
     render(
-      <MemoryRouter>
-        <Header />
-      </MemoryRouter>
+      <MockAuthProvider>
+        <MemoryRouter>
+          <Header />
+        </MemoryRouter>
+      </MockAuthProvider>
     );
 
     const logoLink = screen.getByRole('link', { name: /To home page dyson/i });
@@ -30,9 +52,11 @@ describe('Header Component', () => {
 
   it('renders all navigation buttons with correct paths', () => {
     render(
-      <MemoryRouter>
-        <Header />
-      </MemoryRouter>
+      <MockAuthProvider>
+        <MemoryRouter>
+          <Header />
+        </MemoryRouter>
+      </MockAuthProvider>
     );
 
     const catalogButton = screen.getByRole('button', { name: /Catalog/i });
@@ -54,10 +78,12 @@ describe('Header Component', () => {
   it('navigates to /catalog when Catalog button is clicked', async () => {
     const user = userEvent.setup();
     render(
-      <MemoryRouter initialEntries={['/']}>
-        <Header />
-        <LocationDisplay />
-      </MemoryRouter>
+      <MockAuthProvider>
+        <MemoryRouter initialEntries={['/']}>
+          <Header />
+          <LocationDisplay />
+        </MemoryRouter>
+      </MockAuthProvider>
     );
 
     const catalogButton = screen.getByRole('button', { name: /Catalog/i });
@@ -68,18 +94,29 @@ describe('Header Component', () => {
 
   it('renders empty cart icon when cart is empty', () => {
     render(
-      <MemoryRouter>
-        <Header />
-      </MemoryRouter>
+      <MockAuthProvider>
+        <MemoryRouter>
+          <Header />
+        </MemoryRouter>
+      </MockAuthProvider>
     );
+
+    const cartButton = screen.getByRole('button', { name: /Cart/i });
+    expect(cartButton).toBeInTheDocument();
+
+    const cartIcon = screen.getByRole('img', { name: /Cart/i });
+    expect(cartIcon).toBeInTheDocument();
+    expect(cartIcon).toHaveAttribute('alt', 'Cart');
   });
 
   it('toggles Menu when burger button is clicked', async () => {
     const user = userEvent.setup();
     render(
-      <MemoryRouter>
-        <Header />
-      </MemoryRouter>
+      <MockAuthProvider>
+        <MemoryRouter>
+          <Header />
+        </MemoryRouter>
+      </MockAuthProvider>
     );
 
     expect(screen.queryByRole('menu')).not.toBeInTheDocument();

@@ -32,6 +32,20 @@ $mobile-width2: 750px;
     @media (hover: hover) and (pointer: fine) {
       transform: scale(1.05);
     }
+
+  .item::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background-color: currentColor;
+    transition: width 0.3s ease;
+  }
+
+  .item:hover::after {
+    width: 100%;
   }
 }
 

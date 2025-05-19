@@ -117,7 +117,9 @@ export async function register(data: IFormData) {
   if (typeof authToken === 'string') {
     const exists = await checkCustomerExists(data.email, authToken);
     if (exists) {
-      throw new Error('Customer with this email already exists');
+      throw new Error(
+        'Customer with this email already exists. Please login instead'
+      );
     }
 
     const customerData = {
@@ -157,6 +159,12 @@ export async function register(data: IFormData) {
     };
 
     const newCustomer = await createCustomer(customerData, authToken);
-    return newCustomer;
+    return {
+      customer: newCustomer,
+      authData: {
+        email: data.email,
+        password: data.password,
+      },
+    };
   }
 }

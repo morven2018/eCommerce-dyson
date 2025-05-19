@@ -1,4 +1,4 @@
-import React from 'react';
+// Modal.tsx
 import {
   Button,
   Dialog,
@@ -6,37 +6,32 @@ import {
   DialogContent,
   DialogContentText,
 } from '@mui/material';
+import { ReactNode } from 'react';
 
 interface ShowDialogProps {
   message: string;
+  onClose: () => void;
+  additionalButton?: ReactNode;
 }
 
-export default function ShowDialog({ message }: ShowDialogProps) {
-  const [open, setOpen] = React.useState(true);
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
+export default function ShowDialog({
+  message,
+  onClose,
+  additionalButton,
+}: ShowDialogProps) {
   return (
-    <div>
-      <Dialog
-        open={open}
-        onClose={handleClose}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            {message}
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={handleClose} color="primary" autoFocus>
+    <Dialog open={true} onClose={onClose} maxWidth="sm" fullWidth>
+      <DialogContent>
+        <DialogContentText>{message}</DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <div>
+          {additionalButton}
+          <Button onClick={onClose} autoFocus>
             Close
           </Button>
-        </DialogActions>
-      </Dialog>
-    </div>
+        </div>
+      </DialogActions>
+    </Dialog>
   );
 }
