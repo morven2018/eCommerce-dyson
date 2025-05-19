@@ -18,7 +18,7 @@ import {
   Path,
   PathValue,
 } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import InputEmail from '../../../ui/inputs/InputEmail';
@@ -41,6 +41,7 @@ import { CountrySelect } from '../../../ui/inputs/selectCountry';
 import styles from './RegisterForm.module.scss';
 import { register } from '../../../../shared/api/commerce-tools/newCustomer';
 import ShowDialog from '../../../ui/modals/Modal';
+import { userAuthorization } from '../../../../shared/api/commerce-tools/authorization';
 
 const steps = ['Contact Information', 'Shipping Address', 'Billing Address'];
 
@@ -662,6 +663,7 @@ const Step3 = ({ control, errors, onPrev, isValid, setValue }: Step3Props) => {
 };
 
 export const RegisterForm = () => {
+  const navigate = useNavigate();
   const [activeStep, setActiveStep] = useState(0);
   const [stepsValidity, setStepsValidity] = useState([false, false, false]);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -774,8 +776,14 @@ export const RegisterForm = () => {
 
   const onSubmit = async (data: IFormData) => {
     try {
-      console.log(data);
-      await register(data);
+      const result = await register(data);
+      if (result) {
+        const authResponse = await userAuthorization(
+          result.authData,
+          'Your account has been successfully created'
+        );
+        if (authResponse) navigate('/');
+      }
     } catch (error: unknown) {
       setErrorMessage(
         error instanceof Error ? error.message : 'Registration failed'

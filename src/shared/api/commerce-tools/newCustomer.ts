@@ -106,7 +106,6 @@ async function createCustomer(
 
   if (!response.ok) {
     const error = await response.json();
-    console.log(error);
     throw new Error(`Failed to create customer: ${error.message}`);
   }
 
@@ -157,9 +156,13 @@ export async function register(data: IFormData) {
       defaultBillingAddress: data.billingAddress.defaultAddress ? 1 : undefined,
     };
 
-    console.log(customerData);
-
     const newCustomer = await createCustomer(customerData, authToken);
-    return newCustomer;
+    return {
+      customer: newCustomer,
+      authData: {
+        email: data.email,
+        password: data.password,
+      },
+    };
   }
 }

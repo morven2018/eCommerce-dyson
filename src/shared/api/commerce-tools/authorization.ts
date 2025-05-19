@@ -16,7 +16,8 @@ interface AuthTokenResponse {
 }
 
 export async function userAuthorization(
-  data: UserData
+  data: UserData,
+  successMessage?: string
 ): Promise<AuthTokenResponse | null> {
   const authUrl = commercetoolsConfig.authUrl;
   const projectKey = commercetoolsConfig.projectKey;
@@ -54,7 +55,7 @@ export async function userAuthorization(
     }
 
     const result: AuthTokenResponse = await response.json();
-    const dialogMessage = 'Authorized successfully';
+    const dialogMessage = successMessage || 'Authorized successfully';
     openDialog(dialogMessage);
     return result;
   } catch (error) {

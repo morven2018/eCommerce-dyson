@@ -1,3 +1,4 @@
+// Modal.tsx
 import {
   Button,
   Dialog,
@@ -26,7 +27,7 @@ export default function ShowDialog({
       <DialogActions>
         <div>
           {additionalButton}
-          <Button onClick={onClose} color="primary" autoFocus>
+          <Button onClick={onClose} autoFocus>
             Close
           </Button>
         </div>
