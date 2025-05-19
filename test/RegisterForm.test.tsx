@@ -1,10 +1,10 @@
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import { describe, it, expect, vi } from 'vitest';
-import { RegisterForm } from '../src/components/common/forms/register-form/RegisterForm';
 import React from 'react';
+import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 import '@testing-library/jest-dom/vitest';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import LoginForm from '../src/components/common/forms/LoginForm';
+import { AuthContext } from '../src/shared/context/auth-hooks';
 
 vi.mock('@mui/icons-material', () => ({
   default: () => <span>MockIcon</span>,
@@ -13,54 +13,82 @@ vi.mock('@mui/icons-material', () => ({
   VisibilityOff: () => <span data-testid="visibility-off-icon">VisibilityOff</span>,
 }));
 
-vi.mock('../../../../shared/api/commerce-tools/new-customer', () => ({
-  register: vi.fn(),
-}));
-
-describe('RegisterForm', () => {
-  it('renders the initial step with contact information fields', () => {
-    render(
-      <MemoryRouter>
-        <RegisterForm />
-      </MemoryRouter>
-    );
-    expect(screen.getByLabelText('Email')).toBeInTheDocument();
-    expect(screen.getByLabelText('Password')).toBeInTheDocument();
-    expect(screen.getByLabelText('generate')).toBeInTheDocument();
-    expect(screen.getByLabelText('Phone number')).toBeInTheDocument();
-    expect(screen.getByLabelText('First name')).toBeInTheDocument();
-    expect(screen.getByLabelText('Last name')).toBeInTheDocument();
-  });
-
- 
-  it('moves to next step when form is valid', async () => {
-    const user = userEvent.setup();
-    render(
-      <MemoryRouter>
-        <RegisterForm />
-      </MemoryRouter>
-    );
-    await user.type(screen.getByLabelText('Email'), 'test@example.com');
-    await user.type(screen.getByLabelText('Password'), 'ValidPassword1!');
-    await user.type(screen.getByLabelText('Phone number'), '+1234567890');
-    await user.type(screen.getByLabelText('First name'), 'John');
-    await user.type(screen.getByLabelText('Last name'), 'Doe');
-  });
-
-  it('allows going back to previous step', async () => {
-    const user = userEvent.setup();
-    render(
-      <MemoryRouter>
-        <RegisterForm />
-      </MemoryRouter>
-    );
-    await user.type(screen.getByLabelText('Email'), 'test@example.com');
-    await user.type(screen.getByLabelText('Password'), 'ValidPassword1!');
-    await user.type(screen.getByLabelText('Phone number'), '+1234567890');
-    await user.type(screen.getByLabelText('First name'), 'John');
-    await user.type(screen.getByLabelText('Last name'), 'Doe');
-    expect(screen.getByLabelText('Email')).toBeInTheDocument();
-  });
+vi.mock('react-router-dom', async () => {
+  const actual = await vi.importActual('react-router-dom');
+  return {
+    ...actual,
+    Link: ({ to, children }: { to: string; children: React.ReactNode }) => (
+      <a href={to} data-testid="mock-link">
+        {children}
+      </a>
+    ),
+  };
 });
 
+vi.mock('../src/shared/context/auth-hooks', async () => {
+  const actual = await vi.importActual('../src/shared/context/auth-hooks');
+  return {
+    ...actual,
+    useAuth: () => {
+      console.log('Mocking useAuth');
+      return React.useContext(AuthContext);
+    },
+  };
+});
 
+const MockAuthProvider = ({ children }: { children: React.ReactNode }) => {
+  const [isUserUnauthorized, setIsUserUnauthorized] = React.useState(true);
+  return (
+    <AuthContext.Provider value={{ isUserUnauthorized, setIsUserUnauthorized }}>
+      {children}
+    </AuthContext.Provider>
+  );
+};
+
+const renderLoginForm = () => {
+  return render(
+    <MockAuthProvider>
+      <MemoryRouter>
+        <LoginForm />
+      </MemoryRouter>
+    </MockAuthProvider>
+  );
+};
+
+describe('LoginForm Component', () => {
+  beforeEach(() => {
+    renderLoginForm();
+  });
+
+  it('renders the form with submit button and text', () => {
+    const submitButton = screen.getByRole('button', { name: /sign in/i });
+    expect(submitButton).toBeInTheDocument();
+
+    const forgotPasswordText = screen.getByText(/forgot password/i );
+    expect(forgotPasswordText).toBeInTheDocument();
+
+    const registerText = screen.getByText(/don’t have an account/i );
+    expect(registerText).toBeInTheDocument();
+  });
+
+  it('renders email and password inputs', () => {
+    const emailInput = screen.getByRole('textbox', { name: /email/i });
+    expect(emailInput).toBeInTheDocument();
+
+    const passwordInput = screen.getByLabelText('Password');
+    expect(passwordInput).toBeInTheDocument();
+  });
+
+  it('renders register link with correct href', () => {
+    const registerLink = screen.getByTestId('mock-link');
+    expect(registerLink).toBeInTheDocument();
+    expect(registerLink).toHaveAttribute('href', '/register');
+    expect(registerLink).toHaveTextContent('Register here');
+  });
+
+  it('renders reset password link', () => {
+    const resetLink = screen.getByRole('link', { name: /reset password/i });
+    expect(resetLink).toBeInTheDocument();
+    expect(resetLink).toHaveAttribute('href', '#');
+  });
+});

@@ -10,7 +10,9 @@ vi.mock('@mui/icons-material', () => ({
   default: () => <span>MockIcon</span>,
   ViewAgendaTwoTone: () => <span>MockIcon</span>,
   Visibility: () => <span data-testid="visibility-icon">Visibility</span>,
-  VisibilityOff: () => <span data-testid="visibility-off-icon">VisibilityOff</span>,
+  VisibilityOff: () => (
+    <span data-testid="visibility-off-icon">VisibilityOff</span>
+  ),
 }));
 
 vi.mock('react-router-dom', async () => {
