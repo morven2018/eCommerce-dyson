@@ -528,9 +528,9 @@ const Step3 = ({ control, errors, onPrev, isValid, setValue }: Step3Props) => {
       <h5>Billing address</h5>
 
       <FormControlLabel
+        className={styles.checkbox}
         control={
           <Checkbox
-            className={styles.checkbox}
             checked={copyFromShipping}
             onChange={(e) => handleCopyChange(e.target.checked)}
             color="primary"

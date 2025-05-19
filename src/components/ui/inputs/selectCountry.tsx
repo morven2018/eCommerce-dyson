@@ -27,8 +27,6 @@ interface CountrySelectProps<T extends FieldValues> {
   disabled?: boolean;
 }
 
-import styles from '../../common/forms/register-form/RegisterForm.module.scss';
-
 export function CountrySelect<T extends FieldValues>({
   control,
   name,
@@ -37,7 +35,7 @@ export function CountrySelect<T extends FieldValues>({
   countries = DEFAULT_COUNTRIES,
 }: Readonly<CountrySelectProps<T>>) {
   return (
-    <FormControl fullWidth margin="normal" className={styles.checkbox}>
+    <FormControl fullWidth margin="normal">
       <InputLabel id={`${String(name)}-label`}>{label}</InputLabel>
       <Controller
         name={name}
