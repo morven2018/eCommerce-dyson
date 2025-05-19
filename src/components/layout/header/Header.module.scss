@@ -25,6 +25,13 @@ $mobile-width2: 750px;
   flex-direction: row;
   text-decoration: none;
   text-transform: uppercase;
+  cursor: pointer;
+  transition: all ease 0.5s;
+
+  .item:hover {
+    @media (hover: hover) and (pointer: fine) {
+      transform: scale(1.05);
+    }
 
   .item::after {
     content: '';
