@@ -23,6 +23,7 @@ import { Burger } from '../../ui/burger/burger/burger';
 import styles from './Header.module.scss';
 import { ProfileMenu } from '../../ui/burger/menu/profile-menu';
 import { ButtonList } from './button-list/ButtonList';
+import { useAuth } from '../../../shared/context/auth-hooks';
 
 export interface INavItems {
   text: string;
@@ -62,14 +63,17 @@ const ItemList: React.FC<INavItems> = ({ text, icon, path, onClick }) => {
 };
 
 export const Header: React.FC = () => {
-  const [isUserUnauthorized, setIsUserUnauthorized] = useState(true);
+  const { isUserUnauthorized, setIsUserUnauthorized } = useAuth();
   const [isCartEmpty] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const [navItems, setNavItems] = useState<INavItems[]>([]);
 
   const toggleAuthStatus = () => {
-    setIsUserUnauthorized((prev) => !prev);
+    if (!isUserUnauthorized) {
+      localStorage.removeItem('authDysonToken');
+    }
+    setIsUserUnauthorized(!isUserUnauthorized);
   };
 
   const updateNavItems = () => {
@@ -96,7 +100,7 @@ export const Header: React.FC = () => {
         text: isUserUnauthorized ? NavText.Login : NavText.Profile,
         icon: isUserUnauthorized ? '' : profile,
         path: isUserUnauthorized ? '/login' : '/profile',
-        onClick: isUserUnauthorized ? toggleAuthStatus : () => {},
+        onClick: () => {},
       },
       {
         text: NavText.Cart,
