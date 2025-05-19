@@ -55,7 +55,7 @@ export async function userAuthorization(
     }
 
     const result: AuthTokenResponse = await response.json();
-    const dialogMessage = successMessage || 'Authorized successfully';
+    const dialogMessage = successMessage ?? 'Authorized successfully';
     openDialog(dialogMessage);
     return result;
   } catch (error) {

@@ -483,7 +483,7 @@ const Step3 = ({ control, errors, onPrev, isValid, setValue }: Step3Props) => {
         'billingAddress.street',
         'billingAddress.zipCode',
       ],
-    }).every((field) => !!field) || copyFromShipping;
+    }).every((field) => !!field) ?? copyFromShipping;
 
   const handleFieldChange = (
     fieldName: BillingField,
