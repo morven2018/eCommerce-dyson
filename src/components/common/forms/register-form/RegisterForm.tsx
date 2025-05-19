@@ -360,6 +360,7 @@ const Step2 = ({
           <InputText
             id="city-billing"
             label="City"
+            aria-label="City"
             value={field.value}
             onChange={(e) =>
               handleFieldChange('shippingAddress.city', e.target.value)

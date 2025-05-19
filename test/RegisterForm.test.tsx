@@ -32,6 +32,7 @@ describe('RegisterForm', () => {
     expect(screen.getByLabelText('Last name')).toBeInTheDocument();
   });
 
+ 
   it('moves to next step when form is valid', async () => {
     const user = userEvent.setup();
     render(
@@ -61,3 +62,5 @@ describe('RegisterForm', () => {
     expect(screen.getByLabelText('Email')).toBeInTheDocument();
   });
 });
+
+

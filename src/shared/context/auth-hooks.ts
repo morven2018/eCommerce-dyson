@@ -9,3 +9,5 @@ export const useAuth = (): AuthContextType => {
   }
   return context;
 };
+
+export { AuthContext };
