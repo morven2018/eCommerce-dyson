@@ -42,6 +42,7 @@ import styles from './RegisterForm.module.scss';
 import { register } from '../../../../shared/api/commerce-tools/newCustomer';
 import ShowDialog from '../../../ui/modals/Modal';
 import { userAuthorization } from '../../../../shared/api/commerce-tools/authorization';
+import { useAuth } from '../../../../shared/context/auth-hooks';
 
 const steps = ['Contact Information', 'Shipping Address', 'Billing Address'];
 
@@ -561,7 +562,7 @@ const Step3 = ({ control, errors, onPrev, isValid, setValue }: Step3Props) => {
 
       <CountrySelect
         control={control}
-        name="shippingAddress.country"
+        name="billingAddress.country"
         label="Country"
         error={errors.shippingAddress?.country}
       />
@@ -670,6 +671,8 @@ export const RegisterForm = () => {
     text: string;
     isExistingUser?: boolean;
   } | null>(null);
+
+  const { setIsUserUnauthorized } = useAuth();
 
   const {
     control,
@@ -787,7 +790,11 @@ export const RegisterForm = () => {
           result.authData,
           'Your account has been successfully created'
         );
-        if (authResponse) navigate('/');
+        if (authResponse) {
+          localStorage.setItem('authDysonToken', authResponse.access_token);
+          setIsUserUnauthorized(false);
+          navigate('/');
+        }
       }
     } catch (error: unknown) {
       const message =

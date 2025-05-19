@@ -36,7 +36,7 @@ export const ProfileMenu: React.FC<ProfileMenuProps> = ({
           key={`${item.text}`}
           onClick={() => {
             onClose();
-            item.onClick();
+            item.onclick();
             navigate(item.path);
           }}
           className={styles.menuItem}
