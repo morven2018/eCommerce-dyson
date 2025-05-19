@@ -7,8 +7,13 @@ import { defaultSchema } from './schema';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { userAuthorization } from '../../../shared/api/commerce-tools/authorization';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '../../../shared/context/auth-hooks';
 
 export default function LoginForm() {
+  const navigate = useNavigate();
+  const { setIsUserUnauthorized } = useAuth();
+
   const form = useForm({
     resolver: yupResolver(defaultSchema),
     defaultValues: {
@@ -17,8 +22,13 @@ export default function LoginForm() {
     },
   });
 
-  const submitForm = (data: yup.InferType<typeof defaultSchema>) => {
-    userAuthorization(data);
+  const submitForm = async (data: yup.InferType<typeof defaultSchema>) => {
+    const result = await userAuthorization(data);
+    if (result) {
+      localStorage.setItem('authDysonToken', result.access_token);
+      setIsUserUnauthorized(false);
+      navigate('/');
+    }
   };
 
   return (
