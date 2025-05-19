@@ -13,7 +13,6 @@ $breakpoint5: 350px;
 .main {
   width: 100%;
   max-width: 1440px;
-
   background: url('../../../assets/images/404.png') center center / cover
     no-repeat;
 
@@ -21,7 +20,6 @@ $breakpoint5: 350px;
     display: flex;
     flex-direction: column;
     align-items: flex-end;
-
     max-width: $content-width;
     margin: 0 auto;
     padding: 86px 40px 290px 40px;
@@ -30,10 +28,8 @@ $breakpoint5: 350px;
 
 .pageHeader {
   display: block;
-
   max-width: $header-width;
   margin-bottom: 120px;
-
   font-size: $typography-header;
   font-weight: $base-weight;
   text-align: left;
@@ -45,23 +41,22 @@ $breakpoint5: 350px;
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-
   max-width: $button-container;
   width: 100%;
 
   .button {
     width: $button-width;
     height: $button-height;
-
     border-radius: $border-radius;
     border: none;
     background-color: $light-header;
-
     color: $primary-black;
 
     &:hover {
-      background-color: $primary-white;
-      color: $controls;
+      @media (hover: hover) and (pointer: fine) {
+        background-color: $primary-white;
+        color: $controls;
+      }
     }
   }
 }

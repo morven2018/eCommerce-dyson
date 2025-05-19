@@ -42,6 +42,7 @@ import styles from './RegisterForm.module.scss';
 import { register } from '../../../../shared/api/commerce-tools/newCustomer';
 import ShowDialog from '../../../ui/modals/Modal';
 import { userAuthorization } from '../../../../shared/api/commerce-tools/authorization';
+import { useAuth } from '../../../../shared/context/auth-hooks';
 
 const steps = ['Contact Information', 'Shipping Address', 'Billing Address'];
 
@@ -209,6 +210,7 @@ const Step1 = ({ control, errors, setValue, onNext, isValid }: Step1Props) => {
           }}
           variant="outlined"
           className={styles.button}
+          aria-label="generate"
         >
           Generate
         </Button>
@@ -375,6 +377,7 @@ const Step2 = ({
           <InputText
             id="city-billing"
             label="City"
+            aria-label="City"
             value={field.value}
             onChange={(e) =>
               handleFieldChange('shippingAddress.city', e.target.value)
@@ -671,6 +674,8 @@ export const RegisterForm = () => {
     isExistingUser?: boolean;
   } | null>(null);
 
+  const { setIsUserUnauthorized } = useAuth();
+
   const {
     control,
     handleSubmit,
@@ -787,7 +792,11 @@ export const RegisterForm = () => {
           result.authData,
           'Your account has been successfully created'
         );
-        if (authResponse) navigate('/');
+        if (authResponse) {
+          localStorage.setItem('authDysonToken', authResponse.access_token);
+          setIsUserUnauthorized(false);
+          navigate('/');
+        }
       }
     } catch (error: unknown) {
       const message =

@@ -57,8 +57,10 @@
   transition: all ease 0.3s;
 
   &:hover {
-    background: rgb(128, 128, 128);
-    color: $primary-white;
+    @media (hover: hover) and (pointer: fine) {
+      background: rgb(128, 128, 128);
+      color: $primary-white;
+    }
   }
 }
 
