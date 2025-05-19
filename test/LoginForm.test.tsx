@@ -79,7 +79,7 @@ describe('LoginForm Component', () => {
     const emailInput = screen.getByRole('textbox', { name: /email/i });
     expect(emailInput).toBeInTheDocument();
 
-    const passwordInput = screen.getByLabelText('Password'); // Exact label match
+    const passwordInput = screen.getByLabelText('Password');
     expect(passwordInput).toBeInTheDocument();
   });
 
