@@ -14,8 +14,12 @@ $mobile-width: 700px;
     box-shadow: 0px 4px 12px $primary-white;
     color: $primary-white;
 
-    .listItem:hover {
-      text-decoration: underline;
+    .listItem {
+      transition: text-decoration 0.3s ease;
+
+      &:hover {
+        text-decoration: underline;
+      }
     }
   }
 }
