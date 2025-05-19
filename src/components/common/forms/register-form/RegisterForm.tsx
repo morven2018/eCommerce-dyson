@@ -796,6 +796,7 @@ export const RegisterForm = () => {
           localStorage.setItem('authDysonToken', authResponse.access_token);
           setIsUserUnauthorized(false);
           navigate('/');
+          window.scrollTo(0, 0);
         }
       }
     } catch (error: unknown) {
