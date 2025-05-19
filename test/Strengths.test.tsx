@@ -40,7 +40,6 @@ describe('Strengths Component', () => {
     expect(images[3]).toHaveAttribute('alt', 'Dyson Hair Cair product');
   });
 
-
   it('renders all card text content', () => {
     render(<Strengths />);
     const paragraphs = screen.getAllByTestId('card-text');
@@ -51,5 +50,4 @@ describe('Strengths Component', () => {
     expect(paragraphs[2]).toHaveTextContent(/crafted for comfort/i);
     expect(paragraphs[3]).toHaveTextContent(/advanced airflow technology/i);
   });
-
 });
