@@ -754,7 +754,7 @@ export const RegisterForm = () => {
       }
     });
     return () => subscription.unsubscribe();
-  }, [watch, activeStep]);
+  }, [watch, activeStep, debouncedUpdateStepValidity]);
 
   const nextStep = async () => {
     const fieldsToValidate =
