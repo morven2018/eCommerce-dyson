@@ -561,7 +561,7 @@ const Step3 = ({ control, errors, onPrev, isValid, setValue }: Step3Props) => {
 
       <CountrySelect
         control={control}
-        name="shippingAddress.country"
+        name="billingAddress.country"
         label="Country"
         error={errors.shippingAddress?.country}
       />
