@@ -203,6 +203,7 @@ const Step1 = ({ control, errors, setValue, onNext, isValid }: Step1Props) => {
           }}
           variant="outlined"
           className={styles.button}
+          aria-label="generate"
         >
           Generate
         </Button>
