@@ -18,7 +18,7 @@ import {
   Path,
   PathValue,
 } from 'react-hook-form';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import InputEmail from '../../../ui/inputs/InputEmail';
@@ -41,6 +41,7 @@ import { CountrySelect } from '../../../ui/inputs/selectCountry';
 import styles from './RegisterForm.module.scss';
 import { register } from '../../../../shared/api/commerce-tools/newCustomer';
 import ShowDialog from '../../../ui/modals/Modal';
+import { userAuthorization } from '../../../../shared/api/commerce-tools/authorization';
 
 const steps = ['Contact Information', 'Shipping Address', 'Billing Address'];
 
@@ -166,6 +167,11 @@ const Step1 = ({ control, errors, setValue, onNext, isValid }: Step1Props) => {
     setValue(fieldName, value, { shouldValidate: true });
   };
 
+  const allFieldsFilled = useWatch({
+    control,
+    name: ['email', 'password', 'phone', 'firstName', 'lastName', 'dayOfBirth'],
+  }).every((field) => !!field);
+
   return (
     <div className={styles.form}>
       <h5>Contact Information</h5>
@@ -277,7 +283,7 @@ const Step1 = ({ control, errors, setValue, onNext, isValid }: Step1Props) => {
         className={styles.button}
         variant="contained"
         onClick={onNext}
-        disabled={!isValid}
+        disabled={!isValid || !allFieldsFilled}
         style={{ marginTop: '20px' }}
       >
         Next
@@ -314,6 +320,16 @@ const Step2 = ({
       ]);
     }
   };
+
+  const shippingFieldsFilled = useWatch({
+    control,
+    name: [
+      'shippingAddress.country',
+      'shippingAddress.city',
+      'shippingAddress.street',
+      'shippingAddress.zipCode',
+    ],
+  }).every((field) => !!field);
 
   return (
     <div className={styles.form}>
@@ -435,7 +451,7 @@ const Step2 = ({
           variant="contained"
           onClick={onNext}
           style={{ marginTop: '20px' }}
-          disabled={!isValid}
+          disabled={!isValid || !shippingFieldsFilled}
         >
           Next
         </Button>
@@ -457,6 +473,17 @@ const Step3 = ({ control, errors, onPrev, isValid, setValue }: Step3Props) => {
     streetLine2?: string;
     zipCode: string;
   };
+
+  const billingFieldsFilled =
+    useWatch({
+      control,
+      name: [
+        'billingAddress.country',
+        'billingAddress.city',
+        'billingAddress.street',
+        'billingAddress.zipCode',
+      ],
+    }).every((field) => !!field) ?? copyFromShipping;
 
   const handleFieldChange = (
     fieldName: BillingField,
@@ -534,7 +561,7 @@ const Step3 = ({ control, errors, onPrev, isValid, setValue }: Step3Props) => {
 
       <CountrySelect
         control={control}
-        name="shippingAddress.country"
+        name="billingAddress.country"
         label="Country"
         error={errors.shippingAddress?.country}
       />
@@ -626,7 +653,7 @@ const Step3 = ({ control, errors, onPrev, isValid, setValue }: Step3Props) => {
           type="submit"
           variant="contained"
           style={{ marginTop: '20px' }}
-          disabled={!isValid}
+          disabled={!isValid || (!copyFromShipping && !billingFieldsFilled)}
         >
           Register
         </Button>
@@ -636,9 +663,13 @@ const Step3 = ({ control, errors, onPrev, isValid, setValue }: Step3Props) => {
 };
 
 export const RegisterForm = () => {
+  const navigate = useNavigate();
   const [activeStep, setActiveStep] = useState(0);
   const [stepsValidity, setStepsValidity] = useState([false, false, false]);
-  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [errorMessage, setErrorMessage] = useState<{
+    text: string;
+    isExistingUser?: boolean;
+  } | null>(null);
 
   const {
     control,
@@ -726,10 +757,17 @@ export const RegisterForm = () => {
       }
     });
     return () => subscription.unsubscribe();
-  }, [watch, activeStep]);
+  }, [watch, activeStep, debouncedUpdateStepValidity]);
 
   const nextStep = async () => {
-    const isValid = await trigger(shippingFields);
+    const fieldsToValidate =
+      activeStep === 0
+        ? contactFields
+        : activeStep === 1
+          ? shippingFields
+          : billingFields;
+
+    const isValid = await trigger(fieldsToValidate);
     if (isValid) {
       setActiveStep(activeStep + 1);
     }
@@ -740,12 +778,24 @@ export const RegisterForm = () => {
   };
 
   const onSubmit = async (data: IFormData) => {
+    const existMsg =
+      'Customer with this email already exists. Please login instead';
     try {
-      await register(data);
+      const result = await register(data);
+      if (result) {
+        const authResponse = await userAuthorization(
+          result.authData,
+          'Your account has been successfully created'
+        );
+        if (authResponse) navigate('/');
+      }
     } catch (error: unknown) {
-      setErrorMessage(
-        error instanceof Error ? error.message : 'Registration failed'
-      );
+      const message =
+        error instanceof Error ? error.message : 'Registration failed';
+      setErrorMessage({
+        text: message,
+        isExistingUser: message === existMsg,
+      });
     }
   };
 
@@ -816,7 +866,23 @@ export const RegisterForm = () => {
         />
       )}
 
-      {errorMessage && <ShowDialog message={errorMessage} />}
+      {errorMessage && (
+        <ShowDialog
+          message={errorMessage.text}
+          onClose={() => setErrorMessage(null)}
+          additionalButton={
+            errorMessage.isExistingUser && (
+              <Button
+                component={Link}
+                to="/login"
+                onClick={() => setErrorMessage(null)}
+              >
+                Login
+              </Button>
+            )
+          }
+        />
+      )}
     </Box>
   );
 };
