@@ -820,12 +820,12 @@ export const RegisterForm = () => {
         activeStep={activeStep}
         sx={{
           '& .Mui-active .MuiStepIcon-root circle': {
-            fill: '#192a51',
+            fill: '$button-dark',
           },
           '& .Mui-completed': {
             '& .MuiSvgIcon-root': {
               '& path:first-of-type': {
-                fill: '#192a51',
+                fill: '$button-dark',
               },
             },
           },

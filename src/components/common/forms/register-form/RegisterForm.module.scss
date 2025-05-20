@@ -62,7 +62,7 @@ $breakpoint500: 500px;
   .Mui-active {
     .MuiStepIcon-root {
       circle {
-        fill: #192a51;
+        fill: $button-dark;
       }
     }
   }
@@ -70,7 +70,7 @@ $breakpoint500: 500px;
   .Mui-completed {
     .MuiSvgIcon-root {
       path:first-of-type {
-        fill: #192a51;
+        fill: $button-dark;
       }
     }
   }
