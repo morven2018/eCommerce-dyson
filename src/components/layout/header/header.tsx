@@ -36,7 +36,7 @@ const NonBreakingText = ({ text }: { text: string }) => (
   <span className={styles.buttons}>{text}</span>
 );
 
-const ItemList: React.FC<INavItems> = ({ text, icon, path, onClick }) => {
+const ItemList = ({ text, icon, path, onClick }: INavItems) => {
   const navigate = useNavigate();
 
   const handleClick = () => {
@@ -62,7 +62,7 @@ const ItemList: React.FC<INavItems> = ({ text, icon, path, onClick }) => {
   );
 };
 
-export const Header: React.FC = () => {
+export const Header = () => {
   const { isUserUnauthorized, setIsUserUnauthorized } = useAuth();
   const [isCartEmpty] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);

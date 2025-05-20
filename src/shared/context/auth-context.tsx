@@ -7,9 +7,11 @@ export interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
+interface AuthProviderProps {
+  children: React.ReactNode;
+}
+
+const AuthProvider = ({ children }: AuthProviderProps) => {
   const [isUserUnauthorized, setIsUserUnauthorized] = useState(true);
 
   useEffect(() => {

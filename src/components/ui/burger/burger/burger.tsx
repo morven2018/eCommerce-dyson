@@ -1,4 +1,3 @@
-import React from 'react';
 import styles from './Burger.module.scss';
 
 interface BurgerProps {
@@ -6,7 +5,7 @@ interface BurgerProps {
   onClick?: () => void;
 }
 
-export const Burger: React.FC<BurgerProps> = ({ isActive, onClick }) => {
+export const Burger = ({ isActive, onClick }: BurgerProps) => {
   return (
     <svg
       role="button"
