@@ -71,7 +71,8 @@ export const Header: React.FC = () => {
 
   const toggleAuthStatus = () => {
     if (!isUserUnauthorized) {
-      localStorage.removeItem('authDysonToken');
+      const tokenName = 'authDysonToken';
+      localStorage.removeItem(tokenName);
     }
     setIsUserUnauthorized(!isUserUnauthorized);
   };

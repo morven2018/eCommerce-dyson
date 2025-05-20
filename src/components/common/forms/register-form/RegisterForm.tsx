@@ -793,7 +793,8 @@ export const RegisterForm = () => {
           'Your account has been successfully created'
         );
         if (authResponse) {
-          localStorage.setItem('authDysonToken', authResponse.access_token);
+          const tokenName = 'authDysonToken';
+          localStorage.setItem(tokenName, authResponse.access_token);
           setIsUserUnauthorized(false);
           navigate('/');
           window.scrollTo(0, 0);

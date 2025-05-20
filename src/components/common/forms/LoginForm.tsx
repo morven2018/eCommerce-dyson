@@ -25,7 +25,8 @@ export default function LoginForm() {
   const submitForm = async (data: yup.InferType<typeof defaultSchema>) => {
     const result = await userAuthorization(data);
     if (result) {
-      localStorage.setItem('authDysonToken', result.access_token);
+      const tokenName = 'authDysonToken';
+      localStorage.setItem(tokenName, result.access_token);
       setIsUserUnauthorized(false);
       navigate('/');
     }

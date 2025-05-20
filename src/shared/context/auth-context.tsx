@@ -13,7 +13,8 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   const [isUserUnauthorized, setIsUserUnauthorized] = useState(true);
 
   useEffect(() => {
-    const token = localStorage.getItem('authDysonToken');
+    const tokenName = 'authDysonToken';
+    const token = localStorage.getItem(tokenName);
     if (token) {
       setIsUserUnauthorized(false);
     }
