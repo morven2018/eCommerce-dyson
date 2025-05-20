@@ -30,9 +30,7 @@ Ensure you have the following installed:
 ### Setup and Running
 
 1. Clone the repository:
-   ```
-     $ git clone https://github.com/morven2018/eCommerce-dyson.git
-   ```
+   ```$ git clone https://github.com/morven2018/eCommerce-dyson.git```.
 2. Navigate to the project directory:
    `$ cd eCommerce-dyson`
 3. Install dependencies:
@@ -40,24 +38,26 @@ Ensure you have the following installed:
 4. Start the development server:
    `$ npm run dev`
 5. Build the project for production:
-   `$ npm run build:`
+   ```$ npm run build```
 6. Run ESLint to check for linting issues and automatically fix them:
    `$ npm run lint`
 7. Formats the codebase using Prettier:
    `$ npm run format:fix`
 8. Preview the production build locally using Vite:
-   `$ npm run preview`
+   ```$ npm run preview`
 9. Prepares the project for Git hooks using Husky:
-   `$ npm run prepare`
+   ```$ npm run prepare`
 10. Run the test suite using Vitest:
-    `$ npm run test`
+    ```$ npm run test`
 11. Run the test suite and generate a code coverage report:
-    `$ npm run test:coverage`
+    ```$ npm run test:coverage`
 
-### Contributing
+ ### Contributing
 
 - Fork the repository.
 - Create a feature branch (git checkout -b feature/YourFeature).
 - Commit your changes (git commit -m 'Add YourFeature').
 - Push to the branch (git push origin feature/YourFeature).
 - Open a pull request to `develop` branch.
+
+
