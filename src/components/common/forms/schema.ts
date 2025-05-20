@@ -38,8 +38,8 @@ export const defaultSchema = yup.object({
     .test('password trim', messages.password.thereWhitespace, (value) => {
       return value === value?.trim();
     })
-    .matches(/[A-Z]{1}/, messages.password.needUpperCase)
-    .matches(/[a-z]{1}/, messages.password.needLowerCase)
-    .matches(/[0-9]{1}/, messages.password.needNumber)
-    .matches(/[!@#$%^&*]{1}/, messages.password.needSpecialCharacter),
+    .matches(/[A-Z]/, messages.password.needUpperCase)
+    .matches(/[a-z]/, messages.password.needLowerCase)
+    .matches(/[0-9]/, messages.password.needNumber)
+    .matches(/[!@#$%^&*]/, messages.password.needSpecialCharacter),
 });

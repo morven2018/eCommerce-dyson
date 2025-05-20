@@ -765,12 +765,15 @@ export const RegisterForm = () => {
   }, [watch, activeStep, debouncedUpdateStepValidity]);
 
   const nextStep = async () => {
-    const fieldsToValidate =
-      activeStep === 0
-        ? contactFields
-        : activeStep === 1
-          ? shippingFields
-          : billingFields;
+    let fieldsToValidate;
+
+    if (activeStep === 0) {
+      fieldsToValidate = contactFields;
+    } else if (activeStep === 1) {
+      fieldsToValidate = shippingFields;
+    } else {
+      fieldsToValidate = billingFields;
+    }
 
     const isValid = await trigger(fieldsToValidate);
     if (isValid) {

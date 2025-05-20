@@ -1,13 +1,12 @@
 import styles from './LoginForm.module.scss';
 import InputEmail from '@components/ui/inputs/InputEmail';
 import InputPassword from '@components/ui/inputs/InputPassword';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useForm, Controller } from 'react-hook-form';
 import { defaultSchema } from './schema';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { userAuthorization } from '@shared/api/commerce-tools/authorization';
-import { useNavigate } from 'react-router-dom';
 import { useAuth } from '@shared/context/auth-hooks';
 
 export default function LoginForm() {

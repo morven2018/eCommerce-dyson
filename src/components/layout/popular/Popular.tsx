@@ -9,7 +9,6 @@ export default function Popular() {
       <div className={styles.container}>
         <div className={styles.card}>
           <img
-            role="img"
             src={fave1}
             alt="Dyson Purifier Big"
             className={styles.cardImage}
@@ -28,7 +27,6 @@ export default function Popular() {
               warmer months.³
             </p>
             <a
-              role="link"
               href="#"
               className={styles.cardButton}
               aria-label="Buy Dyson Purifier"
@@ -38,12 +36,7 @@ export default function Popular() {
           </div>
         </div>
         <div className={styles.card}>
-          <img
-            role="img"
-            src={fave2}
-            alt="Dyson OnTrac"
-            className={styles.cardImage}
-          />
+          <img src={fave2} alt="Dyson OnTrac" className={styles.cardImage} />
           <div className={styles.cardContent}>
             <div className={styles.title}>
               <h3 className={styles.cardHeader}>Dyson OnTrac™</h3>
@@ -59,7 +52,6 @@ export default function Popular() {
               caps sold separately.
             </p>
             <a
-              role="link"
               href="#"
               className={styles.cardButton}
               aria-label="Buy Dyson OnTrac"
@@ -69,12 +61,7 @@ export default function Popular() {
           </div>
         </div>
         <div className={styles.card}>
-          <img
-            role="img"
-            src={fave3}
-            alt="Dyson Airstrait"
-            className={styles.cardImage}
-          />
+          <img src={fave3} alt="Dyson Airstrait" className={styles.cardImage} />
           <div className={styles.cardContent}>
             <div className={styles.title}>
               <h3 className={styles.cardHeader}>Dyson Airstrait</h3>
@@ -89,7 +76,6 @@ export default function Popular() {
               Achieve salon-quality results effortlessly at home.
             </p>
             <a
-              role="link"
               href="#"
               className={styles.cardButton}
               aria-label="Buy Dyson Airstrait"

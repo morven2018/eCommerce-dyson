@@ -8,7 +8,6 @@ interface BurgerProps {
 export const Burger = ({ isActive, onClick }: BurgerProps) => {
   return (
     <svg
-      role="button"
       aria-label="Toggle menu"
       className={`${styles.burger} ${isActive ? styles.active : ''}`}
       viewBox="0 0 100 100"

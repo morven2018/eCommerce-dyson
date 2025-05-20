@@ -10,11 +10,15 @@ import { AuthContext } from '../src/shared/context/auth-context';
 const MockAuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [isUserUnauthorized, setIsUserUnauthorized] = React.useState(true);
 
-  return (
-    <AuthContext.Provider value={{ isUserUnauthorized, setIsUserUnauthorized }}>
-      {children}
-    </AuthContext.Provider>
+  const value = React.useMemo(
+    () => ({
+      isUserUnauthorized,
+      setIsUserUnauthorized,
+    }),
+    [isUserUnauthorized]
   );
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
 
 vi.mock('../../../shared/context/auth-hooks', async () => {

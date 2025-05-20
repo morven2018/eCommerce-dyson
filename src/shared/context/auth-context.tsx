@@ -1,4 +1,10 @@
-import React, { createContext, useState, useCallback, useEffect } from 'react';
+import React, {
+  createContext,
+  useState,
+  useCallback,
+  useMemo,
+  useEffect,
+} from 'react';
 
 export interface AuthContextType {
   isUserUnauthorized: boolean;
@@ -7,27 +13,29 @@ export interface AuthContextType {
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-interface AuthProviderProps {
-  children: React.ReactNode;
-}
-
-const AuthProvider = ({ children }: AuthProviderProps) => {
+const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const [isUserUnauthorized, setIsUserUnauthorized] = useState(true);
 
   useEffect(() => {
-    const tokenName = 'authDysonToken';
-    const token = localStorage.getItem(tokenName);
+    const token = localStorage.getItem('authDysonToken');
     if (token) {
       setIsUserUnauthorized(false);
     }
   }, []);
 
-  const value = {
-    isUserUnauthorized,
-    setIsUserUnauthorized: useCallback((value: boolean) => {
-      setIsUserUnauthorized(value);
-    }, []),
-  };
+  const handleSetIsUserUnauthorized = useCallback((value: boolean) => {
+    setIsUserUnauthorized(value);
+  }, []);
+
+  const value = useMemo(
+    () => ({
+      isUserUnauthorized,
+      setIsUserUnauthorized: handleSetIsUserUnauthorized,
+    }),
+    [isUserUnauthorized, handleSetIsUserUnauthorized]
+  );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };
