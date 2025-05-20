@@ -1,6 +1,5 @@
 import styles from '@components/common/forms/register-form/RegisterForm.module.scss';
 
-import React from 'react';
 import {
   FormControl,
   InputLabel,
