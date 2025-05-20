@@ -1,12 +1,12 @@
 import styles from './ButtonList.module.scss';
 
-import vacuums from '../../../../assets/icons/vacuums.svg';
-import hair from '../../../../assets/icons/hair-care.svg';
-import heater from '../../../../assets/icons/heater.svg';
-import headphone from '../../../../assets/icons/headphone.svg';
-import light from '../../../../assets/icons/lighting.svg';
+import vacuums from '@assets/icons/vacuums.svg';
+import hair from '@assets/icons/hair-care.svg';
+import heater from '@assets/icons/heater.svg';
+import headphone from '@assets/icons/headphone.svg';
+import light from '@assets/icons/lighting.svg';
 import { INavItems } from '../header';
-import { FastCatalog } from '../../../../shared/constants/text-fields';
+import { FastCatalog } from '@shared/constants/text-fields';
 import {
   List,
   ListItem,

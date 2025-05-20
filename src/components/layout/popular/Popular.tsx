@@ -1,7 +1,7 @@
 import styles from './Popular.module.scss';
-import fave1 from '../../../assets/images/fave1.png';
-import fave2 from '../../../assets/images/fave2.png';
-import fave3 from '../../../assets/images/fave3.png';
+import fave1 from '@assets/images/fave1.png';
+import fave2 from '@assets/images/fave2.png';
+import fave3 from '@assets/images/fave3.png';
 
 export default function Popular() {
   return (

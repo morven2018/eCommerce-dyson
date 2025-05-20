@@ -1,7 +1,7 @@
 import { Buffer } from 'buffer';
 import { commercetoolsConfig } from './config';
-import { IFormData } from '../../../components/common/forms/register-form/RegisterForm';
-import { formatDate } from '../../utlis/date-utlis/date-formatter';
+import { IFormData } from '@components/common/forms/register-form/RegisterForm';
+import { formatDate } from '@shared/utlis/date-utlis/date-formatter';
 
 interface ICommerceToolsCustomer {
   email: string;

@@ -10,20 +10,20 @@ import {
   Toolbar,
 } from '@mui/material';
 
-import logo from '../../../assets/icons/logo-dyson.svg';
-import { NavText } from '../../../shared/constants/text-fields';
+import logo from '@assets/icons/logo-dyson.svg';
+import { NavText } from '@shared/constants/text-fields';
 
-import emptyCart from '../../../assets/icons/cart.svg';
-import cart from '../../../assets/icons/cart-with-smth.svg';
-import profile from '../../../assets/icons/profile.svg';
+import emptyCart from '@assets/icons/cart.svg';
+import cart from '@assets/icons/cart-with-smth.svg';
+import profile from '@assets/icons/profile.svg';
 
 import { Link, useNavigate } from 'react-router-dom';
 
-import { Burger } from '../../ui/burger/burger/burger';
+import { Burger } from '@components/ui/burger/burger/burger';
 import styles from './Header.module.scss';
-import { ProfileMenu } from '../../ui/burger/menu/profile-menu';
+import { ProfileMenu } from '@components/ui/burger/menu/profile-menu';
 import { ButtonList } from './button-list/ButtonList';
-import { useAuth } from '../../../shared/context/auth-hooks';
+import { useAuth } from '@shared/context/auth-hooks';
 
 export interface INavItems {
   text: string;

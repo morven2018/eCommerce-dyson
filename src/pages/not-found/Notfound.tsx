@@ -1,4 +1,4 @@
-import { NotFound } from '../../components/layout/not-found/Notfound';
+import { NotFound } from '@components/layout/not-found/Notfound';
 
 export const NotFoundPage = () => {
   return (
