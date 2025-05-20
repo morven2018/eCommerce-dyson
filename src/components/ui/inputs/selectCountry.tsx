@@ -12,10 +12,7 @@ import {
   Path,
   FieldValues,
 } from 'react-hook-form';
-import {
-  DEFAULT_COUNTRIES,
-  ICountry,
-} from '../../../shared/constants/countries';
+import { DEFAULT_COUNTRIES, ICountry } from '@shared/constants/countries';
 
 interface CountrySelectProps<T extends FieldValues> {
   control: Control<T>;

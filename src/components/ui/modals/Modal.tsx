@@ -18,7 +18,7 @@ export default function ShowDialog({
   message,
   onClose,
   additionalButton,
-}: ShowDialogProps) {
+}: Readonly<ShowDialogProps>) {
   return (
     <Dialog open={true} onClose={onClose} maxWidth="sm" fullWidth>
       <DialogContent>

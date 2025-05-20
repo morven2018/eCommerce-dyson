@@ -1,6 +1,6 @@
 import { Buffer } from 'buffer';
 import { commercetoolsConfig } from './config';
-import { openDialog } from '../../../services/DialogService';
+import { openDialog } from '@services/DialogService';
 
 interface AnonymousTokenResponse {
   access_token: string;

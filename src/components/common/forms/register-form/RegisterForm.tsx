@@ -21,9 +21,9 @@ import {
 import { Link, useNavigate } from 'react-router-dom';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import InputEmail from '../../../ui/inputs/InputEmail';
-import InputPassword from '../../../ui/inputs/InputPassword';
-import { InputText } from '../../../ui/inputs/inputText';
+import InputEmail from '@components/ui/inputs/InputEmail';
+import InputPassword from '@components/ui/inputs/InputPassword';
+import { InputText } from '@components/ui/inputs/inputText';
 import {
   birthValidationSchema,
   emailValidationSchema,
@@ -32,17 +32,17 @@ import {
   textValidationSchema,
   textValidationSchema2,
   zipCodeValidationSchema,
-} from '../../../../shared/lib/validator/validator';
-import generatePassword from '../../../../shared/utlis/password-generator';
-import InputPhone from '../../../ui/inputs/inputPhone';
-import InputDate from '../../../ui/inputs/datePicker';
+} from '@shared/lib/validator/validator';
+import generatePassword from '@shared/utlis/password-generator';
+import InputPhone from '@components/ui/inputs/inputPhone';
+import InputDate from '@components/ui/inputs/datePicker';
 import dayjs from 'dayjs';
-import { CountrySelect } from '../../../ui/inputs/selectCountry';
+import { CountrySelect } from '@components/ui/inputs/selectCountry';
 import styles from './RegisterForm.module.scss';
-import { register } from '../../../../shared/api/commerce-tools/newCustomer';
-import ShowDialog from '../../../ui/modals/Modal';
-import { userAuthorization } from '../../../../shared/api/commerce-tools/authorization';
-import { useAuth } from '../../../../shared/context/auth-hooks';
+import { register } from '@shared/api/commerce-tools/newCustomer';
+import ShowDialog from '@components/ui/modals/Modal';
+import { userAuthorization } from '@shared/api/commerce-tools/authorization';
+import { useAuth } from '@shared/context/auth-hooks';
 
 const steps = ['Contact Information', 'Shipping Address', 'Billing Address'];
 
@@ -765,12 +765,15 @@ export const RegisterForm = () => {
   }, [watch, activeStep, debouncedUpdateStepValidity]);
 
   const nextStep = async () => {
-    const fieldsToValidate =
-      activeStep === 0
-        ? contactFields
-        : activeStep === 1
-          ? shippingFields
-          : billingFields;
+    let fieldsToValidate;
+
+    if (activeStep === 0) {
+      fieldsToValidate = contactFields;
+    } else if (activeStep === 1) {
+      fieldsToValidate = shippingFields;
+    } else {
+      fieldsToValidate = billingFields;
+    }
 
     const isValid = await trigger(fieldsToValidate);
     if (isValid) {
@@ -793,7 +796,8 @@ export const RegisterForm = () => {
           'Your account has been successfully created'
         );
         if (authResponse) {
-          localStorage.setItem('authDysonToken', authResponse.access_token);
+          const tokenName = 'authDysonToken';
+          localStorage.setItem(tokenName, authResponse.access_token);
           setIsUserUnauthorized(false);
           navigate('/');
           window.scrollTo(0, 0);
@@ -819,12 +823,12 @@ export const RegisterForm = () => {
         activeStep={activeStep}
         sx={{
           '& .Mui-active .MuiStepIcon-root circle': {
-            fill: '#192a51',
+            fill: '$button-dark',
           },
           '& .Mui-completed': {
             '& .MuiSvgIcon-root': {
               '& path:first-of-type': {
-                fill: '#192a51',
+                fill: '$button-dark',
               },
             },
           },

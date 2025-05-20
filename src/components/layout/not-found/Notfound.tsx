@@ -14,23 +14,21 @@ export const NotFound = () => {
   };
 
   return (
-    <>
-      <main className={styles.main}>
-        <div className={styles.content}>
-          <h2 className={styles.pageHeader}>
-            Oops! This page
-            <br /> doesn’t exist.
-          </h2>
-          <div className={styles.buttonWrapper}>
-            <Button className={styles.button} onClick={handleGoHome}>
-              home
-            </Button>
-            <Button className={styles.button} onClick={handleGoBack}>
-              back
-            </Button>
-          </div>
+    <main className={styles.main}>
+      <div className={styles.content}>
+        <h2 className={styles.pageHeader}>
+          Oops! This page
+          <br /> doesn’t exist.
+        </h2>
+        <div className={styles.buttonWrapper}>
+          <Button className={styles.button} onClick={handleGoHome}>
+            home
+          </Button>
+          <Button className={styles.button} onClick={handleGoBack}>
+            back
+          </Button>
         </div>
-      </main>
-    </>
+      </div>
+    </main>
   );
 };

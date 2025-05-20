@@ -1,8 +1,8 @@
 import styles from './Strengths.module.scss';
-import strength1 from '../../../assets/images/strength1.jpeg';
-import strength2 from '../../../assets/images/strength2.jpeg';
-import strength3 from '../../../assets/images/strength3.jpeg';
-import strength4 from '../../../assets/images/strength4.jpeg';
+import strength1 from '@assets/images/strength1.jpeg';
+import strength2 from '@assets/images/strength2.jpeg';
+import strength3 from '@assets/images/strength3.jpeg';
+import strength4 from '@assets/images/strength4.jpeg';
 
 export default function Strengths() {
   return (

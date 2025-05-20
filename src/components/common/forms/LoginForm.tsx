@@ -1,14 +1,13 @@
 import styles from './LoginForm.module.scss';
-import InputEmail from '../../ui/inputs/InputEmail';
-import InputPassword from '../../ui/inputs/InputPassword';
-import { Link } from 'react-router-dom';
+import InputEmail from '@components/ui/inputs/InputEmail';
+import InputPassword from '@components/ui/inputs/InputPassword';
+import { Link, useNavigate } from 'react-router-dom';
 import { useForm, Controller } from 'react-hook-form';
 import { defaultSchema } from './schema';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
-import { userAuthorization } from '../../../shared/api/commerce-tools/authorization';
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from '../../../shared/context/auth-hooks';
+import { userAuthorization } from '@shared/api/commerce-tools/authorization';
+import { useAuth } from '@shared/context/auth-hooks';
 
 export default function LoginForm() {
   const navigate = useNavigate();
@@ -25,7 +24,8 @@ export default function LoginForm() {
   const submitForm = async (data: yup.InferType<typeof defaultSchema>) => {
     const result = await userAuthorization(data);
     if (result) {
-      localStorage.setItem('authDysonToken', result.access_token);
+      const tokenName = 'authDysonToken';
+      localStorage.setItem(tokenName, result.access_token);
       setIsUserUnauthorized(false);
       navigate('/');
     }

@@ -30,12 +30,18 @@ describe('HomePage Component', () => {
 
   it('renders the Bestseller component', () => {
     expect(screen.getByText('Dyson V8 Absolute vacuum')).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /Shop now for Dyson V8 Absolute vacuum/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', {
+        name: /Shop now for Dyson V8 Absolute vacuum/i,
+      })
+    ).toBeInTheDocument();
   });
 
   it('renders the Popular component', () => {
     expect(screen.getByText('Dyson Purifier Big')).toBeInTheDocument();
-    expect(screen.getByRole('link', { name: /Buy Dyson Purifier/i })).toBeInTheDocument();
+    expect(
+      screen.getByRole('link', { name: /Buy Dyson Purifier/i })
+    ).toBeInTheDocument();
   });
 
   it('renders the Strengths component', () => {
@@ -46,4 +52,4 @@ describe('HomePage Component', () => {
   it('renders the Media component', () => {
     expect(screen.getByText('Follow us on social media')).toBeInTheDocument();
   });
-})
+});

@@ -2,7 +2,7 @@ import dayjs from 'dayjs';
 import * as yup from 'yup';
 
 const zipCodeRegexes: { [key: string]: RegExp } = {
-  gb: /^([A-Z]{1,2}\d[A-Z0-9]? ?[0-9][A-Z]{2})$/,
+  gb: /^([A-Z]{1,2}\d[A-Z0-9]? ?\d[A-Z]{2})$/,
   de: /^(\d{5})$/,
   fr: /^(\d{5})$/,
   it: /^(\d{5})$/,

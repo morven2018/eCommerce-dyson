@@ -1,8 +1,7 @@
-import React from 'react';
 import { ListItemText, Menu, MenuItem } from '@mui/material';
 
 import styles from './ProfileMenu.module.scss';
-import { INavItems } from '../../../layout/header/header';
+import { INavItems } from '@components/layout/header/header';
 import { useNavigate } from 'react-router-dom';
 
 interface ProfileMenuProps {
@@ -12,12 +11,12 @@ interface ProfileMenuProps {
   items: INavItems[];
 }
 
-export const ProfileMenu: React.FC<ProfileMenuProps> = ({
+export const ProfileMenu = ({
   anchorEl,
   open,
   onClose,
   items,
-}) => {
+}: ProfileMenuProps) => {
   const navigate = useNavigate();
   return (
     <Menu

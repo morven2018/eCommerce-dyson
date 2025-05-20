@@ -1,5 +1,5 @@
 import ReactDOM, { Root } from 'react-dom/client';
-import ShowDialog from '../components/ui/modals/Modal';
+import ShowDialog from '@components/ui/modals/Modal';
 
 export const openDialog = (message: string) => {
   const container = document.createElement('div');

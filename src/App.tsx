@@ -11,33 +11,31 @@ import { RedirectIfAuthenticatedRoute } from './components/routes/RedirectIfAuth
 
 export function App() {
   return (
-    <>
-      <AuthProvider>
-        <Header />
-        <Routes>
-          <Route path="/" element={<HomePage />} />
-          <Route path="/index.html" element={<HomePage />} />
-          <Route path="/about" element={<AboutPage />} />
-          <Route
-            path="/login"
-            element={
-              <RedirectIfAuthenticatedRoute>
-                <LoginPage />
-              </RedirectIfAuthenticatedRoute>
-            }
-          />
-          <Route
-            path="/register"
-            element={
-              <RedirectIfAuthenticatedRoute>
-                <RegisterPage />
-              </RedirectIfAuthenticatedRoute>
-            }
-          />
-          <Route path="*" element={<NotFoundPage />} />
-        </Routes>
-        <Footer />
-      </AuthProvider>
-    </>
+    <AuthProvider>
+      <Header />
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/index.html" element={<HomePage />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route
+          path="/login"
+          element={
+            <RedirectIfAuthenticatedRoute>
+              <LoginPage />
+            </RedirectIfAuthenticatedRoute>
+          }
+        />
+        <Route
+          path="/register"
+          element={
+            <RedirectIfAuthenticatedRoute>
+              <RegisterPage />
+            </RedirectIfAuthenticatedRoute>
+          }
+        />
+        <Route path="*" element={<NotFoundPage />} />
+      </Routes>
+      <Footer />
+    </AuthProvider>
   );
 }

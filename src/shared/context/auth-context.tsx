@@ -1,4 +1,10 @@
-import React, { createContext, useState, useCallback, useEffect } from 'react';
+import React, {
+  createContext,
+  useState,
+  useCallback,
+  useMemo,
+  useEffect,
+} from 'react';
 
 export interface AuthContextType {
   isUserUnauthorized: boolean;
@@ -19,12 +25,17 @@ const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   }, []);
 
-  const value = {
-    isUserUnauthorized,
-    setIsUserUnauthorized: useCallback((value: boolean) => {
-      setIsUserUnauthorized(value);
-    }, []),
-  };
+  const handleSetIsUserUnauthorized = useCallback((value: boolean) => {
+    setIsUserUnauthorized(value);
+  }, []);
+
+  const value = useMemo(
+    () => ({
+      isUserUnauthorized,
+      setIsUserUnauthorized: handleSetIsUserUnauthorized,
+    }),
+    [isUserUnauthorized, handleSetIsUserUnauthorized]
+  );
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 };

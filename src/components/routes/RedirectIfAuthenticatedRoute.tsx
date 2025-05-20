@@ -1,5 +1,5 @@
 import { Navigate, useLocation } from 'react-router-dom';
-import { useAuth } from '../../shared/context/auth-hooks';
+import { useAuth } from '@shared/context/auth-hooks';
 import { JSX } from 'react';
 
 export const RedirectIfAuthenticatedRoute = ({

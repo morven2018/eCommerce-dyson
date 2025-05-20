@@ -1,4 +1,4 @@
-import React from 'react';
+import { useState } from 'react';
 import {
   FormControl,
   InputLabel,
@@ -26,7 +26,7 @@ export default function InputPassword({
   error,
   helperText,
 }: Readonly<InputPasswordProps>) {
-  const [values, setValues] = React.useState<State>({
+  const [values, setValues] = useState<State>({
     showPassword: false,
   });
 
