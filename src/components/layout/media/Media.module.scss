@@ -1,11 +1,10 @@
-@use '../../../assets/styles/globals' as *;
+@use '@assets/styles/globals' as *;
 
 .media {
   width: 100%;
   max-width: 1440px;
   padding: 80px 40px;
-  background: url(../../../assets/images/media.png) center center / cover
-    no-repeat;
+  background: url(@assets/images/media.png) center center / cover no-repeat;
 }
 
 .container {
@@ -55,22 +54,22 @@
 }
 
 .iconX {
-  background: url(../../../assets/icons/x.svg) center center no-repeat;
+  background: url(@assets/icons/x.svg) center center no-repeat;
   background-size: contain;
 }
 
 .iconI {
-  background: url(../../../assets/icons/instagram.svg) center center no-repeat;
+  background: url(@assets/icons/instagram.svg) center center no-repeat;
   background-size: contain;
 }
 
 .iconY {
-  background: url(../../../assets/icons/youtube.svg) center center no-repeat;
+  background: url(@assets/icons/youtube.svg) center center no-repeat;
   background-size: contain;
 }
 
 .iconT {
-  background: url(../../../assets/icons/tictok.svg) center center no-repeat;
+  background: url(@assets/icons/tictok.svg) center center no-repeat;
   background-size: contain;
 }
 

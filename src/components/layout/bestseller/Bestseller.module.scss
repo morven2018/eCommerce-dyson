@@ -1,11 +1,10 @@
-@use '../../../assets/styles/globals' as *;
+@use '@assets/styles/globals' as *;
 
 .bestseller {
   width: 100%;
   max-width: 1440px;
   padding: 80px 40px;
-  background: url(../../../assets/images/bestseller.png) center center / cover
-    no-repeat;
+  background: url(@assets/images/bestseller.png) center center / cover no-repeat;
   margin: 0 auto;
 }
 
