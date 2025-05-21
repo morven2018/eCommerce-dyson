@@ -1,0 +1,140 @@
+@use '@assets/styles/globals.scss' as *;
+
+$breakpoint800: 800px;
+$breakpoint700: 700px;
+$breakpoint500: 500px;
+
+.registerForm {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 60px 80px;
+  gap: 17px;
+  border: 1px solid $primary-black;
+  width: 100%;
+  max-width: 800px;
+  background-color: $form-background;
+
+  .input:focus {
+    border-color: $controls;
+  }
+
+  label {
+    color: $label;
+    font-size: $typography-label;
+
+    :focus {
+      color: $label;
+    }
+  }
+
+  h5 {
+    font-weight: 400;
+    font-size: $typography-big-text;
+    color: $text;
+    padding: 10px 16px;
+  }
+
+  .form {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    width: 100%;
+  }
+  .button {
+    background-color: $button-dark;
+    border-radius: $border-radius;
+    color: $primary-white;
+    height: 56px;
+    border: none;
+
+    &:disabled {
+      background-color: $disable-button-dark;
+      color: $primary-white;
+      cursor: not-allowed;
+    }
+  }
+}
+.stepper {
+  width: 100%;
+
+  .Mui-active {
+    .MuiStepIcon-root {
+      circle {
+        fill: $button-dark;
+      }
+    }
+  }
+
+  .Mui-completed {
+    .MuiSvgIcon-root {
+      path:first-of-type {
+        fill: $button-dark;
+      }
+    }
+  }
+}
+.stepItem {
+  & > span {
+    display: flex;
+    flex-direction: row;
+  }
+}
+
+.password,
+.buttonBox {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 4fr 2fr;
+  gap: 32px;
+}
+
+.buttonBox {
+  grid-template-columns: 2fr 2fr;
+}
+
+@media screen and (max-width: $breakpoint800) {
+  .registerForm {
+    padding: 60px 40px;
+  }
+}
+
+@media screen and (max-width: $breakpoint800) {
+  .stepper {
+    max-width: 240px;
+  }
+}
+
+@media screen and (max-width: $breakpoint500) {
+  .registerForm {
+    padding: 30px 10px;
+  }
+
+  .checkbox {
+    padding-left: 10px;
+  }
+
+  .password,
+  .buttonBox {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 2fr 2fr;
+    gap: 0;
+  }
+
+  .password {
+    gap: 20px;
+  }
+  h5 {
+    text-align: center;
+  }
+}
+
+.text {
+  text-align: center;
+  & > * {
+    text-decoration: none;
+  }
+}

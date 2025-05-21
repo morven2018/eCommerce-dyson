@@ -1,0 +1,41 @@
+@use '@assets/styles/globals' as *;
+
+$header-width: 500px;
+
+.registerBlock {
+  padding: 145px 30px;
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  align-items: center;
+  width: 100vw;
+}
+
+.pageHeader {
+  display: block;
+
+  max-width: $header-width;
+
+  font-size: $typography-header;
+  font-weight: $base-weight;
+  text-align: left;
+  line-height: $line-height;
+  color: $button-dark;
+}
+.form {
+  background-color: $form-background;
+  border-radius: $border-radius;
+  border: 1px solid $primary-black;
+  max-width: 800px;
+  width: 100%;
+}
+.subheader {
+  font-size: $typography-subheader;
+  font-weight: $base-weight;
+  color: $primary-black;
+}
+
+.passwordWrapper {
+  display: flex;
+  flex-direction: row;
+}

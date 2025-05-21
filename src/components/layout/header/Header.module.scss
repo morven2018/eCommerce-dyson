@@ -1,0 +1,97 @@
+@use '@assets/styles/globals.scss' as *;
+
+$header-height: 148px;
+$logo-height: 28px;
+$mobile-width: 700px;
+$mobile-width2: 750px;
+
+.header {
+  height: $header-height;
+  width: 100%;
+  box-shadow: none;
+  background: $primary-black;
+  color: $primary-white;
+}
+
+.content {
+  display: flex;
+  flex-direction: column;
+  max-width: $content-width;
+  margin: 0 auto;
+}
+
+.itemList {
+  display: flex;
+  flex-direction: row;
+  text-decoration: none;
+  text-transform: uppercase;
+
+  .item::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 1px;
+    background-color: currentColor;
+    transition: width 0.3s ease;
+  }
+
+  .item:hover::after {
+    width: 100%;
+  }
+}
+
+.subheader {
+  border-bottom: 2px solid $primary-black;
+}
+
+.subheader,
+.subheaderCatalog {
+  height: calc($header-height / 2);
+}
+
+.logo {
+  height: $logo-height;
+  width: auto;
+}
+
+.iconWrapper {
+  min-width: $logo-height;
+  width: $logo-height;
+  height: $logo-height;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  & > .icon {
+    height: $logo-height;
+    width: $logo-height;
+  }
+}
+
+.toolbar {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.buttons {
+  white-space: nowrap;
+}
+
+@media screen and (max-width: $mobile-width) {
+  nav {
+    display: none;
+  }
+}
+@media screen and (max-width: $mobile-width2) {
+  @media (pointer: fine) {
+    .subheaderCatalog {
+      display: none;
+    }
+    .header {
+      height: calc($header-height / 2);
+    }
+  }
+}
