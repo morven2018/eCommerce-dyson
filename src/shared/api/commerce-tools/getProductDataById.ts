@@ -26,7 +26,7 @@ export async function getProductDataById(
     if (!response.ok) {
       const errorDetails = await response.json();
       const errorMessage = errorDetails.message;
-      throw new Error(`Get product failed: ${errorMessage}`);
+      throw new Error(`Request failed while fetching product: ${errorMessage}`);
     }
 
     const result: ProductData = await response.json();
