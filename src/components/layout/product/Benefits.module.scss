@@ -1,0 +1,71 @@
+@use '@assets/styles/globals.scss' as *;
+
+.benefitsContainer {
+  width: 100%;
+  background-color: $product-benefits-background;
+}
+
+.benefitsTitle,
+.benefitsSubtitle {
+  margin-top: 50px;
+  text-align: center;
+  font-weight: 300;
+  font-size: 34px;
+  color: $product-name-color;
+}
+
+.benefitsSubtitle {
+  font-size: 24px;
+}
+
+.infoContainer {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  max-width: 1040px;
+  margin: 50px auto;
+  padding: 0 20px;
+}
+
+.benefit {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+  width: 266px;
+  height: 165px;
+  border-radius: $border-radius;
+  background-color: $primary-white;
+}
+
+.benefitImg {
+  width: 40px;
+  height: 40px;
+}
+
+.benefitImg1 {
+  background: url(@assets/icons/benefit_1.svg) center center / cover no-repeat;
+}
+
+.benefitImg2 {
+  background: url(@assets/icons/benefit_2.svg) center center / cover no-repeat;
+}
+
+.benefitImg3 {
+  background: url(@assets/icons/benefit_3.svg) center center / cover no-repeat;
+}
+
+.benefitText {
+  text-align: center;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+@media screen and (max-width: 900px) {
+  .infoContainer {
+    flex-direction: column;
+    align-items: center;
+    gap: 50px;
+  }
+}
