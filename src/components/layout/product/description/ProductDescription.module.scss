@@ -1,0 +1,7 @@
+@use '@assets/styles/globals.scss' as *;
+
+.productContainer {
+  width: 100%;
+  padding: 40px 10px 20px;
+  background-color: $primary-white;
+}
