@@ -1,12 +1,15 @@
 import styles from './ProductTitle.module.scss';
 
-export default function ProductTitle() {
-  const productName = 'Full Product name';
-  const productPrice = '200$';
+interface ProductTitle {
+  name: string;
+  price: number;
+}
+
+export default function ProductTitle({ name, price }: ProductTitle) {
   return (
     <div className={styles.titleContainer}>
-      <h2 className={styles.name}>{productName}</h2>
-      <h2 className={styles.price}>{productPrice}</h2>
+      <h2 className={styles.name}>{name}</h2>
+      <h2 className={styles.price}>{price}$</h2>
     </div>
   );
 }
