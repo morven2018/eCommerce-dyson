@@ -1,0 +1,19 @@
+@use '@assets/styles/globals' as *;
+
+.buttonBack {
+  display: block;
+  width: 100px;
+  height: 40px;
+  margin-left: auto;
+  text-transform: uppercase;
+  border: none;
+  border-radius: $border-radius;
+  background-color: $button-dark;
+  color: $primary-white;
+
+  &:hover {
+    @media (hover: hover) and (pointer: fine) {
+      cursor: pointer;
+    }
+  }
+}
