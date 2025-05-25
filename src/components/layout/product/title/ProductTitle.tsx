@@ -1,8 +1,8 @@
 import styles from './ProductTitle.module.scss';
 
 interface ProductTitle {
-  name: string;
-  price: number;
+  readonly name: string;
+  readonly price: number;
 }
 
 export default function ProductTitle({ name, price }: ProductTitle) {

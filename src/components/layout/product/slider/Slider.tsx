@@ -9,7 +9,7 @@ interface Image {
 }
 
 interface SliderProps {
-  images: Image[];
+  readonly images: Image[];
 }
 export function Slider({ images }: SliderProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -40,7 +40,7 @@ export function Slider({ images }: SliderProps) {
     <div className={styles.container}>
       <Swiper navigation={true} pagination={{ clickable: true }}>
         {images.map((image, index) => (
-          <SwiperSlide key={index}>
+          <SwiperSlide key={`${image}${index}`}>
             <img
               src={image.src}
               alt={image.alt}

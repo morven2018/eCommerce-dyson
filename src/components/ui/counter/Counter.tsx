@@ -2,7 +2,7 @@ import { useState } from 'react';
 import styles from './Counter.module.scss';
 
 interface CounterProps {
-  price: number;
+  readonly price: number;
 }
 
 export default function Counter({ price }: CounterProps) {

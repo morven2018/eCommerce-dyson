@@ -22,7 +22,7 @@ export default function Benefits() {
       <h3 className={styles.benefitsSubtitle}>Benefits</h3>
       <div className={styles.infoContainer}>
         {benefits.map((benefit, index) => (
-          <div key={index} className={styles.benefit}>
+          <div key={`${benefit}${index}`} className={styles.benefit}>
             <div className={`${styles.benefitImg} ${benefit.imgClass}`}></div>
             <div className={styles.benefitText}>{benefit.text}</div>
           </div>
