@@ -1,0 +1,88 @@
+@use '@assets/styles/globals.scss' as *;
+
+.container {
+  width: 100%;
+  max-width: 700px;
+  padding: 25px;
+  border: 1px solid green;
+}
+
+.image {
+  display: block;
+  width: 50%;
+  height: auto;
+  margin: 0 auto;
+  cursor: zoom-in;
+}
+
+.modalWindow {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: $primary-black;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 100;
+}
+
+.modal {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 85%;
+  height: 80%;
+  padding: 25px;
+  border-radius: $border-radius;
+  background-color: $secondary-light;
+}
+
+.buttonCloseModal {
+  display: block;
+  width: 35px;
+  height: 35px;
+  font-size: 24px;
+  font-weight: 600;
+  margin-left: auto;
+  border: none;
+  border-radius: $border-radius;
+  color: $primary-white;
+  background-color: $button-dark;
+  cursor: pointer;
+}
+
+.modalSlider {
+  height: inherit;
+  margin-top: 20px;
+}
+
+.modalImage {
+  width: 50%;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+  display: block;
+  margin: 0 auto;
+}
+
+.arrowsContainer {
+  display: flex;
+  justify-content: center;
+  gap: 30px;
+}
+
+.arrow {
+  font-size: 30px;
+  border: none;
+  border-radius: $border-radius;
+  background-color: $button-dark;
+  color: $primary-white;
+  cursor: pointer;
+
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+}

@@ -1,0 +1,38 @@
+@use '@assets/styles/globals.scss' as *;
+
+.container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  margin-top: 20px;
+}
+
+.variant {
+  text-align: center;
+  border-radius: $border-radius;
+  border: 1px solid $modal-border;
+  transition: all 0.5s ease-out;
+  cursor: pointer;
+
+  img {
+    width: 70px;
+    height: 70px;
+    border-radius: $border-radius;
+    object-fit: cover;
+  }
+
+  span {
+    color: $primary-black;
+    transition: all 0.5s ease-out;
+  }
+
+  &:hover {
+    @media (hover: hover) and (pointer: fine) {
+      box-shadow: 0px 0px 5px 0px $product-benefits-background;
+
+      span {
+        font-weight: bold;
+      }
+    }
+  }
+}
