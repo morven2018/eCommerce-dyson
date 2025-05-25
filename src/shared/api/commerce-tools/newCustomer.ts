@@ -15,6 +15,7 @@ interface ICommerceToolsCustomer {
     streetName: string;
     streetNumber?: string;
     postalCode: string;
+    phone?: string;
     additionalAddressInfo?: string;
   }[];
   shippingAddresses: number[];
@@ -135,6 +136,7 @@ export async function register(data: IFormData) {
           streetName: data.shippingAddress.street,
           streetNumber: data.shippingAddress.streetLine2 ?? '',
           postalCode: data.shippingAddress.zipCode,
+          phone: data.phone,
           additionalAddressInfo: data.shippingAddress.defaultAddress
             ? 'Default billing address'
             : '',
@@ -145,6 +147,7 @@ export async function register(data: IFormData) {
           streetName: data.billingAddress.street,
           streetNumber: data.billingAddress.streetLine2 ?? '',
           postalCode: data.billingAddress.zipCode,
+          phone: data.phone,
           additionalAddressInfo: data.billingAddress.defaultAddress
             ? 'Default billing address'
             : '',
