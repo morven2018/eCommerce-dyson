@@ -1,12 +1,16 @@
 import styles from '@components/common/forms/register-form/RegisterForm.module.scss';
+import React from 'react';
 
 import {
   FormControl,
   InputLabel,
   OutlinedInput,
   FormHelperText,
+  IconButton,
+  InputAdornment,
 } from '@mui/material';
-
+import EditIcon from '@mui/icons-material/Edit';
+import SaveIcon from '@mui/icons-material/Save';
 interface InputFieldProps {
   id: string;
   label: string;
@@ -19,6 +23,9 @@ interface InputFieldProps {
   helperText?: string;
   required?: boolean;
   disabled?: boolean;
+  readOnly?: boolean;
+  onEditClick?: () => void;
+  isEditing?: boolean;
 }
 
 export const InputText = ({
@@ -33,6 +40,9 @@ export const InputText = ({
   helperText,
   required = false,
   disabled = false,
+  readOnly = false,
+  onEditClick,
+  isEditing = false,
 }: InputFieldProps) => {
   return (
     <FormControl
@@ -54,6 +64,20 @@ export const InputText = ({
         onBlur={onBlur}
         label={label}
         className={styles.input}
+        readOnly={readOnly}
+        endAdornment={
+          readOnly || isEditing ? (
+            <InputAdornment position="end">
+              <IconButton
+                aria-label="toggle edit"
+                onClick={onEditClick}
+                edge="end"
+              >
+                {isEditing ? <SaveIcon /> : <EditIcon />}
+              </IconButton>
+            </InputAdornment>
+          ) : null
+        }
       />
       {helperText && <FormHelperText>{helperText}</FormHelperText>}
     </FormControl>
