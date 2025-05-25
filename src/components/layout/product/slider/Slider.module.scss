@@ -80,4 +80,9 @@
   background-color: $button-dark;
   color: $primary-white;
   cursor: pointer;
+
+  &:disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
 }
