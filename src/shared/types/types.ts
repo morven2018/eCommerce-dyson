@@ -1,58 +1,68 @@
+export interface ProductImage {
+  url: string;
+  dimensions: {
+    w: number;
+    h: number;
+  };
+}
+
+interface ProductPriceValue {
+  type: string;
+  fractionDigits: number;
+  centAmount: number;
+  currencyCode: string;
+}
+
+interface ProductDiscountedPrice {
+  value: ProductPriceValue;
+}
+
+interface ProductPrice {
+  value: ProductPriceValue;
+  discounted?: ProductDiscountedPrice;
+  id: string;
+}
+
+interface ProductVariantBase {
+  id: number;
+  sku?: string;
+  key?: string;
+  images?: ProductImage[];
+  prices?: ProductPrice[];
+}
+
+interface ProductCategory {
+  id: string;
+  typeId: string;
+}
+
 interface ProductDescription {
-  categories: [
-    {
-      id: string;
-      typeId: string;
-    },
-  ];
-  description: {
-    en: string;
-  };
-  masterVariant: {
-    attributes: [];
-    id: number;
-    images: [
-      {
-        dimensions: {
-          h: number;
-          w: number;
-        };
-        url: string;
-      },
-    ];
-    prices: [
-      {
-        value: {
-          type: string;
-          fractionDigits: number;
-          centAmount: number;
-          currencyCode: string;
-        };
-        id: string;
-      },
-    ];
-    sku: string;
-  };
   name: {
-    en: string;
+    'en-US': string;
   };
-  slug: {
-    en: string;
+  description?: {
+    'en-US': string;
   };
-  variants: [];
-  // eslint-disable-next-line @typescript-eslint/no-empty-object-type
-  searchKeywords: {};
+  slug?: {
+    'en-US': string;
+  };
+  categories?: ProductCategory[];
+  masterVariant?: ProductVariantBase;
+  variants?: ProductVariantBase[];
+  searchKeywords?: Record<string, unknown>;
+  metaTitle?: {
+    'en-US': string;
+  };
+  metaDescription?: {
+    'en-US': string;
+  };
 }
 
 export interface ProductData {
   id: string;
   version: number;
-  masterData: {
-    current: ProductDescription;
-    hasStagedChanges: false;
-    published: true;
-    staged: ProductDescription;
-  };
+  createdAt: string;
+  lastModifiedAt: string;
   productType: {
     id: string;
     typeId: string;
@@ -61,6 +71,10 @@ export interface ProductData {
     id: string;
     typeId: string;
   };
-  createdAt: string;
-  lastModifiedAt: string;
+  masterData: {
+    current: ProductDescription;
+    staged: ProductDescription;
+    hasStagedChanges: boolean;
+    published: boolean;
+  };
 }
