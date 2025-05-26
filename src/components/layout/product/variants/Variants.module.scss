@@ -8,6 +8,7 @@
 }
 
 .variant {
+  width: 75px;
   text-align: center;
   border-radius: $border-radius;
   border: 1px solid $modal-border;
@@ -15,13 +16,14 @@
   cursor: pointer;
 
   img {
-    width: 70px;
+    width: 75px;
     height: 70px;
     border-radius: $border-radius;
-    object-fit: cover;
+    object-fit: contain;
   }
 
   span {
+    padding: 0 2px;
     color: $primary-black;
     transition: all 0.5s ease-out;
   }
