@@ -73,14 +73,14 @@ export function Slider({ images }: SliderProps) {
                 onClick={handlePrevImage}
                 disabled={images.length === 1}
               >
-                ←
+                ⭠
               </button>
               <button
                 className={styles.arrow}
                 onClick={handleNextImage}
                 disabled={images.length === 1}
               >
-                →
+                ⭢
               </button>
             </div>
           </div>

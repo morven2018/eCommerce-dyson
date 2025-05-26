@@ -3,7 +3,7 @@ import { openDialog } from '@services/DialogService';
 import { ProductData } from '@shared/types/types';
 
 interface EnterData {
-  id: string;
+  id: string | null;
   token: string | null;
 }
 

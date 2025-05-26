@@ -42,7 +42,8 @@ const catalogItems = [
   {
     text: FastCatalog.Lighting,
     icon: light,
-    path: '/catalog/lighting',
+    // path: '/catalog/lighting', временно закомитил для теста страницы Продукта
+    path: '/product',
   },
 ];
 
