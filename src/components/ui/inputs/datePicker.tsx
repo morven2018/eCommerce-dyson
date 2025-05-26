@@ -35,7 +35,6 @@ export default function InputDate({
   helperText = '',
   label = 'Date of birth',
   required = false,
-  readOnly = false,
   disabled = false,
   onEditClick,
   isEditing = false,
@@ -54,6 +53,7 @@ export default function InputDate({
           onChange={onChange}
           onClose={onBlur}
           readOnly={!isEditing}
+          enableAccessibleFieldDOMStructure={false}
           disabled={disabled}
           slots={{
             textField: (params) => (
