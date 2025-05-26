@@ -8,6 +8,7 @@ import { Header } from './components/layout/header/header';
 import Footer from './components/layout/footer/Footer';
 import { AuthProvider } from './shared/context/auth-context';
 import { RedirectIfAuthenticatedRoute } from './components/routes/RedirectIfAuthenticatedRoute';
+import { ProductPage } from '@pages/product/Product';
 
 export function App() {
   return (
@@ -33,6 +34,7 @@ export function App() {
             </RedirectIfAuthenticatedRoute>
           }
         />
+        <Route path="/product" element={<ProductPage />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
       <Footer />
