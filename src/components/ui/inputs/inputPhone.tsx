@@ -12,8 +12,9 @@ import SaveIcon from '@mui/icons-material/Save';
 type InputPhoneProps = {
   value?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  label?: string;
   error?: boolean;
-  helperText: string | undefined;
+  helperText?: string | undefined;
   disabled?: boolean;
   readOnly?: boolean;
   onEditClick?: () => void;
@@ -23,6 +24,7 @@ type InputPhoneProps = {
 export default function InputPhone({
   value,
   onChange,
+  label = 'Phone number',
   error,
   helperText,
   readOnly = false,
@@ -32,13 +34,13 @@ export default function InputPhone({
 }: Readonly<InputPhoneProps>) {
   return (
     <FormControl variant="outlined" fullWidth error={error} disabled={disabled}>
-      <InputLabel htmlFor="form-phone">Phone number</InputLabel>
+      <InputLabel htmlFor="form-phone">{label}</InputLabel>
       <OutlinedInput
         id="form-phone"
         type="tel"
         value={value ?? ''}
         onChange={onChange}
-        label="Phone number"
+        label={label}
         readOnly={readOnly}
         endAdornment={
           readOnly || isEditing ? (
