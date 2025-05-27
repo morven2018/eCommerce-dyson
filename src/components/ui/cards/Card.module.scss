@@ -1,0 +1,64 @@
+@use '@assets/styles/globals' as *;
+
+.container {
+  width: 232px;
+  height: 508px;
+  border-radius: $border-radius;
+  border: 1px solid $modal-border;
+}
+
+.cardImage {
+  width: 232px;
+  height: 200px;
+  object-fit: contain;
+}
+
+.cardInfo {
+  width: 100%;
+  height: 308px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  padding: 16px;
+  background-color: $button-secondary;
+}
+
+.price {
+  font-size: 24px;
+  font-weight: 600;
+  color: $button-dark;
+}
+
+.discount {
+  font-size: 18px;
+  font-weight: 500;
+  color: $discount-color;
+}
+
+.name {
+  font-size: 22px;
+  font-weight: 600;
+  color: $text;
+}
+
+.description {
+  font-size: 16px;
+  color: $label;
+}
+
+.buttonsContainer {
+  display: flex;
+  gap: 15px;
+  margin-top: auto;
+}
+
+.button {
+  width: 86px;
+  height: 32px;
+  font-size: 14px;
+  color: $product-name-color;
+  background-color: $button-dark;
+  border: none;
+  border-radius: $border-radius;
+  cursor: pointer;
+}

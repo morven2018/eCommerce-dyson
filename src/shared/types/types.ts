@@ -78,3 +78,26 @@ export interface ProductData {
     published: boolean;
   };
 }
+
+///////
+export interface CardInfo {
+  description: {
+    'en-US': string;
+  };
+  id: string;
+  name: {
+    'en-US': string;
+  };
+  masterVariant?: {
+    images: ProductImage[];
+    prices: ProductPrice[];
+  };
+}
+
+export interface ProductsByCategory {
+  limit: number;
+  offset: number;
+  count: number;
+  total: number;
+  results: CardInfo[];
+}
