@@ -43,7 +43,7 @@ export const ProductPage = () => {
   }, []);
 
   if (!productData) {
-    return <div>Loading...</div>;
+    return <div className={styles.textLoading}>Loading...</div>;
   }
 
   const currentPath = productData.masterData.current;
