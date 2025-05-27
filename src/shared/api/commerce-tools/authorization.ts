@@ -35,7 +35,7 @@ export async function userAuthorization(
   body.append('password', data.password);
   body.append(
     'scope',
-    `view_published_products:${projectKey} manage_my_orders:${projectKey} manage_my_profile:${projectKey}`
+    `manage_customers:${projectKey} view_published_products:${projectKey} manage_my_orders:${projectKey} manage_my_profile:${projectKey}`
   );
 
   try {
