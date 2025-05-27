@@ -17,6 +17,12 @@
   transition: flex-direction 0.3s ease;
 }
 
+.textLoading {
+  font-size: 30px;
+  margin: 250px 0;
+  color: $primary-black;
+}
+
 @media (max-width: 1200px) {
   .productContainer {
     flex-direction: column-reverse;
