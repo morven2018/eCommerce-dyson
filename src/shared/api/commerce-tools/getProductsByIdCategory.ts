@@ -3,7 +3,7 @@ import { openDialog } from '@services/DialogService';
 import { ProductsByCategory } from '@shared/types/types';
 
 interface EnterData {
-  id: string | null;
+  idCategory: string | null;
   token: string | null;
 }
 
@@ -12,7 +12,7 @@ export async function getProductsByIdCategory(
 ): Promise<ProductsByCategory | null> {
   const apiUrl = commercetoolsConfig.apiUrl;
   const projectKey = commercetoolsConfig.projectKey;
-  const url = `${apiUrl}/${projectKey}/product-projections/search?filter=categories.id:"${data.id}"`;
+  const url = `${apiUrl}/${projectKey}/product-projections/search?filter=categories.id:"${data.idCategory}"`;
 
   try {
     const response = await fetch(url, {
