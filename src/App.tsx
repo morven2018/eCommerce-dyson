@@ -9,6 +9,7 @@ import Footer from './components/layout/footer/Footer';
 import { AuthProvider } from './shared/context/auth-context';
 import { RedirectIfAuthenticatedRoute } from './components/routes/RedirectIfAuthenticatedRoute';
 import { ProductPage } from '@pages/product/Product';
+import { CategoryPage } from '@pages/catalog/category/CategoryPage';
 
 export function App() {
   return (
@@ -33,6 +34,26 @@ export function App() {
               <RegisterPage />
             </RedirectIfAuthenticatedRoute>
           }
+        />
+        <Route
+          path="/catalog/vacuums"
+          element={<CategoryPage page="vacuums" />}
+        />
+        <Route
+          path="/catalog/hair-care"
+          element={<CategoryPage page="hair-care" />}
+        />
+        <Route
+          path="/catalog/heater"
+          element={<CategoryPage page="heater" />}
+        />
+        <Route
+          path="/catalog/headphones"
+          element={<CategoryPage page="headphones" />}
+        />
+        <Route
+          path="/catalog/lighting"
+          element={<CategoryPage page="lighting" />}
         />
         <Route path="/product" element={<ProductPage />} />
         <Route path="*" element={<NotFoundPage />} />
