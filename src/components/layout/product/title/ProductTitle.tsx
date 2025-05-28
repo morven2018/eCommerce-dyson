@@ -9,7 +9,7 @@ export default function ProductTitle({ name, price }: ProductTitle) {
   return (
     <div className={styles.titleContainer}>
       <h2 className={styles.name}>{name}</h2>
-      <h2 className={styles.price}>{price.toFixed(2)}$</h2>
+      <h2 className={styles.price}>${price.toFixed(2)}</h2>
     </div>
   );
 }
