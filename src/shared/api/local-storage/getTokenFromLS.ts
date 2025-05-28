@@ -1,11 +1,10 @@
 export function getTokenFromLS(): string | null {
-  const tokenName = 'authDysonToken';
-  const token: string | null = localStorage.getItem(tokenName);
-  if (token === null) return null;
+  const authTokenName = 'authDysonToken';
+  const anonymTokenName = 'AnonymousDysonToken';
 
-  if (typeof token === 'string') {
-    return token;
-  }
+  const token: string | null =
+    localStorage.getItem(authTokenName) ||
+    localStorage.getItem(anonymTokenName);
 
-  return null;
+  return token;
 }
