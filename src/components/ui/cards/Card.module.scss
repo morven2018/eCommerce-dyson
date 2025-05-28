@@ -18,7 +18,6 @@
   height: 308px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
   padding: 16px;
   background-color: $button-secondary;
 }
@@ -32,6 +31,7 @@
 .discount {
   font-size: 18px;
   font-weight: 500;
+  margin-bottom: 10px;
   color: $discount-color;
 }
 
