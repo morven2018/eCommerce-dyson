@@ -20,6 +20,17 @@ interface ICommerceToolsCustomer {
   }[];
   shippingAddresses: number[];
   billingAddresses: number[];
+  defaultShippingAddress?: number;
+  defaultBillingAddress?: number;
+  custom?: {
+    type: {
+      typeId: string;
+      key: string;
+    };
+    fields: {
+      [key: string]: string | boolean;
+    };
+  };
 }
 
 let authTokenCache: {
@@ -39,33 +50,43 @@ async function getToken(): Promise<string | null> {
     `${commercetoolsConfig.clientId}:${commercetoolsConfig.clientSecret}`
   ).toString('base64');
 
-  const response = await fetch(`${commercetoolsConfig.authUrl}/oauth/token`, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
-      Authorization: `Basic ${basicAuth}`,
-    },
-    body: new URLSearchParams({
-      grant_type: 'client_credentials',
-      scope: `manage_customers:${commercetoolsConfig.projectKey}`,
-    }),
-  });
+  try {
+    const response = await fetch(`${commercetoolsConfig.authUrl}/oauth/token`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/x-www-form-urlencoded',
+        Authorization: `Basic ${basicAuth}`,
+      },
+      body: new URLSearchParams({
+        grant_type: 'client_credentials',
+        // Используем только разрешенные scope из сообщения об ошибке
+        scope: `manage_customers:${commercetoolsConfig.projectKey} manage_types:${commercetoolsConfig.projectKey}`,
+      }),
+    });
 
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(`Auth failed: ${JSON.stringify(error)}`);
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(`Auth failed: ${JSON.stringify(error)}`);
+    }
+
+    const tokenData = await response.json();
+    authTokenCache = {
+      token: tokenData.access_token,
+      expiresAt: Date.now() + (tokenData.expires_in - 60) * 1000,
+    };
+
+    return authTokenCache.token;
+  } catch (error) {
+    console.error('Failed to get auth token:', error);
+    throw error;
   }
-
-  const tokenData = await response.json();
-  authTokenCache = {
-    token: tokenData.access_token,
-    expiresAt: Date.now() + (tokenData.expires_in - 60) * 1000,
-  };
-
-  return authTokenCache.token;
 }
 
-async function checkCustomerExists(email: string, authToken: string) {
+// Остальные функции остаются без изменений
+async function checkCustomerExists(
+  email: string,
+  authToken: string
+): Promise<boolean> {
   try {
     const response = await fetch(
       `${commercetoolsConfig.apiUrl}/${commercetoolsConfig.projectKey}/customers?where=email="${encodeURIComponent(email)}"`,
@@ -84,8 +105,79 @@ async function checkCustomerExists(email: string, authToken: string) {
 
     const result = await response.json();
     return result.count > 0;
-  } catch {
+  } catch (error) {
+    console.error('Failed to check customer existence:', error);
     throw new Error('Failed to check customer existence');
+  }
+}
+
+async function checkTypeExists(
+  typeKey: string,
+  authToken: string
+): Promise<boolean> {
+  try {
+    const response = await fetch(
+      `${commercetoolsConfig.apiUrl}/${commercetoolsConfig.projectKey}/types/key=${typeKey}`,
+      {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${authToken}`,
+        },
+      }
+    );
+
+    return response.ok;
+  } catch (error) {
+    console.error('Error checking type existence:', error);
+    return false;
+  }
+}
+
+async function createCustomerType(authToken: string): Promise<void> {
+  const typeDefinition = {
+    key: 'customer',
+    name: {
+      en: 'Customer Custom Fields',
+    },
+    description: {
+      en: 'Additional customer information including phone number',
+    },
+    resourceTypeIds: ['customer'],
+    fieldDefinitions: [
+      {
+        name: 'phone',
+        label: {
+          en: 'Phone Number',
+        },
+        type: {
+          name: 'String',
+        },
+        required: false,
+        inputHint: 'SingleLine',
+      },
+    ],
+  };
+
+  try {
+    const response = await fetch(
+      `${commercetoolsConfig.apiUrl}/${commercetoolsConfig.projectKey}/types`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${authToken}`,
+        },
+        body: JSON.stringify(typeDefinition),
+      }
+    );
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(`Failed to create type: ${JSON.stringify(error)}`);
+    }
+  } catch (error) {
+    console.error('Failed to create customer type:', error);
+    throw error;
   }
 }
 
@@ -93,29 +185,42 @@ async function createCustomer(
   customerData: ICommerceToolsCustomer,
   authToken: string
 ) {
-  const response = await fetch(
-    `${commercetoolsConfig.apiUrl}/${commercetoolsConfig.projectKey}/customers`,
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `Bearer ${authToken}`,
-      },
-      body: JSON.stringify(customerData),
+  try {
+    const response = await fetch(
+      `${commercetoolsConfig.apiUrl}/${commercetoolsConfig.projectKey}/customers`,
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${authToken}`,
+        },
+        body: JSON.stringify(customerData),
+      }
+    );
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(`Failed to create customer: ${JSON.stringify(error)}`);
     }
-  );
 
-  if (!response.ok) {
-    const error = await response.json();
-    throw new Error(`Failed to create customer: ${error.message}`);
+    return await response.json();
+  } catch (error) {
+    console.error('Failed to create customer:', error);
+    throw error;
   }
-
-  return await response.json();
 }
 
 export async function register(data: IFormData) {
-  const authToken = await getToken();
-  if (typeof authToken === 'string') {
+  try {
+    const authToken = await getToken();
+    if (!authToken) throw new Error('Authentication failed');
+
+    const typeExists = await checkTypeExists('customer', authToken);
+    if (!typeExists) {
+      await createCustomerType(authToken);
+      console.log('Customer type created successfully');
+    }
+
     const exists = await checkCustomerExists(data.email, authToken);
     if (exists) {
       throw new Error(
@@ -123,7 +228,7 @@ export async function register(data: IFormData) {
       );
     }
 
-    const customerData = {
+    const customerData: ICommerceToolsCustomer = {
       email: data.email,
       firstName: data.firstName,
       lastName: data.lastName,
@@ -136,9 +241,8 @@ export async function register(data: IFormData) {
           streetName: data.shippingAddress.street,
           streetNumber: data.shippingAddress.streetLine2 ?? '',
           postalCode: data.shippingAddress.zipCode,
-          phone: data.phone,
           additionalAddressInfo: data.shippingAddress.defaultAddress
-            ? 'Default billing address'
+            ? 'Default shipping address'
             : '',
         },
         {
@@ -147,7 +251,6 @@ export async function register(data: IFormData) {
           streetName: data.billingAddress.street,
           streetNumber: data.billingAddress.streetLine2 ?? '',
           postalCode: data.billingAddress.zipCode,
-          phone: data.phone,
           additionalAddressInfo: data.billingAddress.defaultAddress
             ? 'Default billing address'
             : '',
@@ -159,9 +262,19 @@ export async function register(data: IFormData) {
         ? 0
         : undefined,
       defaultBillingAddress: data.billingAddress.defaultAddress ? 1 : undefined,
+      custom: {
+        type: {
+          typeId: 'type',
+          key: 'customer',
+        },
+        fields: {
+          phone: data.phone,
+        },
+      },
     };
 
     const newCustomer = await createCustomer(customerData, authToken);
+
     return {
       customer: newCustomer,
       authData: {
@@ -169,5 +282,8 @@ export async function register(data: IFormData) {
         password: data.password,
       },
     };
+  } catch (error) {
+    console.error('Registration failed:', error);
+    throw error;
   }
 }
