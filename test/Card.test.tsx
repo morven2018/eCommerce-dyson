@@ -88,18 +88,12 @@ describe('Card Component', () => {
     expect(screen.getByText('Add to cart')).toBeInTheDocument();
   });
 
-  it('applies correct CSS classes from styles module', () => {
-    render(<Card {...defaultProps} />);
-    // const container = screen.getByText('Dyson Vacuum Cleaner').closest('div');
-  });
-
   it('formats price correctly for non-integer values', () => {
     const propsWithOddPrice = {
       ...defaultProps,
       price: 39999,
     };
     render(<Card {...propsWithOddPrice} />);
-
     expect(screen.getByText('399.99$')).toBeInTheDocument();
   });
 });
