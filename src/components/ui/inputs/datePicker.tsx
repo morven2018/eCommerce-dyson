@@ -52,7 +52,7 @@ export default function InputDate({
           value={value}
           onChange={onChange}
           onClose={onBlur}
-          readOnly={!isEditing}
+          readOnly={onEditClick ? !isEditing : false}
           enableAccessibleFieldDOMStructure={false}
           disabled={disabled}
           slots={{
@@ -65,10 +65,11 @@ export default function InputDate({
                 onBlur={onBlur}
                 InputProps={{
                   ...params.InputProps,
-                  readOnly: !isEditing,
+                  readOnly: onEditClick ? !isEditing : false,
                   endAdornment: (
                     <Stack direction="row" spacing={1}>
-                      {isEditing && params.InputProps?.endAdornment}
+                      {(!onEditClick || isEditing) &&
+                        params.InputProps?.endAdornment}
                       {onEditClick && (
                         <InputAdornment position="end">
                           <IconButton
