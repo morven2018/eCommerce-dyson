@@ -24,6 +24,7 @@ import styles from './Header.module.scss';
 import { ProfileMenu } from '@components/ui/burger/menu/profile-menu';
 import { ButtonList } from './button-list/ButtonList';
 import { useAuth } from '@shared/context/auth-hooks';
+import { addAnonymousSessionTokenToLS } from '@shared/utlis/token/addAnonymousSessionTokenToLS';
 
 export interface INavItems {
   text: string;
@@ -73,6 +74,7 @@ export const Header = () => {
     if (!isUserUnauthorized) {
       const tokenName = 'authDysonToken';
       localStorage.removeItem(tokenName);
+      addAnonymousSessionTokenToLS();
     }
     setIsUserUnauthorized(!isUserUnauthorized);
   };
