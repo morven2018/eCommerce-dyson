@@ -26,9 +26,11 @@ export default function ProductCard({
     <div className={styles.container}>
       <h3 className={styles.name}>{name}</h3>
       <div className={styles.description}>{description}</div>
-      <div className={styles.price}>Price: {discountedPrice ?? price}</div>
+      <div className={styles.price}>
+        Price: {discountedPrice?.toFixed(2) ?? price.toFixed(2)}$
+      </div>
       {discountedPrice && (
-        <div className={styles.initial}>Initial price: {price}</div>
+        <div className={styles.initial}>Initial price: {price.toFixed(2)}$</div>
       )}
       <Counter price={discountedPrice ?? price} />
       <button className={styles.button}>add to cart</button>

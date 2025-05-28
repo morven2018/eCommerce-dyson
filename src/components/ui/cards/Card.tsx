@@ -33,7 +33,7 @@ export const Card = ({
     <div className={styles.container}>
       <img src={src} alt={alt} className={styles.cardImage} />
       <div className={styles.cardInfo}>
-        <div className={styles.price}>{price / 100}.00$</div>
+        <div className={styles.price}>{(price / 100).toFixed(2)}$</div>
         {discountedPrice && (
           <div className={styles.discount}>
             Discount: -{Math.round(((price - discountedPrice) / price) * 100)}%
