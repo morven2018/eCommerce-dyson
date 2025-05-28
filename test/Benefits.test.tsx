@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react';
 import { expect, describe, it } from 'vitest';
 import Benefits from '../src/components/layout/product/benefits/Benefits';
 import React from 'react';
+import '@testing-library/jest-dom/vitest';
 
 describe('Benefits', () => {
   it('renders the title and subtitle correctly', () => {
