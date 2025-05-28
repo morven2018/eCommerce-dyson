@@ -10,6 +10,7 @@ import { AuthProvider } from './shared/context/auth-context';
 import { RedirectIfAuthenticatedRoute } from './components/routes/RedirectIfAuthenticatedRoute';
 import { ProductPage } from '@pages/product/Product';
 import { CategoryPage } from '@pages/catalog/category/CategoryPage';
+import { CatalogPage } from '@pages/catalog/CatalogPage';
 
 export function App() {
   return (
@@ -18,6 +19,7 @@ export function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/index.html" element={<HomePage />} />
+        <Route path="/catalog" element={<CatalogPage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route
           path="/login"

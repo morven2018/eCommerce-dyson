@@ -79,7 +79,6 @@ export interface ProductData {
   };
 }
 
-///////
 export interface CardInfo {
   description: {
     'en-US': string;
@@ -100,4 +99,12 @@ export interface ProductsByCategory {
   count: number;
   total: number;
   results: CardInfo[];
+}
+
+export interface ProductsData {
+  limit: number;
+  offset: number;
+  count: number;
+  total: number;
+  results: ProductData[];
 }

@@ -40,7 +40,7 @@ export default function Counter({ price }: CounterProps) {
           +
         </button>
       </div>
-      <span className={styles.sum}>Total: {totalSum.toFixed(2)}$</span>
+      <span className={styles.sum}>Total: ${totalSum.toFixed(2)}</span>
     </div>
   );
 }

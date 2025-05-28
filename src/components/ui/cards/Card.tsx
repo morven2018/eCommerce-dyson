@@ -22,7 +22,7 @@ export const Card = ({
   const alt = 'Product picture';
   const productName = name.length < 30 ? name : `${name.slice(0, 30)}...`;
   const productDescription =
-    description.length < 70 ? description : `${description.slice(0, 70)}...`;
+    description.length < 60 ? description : `${description.slice(0, 60)}...`;
 
   function saveIdAndShowProduct() {
     localStorage.setItem('dysonProductId', id);
@@ -33,7 +33,7 @@ export const Card = ({
     <div className={styles.container}>
       <img src={src} alt={alt} className={styles.cardImage} />
       <div className={styles.cardInfo}>
-        <div className={styles.price}>{(price / 100).toFixed(2)}$</div>
+        <div className={styles.price}>${(price / 100).toFixed(2)}</div>
         {discountedPrice && (
           <div className={styles.discount}>
             Discount: -{Math.round(((price - discountedPrice) / price) * 100)}%
