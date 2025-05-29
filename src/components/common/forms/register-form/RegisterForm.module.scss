@@ -54,8 +54,17 @@ $breakpoint500: 500px;
       color: $primary-white;
       cursor: not-allowed;
     }
+
+    &:hover {
+      @media (hover: hover) and (pointer: fine) {
+        border: 1px solid #007bff;
+        box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+        transform: scale(1.05);
+      }
+    }
   }
 }
+
 .stepper {
   width: 100%;
 

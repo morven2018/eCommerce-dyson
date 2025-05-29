@@ -78,7 +78,7 @@
 
   &:hover {
     @media (hover: hover) and (pointer: fine) {
-      border: 2px solid #007bff;
+      border: 1.5px solid #007bff;
       box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
       transform: scale(1.05);
     }

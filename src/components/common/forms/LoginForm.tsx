@@ -83,7 +83,7 @@ export default function LoginForm() {
       </button>
 
       <p className={styles.text}>
-        Forgot password. Click to reset. <a href="#">Reset Password</a>
+        Forgot password? Click to reset. <a href="#">Reset Password</a>
       </p>
       <p className={styles.text}>
         Don’t have an account? <Link to={'/register'}>Register here</Link>
