@@ -5,6 +5,16 @@
   height: 508px;
   border-radius: $border-radius;
   border: 1px solid $modal-border;
+  transition: all ease 0.5s;
+  cursor: pointer;
+
+  &:hover {
+    @media (hover: hover) and (pointer: fine) {
+      box-shadow: 0 8px 24px $shadow-color;
+      transform: scale(1.02);
+      border-color: $neon-blue;
+    }
+  }
 }
 
 .cardImage {
@@ -22,8 +32,6 @@
   padding: 16px;
   background-color: $button-secondary;
   border-radius: $border-radius;
-  border: 1px solid #007bff;
-  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
 }
 
 .price {
@@ -71,9 +79,7 @@
 
   &:hover {
     @media (hover: hover) and (pointer: fine) {
-      border: 1.5px solid #007bff;
-      box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
-      transform: scale(1.05);
+      background-color: $card-btn-hover;
     }
   }
 }

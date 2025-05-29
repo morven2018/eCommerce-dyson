@@ -23,10 +23,10 @@ export default function Benefits() {
       <div className={styles.infoContainer}>
         {benefits.map((benefit, index) => (
           <div key={`${benefit}${index}`} className={styles.benefitWrapper}>
-          <div key={`${benefit}${index}`} className={styles.benefit}>
-            <div className={`${styles.benefitImg} ${benefit.imgClass}`}></div>
-            <div className={styles.benefitText}>{benefit.text}</div>
-          </div>
+            <div key={`${benefit}${index}`} className={styles.benefit}>
+              <div className={`${styles.benefitImg} ${benefit.imgClass}`}></div>
+              <div className={styles.benefitText}>{benefit.text}</div>
+            </div>
           </div>
         ))}
       </div>
