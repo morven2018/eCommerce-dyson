@@ -34,14 +34,17 @@ export const Card = ({
       <img src={src} alt={alt} className={styles.cardImage} />
       <div className={styles.cardInfo}>
         <div className={styles.priceContainer}>
-          <span className={`${styles.price} ${discountedPrice ? styles.strikethrough : ''}`}>
-            {discountedPrice ? 'Initial price:' : 'Price:'} ${(price / 100).toFixed(2)}
-          </span>
-          {discountedPrice && (
+        {discountedPrice && (
             <span className={styles.discountedPrice}>
               Price: ${(discountedPrice / 100).toFixed(2)}
             </span>
           )}
+          <span
+            className={`${styles.price} ${discountedPrice ? styles.strikethrough : ''}`}
+          >
+            {discountedPrice ? 'Initial price:' : 'Price:'} $
+            {(price / 100).toFixed(2)}
+          </span>
         </div>
         <h3 className={styles.name}>{productName}</h3>
         <div className={styles.description}>{productDescription}</div>
