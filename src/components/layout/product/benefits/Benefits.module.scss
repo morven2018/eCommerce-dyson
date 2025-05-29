@@ -3,6 +3,7 @@
 .benefitsContainer {
   width: 100%;
   background-color: $product-benefits-background;
+  padding-bottom: 20px;
 }
 
 .benefitsTitle,
@@ -37,6 +38,14 @@
   height: 165px;
   border-radius: $border-radius;
   background-color: $primary-white;
+}
+
+.benefitWrapper {
+  border: 2px solid #00d4ff;
+  box-shadow: 0 0 8px rgba(0, 212, 255, 0.3);
+  border-radius: 8px;
+  padding: 12px;
+  margin-bottom: 16px;
 }
 
 .benefitImg {

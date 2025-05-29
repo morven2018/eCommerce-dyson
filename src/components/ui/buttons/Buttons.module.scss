@@ -10,10 +10,14 @@
   border-radius: $border-radius;
   background-color: $button-dark;
   color: $primary-white;
+  transition: all ease 0.5s;
 
   &:hover {
     @media (hover: hover) and (pointer: fine) {
       cursor: pointer;
+      transform: scale(1.05);
+      border: 2px solid #00d4ff;
+      box-shadow: 0 0 8px rgba(0, 212, 255, 0.3);
     }
   }
 }
