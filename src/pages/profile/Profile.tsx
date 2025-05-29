@@ -5,17 +5,33 @@ import { useEffect, useState } from 'react';
 
 export interface Customer {
   id: string;
+  version?: number;
   email: string;
   firstName?: string;
   lastName?: string;
   dateOfBirth?: string;
+  password?: string;
   addresses?: IAddress[];
+  custom?: {
+    fields: {
+      phone: string;
+    };
+  };
 }
 
 export const ProfilePage = () => {
   const [customer, setCustomer] = useState<Customer | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+
+  const handleSave = (updatedData: Partial<Customer>) => {
+    if (customer) {
+      setCustomer({
+        ...customer,
+        ...updatedData,
+      });
+    }
+  };
 
   useEffect(() => {
     const fetchCustomer = async () => {
@@ -39,10 +55,10 @@ export const ProfilePage = () => {
   return (
     <main>
       <div>
-        <h2>{`${customer.firstName} ${customer.lastName}`}</h2>
+        <h2>{`${customer.firstName || ''} ${customer.lastName || ''}`}</h2>
       </div>
 
-      <PersonalInfo customer={customer} />
+      <PersonalInfo customer={customer} onSave={handleSave} />
 
       <details>
         <summary>Raw customer data</summary>
