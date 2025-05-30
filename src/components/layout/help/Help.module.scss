@@ -30,8 +30,14 @@
 
 .paragraph {
   max-width: 26.25rem;
-  color: $primary-black;
-  font-size: $typography-text;
+  font-size: 20px;
+  color: $primary-white;
+  border: 1.5px solid $primary-white;
+  background-color: $button-secondary;
+  border-radius: 8px;
+  padding: 30px;
+  margin-top: 50px;
+  margin-bottom: 16px;
 }
 
 .linksContainer {

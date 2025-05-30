@@ -10,10 +10,13 @@
   border-radius: $border-radius;
   background-color: $button-dark;
   color: $primary-white;
+  transition: all ease 0.5s;
 
   &:hover {
     @media (hover: hover) and (pointer: fine) {
       cursor: pointer;
+      transform: scale(1.05);
+      background-color: $card-btn-hover;
     }
   }
 }
