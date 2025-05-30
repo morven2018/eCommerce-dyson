@@ -1,5 +1,7 @@
 @use '@assets/styles/globals.scss' as *;
 
+$breakpoint400: 400px;
+
 .modal {
   max-width: 500px;
   border-radius: $border-radius;
@@ -26,5 +28,12 @@
       color: $primary-white;
       cursor: not-allowed;
     }
+  }
+}
+
+@media screen and (max-width: $breakpoint400) {
+  .buttonList {
+    display: flex;
+    flex-direction: column;
   }
 }

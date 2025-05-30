@@ -1,0 +1,29 @@
+@use '@assets/styles/globals.scss' as *;
+$breakpoint800: 800px;
+$breakpoint500: 500px;
+
+.updateForm {
+  border: 1px solid $primary-black;
+  background-color: $form-background;
+  border-radius: $border-radius;
+  padding: 10px 36px 61px 36px;
+}
+
+@media screen and (max-width: $breakpoint800) {
+  .updateForm {
+    padding: 10px 16px 61px 16px;
+  }
+}
+
+@media screen and (max-width: $breakpoint800) {
+  .formContent {
+    padding: 0;
+  }
+  .updateForm {
+    padding: 10px 15px 20px 15px;
+  }
+
+  .MuiDialog-container > .MuiDialog-paperScrollPaper {
+    padding: auto 10px;
+  }
+}

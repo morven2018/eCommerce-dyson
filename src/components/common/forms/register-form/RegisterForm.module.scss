@@ -115,6 +115,10 @@ $breakpoint500: 500px;
   .registerForm {
     padding: 60px 40px;
   }
+
+  .updateArea {
+    padding: 0;
+  }
 }
 
 @media screen and (max-width: $breakpoint800) {
@@ -126,6 +130,10 @@ $breakpoint500: 500px;
 @media screen and (max-width: $breakpoint500) {
   .registerForm {
     padding: 30px 10px;
+  }
+
+  .updateArea {
+    padding: 0;
   }
 
   .checkbox {

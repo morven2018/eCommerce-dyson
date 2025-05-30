@@ -92,7 +92,7 @@ export function PasswordConfirmModal({
             <DialogContentText color="error">{error}</DialogContentText>
           )}
 
-          <DialogActions>
+          <DialogActions className={styles.buttonList}>
             <Button
               onClick={onClose}
               disabled={isSubmitting}
