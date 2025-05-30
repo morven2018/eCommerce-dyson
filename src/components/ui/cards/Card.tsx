@@ -29,8 +29,21 @@ export const Card = ({
     navigate('/product');
   }
 
+  function handleKeyDown(e: React.KeyboardEvent<HTMLDivElement>) {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      saveIdAndShowProduct();
+    }
+  }
+
   return (
-    <div className={styles.container} onClick={saveIdAndShowProduct}>
+    <div
+      className={styles.container}
+      onClick={saveIdAndShowProduct}
+      onKeyDown={handleKeyDown}
+      role="button"
+      tabIndex={0}
+    >
       <img src={src} alt={alt} className={styles.cardImage} />
       <div className={styles.cardInfo}>
         <div className={styles.cardInfoWrapper}>
