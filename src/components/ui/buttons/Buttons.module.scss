@@ -8,15 +8,15 @@
   text-transform: uppercase;
   border: none;
   border-radius: $border-radius;
-  background-color: $button-dark;
+  background-color: $controls;
   color: $primary-white;
   transition: all ease 0.5s;
+  cursor: pointer;
 
   &:hover {
     @media (hover: hover) and (pointer: fine) {
-      cursor: pointer;
       transform: scale(1.05);
-      background-color: $card-btn-hover;
+      background-color: $product-benefits-background;
     }
   }
 }
