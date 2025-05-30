@@ -4,7 +4,6 @@ import {
   DialogActions,
   DialogContent,
   DialogContentText,
-  DialogTitle,
   TextField,
 } from '@mui/material';
 import { useState } from 'react';
@@ -12,6 +11,7 @@ import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { passwordValidationSchema } from '@shared/lib/validator/validator';
+import styles from './modal.module.scss';
 
 interface PasswordConfirmModalProps {
   open: boolean;
@@ -58,10 +58,15 @@ export function PasswordConfirmModal({
   };
 
   return (
-    <Dialog open={open} onClose={onClose} maxWidth="sm" fullWidth>
-      <DialogTitle>Verify Password</DialogTitle>
+    <Dialog
+      open={open}
+      onClose={onClose}
+      maxWidth="sm"
+      fullWidth
+      className={styles.modal}
+    >
       <DialogContent>
-        <DialogContentText>
+        <DialogContentText className={styles.text}>
           You need to input your current password to update it.
         </DialogContentText>
 
@@ -88,7 +93,11 @@ export function PasswordConfirmModal({
           )}
 
           <DialogActions>
-            <Button onClick={onClose} disabled={isSubmitting}>
+            <Button
+              onClick={onClose}
+              disabled={isSubmitting}
+              className={styles.buttonClose}
+            >
               Close
             </Button>
             <Button
@@ -96,6 +105,7 @@ export function PasswordConfirmModal({
               color="primary"
               variant="contained"
               disabled={isSubmitting}
+              className={styles.button}
             >
               {isSubmitting ? 'Updating...' : 'Update password'}
             </Button>

@@ -26,6 +26,7 @@ import { updateCustomerPhone } from '@shared/api/commerce-tools/updateFields/upd
 import { updatePassword } from '@shared/api/commerce-tools/updateFields/updatePassword';
 import { userAuthorization } from '@shared/api/commerce-tools/authorization';
 import { PasswordConfirmModal } from '@components/ui/modals/ModalWithPassword';
+import styles from '../register-form/RegisterForm.module.scss';
 
 interface PersonalInfoFormProps {
   customer: Customer;
@@ -313,10 +314,13 @@ export const PersonalInfoForm = ({
   };
 
   return (
-    <Box component="form" onSubmit={handleSubmit(handleSave)}>
-      <h3>Personal Information</h3>
-
-      <Box>
+    <Box
+      component="form"
+      onSubmit={handleSubmit(handleSave)}
+      className={`${styles.registerForm} ${styles.updateArea}`}
+    >
+      <h5>Update Personal Information</h5>
+      <div className={styles.formArea}>
         <Controller
           name="email"
           control={control}
@@ -330,7 +334,7 @@ export const PersonalInfoForm = ({
             />
           )}
         />
-        <Box>
+        <Box className={styles.password}>
           <Controller
             name="password"
             control={control}
@@ -347,6 +351,7 @@ export const PersonalInfoForm = ({
             onClick={handleGeneratePassword}
             variant="outlined"
             aria-label="generate"
+            className={styles.button}
           >
             Generate
           </Button>
@@ -406,11 +411,12 @@ export const PersonalInfoForm = ({
             />
           )}
         />
-      </Box>
+      </div>
       <Button
         type="submit"
         variant="contained"
         disabled={!isDirty || isSubmitting}
+        className={styles.button}
       >
         Update
       </Button>

@@ -94,6 +94,23 @@ $breakpoint500: 500px;
   grid-template-columns: 2fr 2fr;
 }
 
+.updateArea {
+  padding: 0;
+  border: none;
+  background-color: transparent;
+
+  .formArea {
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    width: 100%;
+  }
+
+  .button {
+    width: 100%;
+  }
+}
+
 @media screen and (max-width: $breakpoint800) {
   .registerForm {
     padding: 60px 40px;
