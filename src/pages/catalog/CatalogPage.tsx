@@ -18,6 +18,12 @@ export type SortOption =
   | 'name_desc'
   | 'normal';
 
+function determineFuzzyLevel(length: number) {
+  if (length <= 2) return 0;
+  if (length <= 5) return 1;
+  return 2;
+}
+
 export const CatalogPage = () => {
   const [productsData, setProductsData] = useState<ProductsByCategory | null>(
     null
@@ -31,47 +37,44 @@ export const CatalogPage = () => {
       const token = getTokenFromLS();
       if (!token) return;
 
-      let params = '';
-
       const text = encodeURIComponent(searchText.trim());
+      const fuzzyLevel = determineFuzzyLevel(text.length);
+      const paramsArray = [];
 
-      let fuzzyLevel = 2;
-      const searchTextLength = text.length;
-
-      if (searchTextLength <= 2) {
-        fuzzyLevel = 0;
-      } else if (searchTextLength <= 5) {
-        fuzzyLevel = 1;
-      } else {
-        fuzzyLevel = 2;
+      if (text.length > 1) {
+        paramsArray.push(
+          `text.en-US=*${text}*&fuzzy=true&fuzzyLevel=${fuzzyLevel}`
+        );
       }
 
-      if (searchText.length > 1) {
-        params += `text.en-US=*${searchText}*&fuzzy=true&fuzzyLevel=${fuzzyLevel}`;
-      }
-      if (params.length > 0) {
-        params += '&';
-      }
       if (sortOption === 'name_asc') {
-        params += 'sort=name.en-US+asc';
+        paramsArray.push('sort=name.en-US+asc');
       }
       if (sortOption === 'name_desc') {
-        params += 'sort=name.en-US+desc';
+        paramsArray.push('sort=name.en-US+desc');
       }
       if (sortOption === 'price_asc') {
-        params += 'sort=price+asc';
+        paramsArray.push('sort=price+asc');
       }
       if (sortOption === 'price_desc') {
-        params += 'sort=price+desc';
+        paramsArray.push('sort=price+desc');
       }
 
       const [min, max] = priceRange;
-      if (min >= 0 && max > 0 && min < max) {
-        // не работает, пробовал разные запросы, ответ всегда 200 но фильтра по цене нет !!!
-        params += `&variants.prices.centAmount=centAmount+ge+${min * 100}+and+centAmount+le+${max * 100}`;
+      if (
+        (min > 0 && max === 1000) ||
+        (min >= 0 && max < 1000) ||
+        (min > 0 && max < 1000)
+      ) {
+        paramsArray.push(
+          // не работает, пробовал разные запросы, ответ всегда 200 но фильтра по цене нет !!!
+          `variants.prices.centAmount=centAmount+ge+${min * 100}+and+centAmount+le+${max * 100}`
+        );
       }
 
-      params += 'limit=50';
+      paramsArray.push('limit=50');
+
+      const params = paramsArray.join('&');
 
       try {
         const data = await getSearchedProducts({ params, token });
