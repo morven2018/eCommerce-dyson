@@ -31,7 +31,6 @@ export const Card = ({
 
   function handleAddToCart(e: React.MouseEvent<HTMLButtonElement>) {
     e.stopPropagation();
-    console.log('Add to cart clicked for product:', id);
   }
 
   return (
