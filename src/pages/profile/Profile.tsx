@@ -2,6 +2,7 @@ import { IAddress } from '@components/common/forms/register-form/RegisterForm';
 import { PersonalInfo } from '@components/layout/profile/PersonalInfo';
 import { getCurrentCustomer } from '@shared/api/commerce-tools/getUserInfo';
 import { useEffect, useState } from 'react';
+import styles from '../../components/layout/profile/profile.module.scss';
 
 export interface Customer {
   id: string;
@@ -54,7 +55,7 @@ export const ProfilePage = () => {
 
   return (
     <main>
-      <div>
+      <div className={styles.header}>
         <h2>{`${customer.firstName || ''} ${customer.lastName || ''}`}</h2>
       </div>
 

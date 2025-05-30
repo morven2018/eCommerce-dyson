@@ -1,10 +1,4 @@
-import {
-  Button,
-  Dialog,
-  DialogContent,
-  DialogTitle,
-  IconButton,
-} from '@mui/material';
+import { Button, Dialog, DialogContent, IconButton } from '@mui/material';
 import { Customer } from '@pages/profile/Profile';
 import { useState } from 'react';
 import CancelIcon from '@mui/icons-material/Cancel';
@@ -34,6 +28,7 @@ import { updatePassword } from '@shared/api/commerce-tools/updateFields/updatePa
 import { userAuthorization } from '@shared/api/commerce-tools/authorization';
 import { PersonalInfoForm } from '@components/common/forms/profile-forms/updatePersonalForm';
 import CloseIcon from '@mui/icons-material/Close';
+import styles from './profile.module.scss';
 
 interface PersonalInfoProps {
   customer: Customer;
@@ -240,17 +235,21 @@ export const PersonalInfo = ({ customer, onSave }: PersonalInfoProps) => {
   };
 
   return (
-    <div>
-      <div>
+    <div className={styles.personalInfo}>
+      <div className={styles.infoHeader}>
         <h3>Personal Info</h3>
-        <Button variant="outlined" onClick={handleOpenForm}>
+        <Button
+          variant="outlined"
+          onClick={handleOpenForm}
+          className={styles.button}
+        >
           Redact Info
         </Button>
       </div>
 
       <ul>
         <li>
-          <span>First Name</span>
+          <span className={styles.type}>First Name</span>
           <Controller
             name="firstName"
             control={control}
@@ -276,14 +275,18 @@ export const PersonalInfo = ({ customer, onSave }: PersonalInfoProps) => {
             )}
           />
           {editingStates.firstName && (
-            <IconButton onClick={() => handleCancel('firstName')} size="small">
+            <IconButton
+              onClick={() => handleCancel('firstName')}
+              size="small"
+              className={styles.closeBtn}
+            >
               <CancelIcon />
             </IconButton>
           )}
         </li>
 
         <li>
-          <span>Last Name</span>
+          <span className={styles.type}>Last Name</span>
           <Controller
             name="lastName"
             control={control}
@@ -309,14 +312,18 @@ export const PersonalInfo = ({ customer, onSave }: PersonalInfoProps) => {
             )}
           />
           {editingStates.lastName && (
-            <IconButton onClick={() => handleCancel('lastName')} size="small">
+            <IconButton
+              onClick={() => handleCancel('lastName')}
+              size="small"
+              className={styles.closeBtn}
+            >
               <CancelIcon />
             </IconButton>
           )}
         </li>
 
         <li>
-          <span>Email</span>
+          <span className={styles.type}>Email</span>
           <Controller
             name="email"
             control={control}
@@ -343,9 +350,8 @@ export const PersonalInfo = ({ customer, onSave }: PersonalInfoProps) => {
           {editingStates.email && (
             <IconButton
               onClick={() => handleCancel('email')}
-              color="error"
               size="small"
-              style={{ marginLeft: '8px' }}
+              className={styles.closeBtn}
             >
               <CancelIcon />
             </IconButton>
@@ -353,7 +359,7 @@ export const PersonalInfo = ({ customer, onSave }: PersonalInfoProps) => {
         </li>
 
         <li>
-          <span>Password</span>
+          <span className={styles.type}>Password</span>
           <Controller
             name="password"
             control={control}
@@ -380,9 +386,8 @@ export const PersonalInfo = ({ customer, onSave }: PersonalInfoProps) => {
           {editingStates.password && (
             <IconButton
               onClick={() => handleCancel('password')}
-              color="error"
               size="small"
-              style={{ marginLeft: '8px' }}
+              className={styles.closeBtn}
             >
               <CancelIcon />
             </IconButton>
@@ -390,7 +395,7 @@ export const PersonalInfo = ({ customer, onSave }: PersonalInfoProps) => {
         </li>
 
         <li>
-          <span>Phone</span>
+          <span className={styles.type}>Phone</span>
           <Controller
             name="phone"
             control={control}
@@ -417,9 +422,8 @@ export const PersonalInfo = ({ customer, onSave }: PersonalInfoProps) => {
           {editingStates.phone && (
             <IconButton
               onClick={() => handleCancel('phone')}
-              color="error"
               size="small"
-              style={{ marginLeft: '8px' }}
+              className={styles.closeBtn}
             >
               <CancelIcon />
             </IconButton>
@@ -427,7 +431,7 @@ export const PersonalInfo = ({ customer, onSave }: PersonalInfoProps) => {
         </li>
 
         <li>
-          <span>Date of Birth</span>
+          <span className={styles.type}>Date of Birth</span>
           <Controller
             name="dateOfBirth"
             control={control}
@@ -453,9 +457,8 @@ export const PersonalInfo = ({ customer, onSave }: PersonalInfoProps) => {
           {editingStates.dateOfBirth && (
             <IconButton
               onClick={() => handleCancel('dateOfBirth')}
-              color="error"
               size="small"
-              style={{ marginLeft: '8px' }}
+              className={styles.closeBtn}
             >
               <CancelIcon />
             </IconButton>
@@ -473,49 +476,44 @@ export const PersonalInfo = ({ customer, onSave }: PersonalInfoProps) => {
         maxWidth="md"
         fullWidth
       >
-        <DialogTitle>
-          Edit Personal Information
+        <div className={styles.updateForm}>
           <IconButton
             aria-label="close"
             onClick={handleCloseForm}
-            sx={{
-              position: 'absolute',
-              right: 8,
-              top: 8,
-            }}
+            className={styles.closeBtn}
           >
             <CloseIcon />
           </IconButton>
-        </DialogTitle>
-        <DialogContent>
-          <PersonalInfoForm
-            customer={customer}
-            version={version}
-            onSave={(updatedData) => {
-              reset({
-                firstName: updatedData.firstName || customer.firstName || '',
-                lastName: updatedData.lastName || customer.lastName || '',
-                email: updatedData.email || customer.email || '',
-                phone:
-                  updatedData.custom?.fields.phone ||
-                  customer.custom?.fields.phone ||
-                  '',
-                dateOfBirth: updatedData.dateOfBirth
-                  ? new Date(updatedData.dateOfBirth)
-                  : customer.dateOfBirth
-                    ? new Date(customer.dateOfBirth)
-                    : new Date(dayjs().subtract(18, 'year').toDate()),
-                password: '',
-              });
-              if (updatedData.version) {
-                setVersion(updatedData.version);
-              }
+          <DialogContent className={styles.formContent}>
+            <PersonalInfoForm
+              customer={customer}
+              version={version}
+              onSave={(updatedData) => {
+                reset({
+                  firstName: updatedData.firstName || customer.firstName || '',
+                  lastName: updatedData.lastName || customer.lastName || '',
+                  email: updatedData.email || customer.email || '',
+                  phone:
+                    updatedData.custom?.fields.phone ||
+                    customer.custom?.fields.phone ||
+                    '',
+                  dateOfBirth: updatedData.dateOfBirth
+                    ? new Date(updatedData.dateOfBirth)
+                    : customer.dateOfBirth
+                      ? new Date(customer.dateOfBirth)
+                      : new Date(dayjs().subtract(18, 'year').toDate()),
+                  password: '',
+                });
+                if (updatedData.version) {
+                  setVersion(updatedData.version);
+                }
 
-              onSave?.(updatedData);
-              handleCloseForm();
-            }}
-          />
-        </DialogContent>
+                onSave?.(updatedData);
+                handleCloseForm();
+              }}
+            />
+          </DialogContent>
+        </div>
       </Dialog>
     </div>
   );

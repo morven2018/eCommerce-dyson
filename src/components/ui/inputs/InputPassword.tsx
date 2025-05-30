@@ -10,6 +10,7 @@ import {
 import { Visibility, VisibilityOff } from '@mui/icons-material';
 import EditIcon from '@mui/icons-material/Edit';
 import SaveIcon from '@mui/icons-material/Save';
+import styles from './input.module.scss';
 
 type InputPasswordProps = {
   value?: string;
@@ -56,6 +57,7 @@ export default function InputPassword({
         onChange={onChange}
         label={label}
         readOnly={readOnly && !isEditing}
+        className={styles.input}
         endAdornment={
           <InputAdornment position="end">
             {

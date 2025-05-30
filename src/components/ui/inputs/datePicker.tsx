@@ -12,6 +12,7 @@ import {
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import SaveIcon from '@mui/icons-material/Save';
+import styles from './input.module.scss';
 
 type InputDateProps = {
   value?: Dayjs | null;
@@ -54,6 +55,7 @@ export default function InputDate({
           onClose={onBlur}
           readOnly={onEditClick ? !isEditing : false}
           enableAccessibleFieldDOMStructure={false}
+          className={styles.input}
           disabled={disabled}
           slots={{
             textField: (params) => (

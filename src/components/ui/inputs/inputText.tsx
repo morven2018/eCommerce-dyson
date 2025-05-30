@@ -1,4 +1,3 @@
-import styles from '@components/common/forms/register-form/RegisterForm.module.scss';
 import React from 'react';
 
 import {
@@ -11,6 +10,8 @@ import {
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import SaveIcon from '@mui/icons-material/Save';
+import styles from './input.module.scss';
+
 interface InputFieldProps {
   id: string;
   label: string;
@@ -63,8 +64,8 @@ export const InputText = ({
         onChange={onChange}
         onBlur={onBlur}
         label={label}
-        className={styles.input}
         readOnly={readOnly}
+        className={styles.input}
         endAdornment={
           readOnly || isEditing ? (
             <InputAdornment position="end">

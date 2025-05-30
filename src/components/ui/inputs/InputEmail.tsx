@@ -8,6 +8,7 @@ import {
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import SaveIcon from '@mui/icons-material/Save';
+import styles from './input.module.scss';
 
 type InputEmailProps = {
   value?: string;
@@ -42,6 +43,7 @@ export default function InputEmail({
         onChange={onChange}
         label={label}
         readOnly={readOnly}
+        className={styles.input}
         endAdornment={
           readOnly || isEditing ? (
             <InputAdornment position="end">
