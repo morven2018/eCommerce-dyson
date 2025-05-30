@@ -12,7 +12,7 @@
     @media (hover: hover) and (pointer: fine) {
       box-shadow: 0 8px 24px $shadow-color;
       transform: scale(1.02);
-      border-color: $neon-blue;
+      border-color: $card-hover-border;
     }
   }
 }
@@ -29,7 +29,7 @@
   height: 308px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
   padding: 16px;
   background-color: $button-secondary;
   border-radius: $border-radius;
@@ -38,6 +38,7 @@
 .cardInfoWrapper {
   display: flex;
   flex-direction: column;
+  justify-content: flex-start;
 }
 
 .price {
@@ -60,10 +61,18 @@
   opacity: 0.7;
 }
 
+.line {
+  background-color: $button-dark;
+  height: 0.3px;
+  width: 100%;
+  margin-top: 8px;
+}
+
+
 .discountedPrice {
   font-size: 24px;
   font-weight: 600;
-  color: #e63946;
+  color: $discounted-price;
 }
 
 .name {
@@ -71,29 +80,11 @@
   font-weight: 600;
   color: $button-dark;
   padding-bottom: 10px;
+  line-height: normal;
 }
 
 .description {
   font-size: 16px;
   color: $label;
-}
-
-.button {
-  width: 80%;
-  height: 32px;
-  font-size: 14px;
-  color: $product-name-color;
-  background-color: $button-dark;
-  border: none;
-  border-radius: $border-radius;
-  cursor: pointer;
-  transition: all ease 0.5s;
-  margin-top: 10px;
-  align-self: center;
-
-  &:hover {
-    @media (hover: hover) and (pointer: fine) {
-      background-color: $card-btn-hover;
-    }
-  }
+  margin-top: 13px;
 }

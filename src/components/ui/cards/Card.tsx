@@ -29,10 +29,6 @@ export const Card = ({
     navigate('/product');
   }
 
-  function handleAddToCart(e: React.MouseEvent<HTMLButtonElement>) {
-    e.stopPropagation();
-  }
-
   return (
     <div className={styles.container} onClick={saveIdAndShowProduct}>
       <img src={src} alt={alt} className={styles.cardImage} />
@@ -51,12 +47,10 @@ export const Card = ({
               {(price / 100).toFixed(2)}
             </span>
           </div>
-          <h3 className={styles.name}>{productName}</h3>
-          <div className={styles.description}>{productDescription}</div>
+          <span className={styles.name}>{productName}</span>
+          <span className={styles.line}></span>
         </div>
-        <button className={styles.button} onClick={handleAddToCart}>
-          Add to cart
-        </button>
+        <div className={styles.description}>{productDescription}</div>
       </div>
     </div>
   );
