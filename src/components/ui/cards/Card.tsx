@@ -29,34 +29,35 @@ export const Card = ({
     navigate('/product');
   }
 
+  function handleAddToCart(e: React.MouseEvent<HTMLButtonElement>) {
+    e.stopPropagation();
+    console.log('Add to cart clicked for product:', id);
+  }
+
   return (
-    <div className={styles.container}>
+    <div className={styles.container} onClick={saveIdAndShowProduct}>
       <img src={src} alt={alt} className={styles.cardImage} />
       <div className={styles.cardInfo}>
-        <div className={styles.priceContainer}>
-        {discountedPrice && (
-            <span className={styles.discountedPrice}>
-              Price: ${(discountedPrice / 100).toFixed(2)}
+        <div className={styles.cardInfoWrapper}>
+          <div className={styles.priceContainer}>
+            {discountedPrice && (
+              <span className={styles.discountedPrice}>
+                Price: ${(discountedPrice / 100).toFixed(2)}
+              </span>
+            )}
+            <span
+              className={`${styles.price} ${discountedPrice ? styles.strikethrough : ''}`}
+            >
+              {discountedPrice ? 'Initial price:' : 'Price:'} $
+              {(price / 100).toFixed(2)}
             </span>
-          )}
-          <span
-            className={`${styles.price} ${discountedPrice ? styles.strikethrough : ''}`}
-          >
-            {discountedPrice ? 'Initial price:' : 'Price:'} $
-            {(price / 100).toFixed(2)}
-          </span>
+          </div>
+          <h3 className={styles.name}>{productName}</h3>
+          <div className={styles.description}>{productDescription}</div>
         </div>
-        <h3 className={styles.name}>{productName}</h3>
-        <div className={styles.description}>{productDescription}</div>
-        <div className={styles.buttonsContainer}>
-          <button
-            className={styles.button}
-            onClick={() => saveIdAndShowProduct()}
-          >
-            Read more
-          </button>
-          <button className={styles.button}>Add to cart</button>
-        </div>
+        <button className={styles.button} onClick={handleAddToCart}>
+          Add to cart
+        </button>
       </div>
     </div>
   );

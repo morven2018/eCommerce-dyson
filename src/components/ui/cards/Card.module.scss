@@ -29,9 +29,15 @@
   height: 308px;
   display: flex;
   flex-direction: column;
+  justify-content: space-between;
   padding: 16px;
   background-color: $button-secondary;
   border-radius: $border-radius;
+}
+
+.cardInfoWrapper {
+  display: flex;
+  flex-direction: column;
 }
 
 .price {
@@ -72,15 +78,8 @@
   color: $label;
 }
 
-.buttonsContainer {
-  display: flex;
-  justify-content: center;
-  gap: 15px;
-  margin-top: auto;
-}
-
 .button {
-  width: 86px;
+  width: 80%;
   height: 32px;
   font-size: 14px;
   color: $product-name-color;
@@ -89,6 +88,8 @@
   border-radius: $border-radius;
   cursor: pointer;
   transition: all ease 0.5s;
+  margin-top: 10px;
+  align-self: center;
 
   &:hover {
     @media (hover: hover) and (pointer: fine) {
