@@ -248,7 +248,7 @@ export const PersonalInfo = ({ customer, onSave }: PersonalInfoProps) => {
       </div>
 
       <ul>
-        <li>
+        <li className={styles.personalInfoItem}>
           <span className={styles.type}>First Name</span>
           <Controller
             name="firstName"
@@ -285,7 +285,7 @@ export const PersonalInfo = ({ customer, onSave }: PersonalInfoProps) => {
           )}
         </li>
 
-        <li>
+        <li className={styles.personalInfoItem}>
           <span className={styles.type}>Last Name</span>
           <Controller
             name="lastName"
@@ -322,7 +322,7 @@ export const PersonalInfo = ({ customer, onSave }: PersonalInfoProps) => {
           )}
         </li>
 
-        <li>
+        <li className={styles.personalInfoItem}>
           <span className={styles.type}>Email</span>
           <Controller
             name="email"
@@ -358,7 +358,7 @@ export const PersonalInfo = ({ customer, onSave }: PersonalInfoProps) => {
           )}
         </li>
 
-        <li>
+        <li className={styles.personalInfoItem}>
           <span className={styles.type}>Password</span>
           <Controller
             name="password"
@@ -394,7 +394,7 @@ export const PersonalInfo = ({ customer, onSave }: PersonalInfoProps) => {
           )}
         </li>
 
-        <li>
+        <li className={styles.personalInfoItem}>
           <span className={styles.type}>Phone</span>
           <Controller
             name="phone"
@@ -430,7 +430,7 @@ export const PersonalInfo = ({ customer, onSave }: PersonalInfoProps) => {
           )}
         </li>
 
-        <li>
+        <li className={styles.personalInfoItem}>
           <span className={styles.type}>Date of Birth</span>
           <Controller
             name="dateOfBirth"

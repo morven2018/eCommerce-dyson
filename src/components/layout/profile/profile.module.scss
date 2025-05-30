@@ -47,7 +47,8 @@ $breakpoint400: 400px;
   }
 }
 
-.personalInfo {
+.personalInfo,
+.addressInfo {
   margin: auto 0;
   padding: 60px 40px;
   width: 100vw;
@@ -91,24 +92,25 @@ $breakpoint400: 400px;
         padding-left: 0;
       }
     }
-  }
-  ul {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    list-style: none;
 
-    @media screen and (max-width: $breakpoint500) {
-      padding: 0;
+    ul {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+      list-style: none;
+
+      @media screen and (max-width: $breakpoint500) {
+        padding: 0;
+      }
     }
-  }
 
-  @media screen and (max-width: $breakpoint400) {
-    padding: 10px;
+    @media screen and (max-width: $breakpoint400) {
+      padding: 10px;
+    }
   }
 }
 
-li {
+.personalInfoItem {
   display: grid;
   grid-template-columns: 4fr 14fr 1fr;
   align-items: start;
