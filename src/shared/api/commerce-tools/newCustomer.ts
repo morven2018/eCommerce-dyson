@@ -50,39 +50,32 @@ async function getToken(): Promise<string | null> {
     `${commercetoolsConfig.clientId}:${commercetoolsConfig.clientSecret}`
   ).toString('base64');
 
-  try {
-    const response = await fetch(`${commercetoolsConfig.authUrl}/oauth/token`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        Authorization: `Basic ${basicAuth}`,
-      },
-      body: new URLSearchParams({
-        grant_type: 'client_credentials',
-        // Используем только разрешенные scope из сообщения об ошибке
-        scope: `manage_customers:${commercetoolsConfig.projectKey} manage_types:${commercetoolsConfig.projectKey}`,
-      }),
-    });
+  const response = await fetch(`${commercetoolsConfig.authUrl}/oauth/token`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      Authorization: `Basic ${basicAuth}`,
+    },
+    body: new URLSearchParams({
+      grant_type: 'client_credentials',
+      scope: `manage_customers:${commercetoolsConfig.projectKey} manage_types:${commercetoolsConfig.projectKey}`,
+    }),
+  });
 
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(`Auth failed: ${JSON.stringify(error)}`);
-    }
-
-    const tokenData = await response.json();
-    authTokenCache = {
-      token: tokenData.access_token,
-      expiresAt: Date.now() + (tokenData.expires_in - 60) * 1000,
-    };
-
-    return authTokenCache.token;
-  } catch (error) {
-    console.error('Failed to get auth token:', error);
-    throw error;
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(`Auth failed: ${JSON.stringify(error)}`);
   }
+
+  const tokenData = await response.json();
+  authTokenCache = {
+    token: tokenData.access_token,
+    expiresAt: Date.now() + (tokenData.expires_in - 60) * 1000,
+  };
+
+  return authTokenCache.token;
 }
 
-// Остальные функции остаются без изменений
 async function checkCustomerExists(
   email: string,
   authToken: string
@@ -105,8 +98,7 @@ async function checkCustomerExists(
 
     const result = await response.json();
     return result.count > 0;
-  } catch (error) {
-    console.error('Failed to check customer existence:', error);
+  } catch {
     throw new Error('Failed to check customer existence');
   }
 }
@@ -115,22 +107,17 @@ async function checkTypeExists(
   typeKey: string,
   authToken: string
 ): Promise<boolean> {
-  try {
-    const response = await fetch(
-      `${commercetoolsConfig.apiUrl}/${commercetoolsConfig.projectKey}/types/key=${typeKey}`,
-      {
-        method: 'GET',
-        headers: {
-          Authorization: `Bearer ${authToken}`,
-        },
-      }
-    );
+  const response = await fetch(
+    `${commercetoolsConfig.apiUrl}/${commercetoolsConfig.projectKey}/types/key=${typeKey}`,
+    {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${authToken}`,
+      },
+    }
+  );
 
-    return response.ok;
-  } catch (error) {
-    console.error('Error checking type existence:', error);
-    return false;
-  }
+  return response.ok;
 }
 
 async function createCustomerType(authToken: string): Promise<void> {
@@ -175,9 +162,8 @@ async function createCustomerType(authToken: string): Promise<void> {
       const error = await response.json();
       throw new Error(`Failed to create type: ${JSON.stringify(error)}`);
     }
-  } catch (error) {
-    console.error('Failed to create customer type:', error);
-    throw error;
+  } catch {
+    throw new Error('Can not add phone number');
   }
 }
 
@@ -185,105 +171,136 @@ async function createCustomer(
   customerData: ICommerceToolsCustomer,
   authToken: string
 ) {
-  try {
-    const response = await fetch(
-      `${commercetoolsConfig.apiUrl}/${commercetoolsConfig.projectKey}/customers`,
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${authToken}`,
-        },
-        body: JSON.stringify(customerData),
-      }
-    );
-
-    if (!response.ok) {
-      const error = await response.json();
-      throw new Error(`Failed to create customer: ${JSON.stringify(error)}`);
+  const response = await fetch(
+    `${commercetoolsConfig.apiUrl}/${commercetoolsConfig.projectKey}/customers`,
+    {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${authToken}`,
+      },
+      body: JSON.stringify(customerData),
     }
+  );
 
-    return await response.json();
-  } catch (error) {
-    console.error('Failed to create customer:', error);
-    throw error;
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(`Failed to create customer: ${JSON.stringify(error)}`);
   }
+
+  return await response.json();
 }
 
 export async function register(data: IFormData) {
-  try {
-    const authToken = await getToken();
-    if (!authToken) throw new Error('Authentication failed');
+  const authToken = await getToken();
+  if (!authToken) throw new Error('Authentication failed');
 
-    const typeExists = await checkTypeExists('customer', authToken);
-    if (!typeExists) {
-      await createCustomerType(authToken);
-      console.log('Customer type created successfully');
-    }
-
-    const exists = await checkCustomerExists(data.email, authToken);
-    if (exists) {
-      throw new Error(
-        'Customer with this email already exists. Please login instead'
-      );
-    }
-
-    const customerData: ICommerceToolsCustomer = {
-      email: data.email,
-      firstName: data.firstName,
-      lastName: data.lastName,
-      password: data.password,
-      dateOfBirth: formatDate(new Date(data.dayOfBirth)),
-      addresses: [
-        {
-          country: data.shippingAddress.country.toUpperCase(),
-          city: data.shippingAddress.city,
-          streetName: data.shippingAddress.street,
-          streetNumber: data.shippingAddress.streetLine2 ?? '',
-          postalCode: data.shippingAddress.zipCode,
-          additionalAddressInfo: data.shippingAddress.defaultAddress
-            ? 'Default shipping address'
-            : '',
-        },
-        {
-          country: data.billingAddress.country.toUpperCase(),
-          city: data.billingAddress.city,
-          streetName: data.billingAddress.street,
-          streetNumber: data.billingAddress.streetLine2 ?? '',
-          postalCode: data.billingAddress.zipCode,
-          additionalAddressInfo: data.billingAddress.defaultAddress
-            ? 'Default billing address'
-            : '',
-        },
-      ],
-      shippingAddresses: [0],
-      billingAddresses: [1],
-      defaultShippingAddress: data.shippingAddress.defaultAddress
-        ? 0
-        : undefined,
-      defaultBillingAddress: data.billingAddress.defaultAddress ? 1 : undefined,
-      custom: {
-        type: {
-          typeId: 'type',
-          key: 'customer',
-        },
-        fields: {
-          phone: data.phone,
-        },
-      },
-    };
-
-    const newCustomer = await createCustomer(customerData, authToken);
-
-    return {
-      customer: newCustomer,
-      authData: {
-        email: data.email,
-        password: data.password,
-      },
-    };
-  } catch (error) {
-    console.error('Registration failed:', error);
-    throw error;
+  const typeExists = await checkTypeExists('customer', authToken);
+  if (!typeExists) {
+    await createCustomerType(authToken);
   }
+
+  const exists = await checkCustomerExists(data.email, authToken);
+  if (exists) {
+    throw new Error(
+      'Customer with this email already exists. Please login instead'
+    );
+  }
+
+  const shippingAddress = data.shippingAddress;
+  const billingAddress = data.billingAddress;
+
+  const areAddressesEqual =
+    shippingAddress.country.toUpperCase() ===
+      billingAddress.country.toUpperCase() &&
+    shippingAddress.city === billingAddress.city &&
+    shippingAddress.street === billingAddress.street &&
+    shippingAddress.streetLine2 === billingAddress.streetLine2 &&
+    shippingAddress.zipCode === billingAddress.zipCode;
+
+  const customerData: ICommerceToolsCustomer = {
+    email: data.email,
+    firstName: data.firstName,
+    lastName: data.lastName,
+    password: data.password,
+    dateOfBirth: formatDate(new Date(data.dayOfBirth)),
+    addresses: [],
+    shippingAddresses: [],
+    billingAddresses: [],
+    custom: {
+      type: {
+        typeId: 'type',
+        key: 'customer',
+      },
+      fields: {
+        phone: data.phone,
+      },
+    },
+  };
+
+  if (areAddressesEqual) {
+    customerData.addresses.push({
+      country: shippingAddress.country.toUpperCase(),
+      city: shippingAddress.city,
+      streetName: shippingAddress.street,
+      streetNumber: shippingAddress.streetLine2 ?? '',
+      postalCode: shippingAddress.zipCode,
+      additionalAddressInfo:
+        (shippingAddress.defaultAddress ? 'Default shipping address' : '') +
+        ' ' +
+        (billingAddress.defaultAddress ? ' Default billing address' : ''),
+    });
+
+    customerData.shippingAddresses.push(0);
+    customerData.billingAddresses.push(0);
+
+    if (shippingAddress.defaultAddress) {
+      customerData.defaultShippingAddress = 0;
+    }
+    if (billingAddress.defaultAddress) {
+      customerData.defaultBillingAddress = 0;
+    }
+  } else {
+    customerData.addresses.push({
+      country: shippingAddress.country.toUpperCase(),
+      city: shippingAddress.city,
+      streetName: shippingAddress.street,
+      streetNumber: shippingAddress.streetLine2 ?? '',
+      postalCode: shippingAddress.zipCode,
+      additionalAddressInfo: shippingAddress.defaultAddress
+        ? 'Default shipping address'
+        : '',
+    });
+
+    customerData.addresses.push({
+      country: billingAddress.country.toUpperCase(),
+      city: billingAddress.city,
+      streetName: billingAddress.street,
+      streetNumber: billingAddress.streetLine2 ?? '',
+      postalCode: billingAddress.zipCode,
+      additionalAddressInfo: billingAddress.defaultAddress
+        ? 'Default billing address'
+        : '',
+    });
+
+    customerData.shippingAddresses.push(0);
+    customerData.billingAddresses.push(1);
+
+    if (shippingAddress.defaultAddress) {
+      customerData.defaultShippingAddress = 0;
+    }
+    if (billingAddress.defaultAddress) {
+      customerData.defaultBillingAddress = 1;
+    }
+  }
+
+  const newCustomer = await createCustomer(customerData, authToken);
+
+  return {
+    customer: newCustomer,
+    authData: {
+      email: data.email,
+      password: data.password,
+    },
+  };
 }
