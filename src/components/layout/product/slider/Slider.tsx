@@ -1,6 +1,6 @@
 import styles from './Slider.module.scss';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import 'swiper/css';
 
 interface Image {
@@ -14,6 +14,17 @@ interface SliderProps {
 export function Slider({ images }: SliderProps) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [imageIndex, setImageIndex] = useState(0);
+
+  useEffect(() => {
+    if (isModalOpen) {
+      document.body.style.overflow = 'hidden';
+    }  else {
+      document.body.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+    };
+  }, [isModalOpen]);
 
   const handleImageClick = (index: number) => {
     setImageIndex(index);
