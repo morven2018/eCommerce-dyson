@@ -123,7 +123,7 @@ export const PersonalInfo = ({ customer, onSave }: PersonalInfoProps) => {
       lastName: customer.lastName || '',
       email: customer.email || '',
       password: '',
-      phone: customer.addresses?.[0]?.phone || '',
+      phone: customer.custom?.fields.phone || '',
       dateOfBirth: customer.dateOfBirth
         ? new Date(customer.dateOfBirth)
         : new Date(dayjs().subtract(18, 'year').toDate()),
