@@ -1,18 +1,18 @@
 import { commercetoolsConfig } from './config';
 import { openDialog } from '@services/DialogService';
-import { ProductsData } from '@shared/types/types';
+import { ProductsByCategory } from '@shared/types/types';
 
 interface EnterData {
   params: string | null;
   token: string | null;
 }
 
-export async function getProducts(
+export async function getSearchedProducts(
   data: EnterData
-): Promise<ProductsData | null> {
+): Promise<ProductsByCategory | null> {
   const apiUrl = commercetoolsConfig.apiUrl;
   const projectKey = commercetoolsConfig.projectKey;
-  const url = `${apiUrl}/${projectKey}/products${data.params ?? ''}`;
+  const url = `${apiUrl}/${projectKey}/product-projections/search?${data.params}`;
 
   try {
     const response = await fetch(url, {
@@ -31,7 +31,8 @@ export async function getProducts(
       );
     }
 
-    const result: ProductsData = await response.json();
+    const result: ProductsByCategory = await response.json();
+
     return result;
   } catch (error) {
     let message = 'Error retrieving products data';
