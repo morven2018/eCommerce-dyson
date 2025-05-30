@@ -3,9 +3,19 @@
 .container {
   display: flex;
   justify-content: center;
+  gap: 20px;
   width: 100%;
   max-width: 1440px;
   padding: 40px 10px;
+}
+
+.filterContainer {
+  min-width: 300px;
+  height: 500px;
+  padding: 50px 10px;
+  border-radius: $border-radius;
+  border: 1px solid $modal-border;
+  background-color: $form-background;
 }
 
 .sortAndCardsContainer {
@@ -24,4 +34,10 @@
   padding: 30px 15px;
   border-radius: $border-radius;
   border: 1px solid $modal-border;
+}
+
+@media (max-width: 900px) {
+  .container {
+    flex-direction: column;
+  }
 }
