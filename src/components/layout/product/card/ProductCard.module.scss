@@ -46,7 +46,7 @@
   &:hover {
     @media (hover: hover) and (pointer: fine) {
       transform: scale(1.05);
-      background-color: $product-benefits-background;
+      background-color: $card-btn-hover;
     }
   }
 }
