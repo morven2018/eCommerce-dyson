@@ -58,6 +58,7 @@ export interface IFormData {
 }
 
 export interface IAddress {
+  id?: string;
   dataFromShipping?: boolean;
   defaultAddress?: boolean;
   country: string;
@@ -65,7 +66,6 @@ export interface IAddress {
   street: string;
   streetLine2?: string;
   zipCode: string;
-  phone?: string;
 }
 
 interface BaseStepProps {

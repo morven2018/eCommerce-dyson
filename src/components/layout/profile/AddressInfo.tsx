@@ -1,0 +1,160 @@
+import { Customer, ResponseAddress } from '@pages/profile/Profile';
+import styles from './profile.module.scss';
+import { Button, Dialog, DialogContent, IconButton } from '@mui/material';
+import { AddressCard } from '@components/ui/cards/addressCard';
+import { useEffect, useState } from 'react';
+import {
+  AddressForm,
+  IAddressFormData,
+} from '@components/common/forms/profile-forms/addUpdateAddresses';
+import CloseIcon from '@mui/icons-material/Close';
+import { addAddress } from '@shared/api/commerce-tools/updateFields/updateAddresses/addAddreses';
+
+interface AddressRemovedParams {
+  removedAddressId: string;
+  newVersion: number;
+}
+
+interface PersonalInfoProps {
+  customer: Customer & {
+    addresses?: ResponseAddress[];
+    billingAddressIds?: string[];
+    shippingAddressIds?: string[];
+    defaultBillingAddressId?: string;
+    defaultShippingAddressId?: string;
+  };
+  onSave?: (updatedData: Partial<Customer>) => void;
+}
+
+export const AddressInfo = ({ customer, onSave }: PersonalInfoProps) => {
+  const [addresses, setAddresses] = useState<ResponseAddress[]>(
+    customer.addresses || []
+  );
+
+  useEffect(() => {
+    setAddresses(customer.addresses || []);
+  }, [customer.addresses]); // Зависимость от customer.addresses
+
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const handleAddressRemoved = ({
+    removedAddressId,
+    newVersion,
+  }: AddressRemovedParams) => {
+    const updatedAddresses = addresses.filter(
+      (addr) => addr.id !== removedAddressId
+    );
+    setAddresses(updatedAddresses);
+    onSave?.({
+      ...customer,
+      addresses: updatedAddresses,
+      version: newVersion,
+    });
+  };
+  const handleAddAddress = async (addressData: IAddressFormData) => {
+    const addressType = addressData.useAsBilling
+      ? addressData.useAsShipping
+        ? 'both'
+        : 'billing'
+      : addressData.useAsShipping
+        ? 'shipping'
+        : 'none';
+
+    const options = {
+      setAsDefaultBilling: addressData.defaultBilling,
+      setAsDefaultShipping: addressData.defaultShipping,
+    };
+    setIsSubmitting(true);
+    try {
+      const response = await addAddress(
+        addressData,
+        customer.id,
+        customer.version || 1,
+        options,
+        addressType
+      );
+
+      if (response && response.addresses) {
+        // Обновляем не только адреса, но и ID адресов по умолчанию
+        onSave?.({
+          ...customer,
+          addresses: response.addresses,
+          billingAddressIds: response.billingAddressIds,
+          shippingAddressIds: response.shippingAddressIds,
+          defaultBillingAddressId: response.defaultBillingAddressId,
+          defaultShippingAddressId: response.defaultShippingAddressId,
+          version: response.version,
+        });
+        setIsDialogOpen(false);
+      }
+    } catch (error) {
+      console.error('Failed to add address:', error);
+    } finally {
+      setIsDialogOpen(false);
+      setIsSubmitting(false);
+    }
+  };
+
+  const handleCloseDialog = () => {
+    setIsDialogOpen(false);
+  };
+
+  return (
+    <div className={styles.addressInfo}>
+      <div className={styles.infoHeader}>
+        <h3>Addresses</h3>
+        <Button
+          variant="contained"
+          onClick={() => setIsDialogOpen(true)}
+          disabled={isSubmitting}
+        >
+          Add address
+        </Button>
+      </div>
+
+      {addresses.length === 0 ? (
+        <p>No saved addresses</p>
+      ) : (
+        addresses.map((address) => (
+          <AddressCard
+            key={address.id}
+            address={address}
+            isBilling={customer.billingAddressIds?.includes(address.id!)}
+            isShipping={customer.shippingAddressIds?.includes(address.id!)}
+            isDefaultBilling={address.id === customer.defaultBillingAddressId}
+            isDefaultShipping={address.id === customer.defaultShippingAddressId}
+            customerId={customer.id}
+            customerVersion={customer.version}
+            onAddressRemoved={handleAddressRemoved}
+          />
+        ))
+      )}
+
+      <Dialog
+        open={isDialogOpen}
+        onClose={handleCloseDialog}
+        maxWidth="md"
+        fullWidth
+      >
+        <div className={styles.addressForm}>
+          <div className={styles.closeButton}>
+            <IconButton
+              aria-label="close"
+              onClick={handleCloseDialog}
+              disabled={isSubmitting}
+            >
+              <CloseIcon />
+            </IconButton>
+          </div>
+          <DialogContent>
+            <AddressForm
+              onSubmit={handleAddAddress}
+              onCancel={handleCloseDialog}
+            />
+          </DialogContent>
+        </div>
+      </Dialog>
+    </div>
+  );
+};

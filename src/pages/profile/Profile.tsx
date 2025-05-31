@@ -1,8 +1,8 @@
-import { IAddress } from '@components/common/forms/register-form/RegisterForm';
 import { PersonalInfo } from '@components/layout/profile/PersonalInfo';
 import { getCurrentCustomer } from '@shared/api/commerce-tools/getUserInfo';
 import { useEffect, useState } from 'react';
 import styles from '../../components/layout/profile/profile.module.scss';
+import { AddressInfo } from '@components/layout/profile/AddressInfo';
 
 export interface Customer {
   id: string;
@@ -12,12 +12,24 @@ export interface Customer {
   lastName?: string;
   dateOfBirth?: string;
   password?: string;
-  addresses?: IAddress[];
+  addresses?: ResponseAddress[];
+  shippingAddressIds?: string[];
+  billingAddressIds?: string[];
+  defaultShippingAddressId?: string;
+  defaultBillingAddressId?: string;
   custom?: {
     fields: {
       phone: string;
     };
   };
+}
+export interface ResponseAddress {
+  id: string;
+  country: string;
+  city: string;
+  streetName: string;
+  streetNumber?: string;
+  postalCode: string;
 }
 
 export const ProfilePage = () => {
@@ -58,8 +70,8 @@ export const ProfilePage = () => {
       <div className={styles.header}>
         <h2>{`${customer.firstName || ''} ${customer.lastName || ''}`}</h2>
       </div>
-
       <PersonalInfo customer={customer} onSave={handleSave} />
+      <AddressInfo customer={customer} onSave={handleSave} />
 
       <details>
         <summary>Raw customer data</summary>

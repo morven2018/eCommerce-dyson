@@ -23,11 +23,17 @@ $breakpoint400: 400px;
   }
 }
 
-.updateForm {
+.updateForm,
+.addressForm {
+  padding: 10px 36px 61px 36px;
   border: 1px solid $primary-black;
   background-color: $form-background;
   border-radius: $border-radius;
-  padding: 10px 36px 61px 36px;
+
+  .closeButton {
+    display: flex;
+    justify-content: flex-end;
+  }
 
   @media screen and (max-width: $breakpoint800) {
     padding: 10px 16px 61px 16px;
@@ -92,21 +98,20 @@ $breakpoint400: 400px;
         padding-left: 0;
       }
     }
+  }
+  ul {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    list-style: none;
 
-    ul {
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-      list-style: none;
-
-      @media screen and (max-width: $breakpoint500) {
-        padding: 0;
-      }
+    @media screen and (max-width: $breakpoint500) {
+      padding: 0;
     }
+  }
 
-    @media screen and (max-width: $breakpoint400) {
-      padding: 10px;
-    }
+  @media screen and (max-width: $breakpoint400) {
+    padding: 10px;
   }
 }
 

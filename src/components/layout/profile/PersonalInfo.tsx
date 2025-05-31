@@ -477,13 +477,11 @@ export const PersonalInfo = ({ customer, onSave }: PersonalInfoProps) => {
         fullWidth
       >
         <div className={styles.updateForm}>
-          <IconButton
-            aria-label="close"
-            onClick={handleCloseForm}
-            className={styles.closeBtn}
-          >
-            <CloseIcon />
-          </IconButton>
+          <div className={styles.closeButton}>
+            <IconButton aria-label="close" onClick={handleCloseForm}>
+              <CloseIcon />
+            </IconButton>
+          </div>
           <DialogContent className={styles.formContent}>
             <PersonalInfoForm
               customer={customer}
