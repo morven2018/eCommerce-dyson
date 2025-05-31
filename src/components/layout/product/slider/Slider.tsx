@@ -17,19 +17,37 @@ export function Slider({ images }: SliderProps) {
 
   useEffect(() => {
     if (isModalOpen) {
+      const scrollY = window.scrollY;
+      document.body.style.position = 'fixed';
+      document.body.style.top = `-${scrollY}px`;
+      document.body.style.width = '100%';
       document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
+
+      const preventTouchMove = (e: TouchEvent) => {
+        if (e.target instanceof Node && document.querySelector(`.${styles.modalWindow}`)?.contains(e.target)) {
+          return;
+        }
+        e.preventDefault();
+      };
+
+      window.addEventListener('touchmove', preventTouchMove, { passive: false });
+
+      return () => {
+        const scrollYRestored = parseInt(document.body.style.top || '0', 10) * -1;
+        document.body.style.position = '';
+        document.body.style.top = '';
+        document.body.style.width = '';
+        document.body.style.overflow = '';
+        window.scrollTo(0, scrollYRestored);
+        window.removeEventListener('touchmove', preventTouchMove);
+      };
     }
-    return () => {
-      document.body.style.overflow = '';
-    };
   }, [isModalOpen]);
 
-  const handleImageClick = (index: number) => {
+  function handleImageClick(index: number) {
     setImageIndex(index);
     setIsModalOpen(true);
-  };
+  }
 
   const handleCloseModal = () => {
     setIsModalOpen(false);
