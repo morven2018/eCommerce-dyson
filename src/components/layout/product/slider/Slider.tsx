@@ -1,7 +1,7 @@
 import styles from './Slider.module.scss';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { useState, useEffect } from 'react';
-import 'swiper/css';
+import 'swiper/swiper-bundle.css';
 
 interface Image {
   src: string;
