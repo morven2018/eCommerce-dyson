@@ -36,6 +36,7 @@
   padding: 25px;
   border-radius: $border-radius;
   background-color: $secondary-light;
+  overflow: auto;
 }
 
 .buttonCloseModal {
@@ -63,7 +64,6 @@
   max-height: 90%;
   margin: 0 auto;
   object-fit: contain;
-
   border-radius: $border-radius;
 }
 
