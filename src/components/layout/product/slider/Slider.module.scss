@@ -40,7 +40,9 @@
 }
 
 .buttonCloseModal {
-  display: block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 35px;
   height: 35px;
   font-size: 24px;
