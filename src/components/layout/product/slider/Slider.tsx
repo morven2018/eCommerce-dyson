@@ -49,7 +49,7 @@ export function Slider({ images }: SliderProps) {
 
   return (
     <div className={styles.container}>
-      <Swiper navigation={true} pagination={{ clickable: true }}>
+      <Swiper navigation={false} pagination={{ clickable: true }}>
         {images.map((image, index) => (
           <SwiperSlide key={`${image}${index}`}>
             <img
