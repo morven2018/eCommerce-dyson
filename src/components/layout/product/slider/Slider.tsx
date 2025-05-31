@@ -18,7 +18,7 @@ export function Slider({ images }: SliderProps) {
   useEffect(() => {
     if (isModalOpen) {
       document.body.style.overflow = 'hidden';
-    }  else {
+    } else {
       document.body.style.overflow = '';
     }
     return () => {
