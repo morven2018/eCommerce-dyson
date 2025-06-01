@@ -29,7 +29,7 @@ interface PersonalInfoProps {
 
 export const AddressInfo = ({ customer, onSave }: PersonalInfoProps) => {
   const [addresses, setAddresses] = useState<ResponseAddress[]>(
-    customer.addresses || []
+    customer.addresses ?? []
   );
   const [error, setError] = useState<{
     text: string;
@@ -37,7 +37,7 @@ export const AddressInfo = ({ customer, onSave }: PersonalInfoProps) => {
   } | null>(null);
 
   useEffect(() => {
-    setAddresses(customer.addresses || []);
+    setAddresses(customer.addresses ?? []);
   }, [customer.addresses]);
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -57,14 +57,22 @@ export const AddressInfo = ({ customer, onSave }: PersonalInfoProps) => {
       version: newVersion,
     });
   };
+
+  const determineAddressType = (
+    useAsBilling: boolean,
+    useAsShipping: boolean
+  ): 'both' | 'billing' | 'shipping' | 'none' => {
+    if (useAsBilling && useAsShipping) return 'both';
+    if (useAsBilling) return 'billing';
+    if (useAsShipping) return 'shipping';
+    return 'none';
+  };
+
   const handleAddAddress = async (addressData: IAddressFormData) => {
-    const addressType = addressData.useAsBilling
-      ? addressData.useAsShipping
-        ? 'both'
-        : 'billing'
-      : addressData.useAsShipping
-        ? 'shipping'
-        : 'none';
+    const addressType = determineAddressType(
+      addressData.useAsBilling,
+      addressData.useAsShipping
+    );
 
     const options = {
       setAsDefaultBilling: addressData.defaultBilling,
@@ -75,7 +83,7 @@ export const AddressInfo = ({ customer, onSave }: PersonalInfoProps) => {
       const response = await addAddress(
         addressData,
         customer.id,
-        customer.version || 1,
+        customer.version ?? 1,
         options,
         addressType
       );

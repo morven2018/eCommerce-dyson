@@ -146,10 +146,8 @@ export const PersonalInfoForm = ({
           customer.id,
           currentVersion
         );
-        if (response?.version) {
-          currentVersion = response.version;
-          updatedData.email = changedFields.email;
-        }
+        currentVersion = response?.version ?? 1;
+        updatedData.email = changedFields.email;
       }
 
       if (changedFields.firstName) {
@@ -159,10 +157,8 @@ export const PersonalInfoForm = ({
           currentVersion,
           'setFirstName'
         );
-        if (response?.version) {
-          currentVersion = response.version;
-          updatedData.firstName = changedFields.firstName;
-        }
+        currentVersion = response?.version ?? 1;
+        updatedData.firstName = changedFields.firstName;
       }
 
       if (changedFields.lastName) {
@@ -172,10 +168,9 @@ export const PersonalInfoForm = ({
           currentVersion,
           'setLastName'
         );
-        if (response?.version) {
-          currentVersion = response.version;
-          updatedData.lastName = changedFields.lastName;
-        }
+
+        currentVersion = response?.version ?? 1;
+        updatedData.lastName = changedFields.lastName;
       }
 
       if (changedFields.phone) {
@@ -184,16 +179,14 @@ export const PersonalInfoForm = ({
           customer.id,
           currentVersion
         );
-        if (response?.version) {
-          currentVersion = response.version;
-          updatedData.custom = {
-            ...customer.custom,
-            fields: {
-              ...customer.custom?.fields,
-              phone: changedFields.phone ?? '',
-            },
-          };
-        }
+        currentVersion = response?.version ?? 1;
+        updatedData.custom = {
+          ...customer.custom,
+          fields: {
+            ...customer.custom?.fields,
+            phone: changedFields.phone ?? '',
+          },
+        };
       }
 
       if (changedFields.dateOfBirth) {
@@ -204,10 +197,9 @@ export const PersonalInfoForm = ({
           currentVersion,
           'setDateOfBirth'
         );
-        if (response?.version) {
-          currentVersion = response.version;
-          updatedData.dateOfBirth = newDate;
-        }
+
+        currentVersion = response?.version ?? 1;
+        updatedData.dateOfBirth = newDate;
       }
 
       setVersion(currentVersion);
@@ -295,7 +287,7 @@ export const PersonalInfoForm = ({
         const currentDate =
           currentValue instanceof Date
             ? currentValue
-            : new Date(currentValue || '');
+            : new Date(currentValue ?? '');
         const defaultDate =
           defaultValue instanceof Date ? defaultValue : new Date(defaultValue);
         if (currentDate.getTime() !== defaultDate.getTime()) {
@@ -352,7 +344,7 @@ export const PersonalInfoForm = ({
               control={control}
               render={({ field }) => (
                 <InputPassword
-                  value={field.value || ''}
+                  value={field.value ?? ''}
                   onChange={field.onChange}
                   error={!!passwordError}
                   helperText={passwordError}
@@ -376,7 +368,7 @@ export const PersonalInfoForm = ({
               <InputText
                 id="firstName"
                 label="First Name"
-                value={field.value || ''}
+                value={field.value ?? ''}
                 onChange={field.onChange}
                 error={!!errors.firstName}
                 helperText={errors.firstName?.message}
@@ -390,7 +382,7 @@ export const PersonalInfoForm = ({
               <InputText
                 id="lastName"
                 label="Last Name"
-                value={field.value || ''}
+                value={field.value ?? ''}
                 onChange={field.onChange}
                 error={!!errors.lastName}
                 helperText={errors.lastName?.message}

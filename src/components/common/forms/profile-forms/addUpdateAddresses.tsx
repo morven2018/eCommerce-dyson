@@ -239,7 +239,7 @@ export const AddressForm = ({
             <InputText
               id="streetLine2"
               label="Street Address Line 2"
-              value={field.value || ''}
+              value={field.value ?? ''}
               onChange={field.onChange}
               error={!!fieldState.error}
               helperText={fieldState.error?.message}
