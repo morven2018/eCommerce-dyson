@@ -17,7 +17,7 @@ import emptyCart from '@assets/icons/cart.svg';
 import cart from '@assets/icons/cart-with-smth.svg';
 import profile from '@assets/icons/profile.svg';
 
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 import { Burger } from '@components/ui/burger/burger/burger';
 import styles from './Header.module.scss';
@@ -31,14 +31,16 @@ export interface INavItems {
   icon: string;
   path: string;
   onClick: () => void;
+  location: string;
 }
 
 const NonBreakingText = ({ text }: { text: string }) => (
   <span className={styles.buttons}>{text}</span>
 );
 
-const ItemList = ({ text, icon, path, onClick }: INavItems) => {
+const ItemList = ({ text, icon, path, onClick, location }: INavItems) => {
   const navigate = useNavigate();
+  const isActive = text === NavText.Logout ? false : location === path;
 
   const handleClick = () => {
     onClick();
@@ -46,7 +48,10 @@ const ItemList = ({ text, icon, path, onClick }: INavItems) => {
   };
 
   return (
-    <ListItem className={styles.item} disablePadding>
+    <ListItem
+      className={`${styles.item} ${isActive ? styles.active : ''}`}
+      disablePadding
+    >
       <ListItemButton onClick={handleClick}>
         {icon ? (
           <ListItemIcon
@@ -64,6 +69,8 @@ const ItemList = ({ text, icon, path, onClick }: INavItems) => {
 };
 
 export const Header = () => {
+  const location = useLocation();
+
   const { isUserUnauthorized, setIsUserUnauthorized } = useAuth();
   const [isCartEmpty] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -86,34 +93,39 @@ export const Header = () => {
         icon: '',
         path: '/catalog',
         onClick: () => {},
+        location: location.pathname,
       },
       {
         text: NavText.About,
         icon: '',
         path: '/about',
         onClick: () => {},
+        location: location.pathname,
       },
       {
         text: isUserUnauthorized ? NavText.Register : NavText.Logout,
         icon: '',
         path: isUserUnauthorized ? '/register' : '/',
         onClick: isUserUnauthorized ? () => {} : toggleAuthStatus,
+        location: location.pathname,
       },
       {
         text: isUserUnauthorized ? NavText.Login : NavText.Profile,
         icon: isUserUnauthorized ? '' : profile,
         path: isUserUnauthorized ? '/login' : '/profile',
         onClick: () => {},
+        location: location.pathname,
       },
       {
         text: NavText.Cart,
         icon: isCartEmpty ? emptyCart : cart,
         path: '/cart',
         onClick: () => {},
+        location: location.pathname,
       },
     ];
     setNavItems(updatedItems);
-  }, [isUserUnauthorized, isCartEmpty, toggleAuthStatus]);
+  }, [isUserUnauthorized, isCartEmpty, toggleAuthStatus, location.pathname]);
 
   useEffect(() => {
     updateNavItems();
@@ -135,7 +147,15 @@ export const Header = () => {
         <Box>
           <Box className={styles.subheader}>
             <Toolbar className={styles.toolbar}>
-              <Link to="/">
+              <Link
+                to="/"
+                className={`${styles.logoWrapper} ${
+                  location.pathname === '/' ||
+                  location.pathname === '/index.html'
+                    ? styles.active
+                    : ''
+                }`}
+              >
                 <Box
                   component="img"
                   src={logo}
