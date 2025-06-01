@@ -16,6 +16,10 @@ $form-background: rgba(206, 211, 220, 0.2);
 $whitesmoke: whitesmoke;
 $header-black-background: rgba(0, 0, 0, 0.75);
 $card-color: #ced3dc;
+$product-dark: rgba(0, 0, 0, 0.75);
+$product-name-color: #ced3dc;
+$product-benefits-background: rgba(0, 0, 0, 0.5);
+$discount-color: #d2191c;
 
 $btn-typography: 15px;
 $header-catalog-typography: 13px;
@@ -39,6 +43,7 @@ $typography-text: 16px;
 $typography-copyright-stepper: 14px;
 
 $border-radius: 5px;
+$benefits-border: 3px solid plum;
 
 $font-family: 'Roboto', sans-serif;
 $line-height: 120%;
@@ -49,6 +54,11 @@ $btn-weight: 500;
 $fast-catalog-weight: 300;
 
 $content-width: 1440px;
+
+$card-hover-border: #e6e6fa;
+$shadow-color: rgba(0, 212, 255, 0.3);
+$card-btn-hover: rgba(0, 0, 0, 0.5);
+$discounted-price: #4682b4;
 
 :root {
   padding: 0;

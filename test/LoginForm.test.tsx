@@ -32,7 +32,6 @@ vi.mock('../src/shared/context/auth-hooks', async () => {
   return {
     ...actual,
     useAuth: () => {
-      console.log('Mocking useAuth');
       return React.useContext(AuthContext);
     },
   };

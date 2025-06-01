@@ -1,0 +1,32 @@
+@use '@assets/styles/globals.scss' as *;
+
+.container {
+  width: 100%;
+  max-width: 1440px;
+  padding: 40px 30px 30px;
+  background-color: $primary-white;
+}
+
+.productContainer {
+  display: flex;
+  width: 100%;
+  margin: 40px auto;
+  border: 1px solid $modal-border;
+  border-radius: $border-radius;
+  box-sizing: border-box;
+  transition: flex-direction 0.3s ease;
+}
+
+.textLoading {
+  font-size: 30px;
+  margin: 300px 0;
+  color: $primary-black;
+}
+
+@media (max-width: 1200px) {
+  .productContainer {
+    flex-direction: column-reverse;
+    align-items: center;
+    gap: 15px;
+  }
+}

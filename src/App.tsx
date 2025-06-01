@@ -9,6 +9,10 @@ import Footer from './components/layout/footer/Footer';
 import { AuthProvider } from './shared/context/auth-context';
 import { RedirectIfAuthenticatedRoute } from './components/routes/RedirectIfAuthenticatedRoute';
 import { ProfilePage } from '@pages/profile/Profile';
+import { ProductPage } from '@pages/product/Product';
+import { CategoryPage } from '@pages/catalog/category/CategoryPage';
+import { CatalogPage } from '@pages/catalog/CatalogPage';
+
 
 export function App() {
   return (
@@ -17,6 +21,7 @@ export function App() {
       <Routes>
         <Route path="/" element={<HomePage />} />
         <Route path="/index.html" element={<HomePage />} />
+        <Route path="/catalog" element={<CatalogPage />} />
         <Route path="/about" element={<AboutPage />} />
         <Route
           path="/login"
@@ -34,7 +39,31 @@ export function App() {
             </RedirectIfAuthenticatedRoute>
           }
         />
+
         <Route path="/profile" element={<ProfilePage />} />
+
+        <Route
+          path="/catalog/vacuums"
+          element={<CategoryPage page="vacuums" />}
+        />
+        <Route
+          path="/catalog/hair-care"
+          element={<CategoryPage page="hair-care" />}
+        />
+        <Route
+          path="/catalog/heater"
+          element={<CategoryPage page="heater" />}
+        />
+        <Route
+          path="/catalog/headphones"
+          element={<CategoryPage page="headphones" />}
+        />
+        <Route
+          path="/catalog/lighting"
+          element={<CategoryPage page="lighting" />}
+        />
+        <Route path="/product" element={<ProductPage />} />
+
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
       <Footer />

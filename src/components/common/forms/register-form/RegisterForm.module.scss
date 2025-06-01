@@ -42,20 +42,30 @@ $breakpoint500: 500px;
     gap: 25px;
     width: 100%;
   }
+
   .button {
     background-color: $button-dark;
     border-radius: $border-radius;
     color: $primary-white;
     height: 56px;
     border: none;
+    transition: all ease 0.5s;
 
     &:disabled {
       background-color: $disable-button-dark;
       color: $primary-white;
       cursor: not-allowed;
     }
+
+    &:hover {
+      @media (hover: hover) and (pointer: fine) {
+        background-color: $card-btn-hover;
+        transform: scale(1.05);
+      }
+    }
   }
 }
+
 .stepper {
   width: 100%;
 
