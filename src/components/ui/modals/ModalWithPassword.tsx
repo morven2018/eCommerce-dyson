@@ -27,7 +27,7 @@ export function PasswordConfirmModal({
   open,
   onClose,
   onConfirm,
-}: PasswordConfirmModalProps) {
+}: Readonly<PasswordConfirmModalProps>) {
   const {
     control,
     handleSubmit,

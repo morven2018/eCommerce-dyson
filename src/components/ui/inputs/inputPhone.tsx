@@ -15,7 +15,7 @@ type InputPhoneProps = {
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   label?: string;
   error?: boolean;
-  helperText?: string | undefined;
+  helperText?: string;
   disabled?: boolean;
   readOnly?: boolean;
   onEditClick?: () => void;

@@ -113,13 +113,6 @@ export async function addAddress(
 
     return response;
   } catch (error) {
-    if (error instanceof Response) {
-      const errorData = await error.json();
-      if (error.status === 401) {
-        localStorage.removeItem('authDysonToken');
-      }
-      throw new Error(errorData.message || `HTTP error ${error.status}`);
-    }
-    throw error instanceof Error ? error : new Error('Unknown error occurred');
+    throw new Error(error.message || `Unknown error occurred`);
   }
 }

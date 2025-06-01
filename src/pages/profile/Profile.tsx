@@ -68,7 +68,7 @@ export const ProfilePage = () => {
   return (
     <main>
       <div className={styles.header}>
-        <h2>{`${customer.firstName || ''} ${customer.lastName || ''}`}</h2>
+        <h2>{`${customer.firstName ?? ''} ${customer.lastName ?? ''}`}</h2>
       </div>
       <PersonalInfo customer={customer} onSave={handleSave} />
       <AddressInfo customer={customer} onSave={handleSave} />
