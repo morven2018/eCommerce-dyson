@@ -1,10 +1,4 @@
-import {
-  Box,
-  Button,
-  Checkbox,
-  FormControlLabel,
-  Typography,
-} from '@mui/material';
+import { Box, Button, Checkbox, FormControlLabel } from '@mui/material';
 import { useForm, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
@@ -17,6 +11,7 @@ import {
 import { CountrySelect } from '../../../ui/inputs/selectCountry';
 import { InputText } from '../../../ui/inputs/inputText';
 import { AddAddressOptions } from '@shared/api/commerce-tools/updateFields/updateAddresses/addAddresses';
+import styles from '../register-form/RegisterForm.module.scss';
 
 export interface IAddressFormData {
   id?: string;
@@ -120,160 +115,162 @@ export const AddressForm = ({
   return (
     <Box
       component="form"
-      className={'addressForm'}
       onSubmit={handleSubmit(onSubmit)}
+      className={`${styles.registerForm} ${styles.updateArea}`}
     >
-      <Typography variant="h6" gutterBottom>
-        {isEditing ? 'Edit Address' : 'Add New Address'}
-      </Typography>
+      <h5>{isEditing ? 'Edit Address' : 'Add New Address'}</h5>
+      <div className={styles.formArea}>
+        <Controller
+          name="useAsShipping"
+          control={control}
+          render={({ field }) => (
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={field.value}
+                  onChange={(e) => handleUseAsShippingChange(e.target.checked)}
+                  color="primary"
+                />
+              }
+              label="Use as Shipping Address"
+            />
+          )}
+        />
 
-      <Controller
-        name="useAsShipping"
-        control={control}
-        render={({ field }) => (
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={field.value}
-                onChange={(e) => handleUseAsShippingChange(e.target.checked)}
-                color="primary"
-              />
-            }
-            label="Use as Shipping Address"
-          />
-        )}
-      />
+        <Controller
+          name="useAsBilling"
+          control={control}
+          render={({ field }) => (
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={field.value}
+                  onChange={(e) => handleUseAsBillingChange(e.target.checked)}
+                  color="primary"
+                />
+              }
+              label="Use as Billing Address"
+            />
+          )}
+        />
 
-      <Controller
-        name="useAsBilling"
-        control={control}
-        render={({ field }) => (
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={field.value}
-                onChange={(e) => handleUseAsBillingChange(e.target.checked)}
-                color="primary"
-              />
-            }
-            label="Use as Billing Address"
-          />
-        )}
-      />
+        <Controller
+          name="defaultShipping"
+          control={control}
+          render={({ field }) => (
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={field.value}
+                  onChange={(e) =>
+                    handleDefaultShippingChange(e.target.checked)
+                  }
+                  color="primary"
+                  disabled={!useAsShipping}
+                />
+              }
+              label="Set as Default Shipping Address"
+            />
+          )}
+        />
 
-      <Controller
-        name="defaultShipping"
-        control={control}
-        render={({ field }) => (
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={field.value}
-                onChange={(e) => handleDefaultShippingChange(e.target.checked)}
-                color="primary"
-                disabled={!useAsShipping}
-              />
-            }
-            label="Set as Default Shipping Address"
-          />
-        )}
-      />
+        <Controller
+          name="defaultBilling"
+          control={control}
+          render={({ field }) => (
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={field.value}
+                  onChange={(e) => handleDefaultBillingChange(e.target.checked)}
+                  color="primary"
+                  disabled={!useAsBilling}
+                />
+              }
+              label="Set as Default Billing Address"
+            />
+          )}
+        />
 
-      <Controller
-        name="defaultBilling"
-        control={control}
-        render={({ field }) => (
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={field.value}
-                onChange={(e) => handleDefaultBillingChange(e.target.checked)}
-                color="primary"
-                disabled={!useAsBilling}
-              />
-            }
-            label="Set as Default Billing Address"
-          />
-        )}
-      />
+        <CountrySelect<IAddressFormData>
+          control={control}
+          name="country"
+          label="Country"
+          error={errors.country}
+          onChange={(value) => {
+            setValue('country', value, { shouldValidate: true });
+          }}
+        />
 
-      <CountrySelect<IAddressFormData>
-        control={control}
-        name="country"
-        label="Country"
-        error={errors.country}
-        onChange={(value) => {
-          setValue('country', value, { shouldValidate: true });
-        }}
-      />
+        <Controller
+          name="city"
+          control={control}
+          render={({ field, fieldState }) => (
+            <InputText
+              id="city"
+              label="City"
+              value={field.value}
+              onChange={field.onChange}
+              error={!!fieldState.error}
+              helperText={fieldState.error?.message}
+            />
+          )}
+        />
 
-      <Controller
-        name="city"
-        control={control}
-        render={({ field, fieldState }) => (
-          <InputText
-            id="city"
-            label="City"
-            value={field.value}
-            onChange={field.onChange}
-            error={!!fieldState.error}
-            helperText={fieldState.error?.message}
-          />
-        )}
-      />
+        <Controller
+          name="street"
+          control={control}
+          render={({ field, fieldState }) => (
+            <InputText
+              id="street"
+              label="Street"
+              value={field.value}
+              onChange={field.onChange}
+              error={!!fieldState.error}
+              helperText={fieldState.error?.message}
+            />
+          )}
+        />
 
-      <Controller
-        name="street"
-        control={control}
-        render={({ field, fieldState }) => (
-          <InputText
-            id="street"
-            label="Street"
-            value={field.value}
-            onChange={field.onChange}
-            error={!!fieldState.error}
-            helperText={fieldState.error?.message}
-          />
-        )}
-      />
+        <Controller
+          name="streetLine2"
+          control={control}
+          render={({ field, fieldState }) => (
+            <InputText
+              id="streetLine2"
+              label="Street Address Line 2"
+              value={field.value || ''}
+              onChange={field.onChange}
+              error={!!fieldState.error}
+              helperText={fieldState.error?.message}
+            />
+          )}
+        />
 
-      <Controller
-        name="streetLine2"
-        control={control}
-        render={({ field, fieldState }) => (
-          <InputText
-            id="streetLine2"
-            label="Street Address Line 2"
-            value={field.value || ''}
-            onChange={field.onChange}
-            error={!!fieldState.error}
-            helperText={fieldState.error?.message}
-          />
-        )}
-      />
-
-      <Controller
-        name="zipCode"
-        control={control}
-        render={({ field, fieldState }) => (
-          <InputText
-            id="zipCode"
-            label="Zip Code"
-            value={field.value}
-            onChange={field.onChange}
-            error={!!fieldState.error}
-            helperText={fieldState.error?.message}
-          />
-        )}
-      />
+        <Controller
+          name="zipCode"
+          control={control}
+          render={({ field, fieldState }) => (
+            <InputText
+              id="zipCode"
+              label="Zip Code"
+              value={field.value}
+              onChange={field.onChange}
+              error={!!fieldState.error}
+              helperText={fieldState.error?.message}
+            />
+          )}
+        />
+      </div>
 
       <Button
         type="submit"
         variant="contained"
         color="primary"
         disabled={!isValid || !isDirty}
+        className={styles.button}
       >
-        {isEditing ? 'Update Address' : 'Add Address'}
+        {isEditing ? 'Update' : 'Add'}
       </Button>
     </Box>
   );

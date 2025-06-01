@@ -151,27 +151,32 @@ export const AddressInfo = ({ customer, onSave }: PersonalInfoProps) => {
           variant="contained"
           onClick={() => setIsDialogOpen(true)}
           disabled={isSubmitting}
+          className={styles.button}
         >
           Add address
         </Button>
       </div>
       {addresses.length === 0 ? (
-        <p>No saved addresses</p>
+        <p className={styles.text}>No saved addresses</p>
       ) : (
-        addresses.map((address) => (
-          <AddressCard
-            key={address.id}
-            address={address}
-            isBilling={customer.billingAddressIds?.includes(address.id!)}
-            isShipping={customer.shippingAddressIds?.includes(address.id!)}
-            isDefaultBilling={address.id === customer.defaultBillingAddressId}
-            isDefaultShipping={address.id === customer.defaultShippingAddressId}
-            customerId={customer.id}
-            customerVersion={customer.version}
-            onAddressRemoved={handleAddressRemoved}
-            onAddressUpdated={handleAddressUpdated}
-          />
-        ))
+        <div className={styles.addresses}>
+          {addresses.map((address) => (
+            <AddressCard
+              key={address.id}
+              address={address}
+              isBilling={customer.billingAddressIds?.includes(address.id!)}
+              isShipping={customer.shippingAddressIds?.includes(address.id!)}
+              isDefaultBilling={address.id === customer.defaultBillingAddressId}
+              isDefaultShipping={
+                address.id === customer.defaultShippingAddressId
+              }
+              customerId={customer.id}
+              customerVersion={customer.version}
+              onAddressRemoved={handleAddressRemoved}
+              onAddressUpdated={handleAddressUpdated}
+            />
+          ))}
+        </div>
       )}
       <Dialog
         open={isDialogOpen}
@@ -189,7 +194,7 @@ export const AddressInfo = ({ customer, onSave }: PersonalInfoProps) => {
               <CloseIcon />
             </IconButton>
           </div>
-          <DialogContent>
+          <DialogContent className={styles.formContent}>
             <AddressForm
               onSubmit={handleAddAddress}
               onCancel={handleCloseDialog}

@@ -44,7 +44,8 @@ $breakpoint400: 400px;
   .formContent {
     padding: 0;
   }
-  .updateForm {
+  .updateForm,
+  .addressForm {
     padding: 10px 15px 20px 15px;
   }
 
@@ -81,6 +82,10 @@ $breakpoint400: 400px;
       height: 42px;
       width: 500px;
       border: none;
+
+      &:hover {
+        background-color: $primary-black;
+      }
 
       @media screen and (max-width: $breakpoint900) {
         width: 330px;
@@ -132,5 +137,95 @@ $breakpoint400: 400px;
   }
   &:nth-child(even) {
     background-color: $form-background;
+  }
+}
+
+.addressInfo {
+  background-color: $header-black-background;
+  padding-bottom: 80px;
+
+  .infoHeader {
+    h3 {
+      color: $secondary-light;
+    }
+    .button {
+      background-color: $secondary-light;
+      color: $button-dark;
+
+      &:hover {
+        background-color: $primary-white;
+      }
+    }
+  }
+  .text {
+    text-align: center;
+    margin: 40px auto;
+  }
+}
+
+.addresses {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  margin-top: 60px;
+
+  .card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px 10px;
+
+    width: 332px;
+    height: 435px;
+    margin-bottom: 72px;
+
+    border-radius: $border-radius;
+
+    background-color: $card-color;
+
+    @media screen and (max-width: $breakpoint400) {
+      width: 280px;
+    }
+
+    .removeArea {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .chips {
+      display: flex;
+      justify-content: space-evenly;
+      flex-direction: row;
+
+      width: 100%;
+      height: 50px;
+      gap: 8px;
+
+      @media screen and (max-width: $breakpoint400) {
+        flex-direction: column;
+        height: 70px;
+      }
+
+      .chip {
+        color: $primary-white;
+        background-color: $controls;
+      }
+    }
+
+    .addressInfoOutput {
+      text-align: left;
+      width: 80%;
+      margin-bottom: 40px;
+      line-height: 2.5;
+    }
+
+    .cardButton {
+      height: 42px;
+      width: 80%;
+      color: $controls;
+      border-radius: $border-radius;
+      background-color: $primary-white;
+    }
   }
 }

@@ -188,43 +188,29 @@ export const AddressCard = ({
 
   return (
     <>
-      <Box
-        sx={{
-          p: 3,
-          mb: 2,
-          border: '1px solid #e0e0e0',
-          borderRadius: '8px',
-          position: 'relative',
-          opacity: isDeleting ? 0.7 : 1,
-        }}
-      >
-        <IconButton
-          aria-label="Delete address"
-          onClick={handleDelete}
-          disabled={isDeleting}
-          sx={{
-            position: 'absolute',
-            top: 8,
-            right: 8,
-            color: 'error.main',
-          }}
-        >
-          <DeleteIcon fontSize="small" />
-        </IconButton>
-
-        <Box sx={{ mt: 1.5, display: 'flex', gap: 1 }}>
+      <Box className={styles.card}>
+        <div className={styles.removeArea}>
+          <IconButton
+            aria-label="Delete address"
+            onClick={handleDelete}
+            disabled={isDeleting}
+          >
+            <DeleteIcon fontSize="small" />
+          </IconButton>
+        </div>
+        <Box className={styles.chips}>
           {isDefaultBilling && (
             <Chip
+              className={styles.chip}
               label="Default billing address"
               size="small"
-              color="primary"
             />
           )}
           {isDefaultShipping && (
             <Chip
+              className={styles.chip}
               label="Default shipping address"
               size="small"
-              color="secondary"
             />
           )}
           {isBilling && !isDefaultBilling && (
@@ -234,25 +220,31 @@ export const AddressCard = ({
             <Chip label="Shipping address" size="small" variant="outlined" />
           )}
         </Box>
+        <div className={styles.addressInfoOutput}>
+          <p>
+            <strong>County:</strong>
+            {getCountryName(address.country.toLowerCase())}
+          </p>
+          <p>
+            <strong>City:</strong> {address.city}
+          </p>
+          <p>
+            <strong>Street:</strong> {address.streetName}
+          </p>
+          <p>
+            <strong>Street line 2:</strong> {address.streetNumber || ''}
+          </p>
+          <p>
+            <strong>Zip code:</strong> {address.postalCode}
+          </p>
+        </div>
 
-        <Typography variant="subtitle1" fontWeight={600} gutterBottom>
-          {address.streetName}{' '}
-          {address.streetNumber ? `, ${address.streetNumber}` : ''}
-        </Typography>
-
-        <Typography variant="body2" color="text.secondary" gutterBottom>
-          {address.city}, {address.postalCode}
-        </Typography>
-
-        <Typography variant="body2" color="text.secondary">
-          {getCountryName(address.country.toLowerCase())}
-        </Typography>
         <Button
           variant="text"
           size="small"
           onClick={handleEditClick}
           disabled={isDeleting || isUpdating}
-          sx={{ color: 'primary.main', textTransform: 'none' }}
+          className={styles.cardButton}
         >
           Update
         </Button>

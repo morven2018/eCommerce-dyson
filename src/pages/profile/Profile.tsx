@@ -72,11 +72,6 @@ export const ProfilePage = () => {
       </div>
       <PersonalInfo customer={customer} onSave={handleSave} />
       <AddressInfo customer={customer} onSave={handleSave} />
-
-      <details>
-        <summary>Raw customer data</summary>
-        <pre>{JSON.stringify(customer, null, 2)}</pre>
-      </details>
     </main>
   );
 };
