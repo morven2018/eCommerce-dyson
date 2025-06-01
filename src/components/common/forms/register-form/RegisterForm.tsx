@@ -57,7 +57,8 @@ export interface IFormData {
   billingAddress: IAddress;
 }
 
-interface IAddress {
+export interface IAddress {
+  id?: string;
   dataFromShipping?: boolean;
   defaultAddress?: boolean;
   country: string;
