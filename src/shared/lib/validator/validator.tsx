@@ -37,6 +37,17 @@ export const emailValidationSchema = yup
     'Email must not contain only domain name',
     (value) => !value || !/^@+/.test(value)
   )
+  .test(
+    'domain-min-length',
+    'Domain must be at least 2 characters long',
+    (value) => {
+      if (!value) return true;
+      const parts = value.split('@');
+      if (parts.length < 2) return true;
+      const domainParts = parts[1].split('.');
+      return domainParts[0].length >= 2;
+    }
+  )
   .matches(
     /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z]+$/,
     'Email must be in format test@email.email'
@@ -71,11 +82,12 @@ export const phoneValidationSchema = yup
 
 export const textValidationSchema = yup
   .string()
+  .trim()
   .required('This field is mandatory')
-  .min(3, 'Field must be at least 3-characters')
+  .min(1, 'Field must be at least 1-character')
   .test(
     'not-only-spaces',
-    'Field must be at least 3-characters, no spaces',
+    'Field must be at least 1-character, no spaces',
     (value) => !/^\s+$/.test(value ?? '')
   )
   .test(
