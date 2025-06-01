@@ -20,13 +20,11 @@ export const openDialog = (message: string, withHomeButton?: boolean) => {
 
   const root = ReactDOM.createRoot(container);
   root.render(
-    <>
-      <ShowDialog
-        message={message}
-        onClose={() => cleanup(root, container)}
-        additionalButton={withHomeButton && buttonToMain()}
-      />
-    </>
+    <ShowDialog
+      message={message}
+      onClose={() => cleanup(root, container)}
+      additionalButton={withHomeButton && buttonToMain()}
+    />
   );
 
   function cleanup(root: Root, container: HTMLElement) {

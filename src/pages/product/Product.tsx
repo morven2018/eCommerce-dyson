@@ -2,7 +2,6 @@ import styles from './Product.module.scss';
 import { useState, useEffect } from 'react';
 import { getProductDataById } from '@shared/api/commerce-tools/getProductDataById';
 import { getTokenFromLS } from '@shared/api/local-storage/getTokenFromLS';
-//import { getProductIdFromLS } from '@shared/api/local-storage/getProductIdFromLS';
 import ProductTitle from '@components/layout/product/title/ProductTitle';
 import { ButtonBack } from '@components/ui/buttons/ButtonBack';
 import ProductCard from '@components/layout/product/card/ProductCard';

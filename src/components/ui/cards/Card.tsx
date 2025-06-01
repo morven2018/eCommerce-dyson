@@ -25,7 +25,6 @@ export const Card = ({
     description.length < 75 ? description : `${description.slice(0, 75)}...`;
 
   function saveIdAndShowProduct() {
-    // localStorage.setItem('dysonProductId', id);
     navigate(`/product/${id}`);
   }
 
