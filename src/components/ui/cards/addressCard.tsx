@@ -1,9 +1,26 @@
+import {
+  AddressForm,
+  IAddressFormData,
+} from '@components/common/forms/profile-forms/addUpdateAddresses';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { IconButton, Box, Typography, Chip, Alert } from '@mui/material';
+import {
+  IconButton,
+  Box,
+  Typography,
+  Chip,
+  Alert,
+  Dialog,
+  DialogContent,
+  Button,
+} from '@mui/material';
 import { ResponseAddress } from '@pages/profile/Profile';
 import { removeAddress } from '@shared/api/commerce-tools/updateFields/updateAddresses/removeAdderss';
-
+import { DEFAULT_COUNTRIES } from '@shared/constants/countries';
+import CloseIcon from '@mui/icons-material/Close';
 import { useState } from 'react';
+import styles from '../../../components/layout/profile/profile.module.scss';
+import { useForm } from 'react-hook-form';
+import { updateAddress } from '@shared/api/commerce-tools/updateFields/updateAddresses/updateAddress';
 
 interface AddressCardProps {
   address: ResponseAddress;
@@ -17,6 +34,11 @@ interface AddressCardProps {
     removedAddressId: string;
     newVersion: number;
   }) => void;
+  onAddressUpdated?: (updatedData: {
+    addressId: string;
+    newVersion: number;
+    updatedFields: IAddressFormData;
+  }) => void;
 }
 
 export const AddressCard = ({
@@ -28,9 +50,15 @@ export const AddressCard = ({
   customerId,
   customerVersion,
   onAddressRemoved,
+  onAddressUpdated,
 }: AddressCardProps) => {
   const [error, setError] = useState<string | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
+  const [currentAddress, setCurrentAddress] = useState(address);
+
+  const { reset } = useForm();
 
   const handleDelete = async () => {
     if (!address.id || !customerId || !customerVersion) {
@@ -43,7 +71,7 @@ export const AddressCard = ({
 
     try {
       if (isDefaultBilling || isDefaultShipping) {
-        throw new Error('Нельзя удалить адрес, используемый по умолчанию');
+        throw new Error('You cannot delete the default address');
       }
 
       const updatedCustomer = await removeAddress(
@@ -64,68 +92,193 @@ export const AddressCard = ({
     }
   };
 
+  const getCountryName = (countryCode: string) => {
+    const country = DEFAULT_COUNTRIES.find(
+      (c) => c.code.toLowerCase() === countryCode.toLowerCase()
+    );
+    return country ? country.name : countryCode;
+  };
+
+  const handleEditClick = () => {
+    setIsEditModalOpen(true);
+  };
+
+  const handleCloseEditModal = () => {
+    setIsEditModalOpen(false);
+  };
+
+  const handleSubmitAddress = async (formData: IAddressFormData) => {
+    if (!customerId || !customerVersion) {
+      setError('Customer data missing');
+      return;
+    }
+
+    setIsUpdating(true);
+    setError(null);
+
+    try {
+      const updatedCustomer = await updateAddress(
+        currentAddress.id,
+        {
+          country: formData.country,
+          city: formData.city,
+          street: formData.street,
+          zipCode: formData.zipCode,
+          streetLine2: formData.streetLine2,
+        },
+        customerId,
+        customerVersion,
+        {
+          setAsDefaultBilling: formData.defaultBilling,
+          setAsDefaultShipping: formData.defaultShipping,
+        },
+        formData.useAsBilling && formData.useAsShipping
+          ? 'both'
+          : formData.useAsBilling
+            ? 'billing'
+            : formData.useAsShipping
+              ? 'shipping'
+              : 'none'
+      );
+
+      if (!updatedCustomer.addresses) throw new Error('No data to update');
+
+      const updatedAddress = updatedCustomer.addresses.find(
+        (a: ResponseAddress) => a.id === currentAddress.id
+      );
+
+      if (updatedAddress) {
+        setCurrentAddress(updatedAddress);
+        onAddressUpdated?.({
+          addressId: updatedAddress.id,
+          newVersion: updatedCustomer.version || 1,
+          updatedFields: formData,
+        });
+      }
+
+      setIsEditModalOpen(false);
+    } catch (err) {
+      setError(
+        err instanceof Error ? err.message : 'Ошибка при обновлении адреса'
+      );
+    } finally {
+      setIsUpdating(false);
+    }
+  };
+
+  const initialFormValues: IAddressFormData = {
+    id: address.id,
+    country: address.country.toLowerCase(),
+    city: address.city,
+    street: address.streetName,
+    zipCode: address.postalCode,
+    useAsShipping: isShipping,
+    useAsBilling: isBilling,
+    defaultShipping: isDefaultShipping,
+    defaultBilling: isDefaultBilling,
+  };
+
+  const handleCloseForm = () => {
+    setIsEditModalOpen(false);
+    reset();
+  };
+
   return (
-    <Box
-      sx={{
-        p: 3,
-        mb: 2,
-        border: '1px solid #e0e0e0',
-        borderRadius: '8px',
-        position: 'relative',
-        opacity: isDeleting ? 0.7 : 1,
-      }}
-    >
-      <IconButton
-        aria-label="Удалить адрес"
-        onClick={handleDelete}
-        disabled={isDeleting}
+    <>
+      <Box
         sx={{
-          position: 'absolute',
-          top: 8,
-          right: 8,
-          color: 'error.main',
+          p: 3,
+          mb: 2,
+          border: '1px solid #e0e0e0',
+          borderRadius: '8px',
+          position: 'relative',
+          opacity: isDeleting ? 0.7 : 1,
         }}
       >
-        <DeleteIcon fontSize="small" />
-      </IconButton>
+        <IconButton
+          aria-label="Удалить адрес"
+          onClick={handleDelete}
+          disabled={isDeleting}
+          sx={{
+            position: 'absolute',
+            top: 8,
+            right: 8,
+            color: 'error.main',
+          }}
+        >
+          <DeleteIcon fontSize="small" />
+        </IconButton>
 
-      {error && (
-        <Alert severity="error" sx={{ mb: 2 }}>
-          {error}
-        </Alert>
-      )}
+        {error && (
+          <Alert severity="error" sx={{ mb: 2 }}>
+            {error}
+          </Alert>
+        )}
 
-      <Box sx={{ mt: 1.5, display: 'flex', gap: 1 }}>
-        {isDefaultBilling && (
-          <Chip label="Default billing address" size="small" color="primary" />
-        )}
-        {isDefaultShipping && (
-          <Chip
-            label="Default shipping address"
-            size="small"
-            color="secondary"
-          />
-        )}
-        {isBilling && !isDefaultBilling && (
-          <Chip label="Billing address" size="small" variant="outlined" />
-        )}
-        {isShipping && !isDefaultShipping && (
-          <Chip label="Shipping address" size="small" variant="outlined" />
-        )}
+        <Box sx={{ mt: 1.5, display: 'flex', gap: 1 }}>
+          {isDefaultBilling && (
+            <Chip
+              label="Default billing address"
+              size="small"
+              color="primary"
+            />
+          )}
+          {isDefaultShipping && (
+            <Chip
+              label="Default shipping address"
+              size="small"
+              color="secondary"
+            />
+          )}
+          {isBilling && !isDefaultBilling && (
+            <Chip label="Billing address" size="small" variant="outlined" />
+          )}
+          {isShipping && !isDefaultShipping && (
+            <Chip label="Shipping address" size="small" variant="outlined" />
+          )}
+        </Box>
+
+        <Typography variant="subtitle1" fontWeight={600} gutterBottom>
+          {address.streetName}{' '}
+          {address.streetNumber ? `, ${address.streetNumber}` : ''}
+        </Typography>
+
+        <Typography variant="body2" color="text.secondary" gutterBottom>
+          {address.city}, {address.postalCode}
+        </Typography>
+
+        <Typography variant="body2" color="text.secondary">
+          {getCountryName(address.country.toLowerCase())}
+        </Typography>
+        <Button
+          variant="text" // или "outlined", если нужна рамка
+          size="small"
+          onClick={handleEditClick}
+          disabled={isDeleting}
+          sx={{ color: 'primary.main', textTransform: 'none' }} // textTransform: 'none' убирает CAPS
+        >
+          Update
+        </Button>
       </Box>
-
-      <Typography variant="subtitle1" fontWeight={600} gutterBottom>
-        {address.streetName}{' '}
-        {address.streetNumber ? `, ${address.streetNumber}` : ''}
-      </Typography>
-
-      <Typography variant="body2" color="text.secondary" gutterBottom>
-        {address.city}, {address.postalCode}
-      </Typography>
-
-      <Typography variant="body2" color="text.secondary">
-        {address.country}
-      </Typography>
-    </Box>
+      <Dialog
+        open={isEditModalOpen}
+        onClose={handleCloseEditModal}
+        maxWidth="md"
+        fullWidth
+      >
+        <div className={styles.closeButton}>
+          <IconButton aria-label="close" onClick={handleCloseForm}>
+            <CloseIcon />
+          </IconButton>
+        </div>
+        <DialogContent>
+          <AddressForm
+            initialValues={initialFormValues}
+            onSubmit={handleSubmitAddress}
+            isEditing={true}
+          />
+        </DialogContent>
+      </Dialog>
+    </>
   );
 };

@@ -96,6 +96,43 @@ export const AddressInfo = ({ customer, onSave }: PersonalInfoProps) => {
     }
   };
 
+  const handleAddressUpdated = ({
+    addressId,
+    newVersion,
+    updatedFields,
+  }: {
+    addressId: string;
+    newVersion: number;
+    updatedFields: IAddressFormData;
+  }) => {
+    const updatedAddresses = addresses.map((addr) => {
+      if (addr.id === addressId) {
+        return {
+          ...addr,
+          country: updatedFields.country,
+          city: updatedFields.city,
+          streetName: updatedFields.street,
+          postalCode: updatedFields.zipCode,
+        };
+      }
+      return addr;
+    });
+
+    setAddresses(updatedAddresses);
+    onSave?.({
+      ...customer,
+      addresses: updatedAddresses,
+      version: newVersion,
+      // Обновляем ID адресов по умолчанию, если они изменились
+      defaultBillingAddressId: updatedFields.defaultBilling
+        ? addressId
+        : customer.defaultBillingAddressId,
+      defaultShippingAddressId: updatedFields.defaultShipping
+        ? addressId
+        : customer.defaultShippingAddressId,
+    });
+  };
+
   const handleCloseDialog = () => {
     setIsDialogOpen(false);
   };
@@ -127,6 +164,7 @@ export const AddressInfo = ({ customer, onSave }: PersonalInfoProps) => {
             customerId={customer.id}
             customerVersion={customer.version}
             onAddressRemoved={handleAddressRemoved}
+            onAddressUpdated={handleAddressUpdated}
           />
         ))
       )}

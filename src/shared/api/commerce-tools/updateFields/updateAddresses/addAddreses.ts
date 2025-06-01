@@ -4,23 +4,6 @@ import { IAddress } from '@components/common/forms/register-form/RegisterForm';
 import { manageCustomerAddress } from './manageBillingShipping';
 import { setDefaultAddress } from './setDefault';
 
-/*interface UpdateCustomerData {
-  version: number;
-  actions: CustomerUpdateAction[];
-}
-*/
-//type CustomerUpdateAction = AddAddressAction | SetDefaultAddressAction;
-
-/*interface AddAddressAction {
-  action: 'addAddress';
-  address: ResponseAddress;
-}
-
-interface SetDefaultAddressAction {
-  action: 'setDefaultBillingAddress' | 'setDefaultShippingAddress';
-  addressId: string;
-}*/
-
 export interface AddAddressOptions {
   setAsDefaultBilling?: boolean;
   setAsDefaultShipping?: boolean;
