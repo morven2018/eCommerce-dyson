@@ -44,7 +44,7 @@ interface FormValues {
 }
 
 export const PersonalInfo = ({ customer, onSave }: PersonalInfoProps) => {
-  const [version, setVersion] = useState(customer.version || 1);
+  const [version, setVersion] = useState(customer.version ?? 1);
   const [passwordModalOpen, setPasswordModalOpen] = useState(false);
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [error, setError] = useState<{
@@ -64,10 +64,10 @@ export const PersonalInfo = ({ customer, onSave }: PersonalInfoProps) => {
       })
     ),
     defaultValues: {
-      firstName: customer.firstName || '',
-      lastName: customer.lastName || '',
-      email: customer.email || '',
-      phone: customer.custom?.fields.phone || '',
+      firstName: customer.firstName ?? '',
+      lastName: customer.lastName ?? '',
+      email: customer.email ?? '',
+      phone: customer.custom?.fields.phone ?? '',
       dateOfBirth: customer.dateOfBirth
         ? new Date(customer.dateOfBirth)
         : new Date(dayjs().subtract(18, 'year').toDate()),
@@ -102,7 +102,7 @@ export const PersonalInfo = ({ customer, onSave }: PersonalInfoProps) => {
         throw new Error(
           'Failed to update password. The current password value is incorrect'
         );
-      setVersion(response.version || 1);
+      setVersion(response.version ?? 1);
       setEditingStates((prev) => ({ ...prev, password: false }));
 
       const authResponse = await userAuthorization(
@@ -126,11 +126,11 @@ export const PersonalInfo = ({ customer, onSave }: PersonalInfoProps) => {
 
   const handleCancel = (field: keyof typeof editingStates) => {
     reset({
-      firstName: customer.firstName || '',
-      lastName: customer.lastName || '',
-      email: customer.email || '',
+      firstName: customer.firstName ?? '',
+      lastName: customer.lastName ?? '',
+      email: customer.email ?? '',
       password: '',
-      phone: customer.custom?.fields.phone || '',
+      phone: customer.custom?.fields.phone ?? '',
       dateOfBirth: customer.dateOfBirth
         ? new Date(customer.dateOfBirth)
         : new Date(dayjs().subtract(18, 'year').toDate()),
@@ -157,7 +157,7 @@ export const PersonalInfo = ({ customer, onSave }: PersonalInfoProps) => {
             version,
             'setLastName'
           );
-          if (response && response.version) {
+          if (response?.version) {
             setVersion(response.version);
             updatedData.version = response.version;
           }
@@ -172,7 +172,7 @@ export const PersonalInfo = ({ customer, onSave }: PersonalInfoProps) => {
             version,
             'setFirstName'
           );
-          if (response && response.version) {
+          if (response?.version) {
             setVersion(response.version);
             updatedData.version = response.version;
           }
@@ -186,7 +186,7 @@ export const PersonalInfo = ({ customer, onSave }: PersonalInfoProps) => {
             customer.id,
             version
           );
-          if (response && response.version) {
+          if (response?.version) {
             setVersion(response.version);
             updatedData.version = response.version;
           }
@@ -200,7 +200,7 @@ export const PersonalInfo = ({ customer, onSave }: PersonalInfoProps) => {
             customer.id,
             version
           );
-          if (response && response.version) {
+          if (response?.version) {
             setVersion(response.version);
             updatedData.version = response.version;
           }
@@ -217,7 +217,7 @@ export const PersonalInfo = ({ customer, onSave }: PersonalInfoProps) => {
             version,
             'setDateOfBirth'
           );
-          if (response && response.version) {
+          if (response?.version) {
             setVersion(response.version);
             updatedData.version = response.version;
           }
@@ -505,12 +505,13 @@ export const PersonalInfo = ({ customer, onSave }: PersonalInfoProps) => {
               version={version}
               onSave={(updatedData) => {
                 reset({
-                  firstName: updatedData.firstName || customer.firstName || '',
-                  lastName: updatedData.lastName || customer.lastName || '',
-                  email: updatedData.email || customer.email || '',
+                  firstName:
+                    (updatedData.firstName || customer.firstName) ?? '',
+                  lastName: (updatedData.lastName || customer.lastName) ?? '',
+                  email: (updatedData.email || customer.email) ?? '',
                   phone:
-                    updatedData.custom?.fields.phone ||
-                    customer.custom?.fields.phone ||
+                    (updatedData.custom?.fields.phone ||
+                      customer.custom?.fields.phone) ??
                     '',
                   dateOfBirth: updatedData.dateOfBirth
                     ? new Date(updatedData.dateOfBirth)

@@ -48,7 +48,7 @@ export const PersonalInfoForm = ({
   onSave,
 }: PersonalInfoFormProps) => {
   const [version, setVersion] = useState(
-    initialVersion || customer.version || 1
+    (initialVersion || customer.version) ?? 1
   );
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [passwordError, setPasswordError] = useState<string | undefined>(

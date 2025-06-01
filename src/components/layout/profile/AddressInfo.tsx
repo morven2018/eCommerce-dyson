@@ -88,7 +88,7 @@ export const AddressInfo = ({ customer, onSave }: PersonalInfoProps) => {
         addressType
       );
 
-      if (response && response.addresses) {
+      if (response?.addresses) {
         onSave?.({
           ...customer,
           addresses: response.addresses,
@@ -172,8 +172,8 @@ export const AddressInfo = ({ customer, onSave }: PersonalInfoProps) => {
             <AddressCard
               key={address.id}
               address={address}
-              isBilling={customer.billingAddressIds?.includes(address.id!)}
-              isShipping={customer.shippingAddressIds?.includes(address.id!)}
+              isBilling={customer.billingAddressIds?.includes(address.id)}
+              isShipping={customer.shippingAddressIds?.includes(address.id)}
               isDefaultBilling={address.id === customer.defaultBillingAddressId}
               isDefaultShipping={
                 address.id === customer.defaultShippingAddressId
