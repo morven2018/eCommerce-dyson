@@ -27,36 +27,28 @@ export async function updateField(
   const apiUrl = commercetoolsConfig.apiUrl;
   const projectKey = commercetoolsConfig.projectKey;
   const url = `${apiUrl}/${projectKey}/customers/${customerId}`;
-  const updateData: UpdateCustomerData =
-    action === 'setFirstName'
-      ? {
-          version,
-          actions: [
-            {
-              action,
-              firstName: newValue,
-            },
-          ],
-        }
-      : action === 'setLastName'
-        ? {
-            version,
-            actions: [
-              {
-                action,
-                lastName: newValue,
-              },
-            ],
-          }
-        : {
-            version,
-            actions: [
-              {
-                action,
-                dateOfBirth: newValue,
-              },
-            ],
-          };
+  let actionPayload;
+  if (action === 'setFirstName') {
+    actionPayload = {
+      action,
+      firstName: newValue,
+    };
+  } else if (action === 'setLastName') {
+    actionPayload = {
+      action,
+      lastName: newValue,
+    };
+  } else {
+    actionPayload = {
+      action,
+      dateOfBirth: newValue,
+    };
+  }
+
+  const updateData: UpdateCustomerData = {
+    version,
+    actions: [actionPayload],
+  };
 
   const response = await fetch(url, {
     method: 'POST',

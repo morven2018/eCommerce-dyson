@@ -108,11 +108,12 @@ export async function addAddress(
         customerId,
         currentVersion
       );
-      currentVersion = response.version;
     }
 
     return response;
   } catch (error) {
-    throw new Error(error.message || `Unknown error occurred`);
+    throw new Error(
+      error instanceof Error ? error.message : `Unknown error occurred`
+    );
   }
 }

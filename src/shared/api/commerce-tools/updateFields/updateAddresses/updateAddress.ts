@@ -49,7 +49,7 @@ export async function updateAddress(
 
     if (!updateResponse.ok) {
       const error = await updateResponse.json();
-      throw new Error(error.message || 'Failed to update address');
+      throw new Error(error.message ?? 'Failed to update address');
     }
 
     const customer = await updateResponse.json();
@@ -127,7 +127,6 @@ export async function updateAddress(
         customerId,
         currentVersion
       );
-      currentVersion = response.version;
     }
 
     if (
@@ -147,7 +146,7 @@ export async function updateAddress(
       if (error.status === 401) {
         localStorage.removeItem('authDysonToken');
       }
-      throw new Error(errorData.message || `HTTP error ${error.status}`);
+      throw new Error(errorData.message ?? `HTTP error ${error.status}`);
     }
     throw error instanceof Error ? error : new Error('Unknown error occurred');
   }
