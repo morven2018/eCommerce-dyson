@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   Box,
   IconButton,
@@ -70,16 +70,16 @@ export const Header = () => {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const [navItems, setNavItems] = useState<INavItems[]>([]);
 
-  const toggleAuthStatus = () => {
+  const toggleAuthStatus = useCallback(() => {
     if (!isUserUnauthorized) {
       const tokenName = 'authDysonToken';
       localStorage.removeItem(tokenName);
       addAnonymousSessionTokenToLS();
     }
     setIsUserUnauthorized(!isUserUnauthorized);
-  };
+  }, [isUserUnauthorized, setIsUserUnauthorized]);
 
-  const updateNavItems = () => {
+  const updateNavItems = useCallback(() => {
     const updatedItems = [
       {
         text: NavText.Catalog,
@@ -113,11 +113,11 @@ export const Header = () => {
       },
     ];
     setNavItems(updatedItems);
-  };
+  }, [isUserUnauthorized, isCartEmpty, toggleAuthStatus]);
 
   useEffect(() => {
     updateNavItems();
-  }, [isUserUnauthorized, isCartEmpty]);
+  }, [updateNavItems]);
 
   const toggleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
