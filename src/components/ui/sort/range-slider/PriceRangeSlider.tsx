@@ -85,8 +85,8 @@ export const PriceRangeSlider: React.FC<PriceRangeSliderProps> = ({
       </Box>
 
       <div className={styles.container}>
-        <p className={styles.value}>$0</p>
-        <p className={styles.value}>$1000</p>
+        <p className={styles.value}>$66</p>
+        <p className={styles.value}>$1180</p>
       </div>
     </Box>
   );
