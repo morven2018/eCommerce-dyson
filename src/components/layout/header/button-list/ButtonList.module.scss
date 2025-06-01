@@ -37,6 +37,11 @@ ul.buttonList {
   }
 }
 
+.active {
+  background-color: $form-background;
+  pointer-events: none;
+}
+
 @media screen and (max-width: $width-tablet) {
   .icon {
     display: none;
