@@ -91,6 +91,11 @@ export const textValidationSchema = yup
     (value) => !/^\s+$/.test(value ?? '')
   )
   .test(
+    'no-digit',
+    'Field must not contain numbers',
+    (value) => !/\d/.test(value ?? '')
+  )
+  .test(
     'no-special-chars',
     'Field must not contain special characters',
     (value) => /^[a-zA-Z а-яА-Я]+$/.test(value ?? '')
