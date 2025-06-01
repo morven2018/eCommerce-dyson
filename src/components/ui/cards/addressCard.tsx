@@ -82,7 +82,7 @@ export const AddressCard = ({
       );
       onAddressRemoved?.({
         removedAddressId: address.id,
-        newVersion: updatedCustomer?.version || customerVersion + 1,
+        newVersion: updatedCustomer?.version ?? customerVersion + 1,
       });
     } catch (err) {
       setError({
@@ -118,6 +118,15 @@ export const AddressCard = ({
     setIsUpdating(true);
 
     try {
+      let addresstype: 'both' | 'billing' | 'shipping' | 'none' | undefined;
+      if (formData.useAsBilling && formData.useAsShipping) addresstype = 'both';
+      if (formData.useAsBilling && !formData.useAsShipping)
+        addresstype = 'billing';
+      if (!formData.useAsBilling && formData.useAsShipping)
+        addresstype = 'shipping';
+      if (!formData.useAsBilling && !formData.useAsShipping)
+        addresstype = 'none';
+
       const updatedCustomer = await updateAddress(
         currentAddress.id,
         {
@@ -133,13 +142,7 @@ export const AddressCard = ({
           setAsDefaultBilling: formData.defaultBilling,
           setAsDefaultShipping: formData.defaultShipping,
         },
-        formData.useAsBilling && formData.useAsShipping
-          ? 'both'
-          : formData.useAsBilling
-            ? 'billing'
-            : formData.useAsShipping
-              ? 'shipping'
-              : 'none'
+        addresstype
       );
 
       if (!updatedCustomer.addresses) throw new Error('No data to update');
@@ -152,7 +155,7 @@ export const AddressCard = ({
         setCurrentAddress(updatedAddress);
         onAddressUpdated?.({
           addressId: updatedAddress.id,
-          newVersion: updatedCustomer.version || 1,
+          newVersion: updatedCustomer.version ?? 1,
           updatedFields: formData,
         });
       }
@@ -231,7 +234,7 @@ export const AddressCard = ({
             <strong>Street:</strong> {address.streetName}
           </p>
           <p>
-            <strong>Street line 2:</strong> {address.streetNumber || ''}
+            <strong>Street line 2:</strong> {address.streetNumber ?? ''}
           </p>
           <p>
             <strong>Zip code:</strong> {address.postalCode}
@@ -242,7 +245,7 @@ export const AddressCard = ({
           variant="text"
           size="small"
           onClick={handleEditClick}
-          disabled={isDeleting || isUpdating}
+          disabled={isDeleting ?? isUpdating}
           className={styles.cardButton}
         >
           Update

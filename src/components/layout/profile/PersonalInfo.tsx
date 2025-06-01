@@ -251,6 +251,12 @@ export const PersonalInfo = ({ customer, onSave }: PersonalInfoProps) => {
     reset();
   };
 
+  const setDate = (date: string | undefined, customer: Customer): Date => {
+    if (date) return new Date(date);
+    if (customer.dateOfBirth) return new Date(customer.dateOfBirth);
+    else return new Date(dayjs().subtract(18, 'year').toDate());
+  };
+
   return (
     <div className={styles.personalInfo}>
       <div className={styles.infoHeader}>
@@ -505,19 +511,14 @@ export const PersonalInfo = ({ customer, onSave }: PersonalInfoProps) => {
               version={version}
               onSave={(updatedData) => {
                 reset({
-                  firstName:
-                    (updatedData.firstName || customer.firstName) ?? '',
-                  lastName: (updatedData.lastName || customer.lastName) ?? '',
-                  email: (updatedData.email || customer.email) ?? '',
+                  firstName: updatedData.firstName ?? customer.firstName ?? '',
+                  lastName: updatedData.lastName ?? customer.lastName ?? '',
+                  email: updatedData.email ?? customer.email ?? '',
                   phone:
-                    (updatedData.custom?.fields.phone ||
-                      customer.custom?.fields.phone) ??
+                    updatedData.custom?.fields.phone ??
+                    customer.custom?.fields.phone ??
                     '',
-                  dateOfBirth: updatedData.dateOfBirth
-                    ? new Date(updatedData.dateOfBirth)
-                    : customer.dateOfBirth
-                      ? new Date(customer.dateOfBirth)
-                      : new Date(dayjs().subtract(18, 'year').toDate()),
+                  dateOfBirth: setDate(updatedData.dateOfBirth, customer),
                   password: '',
                 });
                 if (updatedData.version) {

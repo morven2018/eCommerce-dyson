@@ -16,7 +16,7 @@ type InputPasswordProps = {
   value?: string;
   onChange?: (e: React.ChangeEvent<HTMLInputElement>) => void;
   error?: boolean;
-  helperText?: string | undefined;
+  helperText?: string;
   label?: string;
   disabled?: boolean;
   readOnly?: boolean;
