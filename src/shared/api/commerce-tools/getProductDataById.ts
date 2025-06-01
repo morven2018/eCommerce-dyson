@@ -40,7 +40,7 @@ export async function getProductDataById(
       message = error;
     }
 
-    openDialog(message);
+    openDialog(message, true);
 
     return null;
   }

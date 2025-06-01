@@ -69,7 +69,7 @@ export function App() {
           path="/catalog/lighting"
           element={<CategoryPage page="lighting" />}
         />
-        <Route path="/product" element={<ProductPage />} />
+        <Route path="/product/:productId" element={<ProductPage />} />
 
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
