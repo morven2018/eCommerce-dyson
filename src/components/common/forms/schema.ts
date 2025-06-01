@@ -40,6 +40,6 @@ export const defaultSchema = yup.object({
     })
     .matches(/[A-Z]/, messages.password.needUpperCase)
     .matches(/[a-z]/, messages.password.needLowerCase)
-    .matches(/[0-9]/, messages.password.needNumber)
+    .matches(/\d/, messages.password.needNumber)
     .matches(/[!@#$%^&*]/, messages.password.needSpecialCharacter),
 });
