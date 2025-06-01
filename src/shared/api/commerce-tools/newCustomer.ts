@@ -245,10 +245,6 @@ export async function register(data: IFormData) {
       streetName: shippingAddress.street,
       streetNumber: shippingAddress.streetLine2 ?? '',
       postalCode: shippingAddress.zipCode,
-      additionalAddressInfo:
-        (shippingAddress.defaultAddress ? 'Default shipping address' : '') +
-        ' ' +
-        (billingAddress.defaultAddress ? ' Default billing address' : ''),
     });
 
     customerData.shippingAddresses.push(0);
@@ -267,9 +263,6 @@ export async function register(data: IFormData) {
       streetName: shippingAddress.street,
       streetNumber: shippingAddress.streetLine2 ?? '',
       postalCode: shippingAddress.zipCode,
-      additionalAddressInfo: shippingAddress.defaultAddress
-        ? 'Default shipping address'
-        : '',
     });
 
     customerData.addresses.push({
@@ -278,9 +271,6 @@ export async function register(data: IFormData) {
       streetName: billingAddress.street,
       streetNumber: billingAddress.streetLine2 ?? '',
       postalCode: billingAddress.zipCode,
-      additionalAddressInfo: billingAddress.defaultAddress
-        ? 'Default billing address'
-        : '',
     });
 
     customerData.shippingAddresses.push(0);
