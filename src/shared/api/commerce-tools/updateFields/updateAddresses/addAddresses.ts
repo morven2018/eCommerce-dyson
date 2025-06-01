@@ -26,7 +26,6 @@ export async function addAddress(
   let currentVersion = version;
 
   try {
-    // 1. First add the address
     const addResponse = await fetch(baseUrl, {
       method: 'POST',
       headers: {
@@ -51,7 +50,6 @@ export async function addAddress(
     });
 
     if (!addResponse.ok) {
-      console.log(await addResponse.text());
       const error = await addResponse.json();
       throw new Error(error.message + 'Failed to add address9');
     }
@@ -71,7 +69,6 @@ export async function addAddress(
     currentVersion = customer.version;
     let response = customer;
 
-    // 2. Set address type (billing/shipping/both) if specified
     if (addressType) {
       if (addressType === 'billing' || addressType === 'both') {
         response = await manageCustomerAddress(

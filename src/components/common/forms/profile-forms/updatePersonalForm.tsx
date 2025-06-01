@@ -27,6 +27,7 @@ import { updatePassword } from '@shared/api/commerce-tools/updateFields/updatePa
 import { userAuthorization } from '@shared/api/commerce-tools/authorization';
 import { PasswordConfirmModal } from '@components/ui/modals/ModalWithPassword';
 import styles from '../register-form/RegisterForm.module.scss';
+import ShowDialog from '@components/ui/modals/Modal';
 
 interface PersonalInfoFormProps {
   customer: Customer;
@@ -57,6 +58,10 @@ export const PersonalInfoForm = ({
   );
   const [passwordModalOpen, setPasswordModalOpen] = useState(false);
   const [pendingPassword, setPendingPassword] = useState<string>('');
+  const [error, setError] = useState<{
+    text: string;
+    action?: () => void;
+  } | null>(null);
 
   const defaultValues = useMemo(
     () => ({
@@ -207,8 +212,11 @@ export const PersonalInfoForm = ({
       setVersion(currentVersion);
       onSave?.({ ...updatedData, version: currentVersion });
       reset(data);
-    } catch (error) {
-      console.error('Failed to update profile:', error);
+    } catch {
+      setError({
+        text: 'Failed to update profile',
+        action: () => setError(null),
+      });
     } finally {
       setIsSubmitting(false);
     }
@@ -250,9 +258,11 @@ export const PersonalInfoForm = ({
       setPasswordModalOpen(false);
       setPendingPassword('');
       reset({ ...formValues, password: '' });
-    } catch (error) {
-      console.error('Password confirmation failed:', error);
-      throw error;
+    } catch {
+      setError({
+        text: 'Password confirmation failed',
+        action: () => setError(null),
+      });
     }
   };
 
@@ -314,121 +324,126 @@ export const PersonalInfoForm = ({
   };
 
   return (
-    <Box
-      component="form"
-      onSubmit={handleSubmit(handleSave)}
-      className={`${styles.registerForm} ${styles.updateArea}`}
-    >
-      <h5>Update Personal Information</h5>
-      <div className={styles.formArea}>
-        <Controller
-          name="email"
-          control={control}
-          render={({ field }) => (
-            <InputEmail
-              label="Email"
-              value={field.value}
-              onChange={field.onChange}
-              error={!!errors.email}
-              helperText={errors.email?.message}
-            />
-          )}
-        />
-        <Box className={styles.password}>
+    <>
+      <Box
+        component="form"
+        onSubmit={handleSubmit(handleSave)}
+        className={`${styles.registerForm} ${styles.updateArea}`}
+      >
+        <h5>Update Personal Information</h5>
+        <div className={styles.formArea}>
           <Controller
-            name="password"
+            name="email"
             control={control}
             render={({ field }) => (
-              <InputPassword
-                value={field.value || ''}
+              <InputEmail
+                label="Email"
+                value={field.value}
                 onChange={field.onChange}
-                error={!!passwordError}
-                helperText={passwordError}
+                error={!!errors.email}
+                helperText={errors.email?.message}
               />
             )}
           />
-          <Button
-            onClick={handleGeneratePassword}
-            variant="outlined"
-            aria-label="generate"
-            className={styles.button}
-          >
-            Generate
-          </Button>
-        </Box>
+          <Box className={styles.password}>
+            <Controller
+              name="password"
+              control={control}
+              render={({ field }) => (
+                <InputPassword
+                  value={field.value || ''}
+                  onChange={field.onChange}
+                  error={!!passwordError}
+                  helperText={passwordError}
+                />
+              )}
+            />
+            <Button
+              onClick={handleGeneratePassword}
+              variant="outlined"
+              aria-label="generate"
+              className={styles.button}
+            >
+              Generate
+            </Button>
+          </Box>
 
-        <Controller
-          name="firstName"
-          control={control}
-          render={({ field }) => (
-            <InputText
-              id="firstName"
-              label="First Name"
-              value={field.value || ''}
-              onChange={field.onChange}
-              error={!!errors.firstName}
-              helperText={errors.firstName?.message}
-            />
-          )}
+          <Controller
+            name="firstName"
+            control={control}
+            render={({ field }) => (
+              <InputText
+                id="firstName"
+                label="First Name"
+                value={field.value || ''}
+                onChange={field.onChange}
+                error={!!errors.firstName}
+                helperText={errors.firstName?.message}
+              />
+            )}
+          />
+          <Controller
+            name="lastName"
+            control={control}
+            render={({ field }) => (
+              <InputText
+                id="lastName"
+                label="Last Name"
+                value={field.value || ''}
+                onChange={field.onChange}
+                error={!!errors.lastName}
+                helperText={errors.lastName?.message}
+              />
+            )}
+          />
+          <Controller
+            name="phone"
+            control={control}
+            render={({ field }) => (
+              <InputPhone
+                label="Phone"
+                value={field.value}
+                onChange={field.onChange}
+                error={!!errors.phone}
+                helperText={errors.phone?.message}
+              />
+            )}
+          />
+          <Controller
+            name="dateOfBirth"
+            control={control}
+            render={({ field }) => (
+              <InputDate
+                label="Date of Birth"
+                value={field.value ? dayjs(field.value) : null}
+                onChange={(date) => field.onChange(date?.toDate() ?? null)}
+                error={!!errors.dateOfBirth}
+                helperText={errors.dateOfBirth?.message}
+              />
+            )}
+          />
+        </div>
+        <Button
+          type="submit"
+          variant="contained"
+          disabled={!isDirty || isSubmitting}
+          className={styles.button}
+        >
+          Update
+        </Button>
+        <PasswordConfirmModal
+          open={passwordModalOpen}
+          onClose={() => {
+            setPasswordModalOpen(false);
+            setPendingPassword('');
+            setIsSubmitting(false);
+          }}
+          onConfirm={handlePasswordConfirm}
         />
-        <Controller
-          name="lastName"
-          control={control}
-          render={({ field }) => (
-            <InputText
-              id="lastName"
-              label="Last Name"
-              value={field.value || ''}
-              onChange={field.onChange}
-              error={!!errors.lastName}
-              helperText={errors.lastName?.message}
-            />
-          )}
-        />
-        <Controller
-          name="phone"
-          control={control}
-          render={({ field }) => (
-            <InputPhone
-              label="Phone"
-              value={field.value}
-              onChange={field.onChange}
-              error={!!errors.phone}
-              helperText={errors.phone?.message}
-            />
-          )}
-        />
-        <Controller
-          name="dateOfBirth"
-          control={control}
-          render={({ field }) => (
-            <InputDate
-              label="Date of Birth"
-              value={field.value ? dayjs(field.value) : null}
-              onChange={(date) => field.onChange(date?.toDate() ?? null)}
-              error={!!errors.dateOfBirth}
-              helperText={errors.dateOfBirth?.message}
-            />
-          )}
-        />
-      </div>
-      <Button
-        type="submit"
-        variant="contained"
-        disabled={!isDirty || isSubmitting}
-        className={styles.button}
-      >
-        Update
-      </Button>
-      <PasswordConfirmModal
-        open={passwordModalOpen}
-        onClose={() => {
-          setPasswordModalOpen(false);
-          setPendingPassword('');
-          setIsSubmitting(false);
-        }}
-        onConfirm={handlePasswordConfirm}
-      />
-    </Box>
+      </Box>
+      {error && (
+        <ShowDialog message={error.text} onClose={() => setError(null)} />
+      )}{' '}
+    </>
   );
 };

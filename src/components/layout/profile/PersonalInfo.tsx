@@ -29,6 +29,7 @@ import { userAuthorization } from '@shared/api/commerce-tools/authorization';
 import { PersonalInfoForm } from '@components/common/forms/profile-forms/updatePersonalForm';
 import CloseIcon from '@mui/icons-material/Close';
 import styles from './profile.module.scss';
+import ShowDialog from '@components/ui/modals/Modal';
 
 interface PersonalInfoProps {
   customer: Customer;
@@ -48,6 +49,10 @@ export const PersonalInfo = ({ customer, onSave }: PersonalInfoProps) => {
   const [version, setVersion] = useState(customer.version || 1);
   const [passwordModalOpen, setPasswordModalOpen] = useState(false);
   const [isFormOpen, setIsFormOpen] = useState(false);
+  const [error, setError] = useState<{
+    text: string;
+    action?: () => void;
+  } | null>(null);
 
   const { control, reset, trigger, getValues } = useForm<FormValues>({
     resolver: yupResolver(
@@ -95,7 +100,10 @@ export const PersonalInfo = ({ customer, onSave }: PersonalInfoProps) => {
         customer.id,
         version
       );
-      if (!response) throw new Error('Failed to update password');
+      if (!response)
+        throw new Error(
+          'Failed to update password. The current password value is incorrect'
+        );
       setVersion(response.version || 1);
       setEditingStates((prev) => ({ ...prev, password: false }));
 
@@ -112,8 +120,9 @@ export const PersonalInfo = ({ customer, onSave }: PersonalInfoProps) => {
         localStorage.setItem(tokenName, authResponse.access_token);
       }
     } catch (error) {
-      reset({ password: '' });
-      console.error('Password update failed:', error);
+      const errorMessage =
+        error instanceof Error ? error.message : 'Password confirmation failed';
+      setError({ text: errorMessage, action: () => setError(null) });
     }
   };
 
@@ -219,9 +228,12 @@ export const PersonalInfo = ({ customer, onSave }: PersonalInfoProps) => {
       }
 
       onSave?.(updatedData);
-    } catch (error) {
+    } catch {
       setEditingStates((prev) => ({ ...prev, [field]: true }));
-      console.error(`Error saving ${field}:`, error);
+      setError({
+        text: `Error saving ${field}:`,
+        action: () => setError(null),
+      });
     }
   };
 
@@ -513,6 +525,9 @@ export const PersonalInfo = ({ customer, onSave }: PersonalInfoProps) => {
           </DialogContent>
         </div>
       </Dialog>
+      {error && (
+        <ShowDialog message={error.text} onClose={() => setError(null)} />
+      )}
     </div>
   );
 };

@@ -60,8 +60,6 @@ export async function manageCustomerAddress(
   });
 
   if (!response.ok) {
-    const errorData = await response.json();
-    console.error('API Error:', errorData);
     if (response.status === 401) {
       localStorage.removeItem('authDysonToken');
     }

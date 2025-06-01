@@ -1,7 +1,7 @@
 import { IAddress } from '@components/common/forms/register-form/RegisterForm';
 import { Customer } from '@pages/profile/Profile';
 import { commercetoolsConfig } from '../../config';
-import { AddAddressOptions } from './addAddreses';
+import { AddAddressOptions } from './addAddresses';
 import { manageCustomerAddress } from './manageBillingShipping';
 import { setDefaultAddress } from './setDefault';
 

@@ -8,7 +8,8 @@ import {
   IAddressFormData,
 } from '@components/common/forms/profile-forms/addUpdateAddresses';
 import CloseIcon from '@mui/icons-material/Close';
-import { addAddress } from '@shared/api/commerce-tools/updateFields/updateAddresses/addAddreses';
+import { addAddress } from '@shared/api/commerce-tools/updateFields/updateAddresses/addAddresses';
+import ShowDialog from '@components/ui/modals/Modal';
 
 interface AddressRemovedParams {
   removedAddressId: string;
@@ -30,10 +31,14 @@ export const AddressInfo = ({ customer, onSave }: PersonalInfoProps) => {
   const [addresses, setAddresses] = useState<ResponseAddress[]>(
     customer.addresses || []
   );
+  const [error, setError] = useState<{
+    text: string;
+    action?: () => void;
+  } | null>(null);
 
   useEffect(() => {
     setAddresses(customer.addresses || []);
-  }, [customer.addresses]); // Зависимость от customer.addresses
+  }, [customer.addresses]);
 
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -76,7 +81,6 @@ export const AddressInfo = ({ customer, onSave }: PersonalInfoProps) => {
       );
 
       if (response && response.addresses) {
-        // Обновляем не только адреса, но и ID адресов по умолчанию
         onSave?.({
           ...customer,
           addresses: response.addresses,
@@ -88,8 +92,11 @@ export const AddressInfo = ({ customer, onSave }: PersonalInfoProps) => {
         });
         setIsDialogOpen(false);
       }
-    } catch (error) {
-      console.error('Failed to add address:', error);
+    } catch {
+      setError({
+        text: 'Failed to add address',
+        action: () => setError(null),
+      });
     } finally {
       setIsDialogOpen(false);
       setIsSubmitting(false);
@@ -123,7 +130,6 @@ export const AddressInfo = ({ customer, onSave }: PersonalInfoProps) => {
       ...customer,
       addresses: updatedAddresses,
       version: newVersion,
-      // Обновляем ID адресов по умолчанию, если они изменились
       defaultBillingAddressId: updatedFields.defaultBilling
         ? addressId
         : customer.defaultBillingAddressId,
@@ -149,7 +155,6 @@ export const AddressInfo = ({ customer, onSave }: PersonalInfoProps) => {
           Add address
         </Button>
       </div>
-
       {addresses.length === 0 ? (
         <p>No saved addresses</p>
       ) : (
@@ -168,7 +173,6 @@ export const AddressInfo = ({ customer, onSave }: PersonalInfoProps) => {
           />
         ))
       )}
-
       <Dialog
         open={isDialogOpen}
         onClose={handleCloseDialog}
@@ -193,6 +197,9 @@ export const AddressInfo = ({ customer, onSave }: PersonalInfoProps) => {
           </DialogContent>
         </div>
       </Dialog>
+      {error && (
+        <ShowDialog message={error.text} onClose={() => setError(null)} />
+      )}{' '}
     </div>
   );
 };

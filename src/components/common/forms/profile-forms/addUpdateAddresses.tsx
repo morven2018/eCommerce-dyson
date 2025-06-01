@@ -16,7 +16,7 @@ import {
 } from '@shared/lib/validator/validator';
 import { CountrySelect } from '../../../ui/inputs/selectCountry';
 import { InputText } from '../../../ui/inputs/inputText';
-import { AddAddressOptions } from '@shared/api/commerce-tools/updateFields/updateAddresses/addAddreses';
+import { AddAddressOptions } from '@shared/api/commerce-tools/updateFields/updateAddresses/addAddresses';
 
 export interface IAddressFormData {
   id?: string;

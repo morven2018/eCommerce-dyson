@@ -8,19 +8,19 @@ import {
   Box,
   Typography,
   Chip,
-  Alert,
   Dialog,
   DialogContent,
   Button,
 } from '@mui/material';
 import { ResponseAddress } from '@pages/profile/Profile';
-import { removeAddress } from '@shared/api/commerce-tools/updateFields/updateAddresses/removeAdderss';
+import { removeAddress } from '@shared/api/commerce-tools/updateFields/updateAddresses/removeAddress';
 import { DEFAULT_COUNTRIES } from '@shared/constants/countries';
 import CloseIcon from '@mui/icons-material/Close';
 import { useState } from 'react';
 import styles from '../../../components/layout/profile/profile.module.scss';
 import { useForm } from 'react-hook-form';
 import { updateAddress } from '@shared/api/commerce-tools/updateFields/updateAddresses/updateAddress';
+import ShowDialog from '../modals/Modal';
 
 interface AddressCardProps {
   address: ResponseAddress;
@@ -52,22 +52,24 @@ export const AddressCard = ({
   onAddressRemoved,
   onAddressUpdated,
 }: AddressCardProps) => {
-  const [error, setError] = useState<string | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
   const [currentAddress, setCurrentAddress] = useState(address);
+  const [error, setError] = useState<{
+    text: string;
+    action?: () => void;
+  } | null>(null);
 
   const { reset } = useForm();
 
   const handleDelete = async () => {
     if (!address.id || !customerId || !customerVersion) {
-      setError('Недостаточно данных для удаления');
+      setError({ text: 'No data to remove' });
       return;
     }
 
     setIsDeleting(true);
-    setError(null);
 
     try {
       if (isDefaultBilling || isDefaultShipping) {
@@ -84,9 +86,10 @@ export const AddressCard = ({
         newVersion: updatedCustomer?.version || customerVersion + 1,
       });
     } catch (err) {
-      setError(
-        err instanceof Error ? err.message : 'Ошибка при удалении адреса'
-      );
+      setError({
+        text: err instanceof Error ? err.message : 'Error deleting address',
+        action: () => setError(null),
+      });
     } finally {
       setIsDeleting(false);
     }
@@ -109,12 +112,11 @@ export const AddressCard = ({
 
   const handleSubmitAddress = async (formData: IAddressFormData) => {
     if (!customerId || !customerVersion) {
-      setError('Customer data missing');
+      setError({ text: 'Customer data missing' });
       return;
     }
 
     setIsUpdating(true);
-    setError(null);
 
     try {
       const updatedCustomer = await updateAddress(
@@ -158,9 +160,10 @@ export const AddressCard = ({
 
       setIsEditModalOpen(false);
     } catch (err) {
-      setError(
-        err instanceof Error ? err.message : 'Ошибка при обновлении адреса'
-      );
+      setError({
+        text: err instanceof Error ? err.message : 'Error updating address',
+        action: () => setError(null),
+      });
     } finally {
       setIsUpdating(false);
     }
@@ -196,7 +199,7 @@ export const AddressCard = ({
         }}
       >
         <IconButton
-          aria-label="Удалить адрес"
+          aria-label="Delete address"
           onClick={handleDelete}
           disabled={isDeleting}
           sx={{
@@ -208,12 +211,6 @@ export const AddressCard = ({
         >
           <DeleteIcon fontSize="small" />
         </IconButton>
-
-        {error && (
-          <Alert severity="error" sx={{ mb: 2 }}>
-            {error}
-          </Alert>
-        )}
 
         <Box sx={{ mt: 1.5, display: 'flex', gap: 1 }}>
           {isDefaultBilling && (
@@ -251,15 +248,16 @@ export const AddressCard = ({
           {getCountryName(address.country.toLowerCase())}
         </Typography>
         <Button
-          variant="text" // или "outlined", если нужна рамка
+          variant="text"
           size="small"
           onClick={handleEditClick}
-          disabled={isDeleting}
-          sx={{ color: 'primary.main', textTransform: 'none' }} // textTransform: 'none' убирает CAPS
+          disabled={isDeleting || isUpdating}
+          sx={{ color: 'primary.main', textTransform: 'none' }}
         >
           Update
         </Button>
       </Box>
+
       <Dialog
         open={isEditModalOpen}
         onClose={handleCloseEditModal}
@@ -279,6 +277,10 @@ export const AddressCard = ({
           />
         </DialogContent>
       </Dialog>
+
+      {error && (
+        <ShowDialog message={error.text} onClose={() => setError(null)} />
+      )}
     </>
   );
 };
