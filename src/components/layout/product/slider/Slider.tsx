@@ -24,16 +24,22 @@ export function Slider({ images }: SliderProps) {
       document.body.style.overflow = 'hidden';
 
       const preventTouchMove = (e: TouchEvent) => {
-        if (e.target instanceof Node && document.querySelector(`.${styles.modalWindow}`)?.contains(e.target)) {
+        if (
+          e.target instanceof Node &&
+          document.querySelector(`.${styles.modalWindow}`)?.contains(e.target)
+        ) {
           return;
         }
         e.preventDefault();
       };
 
-      window.addEventListener('touchmove', preventTouchMove, { passive: false });
+      window.addEventListener('touchmove', preventTouchMove, {
+        passive: false,
+      });
 
       return () => {
-        const scrollYRestored = parseInt(document.body.style.top || '0', 10) * -1;
+        const scrollYRestored =
+          parseInt(document.body.style.top || '0', 10) * -1;
         document.body.style.position = '';
         document.body.style.top = '';
         document.body.style.width = '';
