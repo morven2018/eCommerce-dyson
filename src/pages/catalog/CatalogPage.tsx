@@ -30,65 +30,68 @@ export const CatalogPage = () => {
   );
   const [sortOption, setSortOption] = useState<SortOption>('normal');
   const [searchText, setSearchText] = useState('');
-  const [priceRange, setPriceRange] = useState([0, 1000]);
+  const [priceRange, setPriceRange] = useState([0, 0]);
 
   useEffect(() => {
-    const fetchProductsData = async () => {
-      const token = getTokenFromLS();
-      if (!token) return;
+    const delayDebounceFn = setTimeout(async () => {
+      const fetchProductsData = async () => {
+        const token = getTokenFromLS();
+        if (!token) return;
 
-      const text = encodeURIComponent(searchText.trim());
-      const fuzzyLevel = determineFuzzyLevel(text.length);
-      const paramsArray = [];
+        const text = encodeURIComponent(searchText.trim());
+        const fuzzyLevel = determineFuzzyLevel(text.length);
+        const paramsArray = [];
 
-      if (text.length > 1) {
-        paramsArray.push(
-          `text.en-US=*${text}*&fuzzy=true&fuzzyLevel=${fuzzyLevel}`
-        );
-      }
+        if (text.length > 1) {
+          paramsArray.push(
+            `text.en-US=*${text}*&fuzzy=true&fuzzyLevel=${fuzzyLevel}`
+          );
+        }
 
-      if (sortOption === 'name_asc') {
-        paramsArray.push('sort=name.en-US+asc');
-      }
-      if (sortOption === 'name_desc') {
-        paramsArray.push('sort=name.en-US+desc');
-      }
-      if (sortOption === 'price_asc') {
-        paramsArray.push('sort=price+asc');
-      }
-      if (sortOption === 'price_desc') {
-        paramsArray.push('sort=price+desc');
-      }
+        if (sortOption === 'name_asc') {
+          paramsArray.push('sort=name.en-US+asc');
+        }
+        if (sortOption === 'name_desc') {
+          paramsArray.push('sort=name.en-US+desc');
+        }
+        if (sortOption === 'price_asc') {
+          paramsArray.push('sort=price+asc');
+        }
+        if (sortOption === 'price_desc') {
+          paramsArray.push('sort=price+desc');
+        }
 
-      const [min, max] = priceRange;
-      if (
-        (min > 0 && max === 1000) ||
-        (min >= 0 && max < 1000) ||
-        (min > 0 && max < 1000)
-      ) {
-        paramsArray.push(
-          // не работает, пробовал разные запросы, ответ всегда 200 но фильтра по цене нет !!!
-          `variants.prices.centAmount=centAmount+ge+${min * 100}+and+centAmount+le+${max * 100}`
-        );
-      }
+        const [min, max] = priceRange;
+        if (
+          (min > 0 && max === 1000) ||
+          (min >= 0 && max < 1000) ||
+          (min > 0 && max < 1000)
+        ) {
+          paramsArray.push(
+            `filter.query=variants.price.centAmount: range(${min * 100} to ${max ? max * 100 : '*'})`
+          );
+        }
 
-      paramsArray.push('limit=50');
+        paramsArray.push('limit=50');
 
-      const params = paramsArray.join('&');
+        const params = paramsArray.join('&');
 
-      try {
-        const data = await getSearchedProducts({ params, token });
-        setProductsData(data);
-      } catch (error) {
-        let message = 'Error fetching search products';
-        if (error instanceof Error) message = error.message;
-        else if (typeof error === 'string') message = error;
-        openDialog(message);
-      }
-    };
+        try {
+          const data = await getSearchedProducts({ params, token });
+          setProductsData(data);
+        } catch (error) {
+          let message = 'Error fetching search products';
+          if (error instanceof Error) message = error.message;
+          else if (typeof error === 'string') message = error;
+          openDialog(message);
+        }
+      };
 
-    fetchProductsData();
-  }, [searchText, sortOption]); // priceRange - убрал из зависимостей
+      fetchProductsData();
+    }, 500);
+
+    return () => clearTimeout(delayDebounceFn);
+  }, [searchText, sortOption, priceRange]);
 
   if (!productsData) {
     return <div className={styles.textLoading}>Loading...</div>;
@@ -123,7 +126,29 @@ export const CatalogPage = () => {
           sx={{ width: '100%' }}
         />
 
-        <PriceRangeSlider min={0} max={1000} onChange={handlePriceChange} />
+        <PriceRangeSlider
+          min={
+            productsData.results.length
+              ? Math.min(
+                  ...productsData.results.map(
+                    (el) =>
+                      (el.masterVariant?.prices[0].value.centAmount ?? 0) / 100
+                  )
+                )
+              : 0
+          }
+          max={
+            productsData.results.length
+              ? Math.max(
+                  ...productsData.results.map(
+                    (el) =>
+                      (el.masterVariant?.prices[0].value.centAmount ?? 0) / 100
+                  )
+                )
+              : 0
+          }
+          onChange={handlePriceChange}
+        />
       </div>
       <div className={styles.sortAndCardsContainer}>
         <SortByComponent
