@@ -6,7 +6,6 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import {
   IconButton,
   Box,
-  Typography,
   Chip,
   Dialog,
   DialogContent,

@@ -16,8 +16,7 @@ import {
   textValidationSchema,
 } from '@shared/lib/validator/validator';
 import { updateEmail } from '@shared/api/commerce-tools/updateFields/updateEmail';
-import { updateFirstName } from '@shared/api/commerce-tools/updateFields/updateFirstName';
-import { updateLastName } from '@shared/api/commerce-tools/updateFields/updateLastName';
+import { updateName } from '@shared/api/commerce-tools/updateFields/updateName';
 import { updateBirth } from '@shared/api/commerce-tools/updateFields/updateDateOfBirth';
 import { useState, useMemo, useEffect } from 'react';
 import InputPassword from '@components/ui/inputs/InputPassword';
@@ -155,10 +154,11 @@ export const PersonalInfoForm = ({
       }
 
       if (changedFields.firstName) {
-        const response = await updateFirstName(
+        const response = await updateName(
           changedFields.firstName,
           customer.id,
-          currentVersion
+          currentVersion,
+          'setFirstName'
         );
         if (response?.version) {
           currentVersion = response.version;
@@ -167,10 +167,11 @@ export const PersonalInfoForm = ({
       }
 
       if (changedFields.lastName) {
-        const response = await updateLastName(
+        const response = await updateName(
           changedFields.lastName,
           customer.id,
-          currentVersion
+          currentVersion,
+          'setLastName'
         );
         if (response?.version) {
           currentVersion = response.version;

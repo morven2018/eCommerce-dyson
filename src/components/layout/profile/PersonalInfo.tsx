@@ -18,8 +18,7 @@ import {
 import * as yup from 'yup';
 import dayjs from 'dayjs';
 import InputPassword from '@components/ui/inputs/InputPassword';
-import { updateLastName } from '@shared/api/commerce-tools/updateFields/updateLastName';
-import { updateFirstName } from '@shared/api/commerce-tools/updateFields/updateFirstName';
+import { updateName } from '@shared/api/commerce-tools/updateFields/updateName';
 import { updateEmail } from '@shared/api/commerce-tools/updateFields/updateEmail';
 import { updateCustomerPhone } from '@shared/api/commerce-tools/updateFields/updatePhone.';
 import { updateBirth } from '@shared/api/commerce-tools/updateFields/updateDateOfBirth';
@@ -153,10 +152,11 @@ export const PersonalInfo = ({ customer, onSave }: PersonalInfoProps) => {
 
       switch (field) {
         case 'lastName': {
-          const response = await updateLastName(
+          const response = await updateName(
             formValues.lastName,
             customer.id,
-            version
+            version,
+            'setLastName'
           );
           if (response && response.version) {
             setVersion(response.version);
@@ -167,10 +167,11 @@ export const PersonalInfo = ({ customer, onSave }: PersonalInfoProps) => {
         }
 
         case 'firstName': {
-          const response = await updateFirstName(
+          const response = await updateName(
             formValues.firstName,
             customer.id,
-            version
+            version,
+            'setFirstName'
           );
           if (response && response.version) {
             setVersion(response.version);

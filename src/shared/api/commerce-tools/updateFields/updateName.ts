@@ -8,12 +8,14 @@ interface UpdateCustomerData {
 interface CustomerUpdateAction {
   action: string;
   firstName?: string;
+  lastName?: string;
 }
 
-export async function updateFirstName(
-  newFirstName: string,
+export async function updateName(
+  newName: string,
   customerId: string,
-  version: number
+  version: number,
+  action: 'setFirstName' | 'setLastName'
 ): Promise<Customer | null> {
   const accessToken = localStorage.getItem('authDysonToken');
 
@@ -24,16 +26,26 @@ export async function updateFirstName(
   const apiUrl = commercetoolsConfig.apiUrl;
   const projectKey = commercetoolsConfig.projectKey;
   const url = `${apiUrl}/${projectKey}/customers/${customerId}`;
-
-  const updateData: UpdateCustomerData = {
-    version,
-    actions: [
-      {
-        action: 'setFirstName',
-        firstName: newFirstName,
-      },
-    ],
-  };
+  const updateData: UpdateCustomerData =
+    action === 'setFirstName'
+      ? {
+          version,
+          actions: [
+            {
+              action,
+              firstName: newName,
+            },
+          ],
+        }
+      : {
+          version,
+          actions: [
+            {
+              action,
+              lastName: newName,
+            },
+          ],
+        };
 
   try {
     const response = await fetch(url, {
