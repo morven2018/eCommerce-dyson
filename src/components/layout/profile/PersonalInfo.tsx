@@ -18,10 +18,9 @@ import {
 import * as yup from 'yup';
 import dayjs from 'dayjs';
 import InputPassword from '@components/ui/inputs/InputPassword';
-import { updateName } from '@shared/api/commerce-tools/updateFields/updateName';
+import { updateField } from '@shared/api/commerce-tools/updateFields/updateField';
 import { updateEmail } from '@shared/api/commerce-tools/updateFields/updateEmail';
 import { updateCustomerPhone } from '@shared/api/commerce-tools/updateFields/updatePhone.';
-import { updateBirth } from '@shared/api/commerce-tools/updateFields/updateDateOfBirth';
 import { PasswordConfirmModal } from '@components/ui/modals/ModalWithPassword';
 import { updatePassword } from '@shared/api/commerce-tools/updateFields/updatePassword';
 import { userAuthorization } from '@shared/api/commerce-tools/authorization';
@@ -152,7 +151,7 @@ export const PersonalInfo = ({ customer, onSave }: PersonalInfoProps) => {
 
       switch (field) {
         case 'lastName': {
-          const response = await updateName(
+          const response = await updateField(
             formValues.lastName,
             customer.id,
             version,
@@ -167,7 +166,7 @@ export const PersonalInfo = ({ customer, onSave }: PersonalInfoProps) => {
         }
 
         case 'firstName': {
-          const response = await updateName(
+          const response = await updateField(
             formValues.firstName,
             customer.id,
             version,
@@ -212,7 +211,12 @@ export const PersonalInfo = ({ customer, onSave }: PersonalInfoProps) => {
 
         case 'dateOfBirth': {
           const newDate = dayjs(formValues.dateOfBirth).format('YYYY-MM-DD');
-          const response = await updateBirth(newDate, customer.id, version);
+          const response = await updateField(
+            newDate,
+            customer.id,
+            version,
+            'setDateOfBirth'
+          );
           if (response && response.version) {
             setVersion(response.version);
             updatedData.version = response.version;

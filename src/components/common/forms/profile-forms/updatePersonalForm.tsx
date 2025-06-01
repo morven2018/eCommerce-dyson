@@ -16,8 +16,7 @@ import {
   textValidationSchema,
 } from '@shared/lib/validator/validator';
 import { updateEmail } from '@shared/api/commerce-tools/updateFields/updateEmail';
-import { updateName } from '@shared/api/commerce-tools/updateFields/updateName';
-import { updateBirth } from '@shared/api/commerce-tools/updateFields/updateDateOfBirth';
+import { updateField } from '@shared/api/commerce-tools/updateFields/updateField';
 import { useState, useMemo, useEffect } from 'react';
 import InputPassword from '@components/ui/inputs/InputPassword';
 import generatePassword from '@shared/utlis/password-generator';
@@ -64,11 +63,11 @@ export const PersonalInfoForm = ({
 
   const defaultValues = useMemo(
     () => ({
-      email: customer.email || '',
+      email: customer.email ?? '',
       password: '',
-      firstName: customer.firstName || '',
-      lastName: customer.lastName || '',
-      phone: customer.custom?.fields.phone || '',
+      firstName: customer.firstName ?? '',
+      lastName: customer.lastName ?? '',
+      phone: customer.custom?.fields.phone ?? '',
       dateOfBirth: customer.dateOfBirth
         ? new Date(customer.dateOfBirth)
         : new Date(dayjs().subtract(18, 'year').toDate()),
@@ -154,7 +153,7 @@ export const PersonalInfoForm = ({
       }
 
       if (changedFields.firstName) {
-        const response = await updateName(
+        const response = await updateField(
           changedFields.firstName,
           customer.id,
           currentVersion,
@@ -167,7 +166,7 @@ export const PersonalInfoForm = ({
       }
 
       if (changedFields.lastName) {
-        const response = await updateName(
+        const response = await updateField(
           changedFields.lastName,
           customer.id,
           currentVersion,
@@ -191,7 +190,7 @@ export const PersonalInfoForm = ({
             ...customer.custom,
             fields: {
               ...customer.custom?.fields,
-              phone: changedFields.phone || '',
+              phone: changedFields.phone ?? '',
             },
           };
         }
@@ -199,10 +198,11 @@ export const PersonalInfoForm = ({
 
       if (changedFields.dateOfBirth) {
         const newDate = dayjs(changedFields.dateOfBirth).format('YYYY-MM-DD');
-        const response = await updateBirth(
+        const response = await updateField(
           newDate,
           customer.id,
-          currentVersion
+          currentVersion,
+          'setDateOfBirth'
         );
         if (response?.version) {
           currentVersion = response.version;
