@@ -20,6 +20,7 @@ export const PriceRangeSlider: React.FC<PriceRangeSliderProps> = ({
     newValue: number | number[],
     activeThumb: number
   ) => {
+    console.log(event);
     const newValues = Array.isArray(newValue) ? newValue : [newValue];
 
     if (newValues.length === 1) {

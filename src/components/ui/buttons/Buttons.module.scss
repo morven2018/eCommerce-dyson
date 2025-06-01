@@ -16,7 +16,7 @@
   &:hover {
     @media (hover: hover) and (pointer: fine) {
       transform: scale(1.05);
-      background-color: $card-btn-hover
+      background-color: $card-btn-hover;
     }
   }
 }
