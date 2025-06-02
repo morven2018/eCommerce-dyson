@@ -6,10 +6,12 @@
   margin: auto 0;
   padding: 40px 0 40px 30px;
 
-  .link:hover {
-    text-decoration: none;
-    border-bottom: 1px solid $label;
-    transition: all ease 0.5s;
+  @media (hover: hover) {
+    .link:hover {
+      text-decoration: none;
+      border-bottom: 1px solid $label;
+      transition: all ease 0.5s;
+    }
   }
 
   .MuiBreadcrumbs-ol {
