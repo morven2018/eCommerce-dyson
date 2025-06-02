@@ -18,17 +18,17 @@ export const PriceRangeSlider: React.FC<PriceRangeSliderProps> = ({
 
   useEffect(() => {
     if (scaleValues[0] === 0 && scaleValues[1] === 0) {
-      setValues([min, max]);
-      setScaleValues(values);
+      const newValues = [min, max];
+      setValues(newValues);
+      setScaleValues(newValues);
     }
-  }, [min, max]);
+  }, [min, max, scaleValues]);
 
   const handleSliderChange = (
     event: Event,
     newValue: number | number[],
     activeThumb: number
   ) => {
-    console.log(event);
     const newValues = Array.isArray(newValue)
       ? ([...newValue] as [number, number])
       : ([newValue, values[1]] as [number, number]);
