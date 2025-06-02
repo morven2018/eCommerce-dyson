@@ -10,6 +10,8 @@ import { ProductData, ProductImage } from '@shared/types/types';
 import Benefits from '@components/layout/product/benefits/Benefits';
 import { openDialog } from '@services/DialogService';
 import { useParams } from 'react-router-dom';
+import { Breadcrumbs } from '@components/ui/breadcrumbs/breadcrumbs';
+import { catalogCategories } from '@shared/constants/categories';
 
 export const ProductPage = () => {
   const { productId } = useParams<{ productId: string }>();
@@ -49,6 +51,28 @@ export const ProductPage = () => {
   const currentPath = productData.masterData.current;
 
   const name = currentPath.name?.['en-US'] || 'Product name';
+  const categoryId = productData.masterData.current.categories?.[0]?.id;
+
+  let breadcrumbItems;
+
+  if (categoryId && catalogCategories.get(categoryId)) {
+    const category = catalogCategories.get(categoryId);
+    breadcrumbItems = [
+      { path: '/', name: 'Home' },
+      { path: '/catalog', name: 'Catalog' },
+      {
+        path: category?.path ?? '/catalog',
+        name: category?.name ?? '',
+      },
+      { path: '', name: name },
+    ];
+  } else {
+    breadcrumbItems = [
+      { path: '/', name: 'Home' },
+      { path: '/catalog', name: 'Catalog' },
+      { path: '', name: name },
+    ];
+  }
 
   const price = currentPath.masterVariant?.prices?.[0]?.value?.centAmount
     ? currentPath.masterVariant.prices[0].value.centAmount / 100
@@ -83,6 +107,7 @@ export const ProductPage = () => {
   return (
     <>
       <ProductTitle name={name} price={discountedPrice ?? price} />
+      <Breadcrumbs items={breadcrumbItems} />
       <div className={styles.container}>
         <ButtonBack />
         <div className={styles.productContainer}>

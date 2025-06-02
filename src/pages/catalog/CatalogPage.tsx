@@ -11,6 +11,7 @@ import { TextField, FormControlLabel, Switch } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { PriceRangeSlider } from '@components/ui/sort/range-slider/PriceRangeSlider';
 import { ColorRange } from '@components/ui/sort/color-range/ColorRange';
+import { Breadcrumbs } from '@components/ui/breadcrumbs/breadcrumbs';
 
 export type SortOption =
   | 'price_asc'
@@ -34,6 +35,11 @@ export const CatalogPage = () => {
   const [priceRange, setPriceRange] = useState([0, 0]);
   const [discount, setDiscount] = useState(false);
   const [selectedColors, setSelectedColors] = useState<string[]>([]);
+
+  const breadcrumbItems = [
+    { path: '/', name: 'Home' },
+    { path: '/catalog', name: 'Catalog' },
+  ];
 
   useEffect(() => {
     const delayDebounceFn = setTimeout(async () => {
@@ -136,104 +142,109 @@ export const CatalogPage = () => {
   });
 
   return (
-    <div className={styles.container}>
-      <div className={styles.filterContainer}>
-        <TextField
-          label="Search.."
-          variant="outlined"
-          value={searchText}
-          onChange={handleSearchChange}
-          size="small"
-          slotProps={{
-            input: {
-              endAdornment: <SearchIcon />,
-            },
-          }}
-          sx={{ width: '100%' }}
-        />
+    <>
+      <Breadcrumbs items={breadcrumbItems} />
+      <div className={styles.container}>
+        <div className={styles.filterContainer}>
+          <TextField
+            label="Search.."
+            variant="outlined"
+            value={searchText}
+            onChange={handleSearchChange}
+            size="small"
+            slotProps={{
+              input: {
+                endAdornment: <SearchIcon />,
+              },
+            }}
+            sx={{ width: '100%' }}
+          />
 
-        <FormControlLabel
-          control={
-            <Switch
-              checked={discount}
-              onChange={toggleDiscount}
-              sx={{
-                '.Mui-checked .MuiSwitch-thumb': {
-                  color: '#595079',
-                },
-                '.Mui-checked + .MuiSwitch-track': {
-                  backgroundColor: '#595079',
-                },
-              }}
-            />
-          }
-          label="Only with discount"
-          sx={{
-            '.MuiFormControlLabel-label': {
-              fontSize: '14px',
-              fontWeight: '500',
-              color: '#595079',
-            },
-          }}
-        />
+          <FormControlLabel
+            control={
+              <Switch
+                checked={discount}
+                onChange={toggleDiscount}
+                sx={{
+                  '.Mui-checked .MuiSwitch-thumb': {
+                    color: '#595079',
+                  },
+                  '.Mui-checked + .MuiSwitch-track': {
+                    backgroundColor: '#595079',
+                  },
+                }}
+              />
+            }
+            label="Only with discount"
+            sx={{
+              '.MuiFormControlLabel-label': {
+                fontSize: '14px',
+                fontWeight: '500',
+                color: '#595079',
+              },
+            }}
+          />
 
-        <ColorRange
-          colors={
-            allColors
-              .filter((value): value is string => typeof value === 'string')
-              .filter((el, ind) => ind === allColors.indexOf(el))
-              .sort((a, b) => a.localeCompare(b)) ?? []
-          }
-          selectedColors={selectedColors}
-          onChange={(colors) => setSelectedColors(colors)}
-        />
+          <ColorRange
+            colors={
+              allColors
+                .filter((value): value is string => typeof value === 'string')
+                .filter((el, ind) => ind === allColors.indexOf(el))
+                .sort((a, b) => a.localeCompare(b)) ?? []
+            }
+            selectedColors={selectedColors}
+            onChange={(colors) => setSelectedColors(colors)}
+          />
 
-        <PriceRangeSlider
-          min={
-            productsData.results.length
-              ? Math.min(
-                  ...productsData.results.map(
-                    (el) =>
-                      (el.masterVariant?.prices[0].value.centAmount ?? 0) / 100
+          <PriceRangeSlider
+            min={
+              productsData.results.length
+                ? Math.min(
+                    ...productsData.results.map(
+                      (el) =>
+                        (el.masterVariant?.prices[0].value.centAmount ?? 0) /
+                        100
+                    )
                   )
-                )
-              : 0
-          }
-          max={
-            productsData.results.length
-              ? Math.max(
-                  ...productsData.results.map(
-                    (el) =>
-                      (el.masterVariant?.prices[0].value.centAmount ?? 0) / 100
+                : 0
+            }
+            max={
+              productsData.results.length
+                ? Math.max(
+                    ...productsData.results.map(
+                      (el) =>
+                        (el.masterVariant?.prices[0].value.centAmount ?? 0) /
+                        100
+                    )
                   )
-                )
-              : 0
-          }
-          onChange={handlePriceChange}
-        />
-      </div>
-      <div className={styles.sortAndCardsContainer}>
-        <SortByComponent
-          sortOption={sortOption}
-          onSortChange={handleSortChange}
-        />
-        <div className={styles.cardsContainer}>
-          {productsData.results.map((card: CardInfo) => (
-            <Card
-              key={card.id}
-              id={card.id}
-              name={card.name['en-US']}
-              description={card.description['en-US'] ?? 'Product description'}
-              price={card.masterVariant?.prices?.[0]?.value?.centAmount ?? 0}
-              discountedPrice={
-                card.masterVariant?.prices?.[0]?.discounted?.value
-                  ?.centAmount ?? null
-              }
-              src={card.masterVariant?.images?.[0]?.url ?? '/dyson_icon.svg'}
-            />
-          ))}
+                : 0
+            }
+            onChange={handlePriceChange}
+          />
+        </div>
+        <div className={styles.sortAndCardsContainer}>
+          <SortByComponent
+            sortOption={sortOption}
+            onSortChange={handleSortChange}
+          />
+          <div className={styles.cardsContainer}>
+            {productsData.results.map((card: CardInfo) => (
+              <Card
+                key={card.id}
+                id={card.id}
+                name={card.name['en-US']}
+                description={card.description['en-US'] ?? 'Product description'}
+                price={card.masterVariant?.prices?.[0]?.value?.centAmount ?? 0}
+                discountedPrice={
+                  card.masterVariant?.prices?.[0]?.discounted?.value
+                    ?.centAmount ?? null
+                }
+                src={card.masterVariant?.images?.[0]?.url ?? '/dyson_icon.svg'}
+              />
+            ))}
+          </div>
         </div>
       </div>
-    </div>
+    </>
   );
 };
