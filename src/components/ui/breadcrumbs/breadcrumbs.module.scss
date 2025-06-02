@@ -1,4 +1,8 @@
 .breadcrumbs {
   width: 100%;
-  padding: 40px 30px;
+  padding: 40px 0 40px 30px;
+
+  .MuiBreadcrumbs-ol {
+    min-width: 300px;
+  }
 }

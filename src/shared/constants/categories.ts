@@ -26,6 +26,11 @@ const catalogData = [
   },
 ];
 
+export function getNameByPath(path: string): string {
+  const category = catalogData.find((item) => item.path === path);
+  return category ? category.name : '';
+}
+
 export const catalogCategories = new Map(
   catalogData.map((item) => [item.id, { name: item.name, path: item.path }])
 );
