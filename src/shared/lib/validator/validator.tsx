@@ -19,6 +19,24 @@ const zipCodeRegexes: { [key: string]: RegExp } = {
   ie: /^[AC-FHKNPRTVWXY]\d{2}[0-9AC-FHKNPRTVWXY]{4}$/,
 };
 
+const examples: Record<string, string> = {
+  gb: 'e.g., SW1A 1AA or EC1A 1BB',
+  de: 'e.g., 10115',
+  fr: 'e.g., 75001',
+  it: 'e.g., 00100',
+  es: 'e.g., 28001',
+  nl: 'e.g., 1234 AB',
+  be: 'e.g., 1000',
+  ch: 'e.g., 8001',
+  at: 'e.g., 1010',
+  pt: 'e.g., 1000-001',
+  se: 'e.g., 123 45',
+  no: 'e.g., 0021',
+  fi: 'e.g., 00100',
+  dk: 'e.g., 1000',
+  ie: 'e.g., A65 F4E2',
+};
+
 export const emailValidationSchema = yup
   .string()
   .required('This field is mandatory')
@@ -120,9 +138,29 @@ export const birthValidationSchema = yup
 export const zipCodeValidationSchema = yup
   .string()
   .required('This field is mandatory')
-  .test('correct-zip', 'Invalid postal code', (value) =>
-    Object.keys(zipCodeRegexes).some((code) => zipCodeRegexes[code].test(value))
-  );
+  .test('country-selected', 'Select country before', function () {
+    const country = this.parent.country;
+    return !!country;
+  })
+  .test('correct-zip', function (value) {
+    const country = this.parent.country;
+    if (!country) {
+      return this.createError({
+        message: 'Select country before',
+      });
+    }
+
+    const regex = zipCodeRegexes[country];
+    if (!regex) return true;
+
+    if (!regex.test(value)) {
+      const example = examples[country] || '';
+      return this.createError({
+        message: `Invalid postal code. The postal code should be like ${example}`,
+      });
+    }
+    return true;
+  });
 
 export type EmailFormData = {
   email: string;
