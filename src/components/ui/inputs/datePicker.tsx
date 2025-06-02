@@ -77,7 +77,7 @@ export default function InputDate({
           sx: {
             '& input::-webkit-calendar-picker-indicator': {
               position: 'absolute',
-              right: '48px',
+              right: `${onEditClick && (readOnly || isEditing) ? 48 : 10}px`,
               zIndex: 1,
               '& svg': {
                 fontSize: '36px',
