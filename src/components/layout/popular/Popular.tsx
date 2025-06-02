@@ -27,7 +27,7 @@ export default function Popular() {
               warmer months.³
             </p>
             <a
-              href="#"
+              href="/product/a19f3f51-2def-4201-807a-4cb922aa2dd7"
               className={styles.cardButton}
               aria-label="Buy Dyson Purifier"
             >
@@ -52,7 +52,7 @@ export default function Popular() {
               caps sold separately.
             </p>
             <a
-              href="#"
+              href="/product/a19f3f51-2def-4201-807a-4cb922aa2dd7"
               className={styles.cardButton}
               aria-label="Buy Dyson OnTrac"
             >
@@ -76,7 +76,7 @@ export default function Popular() {
               Achieve salon-quality results effortlessly at home.
             </p>
             <a
-              href="#"
+              href="/product/ced23753-8524-4996-a3fd-0c99b3eb79c9"
               className={styles.cardButton}
               aria-label="Buy Dyson Airstrait"
             >
