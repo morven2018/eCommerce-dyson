@@ -39,6 +39,7 @@ const addressSchema = yup.object().shape({
 interface AddressFormProps {
   initialValues?: Partial<IAddressFormData>;
   onSubmit: (data: IAddressFormData) => void;
+  onCancel?: () => void;
   isEditing?: boolean;
 }
 
