@@ -14,7 +14,7 @@ import {
   ListItemIcon,
   ListItemText,
 } from '@mui/material';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 export type INavItemsWithoutOnClick = Omit<INavItems, 'onclick'>;
 
@@ -47,10 +47,18 @@ const catalogItems = [
 ];
 
 export const ButtonList = () => {
+  const location = useLocation();
+
+  const isActive = (path: string) => {
+    return location.pathname === path;
+  };
   return (
     <List className={styles.buttonList}>
       {catalogItems.map((item) => (
-        <ListItem key={item.text} className={styles.fastCatalogItem}>
+        <ListItem
+          key={item.text}
+          className={`${styles.fastCatalogItem} ${isActive(item.path) ? styles.active : ''}`}
+        >
           <ListItemButton component={Link} to={item.path}>
             <ListItemIcon sx={{ minWidth: 0 }}>
               <img src={item.icon} alt={item.text} className={styles.icon} />

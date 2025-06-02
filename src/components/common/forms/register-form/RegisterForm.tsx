@@ -315,12 +315,7 @@ const Step2 = ({
     setValue(fieldName, value, { shouldValidate: true });
 
     if (fieldName === 'shippingAddress.country') {
-      trigger([
-        'shippingAddress.country',
-        'shippingAddress.city',
-        'shippingAddress.street',
-        'shippingAddress.zipCode',
-      ]);
+      trigger(['shippingAddress.zipCode']);
     }
   };
 
@@ -464,19 +459,16 @@ const Step2 = ({
   );
 };
 
-const Step3 = ({ control, errors, onPrev, isValid, setValue }: Step3Props) => {
+const Step3 = ({
+  control,
+  errors,
+  onPrev,
+  isValid,
+  setValue,
+  trigger,
+}: Step3Props) => {
   const formValues = useWatch({ control });
   const [copyFromShipping, setCopyFromShipping] = useState(false);
-
-  type AddressType = {
-    dataFromShipping?: boolean;
-    defaultAddress?: boolean;
-    country: string;
-    city: string;
-    street: string;
-    streetLine2?: string;
-    zipCode: string;
-  };
 
   const billingFieldsFilled =
     useWatch({
@@ -489,11 +481,15 @@ const Step3 = ({ control, errors, onPrev, isValid, setValue }: Step3Props) => {
       ],
     }).every((field) => !!field) ?? copyFromShipping;
 
-  const handleFieldChange = (
-    fieldName: BillingField,
-    value: string | boolean | AddressType
+  const handleFieldChange = <T extends BillingField>(
+    fieldName: T,
+    value: PathValue<IFormData, T>
   ) => {
     setValue(fieldName, value, { shouldValidate: true });
+
+    if (fieldName === 'billingAddress.country') {
+      trigger(['billingAddress.zipCode']);
+    }
   };
 
   const handleCopyChange = (checked: boolean) => {

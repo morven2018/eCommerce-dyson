@@ -10,7 +10,6 @@ import {
 } from '@shared/lib/validator/validator';
 import { CountrySelect } from '../../../ui/inputs/selectCountry';
 import { InputText } from '../../../ui/inputs/inputText';
-import { AddAddressOptions } from '@shared/api/commerce-tools/updateFields/updateAddresses/addAddresses';
 import styles from '../register-form/RegisterForm.module.scss';
 
 export interface IAddressFormData {
@@ -42,8 +41,6 @@ interface AddressFormProps {
   onSubmit: (data: IAddressFormData) => void;
   onCancel?: () => void;
   isEditing?: boolean;
-  initialOptions?: AddAddressOptions;
-  initialAddressType?: 'billing' | 'shipping' | 'both';
 }
 
 export const AddressForm = ({
@@ -57,6 +54,7 @@ export const AddressForm = ({
     formState: { errors, isValid, isDirty },
     setValue,
     watch,
+    trigger,
   } = useForm<IAddressFormData>({
     resolver: yupResolver(addressSchema),
     defaultValues: {
@@ -76,7 +74,13 @@ export const AddressForm = ({
     'useAsBilling',
     'defaultShipping',
     'defaultBilling',
+    'country',
   ]);
+
+  const handleCountryChange = (value: string) => {
+    setValue('country', value, { shouldValidate: true });
+    trigger('zipCode');
+  };
 
   const handleDefaultShippingChange = (checked: boolean) => {
     setValue('defaultShipping', checked);
@@ -197,9 +201,7 @@ export const AddressForm = ({
           name="country"
           label="Country"
           error={errors.country}
-          onChange={(value) => {
-            setValue('country', value, { shouldValidate: true });
-          }}
+          onChange={handleCountryChange}
         />
 
         <Controller

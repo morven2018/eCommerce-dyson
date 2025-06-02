@@ -224,7 +224,7 @@ export const AddressCard = ({
         </Box>
         <div className={styles.addressInfoOutput}>
           <p>
-            <strong>County:</strong>
+            <strong>County: </strong>
             {getCountryName(address.country.toLowerCase())}
           </p>
           <p>
