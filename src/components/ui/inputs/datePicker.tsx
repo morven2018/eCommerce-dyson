@@ -1,14 +1,12 @@
-import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { Dayjs } from 'dayjs';
+import React, { useState, useRef } from 'react';
+import dayjs, { Dayjs } from 'dayjs';
+import 'dayjs/locale/en';
 import {
   FormControl,
   FormHelperText,
+  TextField,
   IconButton,
   InputAdornment,
-  TextField,
-  Stack,
 } from '@mui/material';
 import EditIcon from '@mui/icons-material/Edit';
 import SaveIcon from '@mui/icons-material/Save';
@@ -17,7 +15,6 @@ import styles from './input.module.scss';
 type InputDateProps = {
   value?: Dayjs | null;
   onChange?: (value: Dayjs | null) => void;
-  onBlur?: () => void;
   error?: boolean;
   helperText?: string;
   label?: string;
@@ -31,79 +28,88 @@ type InputDateProps = {
 export default function InputDate({
   value = null,
   onChange = () => {},
-  onBlur = () => {},
   error = false,
   helperText = '',
   label = 'Date of birth',
   required = false,
   disabled = false,
+  readOnly = false,
   onEditClick,
   isEditing = false,
 }: Readonly<InputDateProps>) {
+  dayjs.locale('en');
+  const [internalValue, setInternalValue] = useState(
+    value?.format('YYYY-MM-DD') ?? ''
+  );
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const newValue = e.target.value;
+    setInternalValue(newValue);
+    onChange(newValue ? dayjs(newValue) : null);
+  };
+
+  const handleEditClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    onEditClick?.();
+  };
+
   return (
     <FormControl
-      fullWidth
       error={error}
       required={required}
       disabled={disabled}
+      fullWidth
+      className={styles.inputWrapper}
     >
-      <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <DatePicker
-          label={label}
-          value={value}
-          onChange={onChange}
-          onClose={onBlur}
-          readOnly={onEditClick ? !isEditing : false}
-          enableAccessibleFieldDOMStructure={false}
-          className={styles.input}
-          disabled={disabled}
-          slots={{
-            textField: (params) => (
-              <TextField
-                {...params}
-                fullWidth
-                error={error}
-                required={required}
-                onBlur={onBlur}
-                InputProps={{
-                  ...params.InputProps,
-                  readOnly: onEditClick ? !isEditing : false,
-                  endAdornment: (
-                    <Stack direction="row" spacing={1}>
-                      {(!onEditClick || isEditing) &&
-                        params.InputProps?.endAdornment}
-                      {onEditClick && (
-                        <InputAdornment position="end">
-                          <IconButton
-                            aria-label={isEditing ? 'Save date' : 'Edit date'}
-                            onClick={onEditClick}
-                            edge="end"
-                            disabled={disabled}
-                            sx={{ ml: 1 }}
-                          >
-                            {isEditing ? <SaveIcon /> : <EditIcon />}
-                          </IconButton>
-                        </InputAdornment>
-                      )}
-                    </Stack>
-                  ),
-                }}
-              />
-            ),
-          }}
-          slotProps={{
-            actionBar: {
-              actions: isEditing ? ['clear', 'today'] : [],
+      <TextField
+        label={label}
+        type="date"
+        value={internalValue}
+        onChange={handleChange}
+        inputRef={inputRef}
+        disabled={disabled || (readOnly && !isEditing)}
+        inputProps={{
+          lang: 'en',
+        }}
+        InputProps={{
+          readOnly: readOnly && !isEditing,
+          sx: {
+            '& input::-webkit-calendar-picker-indicator': {
+              position: 'absolute',
+              right: `${onEditClick && (readOnly || isEditing) ? 48 : 10}px`,
+              zIndex: 1,
+              '& svg': {
+                fontSize: '36px',
+              },
             },
-            field: {
-              clearable: false,
+            paddingRight: '96px',
+            '& .MuiInputAdornment-root': {
+              '& button': {
+                '& svg': {
+                  fontSize: '1,5rem',
+                },
+              },
             },
-            inputAdornment: {
-              position: 'end',
-            },
-          }}
-        />
-      </LocalizationProvider>
+          },
+          endAdornment: (
+            <InputAdornment position="end">
+              {onEditClick && (readOnly || isEditing) && (
+                <IconButton
+                  onClick={handleEditClick}
+                  disabled={disabled}
+                  edge="end"
+                  size="small"
+                  className={styles.icon}
+                >
+                  {isEditing ? <SaveIcon /> : <EditIcon />}
+                </IconButton>
+              )}
+            </InputAdornment>
+          ),
+        }}
+        fullWidth
+      />
       {error && <FormHelperText>{helperText}</FormHelperText>}
     </FormControl>
   );

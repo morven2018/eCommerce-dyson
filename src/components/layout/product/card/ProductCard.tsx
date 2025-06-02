@@ -21,7 +21,7 @@ export default function ProductCard({
   price,
   discountedPrice,
   variants,
-}: ProductCard) {
+}: Readonly<ProductCard>) {
   return (
     <div className={styles.container}>
       <h3 className={styles.name}>{name}</h3>

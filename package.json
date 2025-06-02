@@ -37,6 +37,7 @@
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.56.3",
     "react-router-dom": "^7.5.3",
+    "react-swiper": "^0.1.5",
     "swiper": "^11.2.8",
     "vite-tsconfig-paths": "^5.1.4",
     "yup": "^1.6.1"
