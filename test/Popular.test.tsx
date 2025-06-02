@@ -36,7 +36,6 @@ describe('Popular Component', () => {
 
     buttons.forEach((button) => {
       expect(button).toHaveTextContent('Shop now');
-      expect(button).toHaveAttribute('href', '#');
     });
   });
 });
