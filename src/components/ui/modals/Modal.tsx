@@ -1,4 +1,3 @@
-// Modal.tsx
 import {
   Button,
   Dialog,

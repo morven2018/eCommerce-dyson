@@ -31,28 +31,21 @@ export async function updatePassword(
     newPassword,
   };
 
-  try {
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(updateData),
-    });
+  const response = await fetch(url, {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${accessToken}`,
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify(updateData),
+  });
 
-    if (!response.ok) {
-      const errorData = await response.json();
-      console.error('API Error:', errorData);
-      if (response.status === 401) {
-        localStorage.removeItem('authDysonToken');
-      }
-      throw new Error(response.status.toString());
+  if (!response.ok) {
+    if (response.status === 401) {
+      localStorage.removeItem('authDysonToken');
     }
-
-    return await response.json();
-  } catch (error) {
-    console.error('Error updating customer password', error);
-    return null;
+    throw new Error(`API Error:${response.status.toString()}`);
   }
+
+  return await response.json();
 }

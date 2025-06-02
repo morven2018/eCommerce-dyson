@@ -2,7 +2,6 @@ import styles from './Product.module.scss';
 import { useState, useEffect } from 'react';
 import { getProductDataById } from '@shared/api/commerce-tools/getProductDataById';
 import { getTokenFromLS } from '@shared/api/local-storage/getTokenFromLS';
-import { getProductIdFromLS } from '@shared/api/local-storage/getProductIdFromLS';
 import ProductTitle from '@components/layout/product/title/ProductTitle';
 import { ButtonBack } from '@components/ui/buttons/ButtonBack';
 import ProductCard from '@components/layout/product/card/ProductCard';
@@ -10,21 +9,22 @@ import { Slider } from '@components/layout/product/slider/Slider';
 import { ProductData, ProductImage } from '@shared/types/types';
 import Benefits from '@components/layout/product/benefits/Benefits';
 import { openDialog } from '@services/DialogService';
+import { useParams } from 'react-router-dom';
 
 export const ProductPage = () => {
+  const { productId } = useParams<{ productId: string }>();
   const [productData, setProductData] = useState<ProductData | null>(null);
 
   useEffect(() => {
     const fetchProductData = async () => {
       const token = getTokenFromLS();
-      const id = getProductIdFromLS();
 
-      if (!id || !token) {
+      if (!token || !productId) {
         return;
       }
 
       try {
-        const data = await getProductDataById({ id, token });
+        const data = await getProductDataById({ id: productId, token });
         setProductData(data);
       } catch (error) {
         let message = 'Error get product by ID';
@@ -35,12 +35,12 @@ export const ProductPage = () => {
           message = error;
         }
 
-        openDialog(message);
+        openDialog(message, true);
       }
     };
 
     fetchProductData();
-  }, []);
+  }, [productId]);
 
   if (!productData) {
     return <div className={styles.textLoading}>Loading...</div>;
