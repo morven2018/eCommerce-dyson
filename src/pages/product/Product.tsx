@@ -50,7 +50,7 @@ export const ProductPage = () => {
 
   const currentPath = productData.masterData.current;
 
-  const name = currentPath.name?.['en-US'] || 'Product name';
+  const name = currentPath.name?.['en-US'] ?? 'Product name';
   const categoryId = productData.masterData.current.categories?.[0]?.id;
 
   let breadcrumbItems;
@@ -84,7 +84,7 @@ export const ProductPage = () => {
     : null;
 
   const description =
-    currentPath.description?.['en-US'] || 'No description available';
+    currentPath.description?.['en-US'] ?? 'No description available';
 
   const sliderImages = currentPath.masterVariant?.images?.map(
     (img: ProductImage) => ({
@@ -95,14 +95,14 @@ export const ProductPage = () => {
 
   const variantData =
     currentPath.variants?.map((variant) => {
-      const imageUrl = variant.images?.[0]?.url || 'dyson_icon.svg';
-      const variantName = variant.key || variant.sku || 'Unnamed variant';
+      const imageUrl = variant.images?.[0]?.url ?? 'dyson_icon.svg';
+      const variantName = variant.key ?? variant.sku ?? 'Unnamed variant';
 
       return {
         iconUrl: imageUrl,
         name: variantName,
       };
-    }) || [];
+    }) ?? [];
 
   return (
     <>

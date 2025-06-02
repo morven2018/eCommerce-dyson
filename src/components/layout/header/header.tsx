@@ -31,7 +31,6 @@ export interface INavItems {
   icon: string;
   path: string;
   onClick: () => void;
-  location: string;
 }
 
 const NonBreakingText = ({ text }: { text: string }) => (
@@ -143,15 +142,7 @@ export const Header = () => {
         <Box>
           <Box className={styles.subheader}>
             <Toolbar className={styles.toolbar}>
-              <Link
-                to="/"
-                className={`${styles.logoWrapper} ${
-                  location.pathname === '/' ||
-                  location.pathname === '/index.html'
-                    ? styles.active
-                    : ''
-                }`}
-              >
+              <Link to="/" className={styles.logoWrapper}>
                 <Box
                   component="img"
                   src={logo}
