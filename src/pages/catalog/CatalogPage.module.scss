@@ -10,8 +10,10 @@
 }
 
 .filterContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
   min-width: 300px;
-  height: 500px;
   padding: 50px 10px;
   border-radius: $border-radius;
   border: 1px solid $modal-border;

@@ -22,7 +22,7 @@ export const Card = ({
   const alt = 'Product picture';
   const productName = name.length < 30 ? name : `${name.slice(0, 30)}...`;
   const productDescription =
-    description.length < 75 ? description : `${description.slice(0, 75)}...`;
+    description.length < 90 ? description : `${description.slice(0, 90)}...`;
 
   function saveIdAndShowProduct() {
     navigate(`/product/${id}`);

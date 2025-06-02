@@ -7,10 +7,12 @@ import { openDialog } from '@services/DialogService';
 
 import { Card } from '@components/ui/cards/Card';
 import { SortByComponent } from '@components/ui/sort/SortByComponent';
-import { TextField } from '@mui/material';
+import { TextField, FormControlLabel, Switch } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { PriceRangeSlider } from '@components/ui/sort/range-slider/PriceRangeSlider';
 import { Breadcrumbs } from '@components/ui/breadcrumbs/breadcrumbs';
+import { ColorRange } from '@components/ui/sort/color-range/ColorRange';
+
 
 export type SortOption =
   | 'price_asc'
@@ -32,6 +34,8 @@ export const CatalogPage = () => {
   const [sortOption, setSortOption] = useState<SortOption>('normal');
   const [searchText, setSearchText] = useState('');
   const [priceRange, setPriceRange] = useState([0, 0]);
+  const [discount, setDiscount] = useState(false);
+  const [selectedColors, setSelectedColors] = useState<string[]>([]);
 
   const breadcrumbItems = [
     { path: '/', name: 'Home' },
@@ -78,6 +82,17 @@ export const CatalogPage = () => {
           );
         }
 
+        if (discount) {
+          paramsArray.push('filter.query=variants.prices.discounted:exists');
+        }
+
+        if (selectedColors.length > 0) {
+          const colorFilter = selectedColors
+            .map((color) => `filter.query=variants.attributes.color:"${color}"`) // нужно будет пересмотреть!
+            .join('&');
+          paramsArray.push(colorFilter);
+        }
+
         paramsArray.push('limit=50');
 
         const params = paramsArray.join('&');
@@ -97,7 +112,7 @@ export const CatalogPage = () => {
     }, 500);
 
     return () => clearTimeout(delayDebounceFn);
-  }, [searchText, sortOption, priceRange]);
+  }, [searchText, sortOption, priceRange, discount, selectedColors]);
 
   if (!productsData) {
     return <div className={styles.textLoading}>Loading...</div>;
@@ -115,34 +130,81 @@ export const CatalogPage = () => {
     setPriceRange(newValues);
   };
 
+  const toggleDiscount = () => {
+    setDiscount(!discount);
+  };
+
+  const allColors = productsData.results.flatMap((product) => {
+    if (product.masterVariant) {
+      return product.masterVariant.attributes
+        .map((attribute) => attribute.value)
+        .flat(5);
+    }
+  });
+
   return (
     <>
       <Breadcrumbs items={breadcrumbItems} />
-      <div className={styles.container}>
-        <div className={styles.filterContainer}>
-          <TextField
-            label="Search.."
-            variant="outlined"
-            value={searchText}
-            onChange={handleSearchChange}
-            size="small"
-            slotProps={{
-              input: {
-                endAdornment: <SearchIcon />,
-              },
-            }}
-            sx={{ width: '100%' }}
-          />
+      
+    <div className={styles.container}>
+      <div className={styles.filterContainer}>
+        <TextField
+          label="Search.."
+          variant="outlined"
+          value={searchText}
+          onChange={handleSearchChange}
+          size="small"
+          slotProps={{
+            input: {
+              endAdornment: <SearchIcon />,
+            },
+          }}
+          sx={{ width: '100%' }}
+        />
 
-          <PriceRangeSlider
-            min={
-              productsData.results.length
-                ? Math.min(
-                    ...productsData.results.map(
-                      (el) =>
-                        (el.masterVariant?.prices[0].value.centAmount ?? 0) /
-                        100
-                    )
+        <FormControlLabel
+          control={
+            <Switch
+              checked={discount}
+              onChange={toggleDiscount}
+              sx={{
+                '.Mui-checked .MuiSwitch-thumb': {
+                  color: '#595079',
+                },
+                '.Mui-checked + .MuiSwitch-track': {
+                  backgroundColor: '#595079',
+                },
+              }}
+            />
+          }
+          label="Only with discount"
+          sx={{
+            '.MuiFormControlLabel-label': {
+              fontSize: '14px',
+              fontWeight: '500',
+              color: '#595079',
+            },
+          }}
+        />
+
+        <ColorRange
+          colors={
+            allColors
+              .filter((value): value is string => typeof value === 'string')
+              .filter((el, ind) => ind === allColors.indexOf(el))
+              .sort((a, b) => a.localeCompare(b)) ?? []
+          }
+          selectedColors={selectedColors}
+          onChange={(colors) => setSelectedColors(colors)}
+        />
+
+        <PriceRangeSlider
+          min={
+            productsData.results.length
+              ? Math.min(
+                  ...productsData.results.map(
+                    (el) =>
+                      (el.masterVariant?.prices[0].value.centAmount ?? 0) / 100
                   )
                 : 0
             }
