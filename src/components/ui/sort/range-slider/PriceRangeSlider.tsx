@@ -1,7 +1,6 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Box, Typography, Slider } from '@mui/material';
 import styles from './PriceRangeSlider.module.scss';
-import { useEffect } from 'react';
 
 interface PriceRangeSliderProps {
   min: number;
