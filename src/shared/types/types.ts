@@ -79,6 +79,11 @@ export interface ProductData {
   };
 }
 
+export interface Attributes {
+  name: string | undefined;
+  value: string | undefined;
+}
+
 export interface CardInfo {
   description: {
     'en-US': string;
@@ -90,6 +95,7 @@ export interface CardInfo {
   masterVariant?: {
     images: ProductImage[];
     prices: ProductPrice[];
+    attributes: Attributes[];
   };
 }
 

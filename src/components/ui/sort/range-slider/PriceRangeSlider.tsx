@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Box, Typography, Slider } from '@mui/material';
 import styles from './PriceRangeSlider.module.scss';
+import { useEffect } from 'react';
 
 interface PriceRangeSliderProps {
   min: number;
@@ -14,6 +15,14 @@ export const PriceRangeSlider: React.FC<PriceRangeSliderProps> = ({
   onChange,
 }: PriceRangeSliderProps) => {
   const [values, setValues] = useState([min, max]);
+  const [scaleValues, setScaleValues] = useState<number[]>([0, 0]);
+
+  useEffect(() => {
+    if (scaleValues[0] === 0 && scaleValues[1] === 0) {
+      setValues([min, max]);
+      setScaleValues(values);
+    }
+  }, [min, max]);
 
   const handleSliderChange = (
     event: Event,
@@ -21,24 +30,20 @@ export const PriceRangeSlider: React.FC<PriceRangeSliderProps> = ({
     activeThumb: number
   ) => {
     console.log(event);
-    const newValues = Array.isArray(newValue) ? newValue : [newValue];
+    const newValues = Array.isArray(newValue)
+      ? ([...newValue] as [number, number])
+      : ([newValue, values[1]] as [number, number]);
 
-    if (newValues.length === 1) {
-      newValues.push(values[1]);
+    if (activeThumb === 0) {
+      newValues[0] = Math.min(newValues[0], values[1]);
+    } else if (activeThumb === 1) {
+      newValues[1] = Math.max(newValues[1], values[0]);
     }
 
-    if (activeThumb === 0 && newValues[0] > values[1]) {
-      newValues[0] = values[1];
-    } else if (activeThumb === 1 && newValues[1] < values[0]) {
-      newValues[1] = values[0];
-    }
-
-    const safeNewValues: [number, number] = [newValues[0], newValues[1]];
-
-    setValues(safeNewValues);
+    setValues(newValues);
 
     if (onChange) {
-      onChange(safeNewValues);
+      onChange(newValues);
     }
   };
 
@@ -63,8 +68,8 @@ export const PriceRangeSlider: React.FC<PriceRangeSliderProps> = ({
             index === 0 ? 'Minimum price' : 'Maximum price'
           }
           aria-labelledby="range-slider"
-          min={min}
-          max={max}
+          min={scaleValues[0]}
+          max={scaleValues[1]}
           step={1}
           sx={{
             marginLeft: '10px',
@@ -85,8 +90,8 @@ export const PriceRangeSlider: React.FC<PriceRangeSliderProps> = ({
       </Box>
 
       <div className={styles.container}>
-        <p className={styles.value}>$66</p>
-        <p className={styles.value}>$1180</p>
+        <p className={styles.value}>${scaleValues[0]}</p>
+        <p className={styles.value}>${scaleValues[1]}</p>
       </div>
     </Box>
   );
