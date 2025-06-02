@@ -31,7 +31,6 @@ export interface INavItems {
   icon: string;
   path: string;
   onClick: () => void;
-  location: string;
 }
 
 const NonBreakingText = ({ text }: { text: string }) => (
