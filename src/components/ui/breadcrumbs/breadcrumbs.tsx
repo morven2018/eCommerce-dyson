@@ -32,6 +32,7 @@ export const Breadcrumbs = ({ items }: BreadcrumbsProps) => {
               to={item.path}
               color="inherit"
               underline="hover"
+              className={styles.link}
             >
               {item.name}
             </Link>

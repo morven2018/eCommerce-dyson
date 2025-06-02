@@ -54,7 +54,7 @@ export default function Popular() {
               caps sold separately.
             </p>
             <Link
-              to={'/product/a19f3f51-2def-4201-807a-4cb922aa2dd7'}
+              to={'/product/29694750-1c83-4eca-a148-91272cada8e9'}
               className={styles.cardButton}
               aria-label="Buy Dyson OnTrac"
             >
