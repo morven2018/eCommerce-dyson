@@ -61,8 +61,8 @@ export const ProductPage = () => {
       { path: '/', name: 'Home' },
       { path: '/catalog', name: 'Catalog' },
       {
-        path: category?.path || '/catalog',
-        name: category?.name || '',
+        path: category?.path ?? '/catalog',
+        name: category?.name ?? '',
       },
       { path: '', name: name },
     ];

@@ -18,17 +18,16 @@ export const Breadcrumbs = ({ items }: BreadcrumbsProps) => {
       <MuiBreadcrumbs
         separator={<NavigateNextIcon fontSize="small" />}
         aria-label="breadcrumb"
-        maxItems={2}
         sx={{
           display: { xs: 'flex', sm: 'flex' },
           overflowX: 'auto',
           whiteSpace: 'nowrap',
         }}
       >
-        {items.map((item, index) =>
-          index < items.length - 1 ? (
+        {items.map((item) =>
+          item.path !== items[items.length - 1].path ? (
             <Link
-              key={index}
+              key={`${item.path}-${item.name}`}
               component={RouterLink}
               to={item.path}
               color="inherit"
@@ -37,7 +36,7 @@ export const Breadcrumbs = ({ items }: BreadcrumbsProps) => {
               {item.name}
             </Link>
           ) : (
-            <Typography key={index} color="text.primary">
+            <Typography key={`${item.path}-${item.name}`} color="text.primary">
               {item.name}
             </Typography>
           )
