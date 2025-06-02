@@ -53,6 +53,7 @@ export const AddressForm = ({
     formState: { errors, isValid, isDirty },
     setValue,
     watch,
+    trigger,
   } = useForm<IAddressFormData>({
     resolver: yupResolver(addressSchema),
     defaultValues: {
@@ -72,7 +73,13 @@ export const AddressForm = ({
     'useAsBilling',
     'defaultShipping',
     'defaultBilling',
+    'country',
   ]);
+
+  const handleCountryChange = (value: string) => {
+    setValue('country', value, { shouldValidate: true });
+    trigger('zipCode');
+  };
 
   const handleDefaultShippingChange = (checked: boolean) => {
     setValue('defaultShipping', checked);
@@ -193,9 +200,7 @@ export const AddressForm = ({
           name="country"
           label="Country"
           error={errors.country}
-          onChange={(value) => {
-            setValue('country', value, { shouldValidate: true });
-          }}
+          onChange={handleCountryChange}
         />
 
         <Controller
