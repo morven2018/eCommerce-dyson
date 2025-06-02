@@ -17,7 +17,7 @@ export default function Bestseller() {
           </p>
         </div>
 
-        <Link to={'/'}>
+        <Link to={'/product/05580548-7ae6-4805-8e58-90873f8c643a'}>
           <button
             type="button"
             className={styles.button}
