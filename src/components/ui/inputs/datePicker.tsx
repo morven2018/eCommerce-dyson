@@ -36,10 +36,10 @@ export default function InputDate({
   readOnly = false,
   onEditClick,
   isEditing = false,
-}: InputDateProps) {
+}: Readonly<InputDateProps>) {
   dayjs.locale('en');
   const [internalValue, setInternalValue] = useState(
-    value?.format('YYYY-MM-DD') || ''
+    value?.format('YYYY-MM-DD') ?? ''
   );
   const inputRef = useRef<HTMLInputElement>(null);
 
