@@ -38,6 +38,7 @@ export const PriceRangeSlider: React.FC<PriceRangeSliderProps> = ({
     } else if (activeThumb === 1) {
       newValues[1] = Math.max(newValues[1], values[0]);
     }
+    console.log(event);
 
     setValues(newValues);
 
