@@ -38,9 +38,8 @@ const NonBreakingText = ({ text }: { text: string }) => (
   <span className={styles.buttons}>{text}</span>
 );
 
-const ItemList = ({ text, icon, path, onClick, location }: INavItems) => {
+const ItemList = ({ text, icon, path, onClick }: INavItems) => {
   const navigate = useNavigate();
-  const isActive = text === NavText.Logout ? false : location === path;
 
   const handleClick = () => {
     onClick();
@@ -48,10 +47,7 @@ const ItemList = ({ text, icon, path, onClick, location }: INavItems) => {
   };
 
   return (
-    <ListItem
-      className={`${styles.item} ${isActive ? styles.active : ''}`}
-      disablePadding
-    >
+    <ListItem className={styles.item} disablePadding>
       <ListItemButton onClick={handleClick}>
         {icon ? (
           <ListItemIcon
