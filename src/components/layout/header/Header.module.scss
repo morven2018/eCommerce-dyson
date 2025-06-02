@@ -11,6 +11,12 @@ $mobile-width2: 750px;
   box-shadow: none;
   background: $primary-black;
   color: $primary-white;
+
+  .active {
+    background-color: $form-background;
+    border-radius: $border-radius;
+    pointer-events: none;
+  }
 }
 
 .content {
@@ -50,10 +56,13 @@ $mobile-width2: 750px;
 .subheaderCatalog {
   height: calc($header-height / 2);
 }
-
-.logo {
-  height: $logo-height;
-  width: auto;
+.logoWrapper {
+  padding: 10px 16px;
+  margin-top: 2px;
+  .logo {
+    height: $logo-height;
+    width: auto;
+  }
 }
 
 .iconWrapper {

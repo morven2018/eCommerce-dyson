@@ -3,3 +3,11 @@
 .input {
   background-color: $primary-white;
 }
+.inputWrapper {
+  position: relative;
+
+  .icon {
+    position: absolute;
+    right: 8px;
+  }
+}
