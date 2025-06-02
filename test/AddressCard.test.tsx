@@ -1,7 +1,6 @@
-import { vi } from 'vitest';
 import { render } from '@testing-library/react';
 import { AddressCard } from '../src/components/ui/cards/addressCard';
-import { describe, it, beforeEach } from 'vitest';
+import { vi, describe, it, beforeEach } from 'vitest';
 import React from 'react';
 
 vi.mock('@components/common/forms/profile-forms/addUpdateAddresses', () => ({

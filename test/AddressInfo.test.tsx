@@ -1,8 +1,7 @@
 /* eslint-disable react/prop-types */
-import { vi } from 'vitest';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { AddressInfo } from '../src/components/layout/profile/AddressInfo';
-import { describe, it, expect, beforeEach } from 'vitest';
+import { vi, describe, it, expect, beforeEach } from 'vitest';
 import React from 'react';
 import '@testing-library/jest-dom/vitest';
 
