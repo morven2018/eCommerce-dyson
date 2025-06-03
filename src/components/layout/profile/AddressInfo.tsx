@@ -1,7 +1,7 @@
 import { Customer, ResponseAddress } from '@pages/profile/Profile';
 import styles from './profile.module.scss';
 import { Button, Dialog, DialogContent, IconButton } from '@mui/material';
-import { AddressCard } from '@components/ui/cards/addressCard';
+import { AddressCard } from '@components/ui/cards/AddressCard';
 import { useEffect, useState } from 'react';
 import {
   AddressForm,

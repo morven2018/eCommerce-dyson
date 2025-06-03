@@ -11,7 +11,7 @@ import { TextField, FormControlLabel, Switch } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { PriceRangeSlider } from '@components/ui/sort/range-slider/PriceRangeSlider';
 import { ColorRange } from '@components/ui/sort/color-range/ColorRange';
-import { Breadcrumbs } from '@components/ui/breadcrumbs/breadcrumbs';
+import { Breadcrumbs } from '@components/ui/breadcrumbs/Breadcrumbs';
 
 export type SortOption =
   | 'price_asc'

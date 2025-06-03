@@ -7,7 +7,7 @@ import { openDialog } from '@services/DialogService';
 import { ProductsByCategory, CardInfo } from '@shared/types/types';
 import { Card } from '@components/ui/cards/Card';
 import { getNameByPath } from '@shared/constants/categories';
-import { Breadcrumbs } from '@components/ui/breadcrumbs/breadcrumbs';
+import { Breadcrumbs } from '@components/ui/breadcrumbs/Breadcrumbs';
 
 export const CategoryPage = ({ page }: { page: string }) => {
   const [productsData, setProductsData] = useState<ProductsByCategory | null>(
