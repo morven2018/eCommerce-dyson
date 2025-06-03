@@ -1,27 +1,21 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { ButtonBack } from '../src/components/ui/buttons/ButtonBack';
-import { vi, describe, it, expect } from 'vitest';
+import { vi, describe, it, expect, beforeEach } from 'vitest';
 import React from 'react';
-import { MemoryRouter, useNavigate } from 'react-router-dom';
-import { beforeEach, afterEach } from 'node:test';
+import { MemoryRouter } from 'react-router-dom';
 
+const mockNavigate = vi.fn();
 vi.mock('react-router-dom', async () => {
   const actual = await vi.importActual('react-router-dom');
   return {
     ...actual,
-    useNavigate: vi.fn(),
+    useNavigate: () => mockNavigate,
   };
 });
 
 describe('ButtonBack Component', () => {
-  const mockNavigate = vi.fn();
-
   beforeEach(() => {
-    vi.mocked(useNavigate).mockReturnValue(mockNavigate);
-  });
-
-  afterEach(() => {
-    vi.clearAllMocks();
+    mockNavigate.mockClear();
   });
 
   it('renders the back button with correct text', () => {
