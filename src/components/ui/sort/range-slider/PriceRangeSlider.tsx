@@ -22,10 +22,10 @@ export const PriceRangeSlider: React.FC<PriceRangeSliderProps> = ({
       setValues(newValues);
       setScaleValues(newValues);
     }
-  }, [min, max, scaleValues]);
+  }, [min, max, values, scaleValues]);
 
   const handleSliderChange = (
-    event: Event,
+    _event: Event,
     newValue: number | number[],
     activeThumb: number
   ) => {
@@ -38,7 +38,6 @@ export const PriceRangeSlider: React.FC<PriceRangeSliderProps> = ({
     } else if (activeThumb === 1) {
       newValues[1] = Math.max(newValues[1], values[0]);
     }
-    console.log(event);
 
     setValues(newValues);
 
