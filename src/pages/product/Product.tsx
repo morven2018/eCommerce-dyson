@@ -10,7 +10,7 @@ import { ProductData, ProductImage } from '@shared/types/types';
 import Benefits from '@components/layout/product/benefits/Benefits';
 import { openDialog } from '@services/DialogService';
 import { useParams } from 'react-router-dom';
-import { Breadcrumbs } from '@components/ui/breadcrumbs/breadcrumbs';
+import { Breadcrumbs } from '@components/ui/breadcrumbs/Breadcrumbs';
 import { catalogCategories } from '@shared/constants/categories';
 
 export const ProductPage = () => {
