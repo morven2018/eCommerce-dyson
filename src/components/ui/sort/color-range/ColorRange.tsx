@@ -52,13 +52,20 @@ export const ColorRange: React.FC<ColorRangeProps> = ({
             <Checkbox
               checked={selectedColors.includes(color)}
               onChange={() => handleColorChange(color)}
+              sx={{
+                '& .Mui-checked': {
+                  color: '#595079',
+                },
+                '& .MuiSvgIcon-root': {
+                  color: selectedColors.includes(color) ? '#595079' : '#888',
+                },
+              }}
             />
           }
           label={color}
           sx={{
-            '.MuiFormControlLabel-label': {
+            '& .MuiFormControlLabel-label': {
               fontSize: '16px',
-              fontWeight: '500',
               color: '#595079',
             },
           }}
