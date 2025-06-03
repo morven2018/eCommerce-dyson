@@ -1,10 +1,9 @@
 import { render, screen, act } from '@testing-library/react';
-import { ProfilePage } from '../src/pages/profile/Profile';
-import { vi, describe, it, expect, beforeEach } from 'vitest';
+import { ProfilePage, Customer } from '../src/pages/profile/Profile';
+import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
 import React from 'react';
 import '@testing-library/jest-dom/vitest';
-import { Customer } from '../src/pages/profile/Profile';
-import { afterEach } from 'node:test';
+
 
 vi.mock('@components/layout/profile/PersonalInfo', () => ({
   PersonalInfo: (props: {
