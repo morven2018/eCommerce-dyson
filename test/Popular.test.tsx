@@ -3,6 +3,7 @@ import { describe, it, expect, vi } from 'vitest';
 import Popular from '../src/components/layout/popular/Popular';
 import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
+import '@testing-library/jest-dom/vitest';
 
 vi.mock('../../../assets/images/fave1.png', () => 'test-fave1.png');
 vi.mock('../../../assets/images/fave2.png', () => 'test-fave2.png');
