@@ -4,7 +4,6 @@ import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
 import React from 'react';
 import '@testing-library/jest-dom/vitest';
 
-
 vi.mock('@components/layout/profile/PersonalInfo', () => ({
   PersonalInfo: (props: {
     customer: Customer;
