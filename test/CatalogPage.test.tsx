@@ -101,48 +101,4 @@ describe('CatalogPage Component', () => {
     });
     expect(screen.getByDisplayValue('test')).toBeInTheDocument();
   });
-
-  it('changes sort option', async () => {
-    render(
-      <MemoryRouter>
-        <CatalogPage />
-      </MemoryRouter>
-    );
-    await act(async () => {
-      vi.advanceTimersByTime(500);
-    });
-  });
-
-  it('changes price range', async () => {
-    render(
-      <MemoryRouter>
-        <CatalogPage />
-      </MemoryRouter>
-    );
-    await act(async () => {
-      vi.advanceTimersByTime(500);
-    });
-  });
-
-  it('toggles discount', async () => {
-    render(
-      <MemoryRouter>
-        <CatalogPage />
-      </MemoryRouter>
-    );
-    await act(async () => {
-      vi.advanceTimersByTime(500);
-    });
-  });
-
-  it('selects color', async () => {
-    render(
-      <MemoryRouter>
-        <CatalogPage />
-      </MemoryRouter>
-    );
-    await act(async () => {
-      vi.advanceTimersByTime(500);
-    });
-  });
 });

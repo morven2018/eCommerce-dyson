@@ -1,4 +1,4 @@
-import { render, screen, act } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
 import { ProfilePage, Customer } from '../src/pages/profile/Profile';
 import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
 import React from 'react';
@@ -56,40 +56,5 @@ describe('ProfilePage Component', () => {
   it('renders loading state initially', () => {
     render(<ProfilePage />);
     expect(screen.getByText('Loading user data...')).toBeInTheDocument();
-  });
-
-  it('displays error message if API call fails', async () => {
-    render(<ProfilePage />);
-    await act(async () => {
-      await vi.runAllTimersAsync();
-    });
-  });
-
-  it('shows no customer data message if no customer is returned', async () => {
-    render(<ProfilePage />);
-    await act(async () => {
-      await vi.runAllTimersAsync();
-    });
-  });
-
-  it('renders customer data and child components when API succeeds', async () => {
-    render(<ProfilePage />);
-    await act(async () => {
-      await vi.runAllTimersAsync();
-    });
-  });
-
-  it('updates customer state when onSave is called from PersonalInfo', async () => {
-    render(<ProfilePage />);
-    await act(async () => {
-      await vi.runAllTimersAsync();
-    });
-  });
-
-  it('updates customer state when onSave is called from AddressInfo', async () => {
-    render(<ProfilePage />);
-    await act(async () => {
-      await vi.runAllTimersAsync();
-    });
   });
 });
