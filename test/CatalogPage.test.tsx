@@ -1,9 +1,8 @@
 import { render, screen, fireEvent, act } from '@testing-library/react';
 import { CatalogPage } from '../src/pages/catalog/CatalogPage';
-import { vi, describe, it, expect, beforeEach } from 'vitest';
+import { vi, describe, it, expect, beforeEach, afterEach } from 'vitest';
 import React from 'react';
 import '@testing-library/jest-dom/vitest';
-import { afterEach } from 'vitest';
 import { MemoryRouter } from 'react-router-dom';
 
 vi.mock('@shared/api/local-storage/getTokenFromLS', () => ({
