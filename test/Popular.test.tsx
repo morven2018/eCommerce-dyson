@@ -2,6 +2,7 @@ import { render, screen } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import Popular from '../src/components/layout/popular/Popular';
 import React from 'react';
+import { MemoryRouter } from 'react-router-dom';
 
 vi.mock('../../../assets/images/fave1.png', () => 'test-fave1.png');
 vi.mock('../../../assets/images/fave2.png', () => 'test-fave2.png');
@@ -9,7 +10,11 @@ vi.mock('../../../assets/images/fave3.png', () => 'test-fave3.png');
 
 describe('Popular Component', () => {
   it('renders all product cards with correct content', () => {
-    render(<Popular />);
+    render(
+      <MemoryRouter>
+        <Popular />
+      </MemoryRouter>
+    );
 
     expect(screen.getByText('Dyson Purifier Big')).toBeInTheDocument();
     expect(screen.getByText('Dyson OnTrac™')).toBeInTheDocument();
@@ -17,7 +22,11 @@ describe('Popular Component', () => {
   });
 
   it('renders all product images with correct alt text', () => {
-    render(<Popular />);
+    render(
+      <MemoryRouter>
+        <Popular />
+      </MemoryRouter>
+    );
 
     const images = screen.getAllByRole('img');
     expect(images[0]).toHaveAttribute('alt', 'Dyson Purifier Big');
@@ -26,7 +35,11 @@ describe('Popular Component', () => {
   });
 
   it('renders all shop now buttons with proper accessibility', () => {
-    render(<Popular />);
+    render(
+      <MemoryRouter>
+        <Popular />
+      </MemoryRouter>
+    );
 
     const buttons = [
       screen.getByRole('link', { name: 'Buy Dyson Purifier' }),
