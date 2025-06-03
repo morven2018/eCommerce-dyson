@@ -87,9 +87,11 @@ export const CatalogPage = () => {
 
         if (selectedColors.length > 0) {
           const colorFilter = selectedColors
-            .map((color) => `filter.query=variants.attributes.color:"${color}"`) // нужно будет пересмотреть!
-            .join('&');
-          paramsArray.push(colorFilter);
+            .map((color) => `"${color}"`)
+            .join(',');
+          paramsArray.push(
+            `filter.query=variants.attributes.color:${colorFilter}`
+          );
         }
 
         paramsArray.push('limit=50');
@@ -166,7 +168,7 @@ export const CatalogPage = () => {
                 checked={discount}
                 onChange={toggleDiscount}
                 sx={{
-                  '.Mui-checked .MuiSwitch-thumb': {
+                  '& .Mui-checked .MuiSwitch-thumb': {
                     color: '#595079',
                   },
                   '.Mui-checked + .MuiSwitch-track': {
