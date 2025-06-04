@@ -135,6 +135,13 @@ export const CatalogPage = () => {
     setDiscount(!discount);
   };
 
+  const handleClearFilter = () => {
+    setSearchText('');
+    setPriceRange([0, 0]);
+    setDiscount(false);
+    setSelectedColors([]);
+  };
+
   const allColors = productsData.results.flatMap((product) => {
     if (product.masterVariant) {
       return product.masterVariant.attributes
@@ -223,6 +230,9 @@ export const CatalogPage = () => {
             }
             onChange={handlePriceChange}
           />
+          <button className={styles.button} onClick={handleClearFilter}>
+            Clear Filters
+          </button>
         </div>
         <div className={styles.sortAndCardsContainer}>
           <SortByComponent
