@@ -59,7 +59,7 @@ export async function updateAddress(
     const isBilling = addressType === 'billing' || addressType === 'both';
     const isShipping = addressType === 'shipping' || addressType === 'both';
 
-    const previousBilling = addressId in customer.billingAddressIds;
+    const previousBilling = addressId in customer.billingAddressIdList;
     const previousShipping = addressId in customer.shippingAddressIds;
 
     if (isBilling && !previousBilling) {
