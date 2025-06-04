@@ -4,56 +4,49 @@ import { vi, describe, it, beforeEach } from 'vitest';
 import React from 'react';
 
 vi.mock('@components/common/forms/profile-forms/addUpdateAddresses', () => ({
-  AddressForm: vi.fn(({ initialValues, onSubmit, isEditing }) => {
-    const div = document.createElement('div');
-    div.setAttribute('data-testid', 'address-form');
-
-    const countryInput = document.createElement('input');
-    countryInput.setAttribute('data-testid', 'country-input');
-    countryInput.setAttribute('value', initialValues.country || '');
-    div.appendChild(countryInput);
-
-    const cityInput = document.createElement('input');
-    cityInput.setAttribute('data-testid', 'city-input');
-    cityInput.setAttribute('value', initialValues.city || '');
-    div.appendChild(cityInput);
-
-    const submitButton = document.createElement('button');
-    submitButton.setAttribute('data-testid', 'submit-button');
-    submitButton.textContent = 'Submit';
-    submitButton.disabled = !isEditing;
-    submitButton.addEventListener('click', () =>
-      onSubmit({
-        ...initialValues,
-        country: 'UpdatedCountry',
-        city: 'UpdatedCity',
-        street: 'UpdatedStreet',
-        zipCode: '54321',
-        streetLine2: 'UpdatedLine2',
-        useAsBilling: true,
-        useAsShipping: true,
-        defaultBilling: true,
-        defaultShipping: true,
-      })
-    );
-    div.appendChild(submitButton);
-
-    return div;
-  }),
+  AddressForm: vi.fn(({ initialValues, onSubmit, isEditing }) => (
+    <div data-testid="address-form">
+      <input
+        data-testid="country-input"
+        value={initialValues.country || ''}
+        readOnly
+      />
+      <input
+        data-testid="city-input"
+        value={initialValues.city || ''}
+        readOnly
+      />
+      <button
+        data-testid="submit-button"
+        disabled={!isEditing}
+        onClick={() =>
+          onSubmit({
+            ...initialValues,
+            country: 'UpdatedCountry',
+            city: 'UpdatedCity',
+            street: 'UpdatedStreet',
+            zipCode: '54321',
+            streetLine2: 'UpdatedLine2',
+            useAsBilling: true,
+            useAsShipping: true,
+            defaultBilling: true,
+            defaultShipping: true,
+          })
+        }
+      >
+        Submit
+      </button>
+    </div>
+  )),
 }));
+
 vi.mock('../modals/Modal', () => ({
-  default: vi.fn(({ message, onClose }) => {
-    const div = document.createElement('div');
-    div.setAttribute('data-testid', 'error-modal');
-    div.textContent = message;
-
-    const closeButton = document.createElement('button');
-    closeButton.textContent = 'Close';
-    closeButton.addEventListener('click', onClose);
-    div.appendChild(closeButton);
-
-    return div;
-  }),
+  default: vi.fn(({ message, onClose }) => (
+    <div data-testid="error-modal">
+      {message}
+      <button onClick={onClose}>Close</button>
+    </div>
+  )),
 }));
 
 const address = {
