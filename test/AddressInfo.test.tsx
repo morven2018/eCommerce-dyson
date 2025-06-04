@@ -105,7 +105,7 @@ const customer = {
     { id: 'addr-1', country: 'USA', city: 'New York' },
     { id: 'addr-2', country: 'UK', city: 'London' },
   ],
-  billingAddressIds: ['addr-1'],
+  billingAddressIdList: ['addr-1'],
   shippingAddressIds: ['addr-2'],
   defaultBillingAddressId: 'addr-1',
   defaultShippingAddressId: 'addr-2',
