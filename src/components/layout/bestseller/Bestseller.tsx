@@ -2,6 +2,7 @@ import styles from './Bestseller.module.scss';
 import { Link } from 'react-router-dom';
 
 export default function Bestseller() {
+  const BESTSELLER_PATH = '/product/05580548-7ae6-4805-8e58-90873f8c643a';
   return (
     <section className={styles.bestseller}>
       <div className={styles.container}>
@@ -17,7 +18,7 @@ export default function Bestseller() {
           </p>
         </div>
 
-        <Link to={'/product/05580548-7ae6-4805-8e58-90873f8c643a'}>
+        <Link to={BESTSELLER_PATH}>
           <button
             type="button"
             className={styles.button}

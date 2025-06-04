@@ -14,7 +14,7 @@ export interface Customer {
   password?: string;
   addresses?: ResponseAddress[];
   shippingAddressIds?: string[];
-  billingAddressIds?: string[];
+  billingAddressIdList?: string[];
   defaultShippingAddressId?: string;
   defaultBillingAddressId?: string;
   custom?: {
