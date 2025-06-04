@@ -91,7 +91,7 @@ export const ProductPage = () => {
       src: img.url,
       alt: 'Product image',
     })
-  ) || [{ src: 'dyson_icon.svg', alt: 'Default image' }];
+  ) ?? [{ src: 'dyson_icon.svg', alt: 'Default image' }];
 
   const variantData =
     currentPath.variants?.map((variant) => {
