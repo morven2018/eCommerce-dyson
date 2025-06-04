@@ -68,19 +68,8 @@ const onAddressUpdated = vi.fn();
 
 describe('AddressCard Component', () => {
   beforeEach(() => {
-    render(
-      <AddressCard
-        address={address}
-        isBilling={true}
-        isShipping={true}
-        isDefaultBilling={false}
-        isDefaultShipping={false}
-        customerId={customer.id}
-        customerVersion={customer.version}
-        onAddressRemoved={onAddressRemoved}
-        onAddressUpdated={onAddressUpdated}
-      />
-    );
+    onAddressRemoved.mockClear();
+    onAddressUpdated.mockClear();
   });
 
   it('prevents delete of default address', async () => {
