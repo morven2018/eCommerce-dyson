@@ -1,3 +1,4 @@
+import { LinkRoutes } from '@shared/constants/links';
 import styles from './Bestseller.module.scss';
 import { Link } from 'react-router-dom';
 
@@ -16,8 +17,7 @@ export default function Bestseller() {
             throughout your home.
           </p>
         </div>
-
-        <Link to={'/'}>
+        <Link to={LinkRoutes.bestseller}>
           <button
             type="button"
             className={styles.button}

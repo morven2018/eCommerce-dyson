@@ -2,6 +2,8 @@ import styles from './Popular.module.scss';
 import fave1 from '@assets/images/fave1.png';
 import fave2 from '@assets/images/fave2.png';
 import fave3 from '@assets/images/fave3.png';
+import { LinkRoutes } from '@shared/constants/links';
+import { Link } from 'react-router-dom';
 
 export default function Popular() {
   return (
@@ -26,13 +28,13 @@ export default function Popular() {
               to 264 sq ft or projects up to 32 ft, evenly.¹ And cools you in
               warmer months.³
             </p>
-            <a
-              href="#"
+            <Link
+              to={LinkRoutes.purifier}
               className={styles.cardButton}
               aria-label="Buy Dyson Purifier"
             >
               Shop now
-            </a>
+            </Link>
           </div>
         </div>
         <div className={styles.card}>
@@ -51,13 +53,14 @@ export default function Popular() {
               visualizer to make them yours.Additional ear cushions and outer
               caps sold separately.
             </p>
-            <a
-              href="#"
+            <Link
+              to={LinkRoutes.onTrac}
               className={styles.cardButton}
               aria-label="Buy Dyson OnTrac"
             >
+              {' '}
               Shop now
-            </a>
+            </Link>
           </div>
         </div>
         <div className={styles.card}>
@@ -75,13 +78,14 @@ export default function Popular() {
               25%.⁺ Powerful, directional airflow smooths and aligns hair.
               Achieve salon-quality results effortlessly at home.
             </p>
-            <a
-              href="#"
+            <Link
+              to={LinkRoutes.airstrait}
               className={styles.cardButton}
               aria-label="Buy Dyson Airstrait"
             >
+              {' '}
               Shop now
-            </a>
+            </Link>
           </div>
         </div>
       </div>

@@ -1,0 +1,19 @@
+@use '@assets/styles/globals.scss' as *;
+
+.titleContainer {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 20px;
+  width: 100%;
+  padding: 45px 15px;
+  background-color: $product-benefits-background;
+}
+
+.name,
+.price {
+  text-align: center;
+  font-weight: 300;
+  font-size: 30px;
+  color: $product-name-color;
+}

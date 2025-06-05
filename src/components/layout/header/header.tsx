@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import {
   Box,
   IconButton,
@@ -17,13 +17,14 @@ import emptyCart from '@assets/icons/cart.svg';
 import cart from '@assets/icons/cart-with-smth.svg';
 import profile from '@assets/icons/profile.svg';
 
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 
 import { Burger } from '@components/ui/burger/burger/burger';
 import styles from './Header.module.scss';
 import { ProfileMenu } from '@components/ui/burger/menu/profile-menu';
 import { ButtonList } from './button-list/ButtonList';
 import { useAuth } from '@shared/context/auth-hooks';
+import { addAnonymousSessionTokenToLS } from '@shared/utlis/token/addAnonymousSessionTokenToLS';
 
 export interface INavItems {
   text: string;
@@ -63,59 +64,67 @@ const ItemList = ({ text, icon, path, onClick }: INavItems) => {
 };
 
 export const Header = () => {
+  const location = useLocation();
+
   const { isUserUnauthorized, setIsUserUnauthorized } = useAuth();
   const [isCartEmpty] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const [navItems, setNavItems] = useState<INavItems[]>([]);
 
-  const toggleAuthStatus = () => {
+  const toggleAuthStatus = useCallback(() => {
     if (!isUserUnauthorized) {
       const tokenName = 'authDysonToken';
       localStorage.removeItem(tokenName);
+      addAnonymousSessionTokenToLS();
     }
     setIsUserUnauthorized(!isUserUnauthorized);
-  };
+  }, [isUserUnauthorized, setIsUserUnauthorized]);
 
-  const updateNavItems = () => {
+  const updateNavItems = useCallback(() => {
     const updatedItems = [
       {
         text: NavText.Catalog,
         icon: '',
         path: '/catalog',
         onClick: () => {},
+        location: location.pathname,
       },
       {
         text: NavText.About,
         icon: '',
         path: '/about',
         onClick: () => {},
+        location: location.pathname,
       },
       {
         text: isUserUnauthorized ? NavText.Register : NavText.Logout,
         icon: '',
         path: isUserUnauthorized ? '/register' : '/',
         onClick: isUserUnauthorized ? () => {} : toggleAuthStatus,
+        location: location.pathname,
       },
       {
         text: isUserUnauthorized ? NavText.Login : NavText.Profile,
         icon: isUserUnauthorized ? '' : profile,
         path: isUserUnauthorized ? '/login' : '/profile',
         onClick: () => {},
+        location: location.pathname,
       },
       {
         text: NavText.Cart,
         icon: isCartEmpty ? emptyCart : cart,
         path: '/cart',
         onClick: () => {},
+        location: location.pathname,
       },
     ];
     setNavItems(updatedItems);
-  };
+  }, [isUserUnauthorized, isCartEmpty, toggleAuthStatus, location.pathname]);
 
   useEffect(() => {
     updateNavItems();
-  }, [isUserUnauthorized, isCartEmpty]);
+  }, [updateNavItems]);
 
   const toggleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
@@ -133,7 +142,7 @@ export const Header = () => {
         <Box>
           <Box className={styles.subheader}>
             <Toolbar className={styles.toolbar}>
-              <Link to="/">
+              <Link to="/" className={styles.logoWrapper}>
                 <Box
                   component="img"
                   src={logo}

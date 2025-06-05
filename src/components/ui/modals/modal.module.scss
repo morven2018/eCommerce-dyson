@@ -1,0 +1,39 @@
+@use '@assets/styles/globals.scss' as *;
+
+$breakpoint400: 400px;
+
+.modal {
+  max-width: 500px;
+  border-radius: $border-radius;
+  text-align: center;
+  margin: 0 auto;
+  .text {
+    color: $primary-black;
+  }
+
+  .buttonClose {
+    color: $controls;
+    height: 56px;
+  }
+
+  .button {
+    background-color: $button-dark;
+    border-radius: $border-radius;
+    color: $primary-white;
+    height: 56px;
+    border: none;
+
+    &:disabled {
+      background-color: $disable-button-dark;
+      color: $primary-white;
+      cursor: not-allowed;
+    }
+  }
+}
+
+@media screen and (max-width: $breakpoint400) {
+  .buttonList {
+    display: flex;
+    flex-direction: column;
+  }
+}
