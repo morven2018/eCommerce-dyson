@@ -6,7 +6,7 @@ export const RedirectIfNotAuthenticatedRoute = ({
 }: {
   children: JSX.Element;
 }) => {
-  const authorizedToken: string | null = localStorage.getItem('authDysonToken');
+  const authorizedToken = localStorage.getItem('authDysonToken');
   const location = useLocation();
 
   if (!authorizedToken) {

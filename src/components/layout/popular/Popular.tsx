@@ -2,6 +2,7 @@ import styles from './Popular.module.scss';
 import fave1 from '@assets/images/fave1.png';
 import fave2 from '@assets/images/fave2.png';
 import fave3 from '@assets/images/fave3.png';
+import { LinkRoutes } from '@shared/constants/links';
 import { Link } from 'react-router-dom';
 
 export default function Popular() {
@@ -28,11 +29,10 @@ export default function Popular() {
               warmer months.³
             </p>
             <Link
-              to={'/product/a19f3f51-2def-4201-807a-4cb922aa2dd7'}
+              to={LinkRoutes.purifier}
               className={styles.cardButton}
               aria-label="Buy Dyson Purifier"
             >
-              {' '}
               Shop now
             </Link>
           </div>
@@ -54,7 +54,7 @@ export default function Popular() {
               caps sold separately.
             </p>
             <Link
-              to={'/product/29694750-1c83-4eca-a148-91272cada8e9'}
+              to={LinkRoutes.onTrac}
               className={styles.cardButton}
               aria-label="Buy Dyson OnTrac"
             >
@@ -79,7 +79,7 @@ export default function Popular() {
               Achieve salon-quality results effortlessly at home.
             </p>
             <Link
-              to={'/product/ced23753-8524-4996-a3fd-0c99b3eb79c9'}
+              to={LinkRoutes.airstrait}
               className={styles.cardButton}
               aria-label="Buy Dyson Airstrait"
             >

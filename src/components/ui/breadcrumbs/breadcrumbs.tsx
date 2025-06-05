@@ -24,24 +24,23 @@ export const Breadcrumbs = ({ items }: BreadcrumbsProps) => {
           whiteSpace: 'nowrap',
         }}
       >
-        {items.map((item) =>
-          item.path !== items[items.length - 1].path ? (
-            <Link
-              key={`${item.path}-${item.name}`}
-              component={RouterLink}
-              to={item.path}
-              color="inherit"
-              underline="hover"
-              className={styles.link}
-            >
-              {item.name}
-            </Link>
-          ) : (
-            <Typography key={`${item.path}-${item.name}`} color="text.primary">
-              {item.name}
-            </Typography>
-          )
-        )}
+        {items.map((item) => (
+          <div key={`${item.path}-${item.name}`}>
+            {item.path !== items[items.length - 1].path ? (
+              <Link
+                component={RouterLink}
+                to={item.path}
+                color="inherit"
+                underline="hover"
+                className={styles.link}
+              >
+                {item.name}
+              </Link>
+            ) : (
+              <Typography color="text.primary">{item.name}</Typography>
+            )}
+          </div>
+        ))}
       </MuiBreadcrumbs>
     </div>
   );

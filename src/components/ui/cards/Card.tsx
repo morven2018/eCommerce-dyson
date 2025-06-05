@@ -1,5 +1,6 @@
 import styles from './Card.module.scss';
-import { useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+const alt = 'Product picture';
 
 interface Card {
   id: string;
@@ -18,6 +19,7 @@ export const Card = ({
   discountedPrice,
   src,
 }: Card) => {
+
   const navigate = useNavigate();
   const alt = 'Product picture';
   const maxProductNameLength = 30;
@@ -26,29 +28,22 @@ export const Card = ({
     name.length < maxProductNameLength
       ? name
       : `${name.slice(0, maxProductNameLength)}...`;
+
   const productDescription =
     description.length < maxProductDescriptionLength
       ? description
       : `${description.slice(0, maxProductDescriptionLength)}...`;
 
-  function saveIdAndShowProduct() {
-    navigate(`/product/${id}`);
-  }
-
-  function handleKeyDown(e: React.KeyboardEvent<HTMLDivElement>) {
-    if (e.key === 'Enter' || e.key === ' ') {
-      e.preventDefault();
-      saveIdAndShowProduct();
-    }
-  }
-
   return (
-    <div
+    <Link
+      to={`/product/${id}`}
       className={styles.container}
-      onClick={saveIdAndShowProduct}
-      onKeyDown={handleKeyDown}
-      role="button"
-      tabIndex={0}
+      onKeyDown={(e) => {
+        if (e.key === ' ') {
+          e.preventDefault();
+          e.currentTarget.click();
+        }
+      }}
     >
       <img src={src} alt={alt} className={styles.cardImage} />
       <div className={styles.cardInfo}>
@@ -62,7 +57,7 @@ export const Card = ({
             <span
               className={`${styles.price} ${discountedPrice ? styles.strikethrough : ''}`}
             >
-              {discountedPrice ? 'Initial price:' : 'Price:'} $
+              {discountedPrice ? 'Initial price' : 'Price'} $
               {(price / 100).toFixed(2)}
             </span>
           </div>
@@ -71,6 +66,6 @@ export const Card = ({
         </div>
         <div className={styles.description}>{productDescription}</div>
       </div>
-    </div>
+    </Link>
   );
 };
