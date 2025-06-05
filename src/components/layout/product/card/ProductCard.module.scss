@@ -1,0 +1,59 @@
+@use '@assets/styles/globals.scss' as *;
+
+.container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  width: 50%;
+  padding: 25px;
+}
+
+.name {
+  font-size: 25px;
+  font-weight: 500;
+  color: $text;
+}
+
+.description {
+  font-size: 17px;
+  color: $text;
+}
+
+.price {
+  font-size: 20px;
+  font-weight: 600;
+  color: $button-dark;
+}
+
+.initial {
+  text-decoration: line-through;
+  color: $label;
+}
+
+.button {
+  width: 242px;
+  height: 83px;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-top: 20px;
+  border: none;
+  border-radius: $border-radius;
+  background-color: $controls;
+  color: $primary-white;
+  cursor: pointer;
+  transition: all ease 0.5s;
+
+  &:hover {
+    @media (hover: hover) and (pointer: fine) {
+      transform: scale(1.05);
+      background-color: $card-btn-hover;
+    }
+  }
+}
+
+@media (max-width: 1200px) {
+  .container {
+    width: 100%;
+    max-width: 600px;
+  }
+}

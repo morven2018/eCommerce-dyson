@@ -1,0 +1,11 @@
+@use '@assets/styles/globals' as *;
+
+.container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.value {
+  font-weight: 600;
+  color: $label;
+}

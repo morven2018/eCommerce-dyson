@@ -1,0 +1,63 @@
+@use '@assets/styles/globals' as *;
+
+$mobile-width: 700px;
+
+.burger {
+  display: none;
+  cursor: pointer;
+
+  transition: transform 400ms;
+  transform-origin: center;
+
+  path {
+    fill: none;
+    transition:
+      stroke-dasharray 400ms,
+      stroke-dashoffset 400ms,
+      transform 400ms;
+    stroke: $primary-white;
+    stroke-width: 5.5;
+    stroke-linecap: round;
+    transform-origin: center;
+  }
+
+  &.active {
+    transform: rotate(180deg);
+
+    .top {
+      stroke-dashoffset: -98px;
+      transform: translateY(8px) rotate(45deg);
+    }
+
+    .bottom {
+      stroke-dashoffset: -138px;
+      transform: translateY(8px) rotate(-45deg);
+    }
+
+    .middle {
+      opacity: 0;
+      transform: scaleX(0);
+    }
+  }
+
+  @media screen and (max-width: $mobile-width) {
+    display: block;
+  }
+}
+
+.top {
+  stroke-dasharray: 40 139;
+  transform-origin: 50% 20%;
+}
+
+.bottom {
+  stroke-dasharray: 40 180;
+  transform-origin: 50% 80%;
+}
+
+.middle {
+  transition:
+    opacity 400ms,
+    transform 400ms;
+  opacity: 1;
+}

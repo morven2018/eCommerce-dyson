@@ -1,0 +1,20 @@
+@use '@assets/styles/globals' as *;
+
+.breadcrumbs {
+  width: 100%;
+  max-width: 1200px;
+  margin: auto 0;
+  padding: 40px 0 40px 30px;
+
+  @media (hover: hover) and (pointer: fine) {
+    .link:hover {
+      text-decoration: none;
+      border-bottom: 1px solid $label;
+      transition: all ease 0.5s;
+    }
+  }
+
+  .MuiBreadcrumbs-ol {
+    min-width: 300px;
+  }
+}

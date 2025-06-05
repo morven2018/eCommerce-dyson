@@ -1,0 +1,231 @@
+@use '@assets/styles/globals.scss' as *;
+
+$breakpoint900: 900px;
+$breakpoint800: 800px;
+$breakpoint700: 700px;
+$breakpoint500: 500px;
+$breakpoint400: 400px;
+
+.header {
+  padding: 20px 45px;
+  color: $secondary-light;
+  font-size: $typography-page-header-mobile;
+  font-weight: $base-weight;
+  background-color: $header-black-background;
+
+  @media screen and (max-width: $breakpoint800) {
+    text-align: center;
+  }
+
+  @media screen and (max-width: $breakpoint500) {
+    padding: 20px 15px;
+    font-size: $typography-header-mobile;
+  }
+}
+
+.updateForm,
+.addressForm {
+  padding: 10px 36px 61px 36px;
+  border: 1px solid $primary-black;
+  background-color: $form-background;
+  border-radius: $border-radius;
+
+  .closeButton {
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  @media screen and (max-width: $breakpoint800) {
+    padding: 10px 16px 61px 16px;
+  }
+}
+
+@media screen and (max-width: $breakpoint800) {
+  .formContent {
+    padding: 0;
+  }
+  .updateForm,
+  .addressForm {
+    padding: 10px 15px 20px 15px;
+  }
+
+  .MuiDialog-container > .MuiDialog-paperScrollPaper {
+    padding: auto 10px;
+  }
+}
+
+.personalInfo,
+.addressInfo {
+  margin: auto 0;
+  padding: 60px 40px;
+  width: 100vw;
+  max-width: 1200px;
+
+  .infoHeader {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: stretch;
+    padding-left: 34px;
+
+    h3 {
+      display: block;
+      font-size: $typography-page-header-mobile;
+      font-weight: $subheader-weight;
+      color: $button-dark;
+      margin-bottom: 40px;
+    }
+    .button {
+      background-color: $button-dark;
+      border-radius: $border-radius;
+      color: $primary-white;
+      height: 42px;
+      width: 500px;
+      border: none;
+
+      &:hover {
+        background-color: $primary-black;
+      }
+
+      @media screen and (max-width: $breakpoint900) {
+        width: 330px;
+      }
+    }
+
+    @media screen and (max-width: $breakpoint700) {
+      flex-direction: column;
+      h3,
+      .button {
+        width: 100%;
+        text-align: center;
+      }
+      @media screen and (max-width: $breakpoint500) {
+        padding-left: 0;
+      }
+    }
+  }
+  ul {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    list-style: none;
+
+    @media screen and (max-width: $breakpoint500) {
+      padding: 0;
+    }
+  }
+
+  @media screen and (max-width: $breakpoint400) {
+    padding: 10px;
+  }
+}
+
+.personalInfoItem {
+  display: grid;
+  grid-template-columns: 4fr 14fr 1fr;
+  align-items: start;
+  padding: 17px 10px 17px 34px;
+  border-radius: $border-radius;
+
+  .closeBtn,
+  .type {
+    padding-top: 15px;
+  }
+
+  &:nth-child(odd) {
+    background-color: rgba(89, 80, 121, 0.2);
+  }
+  &:nth-child(even) {
+    background-color: $form-background;
+  }
+}
+
+.addressInfo {
+  background-color: $header-black-background;
+  padding-bottom: 80px;
+
+  .infoHeader {
+    h3 {
+      color: $secondary-light;
+    }
+    .button {
+      background-color: $secondary-light;
+      color: $button-dark;
+
+      &:hover {
+        background-color: $primary-white;
+      }
+    }
+  }
+  .text {
+    text-align: center;
+    margin: 40px auto;
+  }
+}
+
+.addresses {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-evenly;
+  margin-top: 60px;
+
+  .card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 30px 10px;
+
+    width: 332px;
+    height: 435px;
+    margin-bottom: 72px;
+
+    border-radius: $border-radius;
+
+    background-color: $card-color;
+
+    @media screen and (max-width: $breakpoint400) {
+      width: 280px;
+    }
+
+    .removeArea {
+      width: 100%;
+      display: flex;
+      justify-content: flex-end;
+    }
+
+    .chips {
+      display: flex;
+      justify-content: space-evenly;
+      flex-direction: row;
+
+      width: 100%;
+      height: 50px;
+      gap: 8px;
+
+      @media screen and (max-width: $breakpoint400) {
+        flex-direction: column;
+        height: 70px;
+      }
+
+      .chip {
+        color: $primary-white;
+        background-color: $controls;
+      }
+    }
+
+    .addressInfoOutput {
+      text-align: left;
+      width: 80%;
+      margin-bottom: 40px;
+      line-height: 2.5;
+    }
+
+    .cardButton {
+      height: 42px;
+      width: 80%;
+      color: $controls;
+      border-radius: $border-radius;
+      background-color: $primary-white;
+    }
+  }
+}
