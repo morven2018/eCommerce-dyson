@@ -79,36 +79,66 @@ export const AddressForm = ({
   ]);
 
   const handleDefaultShippingChange = (checked: boolean) => {
-    setValue('defaultShipping', checked);
+    setValue('defaultShipping', checked, {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
     if (checked && !useAsShipping) {
-      setValue('useAsShipping', true);
+      setValue('useAsShipping', true, {
+        shouldValidate: true,
+        shouldDirty: true,
+      });
     }
   };
 
   const handleDefaultBillingChange = (checked: boolean) => {
-    setValue('defaultBilling', checked);
+    setValue('defaultBilling', checked, {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
     if (checked && !useAsBilling) {
-      setValue('useAsBilling', true);
+      setValue('useAsBilling', true, {
+        shouldValidate: true,
+        shouldDirty: true,
+      });
     }
   };
 
   const handleUseAsShippingChange = (checked: boolean) => {
-    setValue('useAsShipping', checked);
+    setValue('useAsShipping', checked, {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
     if (!checked && defaultShipping) {
-      setValue('defaultShipping', false);
+      setValue('defaultShipping', false, {
+        shouldValidate: true,
+        shouldDirty: true,
+      });
     }
     if (!checked && !useAsBilling) {
-      setValue('useAsBilling', true);
+      setValue('useAsBilling', true, {
+        shouldValidate: true,
+        shouldDirty: true,
+      });
     }
   };
 
   const handleUseAsBillingChange = (checked: boolean) => {
-    setValue('useAsBilling', checked);
+    setValue('useAsBilling', checked, {
+      shouldValidate: true,
+      shouldDirty: true,
+    });
     if (!checked && defaultBilling) {
-      setValue('defaultBilling', false);
+      setValue('defaultBilling', false, {
+        shouldValidate: true,
+        shouldDirty: true,
+      });
     }
     if (!checked && !useAsShipping) {
-      setValue('useAsShipping', true);
+      setValue('useAsShipping', true, {
+        shouldValidate: true,
+        shouldDirty: true,
+      });
     }
   };
 
