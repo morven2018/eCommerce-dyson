@@ -29,9 +29,9 @@ export const PriceRangeSlider: React.FC<PriceRangeSliderProps> = ({
     newValue: number | number[],
     activeThumb: number
   ) => {
-    const newValues = Array.isArray(newValue)
-      ? ([...newValue] as [number, number])
-      : ([newValue, values[1]] as [number, number]);
+    const newValues: [number, number] = Array.isArray(newValue)
+      ? [newValue[0], newValue[1]]
+      : [newValue, values[1]];
 
     if (activeThumb === 0) {
       newValues[0] = Math.min(newValues[0], values[1]);

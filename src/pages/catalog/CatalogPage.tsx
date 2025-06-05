@@ -161,20 +161,7 @@ export const CatalogPage = () => {
           />
 
           <FormControlLabel
-            control={
-              <Switch
-                checked={discount}
-                onChange={toggleDiscount}
-                sx={{
-                  '.Mui-checked .MuiSwitch-thumb': {
-                    color: '#595079',
-                  },
-                  '.Mui-checked + .MuiSwitch-track': {
-                    backgroundColor: '#595079',
-                  },
-                }}
-              />
-            }
+            control={<Switch checked={discount} onChange={toggleDiscount} />}
             label="Only with discount"
             sx={{
               '.MuiFormControlLabel-label': {
@@ -187,10 +174,9 @@ export const CatalogPage = () => {
 
           <ColorRange
             colors={
-              allColors
-                .filter((value): value is string => typeof value === 'string')
-                .filter((el, ind) => ind === allColors.indexOf(el))
-                .sort((a, b) => a.localeCompare(b)) ?? []
+              [
+                ...new Set(allColors?.filter((color) => color !== undefined)),
+              ].sort((a, b) => a.localeCompare(b)) ?? []
             }
             selectedColors={selectedColors}
             onChange={(colors) => setSelectedColors(colors)}
@@ -202,8 +188,8 @@ export const CatalogPage = () => {
                 ? Math.min(
                     ...productsData.results.map(
                       (el) =>
-                        (el.masterVariant?.prices[0].value.centAmount ?? 0) /
-                        100
+                        (el.masterVariant?.prices.at(0)?.value.centAmount ??
+                          0) / 100
                     )
                   )
                 : 0
@@ -213,8 +199,8 @@ export const CatalogPage = () => {
                 ? Math.max(
                     ...productsData.results.map(
                       (el) =>
-                        (el.masterVariant?.prices[0].value.centAmount ?? 0) /
-                        100
+                        (el.masterVariant?.prices.at(0)?.value.centAmount ??
+                          0) / 100
                     )
                   )
                 : 0
@@ -234,7 +220,7 @@ export const CatalogPage = () => {
                 id={card.id}
                 name={card.name['en-US']}
                 description={card.description['en-US'] ?? 'Product description'}
-                price={card.masterVariant?.prices?.[0]?.value?.centAmount ?? 0}
+                price={card.masterVariant?.prices.at(0)?.value?.centAmount ?? 0}
                 discountedPrice={
                   card.masterVariant?.prices?.[0]?.discounted?.value
                     ?.centAmount ?? null

@@ -95,7 +95,7 @@ export const ProductPage = () => {
 
   const variantData =
     currentPath.variants?.map((variant) => {
-      const imageUrl = variant.images?.[0]?.url ?? 'dyson_icon.svg';
+      const imageUrl = variant.images?.at(0)?.url ?? 'dyson_icon.svg';
       const variantName = variant.key ?? variant.sku ?? 'Unnamed variant';
 
       return {

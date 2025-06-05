@@ -27,7 +27,7 @@ export default function ProductCard({
       <h3 className={styles.name}>{name}</h3>
       <div className={styles.description}>{description}</div>
       <div className={styles.price}>
-        Price: ${discountedPrice?.toFixed(2) ?? price.toFixed(2)}
+        Price: ${(discountedPrice ?? price).toFixed(2)}
       </div>
       {discountedPrice && (
         <div className={styles.initial}>Initial price: ${price.toFixed(2)}</div>
