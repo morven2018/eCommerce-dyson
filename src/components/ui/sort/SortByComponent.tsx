@@ -6,6 +6,8 @@ import InputLabel from '@mui/material/InputLabel';
 import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import { SortOption } from '@pages/catalog/CatalogPage';
 
+const SelectIcon = () => <ArrowDropDownIcon />;
+
 interface SortByComponentProps {
   sortOption: SortOption;
   onSortChange: (option: SortOption) => void;
@@ -29,7 +31,7 @@ export const SortByComponent = ({
           value={sortOption}
           onChange={handleSortChange}
           label="Sort by"
-          IconComponent={() => <ArrowDropDownIcon />}
+          IconComponent={SelectIcon}
         >
           <MenuItem value="normal">Normal</MenuItem>
           <MenuItem value="price_asc">Price: Low to high</MenuItem>

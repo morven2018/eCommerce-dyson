@@ -52,7 +52,6 @@ describe('Counter', () => {
     const highPriceProps = { price: 50.25 };
     render(<Counter {...highPriceProps} />);
 
-    // expect(screen.getByText('Total: 50.25$')).toBeInTheDocument();
     const plusButton = screen.getByText('+');
     fireEvent.click(plusButton);
   });
