@@ -9,7 +9,6 @@ interface Card {
   price: number;
   discountedPrice?: number | null;
   src: string;
-  onClick?: (id: string) => void;
 }
 
 export const Card = ({
