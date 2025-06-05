@@ -1,7 +1,7 @@
 import { Customer, ResponseAddress } from '@pages/profile/Profile';
 import styles from './profile.module.scss';
 import { Button, Dialog, DialogContent, IconButton } from '@mui/material';
-import { AddressCard } from '@components/ui/cards/addressCard';
+import { AddressCard } from '@components/ui/cards/AddressCard';
 import { useEffect, useState } from 'react';
 import {
   AddressForm,
@@ -19,7 +19,7 @@ interface AddressRemovedParams {
 interface PersonalInfoProps {
   customer: Customer & {
     addresses?: ResponseAddress[];
-    billingAddressIds?: string[];
+    billingAddressIdList?: string[];
     shippingAddressIds?: string[];
     defaultBillingAddressId?: string;
     defaultShippingAddressId?: string;
@@ -92,7 +92,7 @@ export const AddressInfo = ({ customer, onSave }: PersonalInfoProps) => {
         onSave?.({
           ...customer,
           addresses: response.addresses,
-          billingAddressIds: response.billingAddressIds,
+          billingAddressIdList: response.billingAddressIdList,
           shippingAddressIds: response.shippingAddressIds,
           defaultBillingAddressId: response.defaultBillingAddressId,
           defaultShippingAddressId: response.defaultShippingAddressId,
@@ -172,7 +172,7 @@ export const AddressInfo = ({ customer, onSave }: PersonalInfoProps) => {
             <AddressCard
               key={address.id}
               address={address}
-              isBilling={customer.billingAddressIds?.includes(address.id)}
+              isBilling={customer.billingAddressIdList?.includes(address.id)}
               isShipping={customer.shippingAddressIds?.includes(address.id)}
               isDefaultBilling={address.id === customer.defaultBillingAddressId}
               isDefaultShipping={

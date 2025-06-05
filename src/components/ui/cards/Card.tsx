@@ -20,9 +20,20 @@ export const Card = ({
   discountedPrice,
   src,
 }: Card) => {
-  const productName = name.length < 30 ? name : `${name.slice(0, 30)}...`;
+
+  const navigate = useNavigate();
+  const alt = 'Product picture';
+  const maxProductNameLength = 30;
+  const maxProductDescriptionLength = 90;
+  const productName =
+    name.length < maxProductNameLength
+      ? name
+      : `${name.slice(0, maxProductNameLength)}...`;
+
   const productDescription =
-    description.length < 90 ? description : `${description.slice(0, 90)}...`;
+    description.length < maxProductDescriptionLength
+      ? description
+      : `${description.slice(0, maxProductDescriptionLength)}...`;
 
   return (
     <Link

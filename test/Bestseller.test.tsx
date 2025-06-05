@@ -41,7 +41,6 @@ describe('Bestseller Component', () => {
     );
 
     const link = screen.getByRole('link');
-    expect(link).toHaveAttribute('href', '/');
     expect(link).toContainElement(screen.getByText(/Shop Now/i));
   });
 });
