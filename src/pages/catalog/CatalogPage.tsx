@@ -11,7 +11,7 @@ import { TextField, FormControlLabel, Switch } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { PriceRangeSlider } from '@components/ui/sort/range-slider/PriceRangeSlider';
 import { ColorRange } from '@components/ui/sort/color-range/ColorRange';
-import { Breadcrumbs } from '@components/ui/breadcrumbs/breadcrumbs';
+import { Breadcrumbs } from '@components/ui/breadcrumbs/Breadcrumbs';
 
 export type SortOption =
   | 'price_asc'
@@ -87,9 +87,11 @@ export const CatalogPage = () => {
 
         if (selectedColors.length > 0) {
           const colorFilter = selectedColors
-            .map((color) => `filter.query=variants.attributes.color:"${color}"`) // нужно будет пересмотреть!
-            .join('&');
-          paramsArray.push(colorFilter);
+            .map((color) => `"${color}"`)
+            .join(',');
+          paramsArray.push(
+            `filter.query=variants.attributes.color:${colorFilter}`
+          );
         }
 
         paramsArray.push('limit=50');
@@ -133,6 +135,13 @@ export const CatalogPage = () => {
     setDiscount(!discount);
   };
 
+  const handleClearFilter = () => {
+    setSearchText('');
+    setPriceRange([0, 0]);
+    setDiscount(false);
+    setSelectedColors([]);
+  };
+
   const allColors = productsData.results.flatMap((product) => {
     if (product.masterVariant) {
       return product.masterVariant.attributes
@@ -162,6 +171,20 @@ export const CatalogPage = () => {
 
           <FormControlLabel
             control={<Switch checked={discount} onChange={toggleDiscount} />}
+            control={
+              <Switch
+                checked={discount}
+                onChange={toggleDiscount}
+                sx={{
+                  '& .Mui-checked .MuiSwitch-thumb': {
+                    color: '#595079',
+                  },
+                  '.Mui-checked + .MuiSwitch-track': {
+                    backgroundColor: '#595079',
+                  },
+                }}
+              />
+            }
             label="Only with discount"
             sx={{
               '.MuiFormControlLabel-label': {
@@ -207,6 +230,9 @@ export const CatalogPage = () => {
             }
             onChange={handlePriceChange}
           />
+          <button className={styles.button} onClick={handleClearFilter}>
+            Clear Filters
+          </button>
         </div>
         <div className={styles.sortAndCardsContainer}>
           <SortByComponent

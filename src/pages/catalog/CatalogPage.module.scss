@@ -43,3 +43,24 @@
     flex-direction: column;
   }
 }
+
+.button {
+  display: block;
+  width: 250px;
+  height: 40px;
+  margin: 20px auto 0;
+  text-transform: uppercase;
+  border: none;
+  border-radius: $border-radius;
+  background-color: $controls;
+  color: $primary-white;
+  transition: all ease 0.5s;
+  cursor: pointer;
+
+  &:hover {
+    @media (hover: hover) and (pointer: fine) {
+      transform: scale(1.05);
+      background-color: $card-btn-hover;
+    }
+  }
+}

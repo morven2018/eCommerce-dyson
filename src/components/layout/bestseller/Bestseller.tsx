@@ -17,7 +17,6 @@ export default function Bestseller() {
             throughout your home.
           </p>
         </div>
-
         <Link to={LinkRoutes.bestseller}>
           <button
             type="button"
