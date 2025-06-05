@@ -12,6 +12,7 @@ import SearchIcon from '@mui/icons-material/Search';
 import { PriceRangeSlider } from '@components/ui/sort/range-slider/PriceRangeSlider';
 import { ColorRange } from '@components/ui/sort/color-range/ColorRange';
 import { Breadcrumbs } from '@components/ui/breadcrumbs/Breadcrumbs';
+import { buildSearchParams } from '@shared/utlis/searchParamsBuilder';
 
 export type SortOption =
   | 'price_asc'
@@ -19,12 +20,6 @@ export type SortOption =
   | 'name_asc'
   | 'name_desc'
   | 'normal';
-
-function determineFuzzyLevel(length: number) {
-  if (length <= 2) return 0;
-  if (length <= 5) return 1;
-  return 2;
-}
 
 export const CatalogPage = () => {
   const [productsData, setProductsData] = useState<ProductsByCategory | null>(
@@ -47,58 +42,14 @@ export const CatalogPage = () => {
         const token = getTokenFromLS();
         if (!token) return;
 
-        const text = encodeURIComponent(searchText.trim());
-        const fuzzyLevel = determineFuzzyLevel(text.length);
-        const paramsArray = [];
-
-        if (text.length > 1) {
-          paramsArray.push(
-            `text.en-US=*${text}*&fuzzy=true&fuzzyLevel=${fuzzyLevel}`
-          );
-        }
-
-        if (sortOption === 'name_asc') {
-          paramsArray.push('sort=name.en-US+asc');
-        }
-        if (sortOption === 'name_desc') {
-          paramsArray.push('sort=name.en-US+desc');
-        }
-        if (sortOption === 'price_asc') {
-          paramsArray.push('sort=price+asc');
-        }
-        if (sortOption === 'price_desc') {
-          paramsArray.push('sort=price+desc');
-        }
-
-        const [min, max] = priceRange;
-        if (
-          (min > 0 && max === 1000) ||
-          (min >= 0 && max < 1000) ||
-          (min > 0 && max < 1000)
-        ) {
-          paramsArray.push(
-            `filter.query=variants.price.centAmount: range(${min * 100} to ${max ? max * 100 : '*'})`
-          );
-        }
-
-        if (discount) {
-          paramsArray.push('filter.query=variants.prices.discounted:exists');
-        }
-
-        if (selectedColors.length > 0) {
-          const colorFilter = selectedColors
-            .map((color) => `"${color}"`)
-            .join(',');
-          paramsArray.push(
-            `filter.query=variants.attributes.color:${colorFilter}`
-          );
-        }
-
-        paramsArray.push('limit=50');
-
-        const params = paramsArray.join('&');
-
         try {
+          const params = buildSearchParams({
+            searchText,
+            sortOption,
+            priceRange,
+            discount,
+            selectedColors,
+          });
           const data = await getSearchedProducts({ params, token });
           setProductsData(data);
         } catch (error) {
@@ -170,7 +121,6 @@ export const CatalogPage = () => {
           />
 
           <FormControlLabel
-            control={<Switch checked={discount} onChange={toggleDiscount} />}
             control={
               <Switch
                 checked={discount}

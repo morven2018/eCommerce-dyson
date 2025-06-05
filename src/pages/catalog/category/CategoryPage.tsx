@@ -26,26 +26,22 @@ export const CategoryPage = ({ page }: { page: string }) => {
     const fetchProductsData = async () => {
       const token = getTokenFromLS();
 
-      let idCategory = '';
-      switch (page) {
-        case 'vacuums':
-          idCategory = commercetoolsConfig.idCategoryVacuums;
-          break;
-        case 'hair-care':
-          idCategory = commercetoolsConfig.idCategoryHairBeauty;
-          break;
-        case 'heater':
-          idCategory = commercetoolsConfig.idCategoryAirHeaters;
-          break;
-        case 'headphones':
-          idCategory = commercetoolsConfig.idCategoryHeadphones;
-          break;
-        case 'lighting':
-          idCategory = commercetoolsConfig.idCategoryLighting;
-          break;
-        default:
-          idCategory = '';
-      }
+      const idCategory = (() => {
+        switch (page) {
+          case 'vacuums':
+            return commercetoolsConfig.idCategoryVacuums;
+          case 'hair-care':
+            return commercetoolsConfig.idCategoryHairBeauty;
+          case 'heater':
+            return commercetoolsConfig.idCategoryAirHeaters;
+          case 'headphones':
+            return commercetoolsConfig.idCategoryHeadphones;
+          case 'lighting':
+            return commercetoolsConfig.idCategoryLighting;
+          default:
+            return '';
+        }
+      })();
 
       if (!idCategory || !token) {
         return;

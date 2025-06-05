@@ -1,6 +1,5 @@
 import styles from './Card.module.scss';
 import { Link } from 'react-router-dom';
-const alt = 'Product picture';
 
 interface Card {
   id: string;
@@ -19,8 +18,6 @@ export const Card = ({
   discountedPrice,
   src,
 }: Card) => {
-
-  const navigate = useNavigate();
   const alt = 'Product picture';
   const maxProductNameLength = 30;
   const maxProductDescriptionLength = 90;
