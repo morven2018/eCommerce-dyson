@@ -1,3 +1,9 @@
-export const AboutPage = () => {
-  return <div>this page About</div>;
+import TeamMembers from '../../components/layout/team/TeamMembers';
+
+export const AboutPage: React.FC = () => {
+  return (
+    <>
+      <TeamMembers />
+    </>
+  );
 };
