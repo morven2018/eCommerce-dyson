@@ -1,11 +1,12 @@
 @use '@assets/styles/globals' as *;
 
 .container {
+  position: relative;
   width: 232px;
   height: 508px;
   border-radius: $border-radius;
   border: 1px solid $modal-border;
-  text-decoration: none;
+
   transition: all ease 0.5s;
   cursor: pointer;
 
@@ -16,6 +17,10 @@
       border-color: $card-hover-border;
     }
   }
+}
+
+.linkContainer {
+  text-decoration: none;
 }
 
 .cardImage {
@@ -87,4 +92,26 @@
   font-size: 16px;
   color: $label;
   margin-top: 13px;
+}
+
+.button {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  right: 16px;
+  display: block;
+  height: 32px;
+  border: none;
+  border-radius: 5px;
+  background-color: $button-dark;
+  color: $card-color;
+  transition: all ease 0.5s;
+  cursor: pointer;
+
+  &:hover {
+    @media (hover: hover) and (pointer: fine) {
+      transform: scale(1.05);
+      background-color: $card-btn-hover;
+    }
+  }
 }
