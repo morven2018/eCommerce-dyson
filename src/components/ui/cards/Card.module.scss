@@ -114,4 +114,10 @@
       background-color: $card-btn-hover;
     }
   }
+
+  &[disabled] {
+    transform: none;
+    background-color: $button-dark;
+    cursor: not-allowed;
+  }
 }
