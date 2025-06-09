@@ -24,8 +24,8 @@
 }
 
 .line {
-  background-color: #333;
-  height: 1px;
+  background-color: grey;
+  height: 0.3px;
   width: 100%;
   margin-top: 8px;
 }
@@ -39,19 +39,21 @@
 }
 
 .card {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
   background: #fff;
-  border-radius: 8px;
   width: 350px;
   height: auto;
   border-radius: $border-radius;
-  border: 1px solid $modal-border;
+  border: 1px solid $border-radius;
   text-decoration: none;
   transition: all ease 0.5s;
   cursor: pointer;
 
   &:hover {
     @media (hover: hover) and (pointer: fine) {
-      box-shadow: 0 8px 24px $shadow-color;
+      box-shadow: 0 12px 32px $shadow-color;
       transform: scale(1.02);
       border-color: $card-hover-border;
     }
@@ -73,6 +75,16 @@
 
 .cardInfo {
   padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+  .cardTop {
+    display: flex;
+    flex-direction: column;
+  }
+
 
   h2 {
     margin: 0;
@@ -85,7 +97,7 @@
     color: $controls;
     font-size: 0.9em;
   }
-}
+
 
 .cardHeader {
   display: flex;
@@ -125,4 +137,44 @@
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
+}
+
+
+.nameContainer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  transition: all ease 0.5s;
+  
+  &:hover {
+    .name {
+      color: #0366d6; 
+    }
+    .githubIcon {
+      color: #0366d6; 
+    }
+  }
+}
+
+.githubIcon {
+  color: currentColor;
+  transition: color 0.2s ease;
+  cursor: pointer;
+
+  &:hover {
+    color: #0366d6;
+  }
+}
+
+.name {
+  margin: 0;
+  transition: text-decoration 0.2s ease;
+  cursor: pointer;
+}
+
+.bioHeader {
+  color: grey;
+  opacity: 0.8;
+ font-style: italic;
 }
