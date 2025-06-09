@@ -1,5 +1,9 @@
 import styles from './Card.module.scss';
 import { Link } from 'react-router-dom';
+import { getCartIdFromLS } from '@shared/api/local-storage/getCartIdFromLS';
+import { useState } from 'react';
+import { apiCreateNewCart } from '@shared/api/commerce-tools/apiCreateNewCart';
+import { apiAddProductToCart } from '@shared/api/commerce-tools/apiAddProductToCart';
 
 interface Card {
   id: string;
@@ -10,15 +14,6 @@ interface Card {
   src: string;
 }
 
-const handleAddToCart = (e: React.MouseEvent) => {
-  e.stopPropagation();
-  console.log('add product to cart');
-  console.log(e.target);
-  if (e.target instanceof HTMLButtonElement) {
-    e.target.classList.add('added');
-  }
-};
-
 export const Card = ({
   id,
   name,
@@ -27,6 +22,9 @@ export const Card = ({
   discountedPrice,
   src,
 }: Card) => {
+  const [inCart, setInCart] = useState(false);
+  const [loading, setLoading] = useState(false);
+
   const alt = 'Product picture';
   const maxProductNameLength = 30;
   const maxProductDescriptionLength = 75;
@@ -39,6 +37,25 @@ export const Card = ({
     description.length < maxProductDescriptionLength
       ? description
       : `${description.slice(0, maxProductDescriptionLength)}...`;
+
+  const addToCart = async () => {
+    setLoading(true);
+
+    const cartId = getCartIdFromLS();
+
+    if (cartId === null) {
+      const createCartData = await apiCreateNewCart();
+      const id = createCartData?.id;
+      if (id) {
+        localStorage.setItem('cartIdDyson', id);
+      }
+    }
+
+    apiAddProductToCart(id);
+
+    setInCart(true);
+    setLoading(false);
+  };
 
   return (
     <div className={styles.container}>
@@ -74,8 +91,12 @@ export const Card = ({
           <div className={styles.description}>{productDescription}</div>
         </div>
       </Link>
-      <button className={styles.button} onClick={handleAddToCart}>
-        Add to cart
+      <button
+        onClick={addToCart}
+        disabled={inCart || loading}
+        className={styles.button}
+      >
+        {loading ? 'Loading...' : inCart ? 'In Cart' : 'Add to Cart'}
       </button>
     </div>
   );

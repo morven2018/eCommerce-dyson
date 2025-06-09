@@ -64,7 +64,7 @@ export async function apiCreateNewCart(): Promise<CartData | null> {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        currency: 'EUR',
+        currency: 'USD',
       }),
     });
 
