@@ -30,6 +30,10 @@ export const CatalogPage = () => {
   const [priceRange, setPriceRange] = useState([0, 0]);
   const [discount, setDiscount] = useState(false);
   const [selectedColors, setSelectedColors] = useState<string[]>([]);
+  const storedList = localStorage.getItem('listProductsIdInCart');
+  const listProductIdInCart: string[] = storedList
+    ? JSON.parse(storedList)
+    : [];
 
   const breadcrumbItems = [
     { path: '/', name: 'Home' },
@@ -202,6 +206,7 @@ export const CatalogPage = () => {
                     ?.centAmount ?? null
                 }
                 src={card.masterVariant?.images?.[0]?.url ?? '/dyson_icon.svg'}
+                isInCart={listProductIdInCart.includes(card.id)}
               />
             ))}
           </div>

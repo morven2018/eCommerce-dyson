@@ -13,6 +13,10 @@ export const CategoryPage = ({ page }: { page: string }) => {
   const [productsData, setProductsData] = useState<ProductsByCategory | null>(
     null
   );
+  const storedList = localStorage.getItem('listProductsIdInCart');
+  const listProductIdInCart: string[] = storedList
+    ? JSON.parse(storedList)
+    : [];
 
   const path = `/catalog/${page}`;
 
@@ -88,6 +92,7 @@ export const CategoryPage = ({ page }: { page: string }) => {
               null
             }
             src={card.masterVariant?.images?.[0]?.url ?? '/dyson_icon.svg'}
+            isInCart={listProductIdInCart.includes(card.id)}
           />
         ))}
       </div>

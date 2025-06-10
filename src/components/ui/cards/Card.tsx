@@ -4,6 +4,7 @@ import { getCartIdFromLS } from '@shared/api/local-storage/getCartIdFromLS';
 import { useState } from 'react';
 import { apiCreateNewCart } from '@shared/api/commerce-tools/apiCreateNewCart';
 import { apiAddProductToCart } from '@shared/api/commerce-tools/apiAddProductToCart';
+import { addProductIdToListToLS } from '@shared/api/local-storage/addProductIdToListToLS';
 
 interface Card {
   id: string;
@@ -12,6 +13,7 @@ interface Card {
   price: number;
   discountedPrice?: number | null;
   src: string;
+  isInCart: boolean;
 }
 
 export const Card = ({
@@ -21,8 +23,9 @@ export const Card = ({
   price,
   discountedPrice,
   src,
+  isInCart,
 }: Card) => {
-  const [inCart, setInCart] = useState(false);
+  const [inCart, setInCart] = useState(isInCart);
   const [loading, setLoading] = useState(false);
 
   const alt = 'Product picture';
@@ -53,8 +56,9 @@ export const Card = ({
 
     apiAddProductToCart(id);
 
-    setInCart(true);
     setLoading(false);
+    setInCart(true);
+    addProductIdToListToLS(id);
   };
 
   return (
