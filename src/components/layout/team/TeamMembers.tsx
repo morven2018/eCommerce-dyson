@@ -22,9 +22,11 @@ const TeamMembers: React.FC = () => {
       image: '/images/alexey.jpg',
       description: 'Team Lead | Project Manager | Frontend Development',
       bio: [
-        'Math & Computer Science Genius',
-        'Extremelly Skillfull, Hardworking & Versitile Developer',
-        'Kind-hearted Person',
+        'Math & Computer Science Genius.',
+        'Skilled Programmer with a Master Degree in Applied Mathematics and Computer Science.',
+        'Excelled in Physics and Chemistry Olympiads during her School Years.',
+        'Experience as a Project Manager.',
+        'Hardworking & Detail-Oriented.'
       ],
       contributions: [
         'Led UI/UX design implementation in Figma.',

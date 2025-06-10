@@ -9,8 +9,17 @@ export default function Logo() {
         JavaScript (Stage 2) course.
       </p>
 
-      <a className={styles.schoolLogo} href="https://rs.school/" target="_blank" rel="noopener noreferrer">
-        <img className={styles.logoImage} src={schoolLogo} alt="Rsschool Logo" />
+      <a
+        className={styles.schoolLogo}
+        href="https://rs.school/"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <img
+          className={styles.logoImage}
+          src={schoolLogo}
+          alt="Rsschool Logo"
+        />
       </a>
     </div>
   );
