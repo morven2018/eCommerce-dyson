@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import styles from './TeamMembers.module.scss';
 import yuliaImage from '../../../assets/images/junior.jpg';
 import igorImage from '../../../assets/images/Igor.jpg';
-import goldenCup from '../../../assets/images/cup.png';
+import goldenCup from '../../../assets/images/team.png';
 
 interface TeamMember {
   name: string;
@@ -94,8 +94,8 @@ const TeamMembers: React.FC = () => {
 
   return (
     <div className={styles.teamWrapper}>
-      <img src={goldenCup} className={styles.cup} alt="golden cup" />
       <h2 className={styles.title}>Our Team</h2>
+      <img src={goldenCup} className={styles.cup} alt="golden cup" />
       <div className={styles.teamContainer}>
         {teamMembers.map((member, index) => (
           <div key={index} className={styles.card}>
