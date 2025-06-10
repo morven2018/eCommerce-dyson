@@ -1,26 +1,26 @@
 @use '@assets/styles/globals' as *;
 
 .teamWrapper {
-  padding: 40px;
-  height: auto;
-  margin: 0 auto;
-  width: 100%;
-  max-width: 90rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  width: 100%;
+  height: auto;
+  max-width: 90rem;
+  margin: 0 auto;
+  padding: 40px;
   gap: 20px;
-  background: grey;
+  background: $about-bg;
 }
 
 .title {
-  font-size: 3rem;
+  font-size: $typography-header;
   color: $product-name-color;
 }
 
 .name {
-  color: #333;
+  color: $dark-grey;
 }
 
 .cup {
@@ -41,7 +41,7 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
-  background: #fff;
+  background: $primary-white;
   width: 350px;
   height: auto;
   border-radius: $border-radius;
@@ -73,9 +73,9 @@
 }
 
 .cardInfo {
-  padding: 15px;
   display: flex;
   flex-direction: column;
+  padding: 15px;
   gap: 10px;
 }
 
@@ -85,7 +85,7 @@
 }
 
 .line {
-  background-color: grey;
+  background-color: $about-bg;
   height: 0.3px;
   width: 100%;
   margin-top: 8px;
@@ -122,11 +122,11 @@
 
 .cardContent {
   padding: 15px;
-  background: #fafafa;
+  background: $about-card-content;
 
   p {
     margin: 5px 0;
-    color: #333;
+    color: $dark-grey;
     font-weight: 800;
   }
 }
@@ -140,10 +140,10 @@
 
   &:hover {
     .name {
-      color: #0366d6;
+      color: $about-hover;
     }
     .githubIcon {
-      color: #0366d6;
+      color: $about-hover;
     }
   }
 }
@@ -154,7 +154,7 @@
   cursor: pointer;
 
   &:hover {
-    color: #0366d6;
+    color: $about-hover;
   }
 }
 
@@ -165,7 +165,7 @@
 }
 
 .bioHeader {
-  color: grey;
+  color: $about-bg;
   opacity: 0.8;
   font-style: italic;
 }
