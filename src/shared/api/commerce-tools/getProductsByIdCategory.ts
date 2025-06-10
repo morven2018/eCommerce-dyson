@@ -5,6 +5,7 @@ import { ProductsByCategory } from '@shared/types/types';
 interface EnterData {
   idCategory: string | null;
   token: string | null;
+  offset: number;
 }
 
 export async function getProductsByIdCategory(
@@ -12,7 +13,8 @@ export async function getProductsByIdCategory(
 ): Promise<ProductsByCategory | null> {
   const apiUrl = commercetoolsConfig.apiUrl;
   const projectKey = commercetoolsConfig.projectKey;
-  const url = `${apiUrl}/${projectKey}/product-projections/search?filter=categories.id:"${data.idCategory}"`;
+  const limit = 4;
+  const url = `${apiUrl}/${projectKey}/product-projections/search?filter=categories.id:"${data.idCategory}"&limit=${limit}&offset=${data.offset}`;
 
   try {
     const response = await fetch(url, {
