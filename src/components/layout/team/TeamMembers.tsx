@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styles from './TeamMembers.module.scss';
 import yuliaImage from '../../../assets/images/junior.jpg';
 import igorImage from '../../../assets/images/Igor.jpg';
+import goldenCup from '../../../assets/images/cup.png';
 
 interface TeamMember {
   name: string;
@@ -42,16 +43,18 @@ const TeamMembers: React.FC = () => {
       description: 'Senior Fullstack Developer',
       bio: [
         'Natural-Born Leader with a Vision for Technical Innovation.',
-        'Extremely Talented Fullstack Developer with a Strong Work Ethic.',
+        'Extremely Talented & Skillfull Fullstack Developer with a Strong Work Ethic.',
         'Resilient, Disciplined & Goal-oriented.',
         'Collaborative Team Player Who Elevates Those Around Him and Amplifies Collective Success.',
       ],
       contributions: [
+        'Partnered with the Team Lead on architectural decisions and task delegation.',
         'Architected and configured all project configuration files.',
         'Designed and implemented backend infrastructure with secure API endpoints and database connectivity.',
         'Developed product Catalog Page with dynamic filtering, sorting, and pagination functionality.',
         'Engineered secure login Authentication system with form validation and error handling.',
-        'Partnered with the Team Lead on architectural decisions and task delegation.',
+        'Fixed SonarQube code quality issues and integrated mentors suggestions to optimize performance.',
+        'Implemented a router for page navigation and redirecting authorized/unauthorized users based on manual browser URL changes.',
       ],
       gitHubUrl: 'https://github.com/Ihar-Batura',
     },
@@ -71,8 +74,9 @@ const TeamMembers: React.FC = () => {
         'Collaborated on UI/UX design system implementation.',
         'Built several sections, pages and components.',
         'Orchestrated sprint planning via Trello task tracking and executed production deployments.',
-        'Implemented and configured Commerce Tools platform, optimizing product catalog management.',
+        'Configured Commerce Tools platform, optimizing product catalog management.',
         'Established comprehensive testing suite with 30%+ coverage using Jest, Vitest, and React Testing Library.',
+        'Conducted manual testing on multiple browsers and devices for reliability.',
       ],
       gitHubUrl: 'https://github.com/yuliafire',
     },
@@ -89,6 +93,7 @@ const TeamMembers: React.FC = () => {
 
   return (
     <div className={styles.teamWrapper}>
+      <img src={goldenCup} className={styles.cup} alt="golden cup" />
       <h2 className={styles.title}>Our Team</h2>
       <div className={styles.teamContainer}>
         {teamMembers.map((member, index) => (
@@ -144,9 +149,13 @@ const TeamMembers: React.FC = () => {
             </div>
             {openAccordion === index && (
               <div className={styles.cardContent}>
-                {member.contributions.map((contribution, i) => (
-                  <p key={i}>{contribution}</p>
-                ))}
+                <ul className={styles.contributionList}>
+                  {member.contributions.map((contribution, i) => (
+                    <li key={i} className={styles.contributionItem}>
+                      ✅ {contribution}
+                    </li>
+                  ))}
+                </ul>
               </div>
             )}
           </div>

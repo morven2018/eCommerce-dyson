@@ -23,12 +23,11 @@
   color: #333;
 }
 
-.line {
-  background-color: grey;
-  height: 0.3px;
-  width: 100%;
-  margin-top: 8px;
+.cup {
+  width: 110px;
+  height: 100px;
 }
+
 
 .teamContainer {
   display: flex;
@@ -73,6 +72,7 @@
   }
 }
 
+
 .cardInfo {
   padding: 15px;
   display: flex;
@@ -80,24 +80,23 @@
   gap: 10px;
 }
 
-  .cardTop {
-    display: flex;
-    flex-direction: column;
-  }
+.cardTop {
+  display: flex;
+  flex-direction: column;
+}
 
+.line {
+  background-color: grey;
+  height: 0.3px;
+  width: 100%;
+  margin-top: 8px;
+}
 
-  h2 {
-    margin: 0;
-    font-size: 1.5em;
-    color: #333;
-  }
-
-  .description {
-    margin: 10px 0 0;
-    color: $controls;
-    font-size: 0.9em;
-  }
-
+.description {
+  margin: 10px 0 0;
+  color: $controls;
+  font-size: 0.9em;
+}
 
 .cardHeader {
   display: flex;
@@ -133,26 +132,19 @@
   }
 }
 
-.cardInfoWrapper {
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-}
-
-
 .nameContainer {
   display: flex;
   align-items: center;
   gap: 8px;
   cursor: pointer;
   transition: all ease 0.5s;
-  
+
   &:hover {
     .name {
-      color: #0366d6; 
+      color: #0366d6;
     }
     .githubIcon {
-      color: #0366d6; 
+      color: #0366d6;
     }
   }
 }
@@ -176,5 +168,11 @@
 .bioHeader {
   color: grey;
   opacity: 0.8;
- font-style: italic;
+  font-style: italic;
 }
+
+.contributionList {
+  list-style-type: none;
+}
+
+
