@@ -3,6 +3,7 @@ import styles from './TeamMembers.module.scss';
 import yuliaImage from '../../../assets/images/junior.jpg';
 import igorImage from '../../../assets/images/Igor.jpg';
 import goldenCup from '../../../assets/images/team.png';
+import alenaImage from '../../../assets/images/Alena.jpg';
 
 interface TeamMember {
   name: string;
@@ -19,7 +20,7 @@ const TeamMembers: React.FC = () => {
   const teamMembers: TeamMember[] = [
     {
       name: 'Alena Pudina',
-      image: '/images/alexey.jpg',
+      image: alenaImage,
       description: 'Team Lead | Project Manager | Frontend Development',
       bio: [
         'Math & Computer Science Genius.',
