@@ -1,7 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { ButtonBack } from '../src/components/ui/buttons/ButtonBack';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
-import React from 'react';
 import { MemoryRouter } from 'react-router-dom';
 
 const mockNavigate = vi.fn();
