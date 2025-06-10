@@ -24,6 +24,8 @@
   margin: 0;
   transition: text-decoration 0.2s ease;
   cursor: pointer;
+  text-decoration: none;
+  font-size: 2rem;
 }
 
 .cup {
@@ -141,12 +143,15 @@
   cursor: pointer;
   transition: all ease 0.5s;
 
-  &:hover {
-    .name {
-      color: $about-hover;
-    }
-    .githubIcon {
-      color: $about-hover;
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      .name {
+        color: $about-hover;
+      }
+
+      .githubIcon {
+        color: $about-hover;
+      }
     }
   }
 }
@@ -156,12 +161,12 @@
   transition: color 0.2s ease;
   cursor: pointer;
 
-  &:hover {
-    color: $about-hover;
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      color: $about-hover;
+    }
   }
 }
-
-
 
 .bioHeader {
   color: $about-bg;
