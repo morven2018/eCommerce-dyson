@@ -145,19 +145,17 @@ const TeamMembers: React.FC = () => {
                 </div>
               </div>
             </div>
-
-            <div
+            <button
               className={styles.cardHeader}
               onClick={(event) => {
                 event.stopPropagation();
                 toggleAccordion(index);
               }}
-              role="button"
               aria-expanded={openAccordion === index}
             >
               <span>Contribution</span>
               <span>{openAccordion === index ? '−' : '+'}</span>
-            </div>
+            </button>
             {openAccordion === index && (
               <div className={styles.cardContent}>
                 <ul className={styles.contributionList}>
