@@ -1,4 +1,3 @@
-import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { expect, describe, it } from 'vitest';
 import Counter from '../src/components/ui/counter/Counter';

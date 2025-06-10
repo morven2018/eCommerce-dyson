@@ -8,11 +8,17 @@ import { ProductsByCategory, CardInfo } from '@shared/types/types';
 import { Card } from '@components/ui/cards/Card';
 import { getNameByPath } from '@shared/constants/categories';
 import { Breadcrumbs } from '@components/ui/breadcrumbs/Breadcrumbs';
+import { Pagination } from '@mui/material';
 
 export const CategoryPage = ({ page }: { page: string }) => {
   const [productsData, setProductsData] = useState<ProductsByCategory | null>(
     null
   );
+  const [offset, setOffset] = useState(0);
+  const storedList = localStorage.getItem('listProductsIdInCart');
+  const listProductIdInCart: string[] = storedList
+    ? JSON.parse(storedList)
+    : [];
 
   const path = `/catalog/${page}`;
 
@@ -48,7 +54,11 @@ export const CategoryPage = ({ page }: { page: string }) => {
       }
 
       try {
-        const data = await getProductsByIdCategory({ idCategory, token });
+        const data = await getProductsByIdCategory({
+          idCategory,
+          token,
+          offset,
+        });
         setProductsData(data);
       } catch (error) {
         let message = 'Error get products category by ID';
@@ -64,13 +74,22 @@ export const CategoryPage = ({ page }: { page: string }) => {
     };
 
     fetchProductsData();
-  }, [page]);
+  }, [page, offset]);
 
   if (!productsData) {
     return <div className={styles.textLoading}>Loading...</div>;
   }
 
   const arrCardsInfo = productsData.results;
+
+  const handleChangePageNumber = (
+    _event: React.ChangeEvent<unknown>,
+    page: number
+  ) => {
+    const offset = page === 1 ? 0 : (page - 1) * 4;
+
+    setOffset(offset);
+  };
 
   return (
     <>
@@ -88,8 +107,14 @@ export const CategoryPage = ({ page }: { page: string }) => {
               null
             }
             src={card.masterVariant?.images?.[0]?.url ?? '/dyson_icon.svg'}
+            isInCart={listProductIdInCart.includes(card.id)}
           />
         ))}
+        <Pagination
+          count={Math.ceil(productsData?.total / 4)}
+          onChange={handleChangePageNumber}
+          className={styles.pagination}
+        />
       </div>
     </>
   );

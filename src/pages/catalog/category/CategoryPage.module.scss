@@ -1,6 +1,7 @@
 @use '@assets/styles/globals' as *;
 
 .container {
+  position: relative;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -8,11 +9,17 @@
   width: 100%;
   max-width: 1440px;
   min-height: 500px;
-  padding: 50px 15px;
+  padding: 50px 15px 70px;
 }
 
 .textLoading {
   font-size: 40px;
   margin: 300px 0;
   color: $primary-black;
+}
+
+.pagination {
+  position: absolute;
+  bottom: 20px;
+  right: 0;
 }

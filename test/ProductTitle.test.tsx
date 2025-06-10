@@ -1,7 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import ProductTitle from '../src/components/layout/product/title/ProductTitle';
 import { describe, it, expect } from 'vitest';
-import React from 'react';
 import '@testing-library/jest-dom/vitest';
 
 describe('ProductTitle Component', () => {
