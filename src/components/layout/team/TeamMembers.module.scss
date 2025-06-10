@@ -21,6 +21,9 @@
 
 .name {
   color: $dark-grey;
+  margin: 0;
+  transition: text-decoration 0.2s ease;
+  cursor: pointer;
 }
 
 .cup {
@@ -158,11 +161,7 @@
   }
 }
 
-.name {
-  margin: 0;
-  transition: text-decoration 0.2s ease;
-  cursor: pointer;
-}
+
 
 .bioHeader {
   color: $about-bg;
