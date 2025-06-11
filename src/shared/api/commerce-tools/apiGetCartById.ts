@@ -2,11 +2,9 @@ import { commercetoolsConfig } from './config';
 import { getTokenFromLS } from '../local-storage/getTokenFromLS';
 import { getCartIdFromLS } from '../local-storage/getCartIdFromLS';
 import { openDialog } from '@services/DialogService';
+import { CartData } from '@shared/types/types';
 
-export async function apiAddProductToCart(
-  productId: string,
-  quantity: number = 1
-): Promise<void> {
+export async function apiGetCartById(): Promise<CartData | null> {
   const accessToken = getTokenFromLS();
   const cartId = getCartIdFromLS();
 
@@ -19,36 +17,24 @@ export async function apiAddProductToCart(
   const url = `${apiUrl}/${projectKey}/me/carts/${cartId}`;
 
   try {
-    const requestBody = {
-      version: 1,
-      actions: [
-        {
-          action: 'addLineItem',
-          productId: productId,
-          variantId: 1,
-          quantity: quantity,
-          supplyChannel: {
-            typeId: 'channel',
-            id: '03371898-0c7c-4ef1-97e0-f677e704aaac',
-          },
-          distributionChannel: {
-            typeId: 'channel',
-            id: '1b29c225-1540-46de-bc0c-11116a384586',
-          },
-        },
-      ],
-    };
-
-    await fetch(url, {
-      method: 'POST',
+    const response = await fetch(url, {
+      method: 'GET',
       headers: {
         Authorization: `Bearer ${accessToken}`,
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify(requestBody),
     });
+
+    if (!response.ok) {
+      const errorDetails = await response.json();
+      const errorMessage = errorDetails.message;
+      throw new Error(`Request failed while getting a cart: ${errorMessage}`);
+    }
+
+    const result: CartData = await response.json();
+    return result;
   } catch (error) {
-    let message = 'Error adding product to cart';
+    let message = 'Error getting a cart';
 
     if (error instanceof Error) {
       message = error.message;
@@ -57,5 +43,6 @@ export async function apiAddProductToCart(
     }
 
     openDialog(message, true);
+    return null;
   }
 }

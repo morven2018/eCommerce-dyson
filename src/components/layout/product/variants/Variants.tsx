@@ -15,7 +15,7 @@ export const Variants = ({ variants }: VariantsProps) => {
       {variants.map((variant, index) => (
         <div key={`${variant}${index}`} className={styles.variant}>
           <img src={variant.iconUrl} alt={`Variant ${index + 1}`} />
-          <span>{variant.name}</span>
+          <span className={styles.variantName}>{variant.name}</span>
         </div>
       ))}
     </div>

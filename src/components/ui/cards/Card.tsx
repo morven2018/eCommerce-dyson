@@ -4,7 +4,6 @@ import { getCartIdFromLS } from '@shared/api/local-storage/getCartIdFromLS';
 import { useState } from 'react';
 import { apiCreateNewCart } from '@shared/api/commerce-tools/apiCreateNewCart';
 import { apiAddProductToCart } from '@shared/api/commerce-tools/apiAddProductToCart';
-import { addProductIdToListToLS } from '@shared/api/local-storage/addProductIdToListToLS';
 
 interface Card {
   id: string;
@@ -58,7 +57,6 @@ export const Card = ({
 
     setLoading(false);
     setInCart(true);
-    addProductIdToListToLS(id);
   };
 
   return (

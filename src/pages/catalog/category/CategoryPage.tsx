@@ -4,21 +4,24 @@ import { getProductsByIdCategory } from '@shared/api/commerce-tools/getProductsB
 import { getTokenFromLS } from '@shared/api/local-storage/getTokenFromLS';
 import { commercetoolsConfig } from '@shared/api/commerce-tools/config';
 import { openDialog } from '@services/DialogService';
-import { ProductsByCategory, CardInfo } from '@shared/types/types';
+import {
+  ProductsByCategory,
+  CardInfo,
+  CartLineItem,
+} from '@shared/types/types';
 import { Card } from '@components/ui/cards/Card';
 import { getNameByPath } from '@shared/constants/categories';
 import { Breadcrumbs } from '@components/ui/breadcrumbs/Breadcrumbs';
 import { Pagination } from '@mui/material';
+import { getCartIdFromLS } from '@shared/api/local-storage/getCartIdFromLS';
+import { apiGetCartById } from '@shared/api/commerce-tools/apiGetCartById';
 
 export const CategoryPage = ({ page }: { page: string }) => {
   const [productsData, setProductsData] = useState<ProductsByCategory | null>(
     null
   );
   const [offset, setOffset] = useState(0);
-  const storedList = localStorage.getItem('listProductsIdInCart');
-  const listProductIdInCart: string[] = storedList
-    ? JSON.parse(storedList)
-    : [];
+  const [lineItemsInCart, setLineItemsInCart] = useState<CartLineItem[]>([]);
 
   const path = `/catalog/${page}`;
 
@@ -76,6 +79,32 @@ export const CategoryPage = ({ page }: { page: string }) => {
     fetchProductsData();
   }, [page, offset]);
 
+  useEffect(() => {
+    const getCartLineItems = async () => {
+      try {
+        const cartId = getCartIdFromLS();
+        if (!cartId) return;
+
+        const cart = await apiGetCartById();
+        if (!cart?.lineItems) return;
+
+        setLineItemsInCart(cart.lineItems);
+      } catch (error) {
+        let message = 'Error get cart line items';
+
+        if (error instanceof Error) {
+          message = error.message;
+        } else if (typeof error === 'string') {
+          message = error;
+        }
+
+        openDialog(message, true);
+      }
+    };
+
+    getCartLineItems();
+  }, [page, offset]);
+
   if (!productsData) {
     return <div className={styles.textLoading}>Loading...</div>;
   }
@@ -107,7 +136,9 @@ export const CategoryPage = ({ page }: { page: string }) => {
               null
             }
             src={card.masterVariant?.images?.[0]?.url ?? '/dyson_icon.svg'}
-            isInCart={listProductIdInCart.includes(card.id)}
+            isInCart={lineItemsInCart.some(
+              (item) => item.productId === card.id
+            )}
           />
         ))}
         <Pagination

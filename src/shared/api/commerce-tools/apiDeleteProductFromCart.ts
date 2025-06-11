@@ -3,8 +3,8 @@ import { getTokenFromLS } from '../local-storage/getTokenFromLS';
 import { getCartIdFromLS } from '../local-storage/getCartIdFromLS';
 import { openDialog } from '@services/DialogService';
 
-export async function apiAddProductToCart(
-  productId: string,
+export async function apiDeleteProductFromCart(
+  lineItemId: string,
   quantity: number = 1
 ): Promise<void> {
   const accessToken = getTokenFromLS();
@@ -23,18 +23,9 @@ export async function apiAddProductToCart(
       version: 1,
       actions: [
         {
-          action: 'addLineItem',
-          productId: productId,
-          variantId: 1,
+          action: 'removeLineItem',
+          lineItemId: lineItemId,
           quantity: quantity,
-          supplyChannel: {
-            typeId: 'channel',
-            id: '03371898-0c7c-4ef1-97e0-f677e704aaac',
-          },
-          distributionChannel: {
-            typeId: 'channel',
-            id: '1b29c225-1540-46de-bc0c-11116a384586',
-          },
         },
       ],
     };
@@ -48,7 +39,7 @@ export async function apiAddProductToCart(
       body: JSON.stringify(requestBody),
     });
   } catch (error) {
-    let message = 'Error adding product to cart';
+    let message = 'Error removing product from cart';
 
     if (error instanceof Error) {
       message = error.message;

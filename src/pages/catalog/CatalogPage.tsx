@@ -1,6 +1,10 @@
 import styles from './CatalogPage.module.scss';
 import { useState, useEffect } from 'react';
-import { ProductsByCategory, CardInfo } from '@shared/types/types';
+import {
+  ProductsByCategory,
+  CardInfo,
+  CartLineItem,
+} from '@shared/types/types';
 import { getTokenFromLS } from '@shared/api/local-storage/getTokenFromLS';
 import { getSearchedProducts } from '@shared/api/commerce-tools/getSearchedProducts';
 import { openDialog } from '@services/DialogService';
@@ -13,6 +17,8 @@ import { PriceRangeSlider } from '@components/ui/sort/range-slider/PriceRangeSli
 import { ColorRange } from '@components/ui/sort/color-range/ColorRange';
 import { Breadcrumbs } from '@components/ui/breadcrumbs/Breadcrumbs';
 import { buildSearchParams } from '@shared/utlis/searchParamsBuilder';
+import { apiGetCartById } from '@shared/api/commerce-tools/apiGetCartById';
+import { getCartIdFromLS } from '@shared/api/local-storage/getCartIdFromLS';
 
 export type SortOption =
   | 'price_asc'
@@ -31,10 +37,7 @@ export const CatalogPage = () => {
   const [discount, setDiscount] = useState(false);
   const [selectedColors, setSelectedColors] = useState<string[]>([]);
   const [paginationOffset, setPaginationOffset] = useState(0);
-  const storedList = localStorage.getItem('listProductsIdInCart');
-  const listProductIdInCart: string[] = storedList
-    ? JSON.parse(storedList)
-    : [];
+  const [lineItemsInCart, setLineItemsInCart] = useState<CartLineItem[]>([]);
 
   const breadcrumbItems = [
     { path: '/', name: 'Home' },
@@ -72,6 +75,39 @@ export const CatalogPage = () => {
     }, 500);
 
     return () => clearTimeout(delayDebounceFn);
+  }, [
+    searchText,
+    sortOption,
+    priceRange,
+    discount,
+    selectedColors,
+    paginationOffset,
+  ]);
+
+  useEffect(() => {
+    const getCartLineItems = async () => {
+      try {
+        const cartId = getCartIdFromLS();
+        if (!cartId) return;
+
+        const cart = await apiGetCartById();
+        if (!cart?.lineItems) return;
+
+        setLineItemsInCart(cart.lineItems);
+      } catch (error) {
+        let message = 'Error get cart line items';
+
+        if (error instanceof Error) {
+          message = error.message;
+        } else if (typeof error === 'string') {
+          message = error;
+        }
+
+        openDialog(message, true);
+      }
+    };
+
+    getCartLineItems();
   }, [
     searchText,
     sortOption,
@@ -212,7 +248,9 @@ export const CatalogPage = () => {
                     ?.centAmount ?? null
                 }
                 src={card.masterVariant?.images?.[0]?.url ?? '/dyson_icon.svg'}
-                isInCart={listProductIdInCart.includes(card.id)}
+                isInCart={lineItemsInCart.some(
+                  (item) => item.productId === card.id
+                )}
               />
             ))}
             <Pagination
