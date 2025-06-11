@@ -45,7 +45,7 @@ const TeamMembers: React.FC = () => {
       description: 'Senior Fullstack Developer',
       bio: [
         'Natural-Born Leader with a Vision for Technical Innovation.',
-        'Extremely Talented & Skillfull Fullstack Developer with a Strong Work Ethic.',
+        'Extremely Talented & Skilled Fullstack Developer with a Strong Work Ethic.',
         'Resilient, Disciplined & Goal-oriented.',
         'Collaborative Team Player Who Elevates Those Around Him and Amplifies Collective Success.',
       ],
