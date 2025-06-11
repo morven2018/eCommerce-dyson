@@ -181,6 +181,7 @@ export interface CartLineItem {
     id: number;
     key: string;
   };
+  quantity: number;
 }
 
 export interface CartData {
