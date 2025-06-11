@@ -16,7 +16,7 @@
 }
 
 .title {
-  font-size: $typography-subheader;
+  font-size: 3rem;
   color: $primary-white;
   text-align: left;
 }
@@ -42,27 +42,26 @@
 }
 
 .button {
+  width: 242px;
+  height: 83px;
+  font-weight: 600;
   text-transform: uppercase;
-  padding: 8px 22px;
-  width: 13.75rem;
-  height: 2.625rem;
-  background: #ced3dc;
-  box-shadow:
-    0px 1px 10px rgba(0, 0, 0, 0.12),
-    0px 4px 5px rgba(0, 0, 0, 0.14),
-    0px 2px 4px -1px rgba(0, 0, 0, 0.2);
-  border-radius: 4px;
+  margin-top: 20px;
+  border: none;
+  border-radius: $border-radius;
+  background-color: $controls;
+  color: $primary-white;
   cursor: pointer;
-  transition: all ease 0.3s;
+  transition: all ease 0.5s;
 
   &:hover {
     @media (hover: hover) and (pointer: fine) {
-      background: rgb(128, 128, 128);
-      color: $primary-white;
+      transform: scale(1.05);
+      background-color: $primary-white;
+      color: $controls;
     }
   }
 }
-
 @media (max-width: 500px) {
   .title {
     font-size: $typography-header-mobile;
