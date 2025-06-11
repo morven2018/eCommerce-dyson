@@ -112,6 +112,7 @@ export const ProductPage = () => {
         <ButtonBack />
         <div className={styles.productContainer}>
           <ProductCard
+            id={productId}
             name={name}
             description={description}
             price={price}

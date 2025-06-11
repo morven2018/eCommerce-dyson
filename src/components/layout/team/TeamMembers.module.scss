@@ -1,31 +1,37 @@
 @use '@assets/styles/globals' as *;
 
 .teamWrapper {
-  padding: 40px;
-  height: auto;
-  margin: 0 auto;
-  width: 100%;
-  max-width: 90rem;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+  width: 100%;
+  height: auto;
+  max-width: 90rem;
+  margin: 0 auto;
+  padding: 40px;
   gap: 20px;
-  background: grey;
+  background: $about-bg;
 }
 
 .title {
-  font-size: 3rem;
+  font-size: $typography-header;
   color: $product-name-color;
 }
 
 .name {
-  color: #333;
+  color: $dark-grey;
+  margin: 0;
+  transition: text-decoration 0.2s ease;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 2rem;
 }
 
 .cup {
-  width: 110px;
-  height: 100px;
+  width: 145px;
+  height: 131px;
+  margin-top: -32px;
 }
 
 .teamContainer {
@@ -40,7 +46,7 @@
   display: flex;
   flex-direction: column;
   gap: 20px;
-  background: #fff;
+  background: $primary-white;
   width: 350px;
   height: auto;
   border-radius: $border-radius;
@@ -72,9 +78,9 @@
 }
 
 .cardInfo {
-  padding: 15px;
   display: flex;
   flex-direction: column;
+  padding: 15px;
   gap: 10px;
 }
 
@@ -84,7 +90,7 @@
 }
 
 .line {
-  background-color: grey;
+  background-color: $about-bg;
   height: 0.3px;
   width: 100%;
   margin-top: 8px;
@@ -94,6 +100,7 @@
   margin: 10px 0 0;
   color: $controls;
   font-size: 0.9em;
+  font-weight: 600;
 }
 
 .cardHeader {
@@ -105,6 +112,7 @@
   font-weight: bold;
   transition: all ease 0.5s;
   border-radius: 6px;
+  border: none;
 
   &:hover {
     background: #e0e0e0;
@@ -121,11 +129,11 @@
 
 .cardContent {
   padding: 15px;
-  background: #fafafa;
+  background: $about-card-content;
 
   p {
     margin: 5px 0;
-    color: #333;
+    color: $dark-grey;
     font-weight: 800;
   }
 }
@@ -137,12 +145,15 @@
   cursor: pointer;
   transition: all ease 0.5s;
 
-  &:hover {
-    .name {
-      color: #0366d6;
-    }
-    .githubIcon {
-      color: #0366d6;
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      .name {
+        color: $about-hover;
+      }
+
+      .githubIcon {
+        color: $about-hover;
+      }
     }
   }
 }
@@ -152,23 +163,20 @@
   transition: color 0.2s ease;
   cursor: pointer;
 
-  &:hover {
-    color: #0366d6;
+  @media (hover: hover) and (pointer: fine) {
+    &:hover {
+      color: $about-hover;
+    }
   }
 }
 
-.name {
-  margin: 0;
-  transition: text-decoration 0.2s ease;
-  cursor: pointer;
-}
-
 .bioHeader {
-  color: grey;
+  color: $about-bg;
   opacity: 0.8;
   font-style: italic;
 }
 
 .contributionList {
   list-style-type: none;
+  font-weight: 500;
 }
