@@ -67,10 +67,10 @@ const TeamMembers: React.FC = () => {
         'UI/UX Design | English Translation | Automated Testing (Jest/Vitest) | Frontend Development',
       bio: [
         'Trilingual Frontend Developer: English, Chinese, Russian.',
-        'Charismatic Leader with a Passion for Innovation and Tech.',
+        'Excelled in Math, Chemistry, Russian, English Olympiads and Music Competitions.',
+        'Received a Medal for Academic Excellence.',
+        'Graduated with Two Diplomas with Honors.',
         'Pianist, Dancer & Athlete.',
-        'Creative, Analytical & Versatile.',
-        'Committed to Lifelong Skill-Building.',
       ],
       contributions: [
         'Collaborated on UI/UX design system implementation.',

@@ -9,7 +9,8 @@ export default function Logo() {
         JavaScript (Stage 2) course.
       </p>
       <p className={styles.collab}>
-        Team roles were assigned in Trello, and communication was handled through frequent Google Meet video calls and ongoing Telegram chats.
+        Team roles were assigned in Trello, and communication was handled
+        through frequent Google Meet video calls and ongoing Telegram chats.
       </p>
 
       <a
