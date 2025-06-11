@@ -3,9 +3,9 @@ import styles from './Counter.module.scss';
 
 interface CounterProps {
   readonly price: number;
-  amount: number;
-  disabled?: boolean;
-  onChange?: (value: number) => void;
+  readonly amount: number;
+  readonly disabled?: boolean;
+  readonly onChange?: (value: number) => void;
 }
 
 export default function Counter({

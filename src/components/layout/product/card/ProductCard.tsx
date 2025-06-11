@@ -41,7 +41,7 @@ export default function ProductCard({
         if (!cartId) return;
 
         const cart = await apiGetCartById();
-        if (!cart || !cart.lineItems) return;
+        if (!cart?.lineItems) return;
 
         const isInCart = cart.lineItems.some((item) => item.productId === id);
         setIsProductInCart(isInCart);
@@ -77,7 +77,7 @@ export default function ProductCard({
           (item) => item.productId === id
         );
 
-        if (!lineItem || !lineItem.id) {
+        if (!lineItem?.id) {
           openDialog('Product not found in cart', true);
           return;
         }

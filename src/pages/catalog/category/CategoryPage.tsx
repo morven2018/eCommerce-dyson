@@ -86,7 +86,7 @@ export const CategoryPage = ({ page }: { page: string }) => {
         if (!cartId) return;
 
         const cart = await apiGetCartById();
-        if (!cart || !cart.lineItems) return;
+        if (!cart?.lineItems) return;
 
         setLineItemsInCart(cart.lineItems);
       } catch (error) {
