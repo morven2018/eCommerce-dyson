@@ -1,0 +1,41 @@
+@use '@assets/styles/globals' as *;
+
+.promoBlock {
+  width: 100%;
+  max-width: 90rem;
+  margin: 0 auto;
+  background: url(@assets/images/promo-bg.png) center center / cover no-repeat;
+  height: 600px;
+  padding: 80px 40px;
+}
+
+.promoContent {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.promoTitle {
+  font-size: 3rem;
+}
+
+.promoButton {
+  width: 242px;
+  height: 83px;
+  font-weight: 600;
+  text-transform: uppercase;
+  margin-top: 20px;
+  border: none;
+  border-radius: $border-radius;
+  background-color: $controls;
+  color: $primary-white;
+  cursor: pointer;
+  transition: all ease 0.5s;
+
+  &:hover {
+    @media (hover: hover) and (pointer: fine) {
+      transform: scale(1.05);
+      background-color: $card-btn-hover;
+    }
+  }
+}
