@@ -99,12 +99,53 @@ export interface CardInfo {
   };
 }
 
+export interface FacetRange {
+  type: string;
+  from: number;
+  fromStr: string;
+  to: number;
+  toStr: string;
+  count: number;
+  totalCount: number;
+  total: number;
+  min: number;
+  max: number;
+  mean: number;
+}
+
+export interface FacetTerm {
+  term: string;
+  count: number;
+}
+
+export interface TermFacet {
+  type: 'terms';
+  dataType: 'text' | 'string' | 'boolean' | 'number';
+  terms: FacetTerm[];
+  missing?: number;
+  total?: number;
+  other?: number;
+}
+
+export interface RangeFacet {
+  type: 'range';
+  dataType: string;
+  ranges: FacetRange[];
+}
+
+export type FacetField = TermFacet | RangeFacet;
+
+export interface Facet {
+  [key: string]: FacetField;
+}
+
 export interface ProductsByCategory {
   limit: number;
   offset: number;
   count: number;
   total: number;
   results: CardInfo[];
+  facets: Facet;
 }
 
 export interface ProductsData {
@@ -113,4 +154,38 @@ export interface ProductsData {
   count: number;
   total: number;
   results: ProductData[];
+}
+
+export interface CartLineItem {
+  id: string;
+  name: {
+    'en-US': string;
+  };
+  price: {
+    value: {
+      centAmount: number;
+      currencyCode: string;
+      fractionDigits: number;
+      type: string;
+    };
+  };
+  productId: string;
+  productKey: string;
+  totalPrice: {
+    centAmount: number;
+    currencyCode: string;
+    fractionDigits: number;
+    type: string;
+  };
+  variant: {
+    id: number;
+    key: string;
+  };
+  quantity: number;
+}
+
+export interface CartData {
+  cartState: string;
+  id: string;
+  lineItems: CartLineItem[];
 }

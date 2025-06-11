@@ -1,18 +1,24 @@
 import styles from './CatalogPage.module.scss';
 import { useState, useEffect } from 'react';
-import { ProductsByCategory, CardInfo } from '@shared/types/types';
+import {
+  ProductsByCategory,
+  CardInfo,
+  CartLineItem,
+} from '@shared/types/types';
 import { getTokenFromLS } from '@shared/api/local-storage/getTokenFromLS';
 import { getSearchedProducts } from '@shared/api/commerce-tools/getSearchedProducts';
 import { openDialog } from '@services/DialogService';
 
 import { Card } from '@components/ui/cards/Card';
 import { SortByComponent } from '@components/ui/sort/SortByComponent';
-import { TextField, FormControlLabel, Switch } from '@mui/material';
+import { TextField, FormControlLabel, Switch, Pagination } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { PriceRangeSlider } from '@components/ui/sort/range-slider/PriceRangeSlider';
 import { ColorRange } from '@components/ui/sort/color-range/ColorRange';
 import { Breadcrumbs } from '@components/ui/breadcrumbs/Breadcrumbs';
 import { buildSearchParams } from '@shared/utlis/searchParamsBuilder';
+import { apiGetCartById } from '@shared/api/commerce-tools/apiGetCartById';
+import { getCartIdFromLS } from '@shared/api/local-storage/getCartIdFromLS';
 
 export type SortOption =
   | 'price_asc'
@@ -30,6 +36,8 @@ export const CatalogPage = () => {
   const [priceRange, setPriceRange] = useState([0, 0]);
   const [discount, setDiscount] = useState(false);
   const [selectedColors, setSelectedColors] = useState<string[]>([]);
+  const [paginationOffset, setPaginationOffset] = useState(0);
+  const [lineItemsInCart, setLineItemsInCart] = useState<CartLineItem[]>([]);
 
   const breadcrumbItems = [
     { path: '/', name: 'Home' },
@@ -43,12 +51,15 @@ export const CatalogPage = () => {
         if (!token) return;
 
         try {
+          const limit = 12;
           const params = buildSearchParams({
             searchText,
             sortOption,
             priceRange,
             discount,
             selectedColors,
+            paginationOffset,
+            limit,
           });
           const data = await getSearchedProducts({ params, token });
           setProductsData(data);
@@ -64,7 +75,47 @@ export const CatalogPage = () => {
     }, 500);
 
     return () => clearTimeout(delayDebounceFn);
-  }, [searchText, sortOption, priceRange, discount, selectedColors]);
+  }, [
+    searchText,
+    sortOption,
+    priceRange,
+    discount,
+    selectedColors,
+    paginationOffset,
+  ]);
+
+  useEffect(() => {
+    const getCartLineItems = async () => {
+      try {
+        const cartId = getCartIdFromLS();
+        if (!cartId) return;
+
+        const cart = await apiGetCartById();
+        if (!cart?.lineItems) return;
+
+        setLineItemsInCart(cart.lineItems);
+      } catch (error) {
+        let message = 'Error get cart line items';
+
+        if (error instanceof Error) {
+          message = error.message;
+        } else if (typeof error === 'string') {
+          message = error;
+        }
+
+        openDialog(message, true);
+      }
+    };
+
+    getCartLineItems();
+  }, [
+    searchText,
+    sortOption,
+    priceRange,
+    discount,
+    selectedColors,
+    paginationOffset,
+  ]);
 
   if (!productsData) {
     return <div className={styles.textLoading}>Loading...</div>;
@@ -93,13 +144,32 @@ export const CatalogPage = () => {
     setSelectedColors([]);
   };
 
-  const allColors = productsData.results.flatMap((product) => {
-    if (product.masterVariant) {
-      return product.masterVariant.attributes
-        .map((attribute) => attribute.value)
-        .flat(5);
-    }
-  });
+  const handleChangePageNumber = (
+    _event: React.ChangeEvent<unknown>,
+    page: number
+  ) => {
+    const offset = page === 1 ? 0 : (page - 1) * 12;
+    setPaginationOffset(offset);
+  };
+
+  const colorFacet = productsData.facets?.['variants.attributes.color'];
+  const allColors: string[] = [];
+  if (colorFacet && 'terms' in colorFacet && colorFacet.terms.length > 0) {
+    colorFacet.terms.forEach((el) => {
+      allColors.push(el.term);
+    });
+  }
+
+  const priceFacet = productsData.facets?.['variants.price.centAmount'];
+
+  let minPrice = 0;
+  let maxPrice = 9999;
+
+  if (priceFacet && 'ranges' in priceFacet && priceFacet.ranges.length > 0) {
+    const range = priceFacet.ranges[0];
+    minPrice = Math.floor(range.min / 100);
+    maxPrice = Math.ceil(range.max / 100);
+  }
 
   return (
     <>
@@ -146,38 +216,14 @@ export const CatalogPage = () => {
           />
 
           <ColorRange
-            colors={
-              [
-                ...new Set(allColors?.filter((color) => color !== undefined)),
-              ].sort((a, b) => a.localeCompare(b)) ?? []
-            }
+            colors={allColors.sort((a, b) => a.localeCompare(b))}
             selectedColors={selectedColors}
             onChange={(colors) => setSelectedColors(colors)}
           />
 
           <PriceRangeSlider
-            min={
-              productsData.results.length
-                ? Math.min(
-                    ...productsData.results.map(
-                      (el) =>
-                        (el.masterVariant?.prices.at(0)?.value.centAmount ??
-                          0) / 100
-                    )
-                  )
-                : 0
-            }
-            max={
-              productsData.results.length
-                ? Math.max(
-                    ...productsData.results.map(
-                      (el) =>
-                        (el.masterVariant?.prices.at(0)?.value.centAmount ??
-                          0) / 100
-                    )
-                  )
-                : 0
-            }
+            min={minPrice}
+            max={maxPrice}
             onChange={handlePriceChange}
           />
           <button className={styles.button} onClick={handleClearFilter}>
@@ -202,8 +248,16 @@ export const CatalogPage = () => {
                     ?.centAmount ?? null
                 }
                 src={card.masterVariant?.images?.[0]?.url ?? '/dyson_icon.svg'}
+                isInCart={lineItemsInCart.some(
+                  (item) => item.productId === card.id
+                )}
               />
             ))}
+            <Pagination
+              count={Math.ceil(productsData?.total / 12)}
+              onChange={handleChangePageNumber}
+              className={styles.pagination}
+            />
           </div>
         </div>
       </div>
