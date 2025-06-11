@@ -3,7 +3,10 @@ import { getTokenFromLS } from '../local-storage/getTokenFromLS';
 import { getCartIdFromLS } from '../local-storage/getCartIdFromLS';
 import { openDialog } from '@services/DialogService';
 
-export async function apiAddProductToCart(productId: string): Promise<void> {
+export async function apiAddProductToCart(
+  productId: string,
+  quantity: number = 1
+): Promise<void> {
   const accessToken = getTokenFromLS();
   const cartId = getCartIdFromLS();
 
@@ -23,7 +26,7 @@ export async function apiAddProductToCart(productId: string): Promise<void> {
           action: 'addLineItem',
           productId: productId,
           variantId: 1,
-          quantity: 1,
+          quantity: quantity,
           supplyChannel: {
             typeId: 'channel',
             id: '03371898-0c7c-4ef1-97e0-f677e704aaac',
