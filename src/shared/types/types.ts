@@ -155,3 +155,36 @@ export interface ProductsData {
   total: number;
   results: ProductData[];
 }
+
+export interface CartLineItem {
+  id: string;
+  name: {
+    'en-US': string;
+  };
+  price: {
+    value: {
+      centAmount: number;
+      currencyCode: string;
+      fractionDigits: number;
+      type: string;
+    };
+  };
+  productId: string;
+  productKey: string;
+  totalPrice: {
+    centAmount: number;
+    currencyCode: string;
+    fractionDigits: number;
+    type: string;
+  };
+  variant: {
+    id: number;
+    key: string;
+  };
+}
+
+export interface CartData {
+  cartState: string;
+  id: string;
+  lineItems: CartLineItem[];
+}
