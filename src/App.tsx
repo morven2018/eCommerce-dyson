@@ -13,6 +13,7 @@ import { ProfilePage } from '@pages/profile/Profile';
 import { ProductPage } from '@pages/product/Product';
 import { CategoryPage } from '@pages/catalog/category/CategoryPage';
 import { CatalogPage } from '@pages/catalog/CatalogPage';
+import { CartPage } from '@pages/cart/Cart';
 
 const HOME_PATH = '/';
 const RESERVE_HOME_PATH = '/index.html';
@@ -27,6 +28,7 @@ const CATALOG_HEATER_PATH = '/catalog/heater';
 const CATALOG_HEADPHONES_PATH = '/catalog/headphones';
 const CATALOG_LIGHTING_PATH = '/catalog/lighting';
 const PRODUCT_PATH = '/product';
+const CART_PATH = '/cart';
 const OTHER_PATH = '*';
 
 export function App() {
@@ -63,6 +65,8 @@ export function App() {
             </RedirectIfNotAuthenticatedRoute>
           }
         />
+
+        <Route path={CART_PATH} element={<CartPage />} />
 
         <Route
           path={CATALOG_VACUUMS_PATH}
