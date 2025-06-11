@@ -45,7 +45,7 @@ const TeamMembers: React.FC = () => {
       description: 'Senior Fullstack Developer',
       bio: [
         'Natural-Born Leader with a Vision for Technical Innovation.',
-        'Extremely Talented & Skillfull Fullstack Developer with a Strong Work Ethic.',
+        'Extremely Talented & Skilled Fullstack Developer with a Strong Work Ethic.',
         'Resilient, Disciplined & Goal-oriented.',
         'Collaborative Team Player Who Elevates Those Around Him and Amplifies Collective Success.',
       ],
@@ -67,10 +67,10 @@ const TeamMembers: React.FC = () => {
         'UI/UX Design | English Translation | Automated Testing (Jest/Vitest) | Frontend Development',
       bio: [
         'Trilingual Frontend Developer: English, Chinese, Russian.',
-        'Charismatic Leader with a Passion for Innovation and Tech.',
+        'Excelled in Math, Chemistry, Russian, English Olympiads and Music Competitions.',
+        'Received a Medal for Academic Excellence.',
+        'Graduated with Two Diplomas with Honors.',
         'Pianist, Dancer & Athlete.',
-        'Creative, Analytical & Versatile.',
-        'Committed to Lifelong Skill-Building.',
       ],
       contributions: [
         'Collaborated on UI/UX design system implementation.',

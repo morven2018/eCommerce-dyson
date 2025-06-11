@@ -8,6 +8,10 @@ export default function Logo() {
         This project was developed as the final assignment of the Frontend,
         JavaScript (Stage 2) course.
       </p>
+      <p className={styles.collab}>
+        Team roles were assigned in Trello, and communication was handled
+        through frequent Google Meet video calls and ongoing Telegram chats.
+      </p>
 
       <a
         className={styles.schoolLogo}
