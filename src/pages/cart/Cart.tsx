@@ -2,7 +2,8 @@ import { useState, useEffect } from 'react';
 import { apiGetCartById } from '@shared/api/commerce-tools/apiGetCartById';
 import { CartData } from '@shared/types/types';
 import { openDialog } from '@services/DialogService';
-import VoidCartArea from '@components/layout/void-cart/VoidCartArea.module';
+import VoidCartArea from '@components/layout/cart/VoidCartArea.module';
+import CartInfo from '@components/layout/cart/CartInfo.module';
 
 export const CartPage = () => {
   const [data, setData] = useState<CartData | null>(null);
@@ -32,7 +33,6 @@ export const CartPage = () => {
   }, []);
 
   if (isLoading) return <div>Loading cart data...</div>;
-  //if (!data) return <div>No cart data available</div>;
 
   if (!data || data.lineItems.length === 0)
     return (
@@ -43,6 +43,7 @@ export const CartPage = () => {
     );
   return (
     <div>
+      <CartInfo data={data} setData={setData} />
       <pre>{JSON.stringify(data, null, 2)}</pre>
     </div>
   );

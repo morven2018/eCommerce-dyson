@@ -184,8 +184,16 @@ export interface CartLineItem {
   quantity: number;
 }
 
+interface TotalPrice {
+  type: string;
+  currencyCode: string;
+  centAmount: number;
+  fractionDigits: number;
+}
+
 export interface CartData {
   cartState: string;
   id: string;
   lineItems: CartLineItem[];
+  totalPrice: TotalPrice;
 }

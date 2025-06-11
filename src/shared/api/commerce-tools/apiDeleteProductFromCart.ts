@@ -5,7 +5,8 @@ import { openDialog } from '@services/DialogService';
 
 export async function apiDeleteProductFromCart(
   lineItemId: string,
-  quantity: number = 1
+  quantity: number = 1,
+  version: number = 1
 ): Promise<void> {
   const accessToken = getTokenFromLS();
   const cartId = getCartIdFromLS();
@@ -20,7 +21,7 @@ export async function apiDeleteProductFromCart(
 
   try {
     const requestBody = {
-      version: 1,
+      version: version,
       actions: [
         {
           action: 'removeLineItem',
