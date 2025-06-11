@@ -5,7 +5,7 @@
   max-width: 90rem;
   margin: 0 auto;
   background: url(@assets/images/promo-bg.png) center center / cover no-repeat;
-  height: 600px;
+  height: auto;
   padding: 80px 40px;
 }
 
@@ -17,6 +17,10 @@
 
 .promoTitle {
   font-size: 3rem;
+}
+
+.promoText {
+    font-size: 2rem;
 }
 
 .promoButton {

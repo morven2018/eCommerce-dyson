@@ -19,10 +19,12 @@ export default function PromoCode() {
     <div className={styles.promoBlock}>
       <div className={styles.promoContent}>
         <h3 className={styles.promoTitle}>
-          Register now <br /> to get 15% off your first purchase
+          REGISTER NOW <br /> to get <span>15% off</span> your first purchase!
         </h3>
         <p className={styles.promoText}>
-          First time at Dyson? Sign up and grab promo code FIRST15 for 15% off!
+          First time at Dyson?
+          <br /> <span>Sign up</span> and grab promo code <br /> FIRST15 for 15%
+          off!
         </p>
 
         <button className={styles.promoButton} onClick={handleButtonClick}>
