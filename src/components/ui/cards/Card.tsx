@@ -4,6 +4,8 @@ import { getCartIdFromLS } from '@shared/api/local-storage/getCartIdFromLS';
 import { useState } from 'react';
 import { apiCreateNewCart } from '@shared/api/commerce-tools/apiCreateNewCart';
 import { apiAddProductToCart } from '@shared/api/commerce-tools/apiAddProductToCart';
+import { useCart } from '@shared/context/cart-context';
+import { apiGetCartById } from '@shared/api/commerce-tools/apiGetCartById';
 
 interface Card {
   id: string;
@@ -26,6 +28,7 @@ export const Card = ({
 }: Card) => {
   const [inCart, setInCart] = useState(isInCart);
   const [loading, setLoading] = useState(false);
+  const { setCart } = useCart();
 
   const alt = 'Product picture';
   const maxProductNameLength = 30;
@@ -53,7 +56,10 @@ export const Card = ({
       }
     }
 
-    apiAddProductToCart(id);
+    await apiAddProductToCart(id);
+
+    const updatedCart = await apiGetCartById();
+    setCart(updatedCart);
 
     setLoading(false);
     setInCart(true);

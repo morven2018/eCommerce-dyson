@@ -37,68 +37,68 @@ export function App() {
     <AuthProvider>
       <CartProvider>
         <Header />
+
+        <Routes>
+          <Route path={HOME_PATH} element={<HomePage />} />
+          <Route path={RESERVE_HOME_PATH} element={<HomePage />} />
+          <Route path={CATALOG_PATH} element={<CatalogPage />} />
+          <Route path={ABOUT_PATH} element={<AboutPage />} />
+          <Route
+            path={LOGIN_PATH}
+            element={
+              <RedirectIfAuthenticatedRoute>
+                <LoginPage />
+              </RedirectIfAuthenticatedRoute>
+            }
+          />
+          <Route
+            path={REGISTER_PATH}
+            element={
+              <RedirectIfAuthenticatedRoute>
+                <RegisterPage />
+              </RedirectIfAuthenticatedRoute>
+            }
+          />
+
+          <Route
+            path={PROFILE_PATH}
+            element={
+              <RedirectIfNotAuthenticatedRoute>
+                <ProfilePage />
+              </RedirectIfNotAuthenticatedRoute>
+            }
+          />
+
+          <Route path={CART_PATH} element={<CartPage />} />
+
+          <Route
+            path={CATALOG_VACUUMS_PATH}
+            element={<CategoryPage page="vacuums" />}
+          />
+          <Route
+            path={CATALOG_HAIR_CARE_PATH}
+            element={<CategoryPage page="hair-care" />}
+          />
+          <Route
+            path={CATALOG_HEATER_PATH}
+            element={<CategoryPage page="heater" />}
+          />
+          <Route
+            path={CATALOG_HEADPHONES_PATH}
+            element={<CategoryPage page="headphones" />}
+          />
+          <Route
+            path={CATALOG_LIGHTING_PATH}
+            element={<CategoryPage page="lighting" />}
+          />
+          <Route path={PRODUCT_PATH}>
+            <Route path=":productId" element={<ProductPage />} />
+          </Route>
+
+          <Route path={OTHER_PATH} element={<NotFoundPage />} />
+        </Routes>
+        <Footer />
       </CartProvider>
-
-      <Routes>
-        <Route path={HOME_PATH} element={<HomePage />} />
-        <Route path={RESERVE_HOME_PATH} element={<HomePage />} />
-        <Route path={CATALOG_PATH} element={<CatalogPage />} />
-        <Route path={ABOUT_PATH} element={<AboutPage />} />
-        <Route
-          path={LOGIN_PATH}
-          element={
-            <RedirectIfAuthenticatedRoute>
-              <LoginPage />
-            </RedirectIfAuthenticatedRoute>
-          }
-        />
-        <Route
-          path={REGISTER_PATH}
-          element={
-            <RedirectIfAuthenticatedRoute>
-              <RegisterPage />
-            </RedirectIfAuthenticatedRoute>
-          }
-        />
-
-        <Route
-          path={PROFILE_PATH}
-          element={
-            <RedirectIfNotAuthenticatedRoute>
-              <ProfilePage />
-            </RedirectIfNotAuthenticatedRoute>
-          }
-        />
-
-        <Route path={CART_PATH} element={<CartPage />} />
-
-        <Route
-          path={CATALOG_VACUUMS_PATH}
-          element={<CategoryPage page="vacuums" />}
-        />
-        <Route
-          path={CATALOG_HAIR_CARE_PATH}
-          element={<CategoryPage page="hair-care" />}
-        />
-        <Route
-          path={CATALOG_HEATER_PATH}
-          element={<CategoryPage page="heater" />}
-        />
-        <Route
-          path={CATALOG_HEADPHONES_PATH}
-          element={<CategoryPage page="headphones" />}
-        />
-        <Route
-          path={CATALOG_LIGHTING_PATH}
-          element={<CategoryPage page="lighting" />}
-        />
-        <Route path={PRODUCT_PATH}>
-          <Route path=":productId" element={<ProductPage />} />
-        </Route>
-
-        <Route path={OTHER_PATH} element={<NotFoundPage />} />
-      </Routes>
-      <Footer />
     </AuthProvider>
   );
 }

@@ -8,6 +8,7 @@ import { useState } from 'react';
 import { openDialog } from '@services/DialogService';
 import CartProductCard from '@components/ui/cards/CartProductCard';
 import { apiUpdateCart } from '@shared/api/commerce-tools/cart/updateNumberOfItems';
+import { useCart } from '@shared/context/cart-context';
 
 interface CartInfoProps {
   data: CartData;
@@ -17,6 +18,7 @@ interface CartInfoProps {
 export default function CartInfo({ data, setData }: CartInfoProps) {
   const [isResetting, setIsResetting] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
+  const { setCart } = useCart();
 
   const handleReset = async () => {
     if (!data.lineItems.length) return;
@@ -29,6 +31,7 @@ export default function CartInfo({ data, setData }: CartInfoProps) {
 
       const updatedCart = await apiGetCartById();
       setData(updatedCart);
+      setCart(updatedCart);
     } catch {
       openDialog('Error reset cart', true);
     } finally {
@@ -41,28 +44,11 @@ export default function CartInfo({ data, setData }: CartInfoProps) {
       await apiDeleteProductFromCart(itemId);
       const updatedCart = await apiGetCartById();
       setData(updatedCart);
+      setCart(updatedCart);
     } catch (error) {
       console.error('Failed to delete item:', error);
     }
   };
-
-  /*const handleQuantityChange = async (itemId: string, quantity: number) => {
-    setIsUpdating(true);
-    try {
-      const item = data.lineItems.find((item) => item.id === itemId);
-      if (!item) return;
-
-      const quantityDifference = quantity - item.quantity;
-
-      if (quantityDifference !== 0) {
-        await apiAddProductToCart(item.id, quantityDifference);
-        const updatedCart = await apiGetCartById();
-        setData(updatedCart);
-      }
-    } finally {
-      setIsUpdating(false);
-    }
-  }; */
 
   const handleQuantityChange = async (itemId: string, newQuantity: number) => {
     setIsUpdating(true);
@@ -76,6 +62,7 @@ export default function CartInfo({ data, setData }: CartInfoProps) {
         await apiUpdateCart(itemId, newQuantity);
         const updatedCart = await apiGetCartById();
         setData(updatedCart);
+        setCart(updatedCart);
       }
     } catch {
       openDialog('Failed to update cart', true);

@@ -8,6 +8,7 @@ import { apiAddProductToCart } from '@shared/api/commerce-tools/apiAddProductToC
 import { getCartIdFromLS } from '@shared/api/local-storage/getCartIdFromLS';
 import { apiCreateNewCart } from '@shared/api/commerce-tools/apiCreateNewCart';
 import { apiDeleteProductFromCart } from '@shared/api/commerce-tools/apiDeleteProductFromCart';
+import { useCart } from '@shared/context/cart-context';
 
 interface VariantsData {
   iconUrl: string;
@@ -33,6 +34,7 @@ export default function ProductCard({
 }: Readonly<ProductCard>) {
   const [isProductInCart, setIsProductInCart] = useState(false);
   const [quantity, setQuantity] = useState(1);
+  const { setCart } = useCart();
 
   useEffect(() => {
     const checkIfInCart = async () => {
@@ -84,6 +86,9 @@ export default function ProductCard({
 
         await apiDeleteProductFromCart(lineItem.id, quantity);
 
+        const response = await apiGetCartById();
+        setCart(response);
+
         setQuantity(1);
         setIsProductInCart(false);
       } else if (id) {
@@ -99,6 +104,10 @@ export default function ProductCard({
         }
 
         await apiAddProductToCart(id, quantity);
+
+        const response = await apiGetCartById();
+        setCart(response);
+
         setIsProductInCart(true);
       }
     } catch (error) {
