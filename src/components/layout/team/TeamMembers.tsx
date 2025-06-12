@@ -58,7 +58,7 @@ const TeamMembers: React.FC = () => {
         'Engineered secure login Authentication system with form validation and error handling.',
         'Fixed SonarQube code quality issues and integrated mentors suggestions to optimize performance.',
         'Implemented a router for page navigation and redirecting authorized/unauthorized users based on manual browser URL changes.',
-        'Reviewed Junior Developer code, providing constructive feedback and mentorship.'
+        'Reviewed Junior Developer code, providing constructive feedback and mentorship.',
       ],
       gitHubUrl: 'https://github.com/Ihar-Batura',
     },
