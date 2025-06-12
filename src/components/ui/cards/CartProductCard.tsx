@@ -9,15 +9,19 @@ interface CartProductProps {
   data: CartLineItem;
   setData?: React.Dispatch<React.SetStateAction<CartData | null>>;
   onDelete?: (itemId: string) => void;
+  onQuantityChange?: (itemId: string, quantity: number) => Promise<void>;
   isDeleting?: boolean;
+  isUpdating?: boolean;
 }
 
 export default function CartProductCard({
   data,
   onDelete,
+  onQuantityChange,
   isDeleting = false,
+  isUpdating = false,
 }: CartProductProps) {
-  const [quantity, setQuantity] = useState(1);
+  const [quantity] = useState(1);
   const imageURL = data.variant.images[0].url;
   const imageAlt = data.variant.images[0].label;
   const productName = data.name['en-US'];
@@ -36,6 +40,13 @@ export default function CartProductCard({
     }
   };
 
+  const handleQuantityChange = async (newQuantity: number) => {
+    console.log(newQuantity);
+    if (onQuantityChange) {
+      await onQuantityChange(data.id, newQuantity);
+    }
+  };
+
   return (
     <li>
       <img src={imageURL} alt={imageAlt || 'product image'} />
@@ -47,7 +58,8 @@ export default function CartProductCard({
         <Counter
           price={priceValue ?? price}
           amount={quantity}
-          onChange={(newQuantity) => setQuantity(newQuantity)}
+          onChange={handleQuantityChange}
+          disabled={isUpdating}
         />
         <IconButton
           onClick={handleDelete}

@@ -7,6 +7,7 @@ import { apiGetCartById } from '@shared/api/commerce-tools/apiGetCartById';
 import { useState } from 'react';
 import { openDialog } from '@services/DialogService';
 import CartProductCard from '@components/ui/cards/CartProductCard';
+import { apiUpdateCart } from '@shared/api/commerce-tools/cart/updateNumberOfItems';
 
 interface CartInfoProps {
   data: CartData;
@@ -15,6 +16,7 @@ interface CartInfoProps {
 
 export default function CartInfo({ data, setData }: CartInfoProps) {
   const [isResetting, setIsResetting] = useState(false);
+  const [isUpdating, setIsUpdating] = useState(false);
 
   const handleReset = async () => {
     if (!data.lineItems.length) return;
@@ -44,6 +46,44 @@ export default function CartInfo({ data, setData }: CartInfoProps) {
     }
   };
 
+  /*const handleQuantityChange = async (itemId: string, quantity: number) => {
+    setIsUpdating(true);
+    try {
+      const item = data.lineItems.find((item) => item.id === itemId);
+      if (!item) return;
+
+      const quantityDifference = quantity - item.quantity;
+
+      if (quantityDifference !== 0) {
+        await apiAddProductToCart(item.id, quantityDifference);
+        const updatedCart = await apiGetCartById();
+        setData(updatedCart);
+      }
+    } finally {
+      setIsUpdating(false);
+    }
+  }; */
+
+  const handleQuantityChange = async (itemId: string, newQuantity: number) => {
+    setIsUpdating(true);
+    try {
+      const item = data.lineItems.find((item) => item.id === itemId);
+      if (!item) return;
+
+      const quantityDifference = newQuantity - item.quantity;
+
+      if (quantityDifference !== 0) {
+        await apiUpdateCart(itemId, newQuantity);
+        const updatedCart = await apiGetCartById();
+        setData(updatedCart);
+      }
+    } catch {
+      openDialog('Failed to update cart', true);
+    } finally {
+      setIsUpdating(false);
+    }
+  };
+
   const items = data.lineItems.reduce((sum, item) => (sum += item.quantity), 0);
   const total = formatPrice(data.totalPrice);
   return (
@@ -64,6 +104,8 @@ export default function CartInfo({ data, setData }: CartInfoProps) {
               setData={setData}
               key={item.id}
               onDelete={handleDeleteItem}
+              onQuantityChange={handleQuantityChange}
+              isUpdating={isUpdating}
             />
           ))}
         </ul>
