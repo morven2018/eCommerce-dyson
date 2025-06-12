@@ -14,6 +14,7 @@ import { ProductPage } from '@pages/product/Product';
 import { CategoryPage } from '@pages/catalog/category/CategoryPage';
 import { CatalogPage } from '@pages/catalog/CatalogPage';
 import { CartPage } from '@pages/cart/Cart';
+import { CartProvider } from '@shared/context/cart-context';
 
 const HOME_PATH = '/';
 const RESERVE_HOME_PATH = '/index.html';
@@ -34,7 +35,10 @@ const OTHER_PATH = '*';
 export function App() {
   return (
     <AuthProvider>
-      <Header />
+      <CartProvider>
+        <Header />
+      </CartProvider>
+
       <Routes>
         <Route path={HOME_PATH} element={<HomePage />} />
         <Route path={RESERVE_HOME_PATH} element={<HomePage />} />

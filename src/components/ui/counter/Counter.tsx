@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import styles from './Counter.module.scss';
+import formatPrice from '@shared/utlis/price-formatter';
 
 interface CounterProps {
   readonly price: number;
@@ -59,7 +60,9 @@ export default function Counter({
           +
         </button>
       </div>
-      <span className={styles.sum}>Total: ${totalSum.toFixed(2)}</span>
+      <span className={styles.sum}>
+        Total: {formatPrice({ centAmount: totalSum * 100 })}
+      </span>
     </div>
   );
 }

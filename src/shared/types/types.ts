@@ -156,17 +156,22 @@ export interface ProductsData {
   results: ProductData[];
 }
 
+interface PriceValue {
+  centAmount: number;
+  currencyCode: string;
+  fractionDigits: number;
+  type: string;
+}
+
 export interface CartLineItem {
   id: string;
   name: {
     'en-US': string;
   };
   price: {
-    value: {
-      centAmount: number;
-      currencyCode: string;
-      fractionDigits: number;
-      type: string;
+    value: PriceValue;
+    discounted?: {
+      value: PriceValue;
     };
   };
   productId: string;
@@ -180,6 +185,10 @@ export interface CartLineItem {
   variant: {
     id: number;
     key: string;
+    images: {
+      url: string;
+      label: string;
+    }[];
   };
   quantity: number;
 }

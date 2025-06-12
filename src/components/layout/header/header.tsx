@@ -25,6 +25,7 @@ import { ProfileMenu } from '@components/ui/burger/menu/profile-menu';
 import { ButtonList } from './button-list/ButtonList';
 import { useAuth } from '@shared/context/auth-hooks';
 import { addAnonymousSessionTokenToLS } from '@shared/utlis/token/addAnonymousSessionTokenToLS';
+import { useCart } from '@shared/context/cart-context';
 
 export interface INavItems {
   text: string;
@@ -65,9 +66,9 @@ const ItemList = ({ text, icon, path, onClick }: INavItems) => {
 
 export const Header = () => {
   const location = useLocation();
+  const { isCartEmpty } = useCart();
 
   const { isUserUnauthorized, setIsUserUnauthorized } = useAuth();
-  const [isCartEmpty] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const [navItems, setNavItems] = useState<INavItems[]>([]);

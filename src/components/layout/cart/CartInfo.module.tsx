@@ -6,6 +6,7 @@ import { apiDeleteProductFromCart } from '@shared/api/commerce-tools/apiDeletePr
 import { apiGetCartById } from '@shared/api/commerce-tools/apiGetCartById';
 import { useState } from 'react';
 import { openDialog } from '@services/DialogService';
+import CartProductCard from '@components/ui/cards/CartProductCard';
 
 interface CartInfoProps {
   data: CartData;
@@ -33,7 +34,17 @@ export default function CartInfo({ data, setData }: CartInfoProps) {
     }
   };
 
-  const items = data.lineItems.length;
+  const handleDeleteItem = async (itemId: string) => {
+    try {
+      await apiDeleteProductFromCart(itemId);
+      const updatedCart = await apiGetCartById();
+      setData(updatedCart);
+    } catch (error) {
+      console.error('Failed to delete item:', error);
+    }
+  };
+
+  const items = data.lineItems.reduce((sum, item) => (sum += item.quantity), 0);
   const total = formatPrice(data.totalPrice);
   return (
     <div>
@@ -46,6 +57,16 @@ export default function CartInfo({ data, setData }: CartInfoProps) {
             <img src={icon} alt="Reset Cart" />
           </IconButton>
         </div>
+        <ul>
+          {data.lineItems.map((item) => (
+            <CartProductCard
+              data={item}
+              setData={setData}
+              key={item.id}
+              onDelete={handleDeleteItem}
+            />
+          ))}
+        </ul>
         <div style={{ display: 'none' }}>{JSON.stringify(data)}</div>
       </div>
     </div>
