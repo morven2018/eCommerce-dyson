@@ -18,40 +18,65 @@ describe('TeamMembers Component', () => {
 
   it('displays all team members with their basic information', () => {
     render(<TeamMembers />);
-    const teamMembers = [
-      'Alena Pudina',
-      'Igor Batura',
-      'Yulia Podgurskaia'
-    ];
-    teamMembers.forEach(name => {
+    const teamMembers = ['Alena Pudina', 'Igor Batura', 'Yulia Podgurskaia'];
+    teamMembers.forEach((name) => {
       expect(screen.getByText(name)).toBeInTheDocument();
     });
-    expect(screen.getByText('Team Lead | Project Manager | Frontend Development')).toBeInTheDocument();
+    expect(
+      screen.getByText('Team Lead | Project Manager | Frontend Development')
+    ).toBeInTheDocument();
     expect(screen.getByText('Senior Fullstack Developer')).toBeInTheDocument();
-    expect(screen.getByText('UI/UX Design | English Translation | Automated Testing (Jest/Vitest) | Frontend Development')).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        'UI/UX Design | English Translation | Automated Testing (Jest/Vitest) | Frontend Development'
+      )
+    ).toBeInTheDocument();
   });
 
   it('shows GitHub links for each team member', () => {
     render(<TeamMembers />);
-    const githubLinks = screen.getAllByRole('link', { name: /GitHub profile/i });
+    const githubLinks = screen.getAllByRole('link', {
+      name: /GitHub profile/i,
+    });
     expect(githubLinks).toHaveLength(3);
-    expect(githubLinks[0]).toHaveAttribute('href', 'https://github.com/morven2018');
-    expect(githubLinks[1]).toHaveAttribute('href', 'https://github.com/Ihar-Batura');
-    expect(githubLinks[2]).toHaveAttribute('href', 'https://github.com/yuliafire');
+    expect(githubLinks[0]).toHaveAttribute(
+      'href',
+      'https://github.com/morven2018'
+    );
+    expect(githubLinks[1]).toHaveAttribute(
+      'href',
+      'https://github.com/Ihar-Batura'
+    );
+    expect(githubLinks[2]).toHaveAttribute(
+      'href',
+      'https://github.com/yuliafire'
+    );
   });
 
   it('displays bio information for each team member', () => {
     render(<TeamMembers />);
-    expect(screen.getByText('Math & Computer Science Genius.')).toBeInTheDocument();
-    expect(screen.getByText('Natural-Born Leader with a Vision for Technical Innovation.')).toBeInTheDocument();
-    expect(screen.getByText('Trilingual Frontend Developer: English, Chinese, Russian.')).toBeInTheDocument();
+    expect(
+      screen.getByText('Math & Computer Science Genius.')
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        'Natural-Born Leader with a Vision for Technical Innovation.'
+      )
+    ).toBeInTheDocument();
+    expect(
+      screen.getByText(
+        'Trilingual Frontend Developer: English, Chinese, Russian.'
+      )
+    ).toBeInTheDocument();
   });
 
   it('opens GitHub profile in new tab when clicking GitHub link', () => {
     const originalOpen = window.open;
     window.open = vi.fn();
     render(<TeamMembers />);
-    const githubLinks = screen.getAllByRole('link', { name: /GitHub profile/i });
+    const githubLinks = screen.getAllByRole('link', {
+      name: /GitHub profile/i,
+    });
     fireEvent.click(githubLinks[0]);
     expect(window.open).toHaveBeenCalledWith(
       'https://github.com/morven2018',
@@ -73,9 +98,9 @@ describe('TeamMembers Component', () => {
       'Developed user profile page with interactive functionality.',
       'Built shopping cart page with order processing functionality.',
       'Created robust validation system for form inputs and user data.',
-      'Fixed SonarQube code quality issues and integrated mentors suggestions to optimize performance.'
+      'Fixed SonarQube code quality issues and integrated mentors suggestions to optimize performance.',
     ];
-    contributions.forEach(contribution => {
+    contributions.forEach((contribution) => {
       expect(screen.getByText(`✅ ${contribution}`)).toBeInTheDocument();
     });
   });
