@@ -127,6 +127,23 @@
   stroke: $primary-white;
 }
 
+.conditionText {
+  position: absolute;
+  bottom: -33px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.75rem;
+  color: #6b7280;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  background: rgba(255, 255, 255, 0.8);
+  padding: 4px 8px;
+  border-radius: 4px;
+  z-index: 2;
+  white-space: nowrap;
+}
+
 @keyframes fadeInOut {
   0% {
     opacity: 0;

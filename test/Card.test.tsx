@@ -1,71 +1,78 @@
-import { render, screen } from '@testing-library/react';
-import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { Card } from '../src/components/ui/cards/Card';
-import '@testing-library/jest-dom/vitest';
 import React from 'react';
+import { render, screen, fireEvent } from '@testing-library/react';
+import { describe, it, expect, vi, beforeEach } from 'vitest';
+import { Card } from '../src/components/ui/cards/Card';
 
-vi.mock('./Card.module.scss', () => ({
-  default: {
-    container: 'container',
-    cardImage: 'cardImage',
-    cardInfo: 'cardInfo',
-    price: 'price',
-    discount: 'discount',
-    name: 'name',
-    description: 'description',
-    buttonsContainer: 'buttonsContainer',
-    button: 'button',
-  },
+const mockGetCartIdFromLS = vi.fn();
+const mockApiCreateNewCart = vi.fn();
+const mockApiAddProductToCart = vi.fn();
+const mockGetTokenFromLS = vi.fn();
+
+interface LinkProps {
+  children: React.ReactNode;
+  to: string;
+  className?: string;
+  onKeyDown?: (e: React.KeyboardEvent) => void;
+}
+
+vi.mock('react-router-dom', () => ({
+  Link: ({ children, ...props }: LinkProps) => (
+    <a href={props.to} {...props}>
+      {children}
+    </a>
+  ),
 }));
 
-const mockNavigate = vi.fn();
-vi.mock('react-router-dom', () => ({
-  useNavigate: () => mockNavigate,
+vi.mock('@shared/api/local-storage/getCartIdFromLS', () => ({
+  getCartIdFromLS: () => mockGetCartIdFromLS(),
+}));
+
+vi.mock('@shared/api/commerce-tools/apiCreateNewCart', () => ({
+  apiCreateNewCart: () => mockApiCreateNewCart(),
+}));
+
+vi.mock('@shared/api/commerce-tools/apiAddProductToCart', () => ({
+  apiAddProductToCart: () => mockApiAddProductToCart(),
+}));
+
+vi.mock('@shared/api/local-storage/getTokenFromLS', () => ({
+  getTokenFromLS: () => mockGetTokenFromLS(),
 }));
 
 describe('Card Component', () => {
-  const defaultProps = {
-    id: '123',
-    name: 'Dyson Vacuum Cleaner',
-    description: 'A powerful vacuum cleaner with advanced features.',
+  const mockProps = {
+    id: 'prod-123',
+    name: 'Dyson Supersonic Hair Dryer',
+    description: 'Professional hair dryer with intelligent heat control',
     price: 39900,
-    discountedPrice: null,
-    src: '/image.jpg',
+    discountedPrice: 29900,
+    src: 'dyson-hair-dryer.jpg',
+    isInCart: false,
   };
 
   beforeEach(() => {
     vi.clearAllMocks();
-    vi.spyOn(Storage.prototype, 'setItem');
-    localStorage.setItem = vi.fn();
+    localStorage.clear();
+    mockGetTokenFromLS.mockReturnValue('mock-access-token');
+    mockGetCartIdFromLS.mockReturnValue(null);
+    mockApiCreateNewCart.mockResolvedValue({ id: 'new-cart-456' });
   });
 
-  it('renders card with correct product details', () => {
-    render(<Card {...defaultProps} />);
-    expect(screen.getByText('Dyson Vacuum Cleaner')).toBeInTheDocument();
-    expect(screen.getByRole('img')).toHaveAttribute('src', '/image.jpg');
-    expect(screen.getByRole('img')).toHaveAttribute('alt', 'Product picture');
+  it('renders correctly with all props', () => {
+    render(<Card {...mockProps} />);
+    expect(screen.getByAltText('Product picture')).toBeInTheDocument();
+    expect(screen.getByText('Dyson Supersonic Hair Dryer')).toBeInTheDocument();
+    expect(screen.getByText('Price: $299.00')).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: 'Add to Cart' })
+    ).toBeInTheDocument();
   });
 
-  it('truncates long name and description', () => {
-    const longProps = {
-      ...defaultProps,
-      name: 'Dyson Super Ultra Mega Vacuum Cleaner Pro Plus Edition',
-      description:
-        'This is an extremely long description that goes on and on to describe the amazing features of this vacuum cleaner in great detail.',
-    };
-    render(<Card {...longProps} />);
-  });
-
-  it('does not display discount when discountedPrice is null', () => {
-    render(<Card {...defaultProps} />);
-    expect(screen.queryByText(/Discount:/)).not.toBeInTheDocument();
-  });
-
-  it('formats price correctly for non-integer values', () => {
-    const propsWithOddPrice = {
-      ...defaultProps,
-      price: 39999,
-    };
-    render(<Card {...propsWithOddPrice} />);
+  it('handles "Add to Cart" click with existing cart', async () => {
+    mockGetCartIdFromLS.mockReturnValue('cart-123');
+    render(<Card {...mockProps} />);
+    const button = screen.getByRole('button', { name: 'Add to Cart' });
+    fireEvent.click(button);
+    expect(mockApiCreateNewCart).not.toHaveBeenCalled();
   });
 });

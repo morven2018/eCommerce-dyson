@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import styles from './TeamMembers.module.scss';
-import yuliaImage from '../../../assets/images/junior.jpg';
-import igorImage from '../../../assets/images/Igor.jpg';
-import goldenCup from '../../../assets/images/team.png';
-import alenaImage from '../../../assets/images/Alena.jpg';
+import yuliaImage from '@assets/images/junior.jpg';
+import igorImage from '@assets/images/Igor.jpg';
+import goldenCup from '@assets/images/team.png';
+import alenaImage from '@assets/images/Alena.jpg';
 
 interface TeamMember {
   name: string;

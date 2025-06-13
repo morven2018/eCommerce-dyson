@@ -9,9 +9,24 @@ interface Toast {
 }
 
 const promoCodes = [
-  { code: 'LUCKY-30', img: discountThirty, alt: '30% off promo code' },
-  { code: 'DYSON-20', img: discountTwenty, alt: '20% off promo code' },
-  { code: 'SUMMER-10', img: discountTen, alt: '10% off promo code' },
+  {
+    code: 'LUCKY-30',
+    img: discountThirty,
+    alt: '30% off promo code',
+    minAmount: 2000,
+  },
+  {
+    code: 'DYSON-20',
+    img: discountTwenty,
+    alt: '20% off promo code',
+    minAmount: 1000,
+  },
+  {
+    code: 'SUMMER-10',
+    img: discountTen,
+    alt: '10% off promo code',
+    minAmount: 500,
+  },
 ];
 
 export default function PromoCode() {
@@ -22,9 +37,7 @@ export default function PromoCode() {
   const handleCopy = async (textToCopy: string) => {
     try {
       await navigator.clipboard.writeText(textToCopy);
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
       setToast({ code: textToCopy });
       timeoutRef.current = setTimeout(() => {
         setToast(null);
@@ -35,13 +48,12 @@ export default function PromoCode() {
     }
   };
 
-  useEffect(() => {
-    return () => {
-      if (timeoutRef.current) {
-        clearTimeout(timeoutRef.current);
-      }
-    };
-  }, []);
+  useEffect(
+    () => () => {
+      if (timeoutRef.current) clearTimeout(timeoutRef.current);
+    },
+    []
+  );
 
   return (
     <div className={styles.promoBlock}>
@@ -49,7 +61,7 @@ export default function PromoCode() {
         Welcome to Dyson! <br /> <span>GET your promo code NOW!</span>
       </h3>
       <div className={styles.promoCards}>
-        {promoCodes.map(({ code, img, alt }) => (
+        {promoCodes.map(({ code, img, alt, minAmount }) => (
           <div key={code} className={styles.card}>
             <div className={styles.cardOverlay}></div>
             <img src={img} alt={alt} className={styles.promoImage} />
@@ -67,11 +79,7 @@ export default function PromoCode() {
                 {code}
               </button>
               {toast?.code === code && (
-                <div
-                  className={styles.toast}
-                  role="status"
-                  aria-live="polite"
-                >
+                <div className={styles.toast} role="status" aria-live="polite">
                   <svg
                     className={styles.checkmark}
                     viewBox="0 0 24 24"
@@ -84,6 +92,9 @@ export default function PromoCode() {
                   Copied!
                 </div>
               )}
+              <div className={styles.conditionText}>
+                 Applicable from ${minAmount}
+              </div>
             </div>
           </div>
         ))}
