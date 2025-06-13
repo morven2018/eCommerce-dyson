@@ -66,7 +66,7 @@ const ItemList = ({ text, icon, path, onClick }: INavItems) => {
 
 export const Header = () => {
   const location = useLocation();
-  const { isCartEmpty } = useCart();
+  const { isCartEmpty, clearCart } = useCart();
 
   const { isUserUnauthorized, setIsUserUnauthorized } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -77,7 +77,9 @@ export const Header = () => {
     if (!isUserUnauthorized) {
       const tokenName = 'authDysonToken';
       localStorage.removeItem(tokenName);
+      localStorage.removeItem('cartIdDyson');
       addAnonymousSessionTokenToLS();
+      clearCart();
     }
     setIsUserUnauthorized(!isUserUnauthorized);
   }, [isUserUnauthorized, setIsUserUnauthorized]);
