@@ -67,11 +67,7 @@ export default function PromoCode() {
                 {code}
               </button>
               {toast?.code === code && (
-                <div
-                  className={styles.toast}
-                  role="status"
-                  aria-live="polite"
-                >
+                <div className={styles.toast} role="status" aria-live="polite">
                   <svg
                     className={styles.checkmark}
                     viewBox="0 0 24 24"

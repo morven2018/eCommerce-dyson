@@ -30,7 +30,6 @@ describe('Counter', () => {
     expect(screen.getByDisplayValue('1')).toBeInTheDocument();
   });
 
-
   it('enables decrement button when quantity is greater than 1', () => {
     render(<Counter amount={0} {...defaultProps} />);
     const plusButton = screen.getByText('+');
