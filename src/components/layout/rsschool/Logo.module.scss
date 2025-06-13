@@ -21,6 +21,15 @@
   padding-right: 30px;
 }
 
+.schoolLogo {
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  display: inline-block;
+  line-height: 0;
+  margin: 30px 0;
+}
+
 .logoImage {
   margin: 30px auto;
   cursor: pointer;
