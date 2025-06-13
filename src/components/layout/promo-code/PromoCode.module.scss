@@ -72,6 +72,15 @@
   box-shadow: 0 8px 10px rgba(0, 0, 0, 0.3);
   transition: all 0.5s ease;
   box-sizing: border-box;
+  cursor: pointer;
+
+   &:hover {
+    @media (hover: hover) and (pointer: fine) {
+      transform: scale(1.02);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+      border-color: $card-hover-border;
+    }
+  }
 
   @media (max-width: 420px) {
     flex-direction: column;
@@ -121,7 +130,7 @@
   text-transform: uppercase;
   border: none;
   border-radius: 10px;
-  background-color: #595079;
+  background-color: $controls;
   color: $primary-white;
   cursor: pointer;
   transition: all 0.3s ease;

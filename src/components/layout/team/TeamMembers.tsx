@@ -24,7 +24,7 @@ const TeamMembers: React.FC = () => {
       description: 'Team Lead | Project Manager | Frontend Development',
       bio: [
         'Math & Computer Science Genius.',
-        'Skilled Programmer with a Master\'s Degree in Applied Mathematics and Computer Science.',
+        "Skilled Programmer with a Master's Degree in Applied Mathematics and Computer Science.",
         'Excelled in Physics and Chemistry Olympiads during her School Years.',
         'Experience as a Project Manager.',
       ],

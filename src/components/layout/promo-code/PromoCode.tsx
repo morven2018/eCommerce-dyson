@@ -93,7 +93,7 @@ export default function PromoCode() {
                 </div>
               )}
               <div className={styles.conditionText}>
-                 Applicable from ${minAmount}
+                Applicable from ${minAmount}
               </div>
             </div>
           </div>
