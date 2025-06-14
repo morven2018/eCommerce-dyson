@@ -5,8 +5,9 @@ import { openDialog } from '@services/DialogService';
 
 export async function apiAddProductToCart(
   productId: string,
-  quantity: number = 1
-): Promise<void> {
+  quantity: number = 1,
+  version = 1
+): Promise<number | void> {
   const accessToken = getTokenFromLS();
   const cartId = getCartIdFromLS();
 
@@ -20,7 +21,7 @@ export async function apiAddProductToCart(
 
   try {
     const requestBody = {
-      version: 1,
+      version: version,
       actions: [
         {
           action: 'addLineItem',
@@ -39,7 +40,7 @@ export async function apiAddProductToCart(
       ],
     };
 
-    await fetch(url, {
+    const response = await fetch(url, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${accessToken}`,
@@ -47,6 +48,8 @@ export async function apiAddProductToCart(
       },
       body: JSON.stringify(requestBody),
     });
+    const result = await response.json();
+    if (result) return result.version;
   } catch (error) {
     let message = 'Error adding product to cart';
 

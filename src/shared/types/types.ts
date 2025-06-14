@@ -205,4 +205,5 @@ export interface CartData {
   id: string;
   lineItems: CartLineItem[];
   totalPrice: TotalPrice;
+  version: number;
 }
