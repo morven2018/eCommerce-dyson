@@ -4,6 +4,7 @@ import Counter from '../counter/Counter';
 import { useState } from 'react';
 import { IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import styles from '../../layout/cart/Cart.module.scss';
 
 interface CartProductProps {
   data: CartLineItem;
@@ -48,28 +49,36 @@ export default function CartProductCard({
   };
 
   return (
-    <li>
-      <img src={imageURL} alt={imageAlt || 'product image'} />
-      <div>
+    <li className={styles.productCard}>
+      <img
+        src={imageURL}
+        alt={imageAlt || 'product image'}
+        className={styles.productImage}
+      />
+
+      <div className={styles.productNameArea}>
         <h4>{productName}</h4>
         <div>{variant}</div>
-        <div>{price}</div>
-        {discount && <div>{discount}</div>}
-        <Counter
-          price={priceValue ?? price}
-          amount={quantity}
-          onChange={handleQuantityChange}
-          disabled={isUpdating}
-        />
-        <IconButton
-          onClick={handleDelete}
-          aria-label="Delete item"
-          color="error"
-          disabled={isDeleting}
-        >
-          <DeleteIcon />
-        </IconButton>
       </div>
+      <div className={styles.pricesDiscount}>
+        {discount && <div>{discount}</div>}
+        <div className={!discount ? styles.price : styles.oldPrice}>
+          {price}
+        </div>
+      </div>
+      <Counter
+        price={priceValue ?? price}
+        amount={quantity}
+        onChange={handleQuantityChange}
+        disabled={isUpdating}
+      />
+      <IconButton
+        onClick={handleDelete}
+        aria-label="Delete item"
+        disabled={isDeleting}
+      >
+        <DeleteIcon />
+      </IconButton>
     </li>
   );
 }

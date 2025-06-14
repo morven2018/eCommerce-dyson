@@ -1,4 +1,4 @@
-import { IconButton } from '@mui/material';
+import { Divider, IconButton } from '@mui/material';
 import icon from '../../../assets/icons/reset.svg';
 import { CartData } from '@shared/types/types';
 import formatPrice from '@shared/utlis/price-formatter';
@@ -9,6 +9,7 @@ import { openDialog } from '@services/DialogService';
 import CartProductCard from '@components/ui/cards/CartProductCard';
 import { apiUpdateCart } from '@shared/api/commerce-tools/cart/updateNumberOfItems';
 import { useCart } from '@shared/context/cart-context';
+import styles from './Cart.module.scss';
 
 interface CartInfoProps {
   data: CartData;
@@ -96,30 +97,37 @@ export default function CartInfo({ data, setData }: CartInfoProps) {
   const items = data.lineItems.reduce((sum, item) => (sum += item.quantity), 0);
   const total = formatPrice(data.totalPrice);
   return (
-    <div>
-      <div>
+    <div className={styles.cartTable}>
+      <div className={styles.cartHeader}>
         <h4>Cart</h4>
-        <div>
-          <div>Total: {total}</div>
-          <div>{`${items} items`}</div>
-          <IconButton onClick={handleReset} disabled={isResetting}>
+        <div className={styles.infoAndReset}>
+          <div className={styles.cartHeaderInfo}>
+            <div>Total: {total}</div>
+            <div className={styles.items}>{`${items} items`}</div>
+          </div>
+          <IconButton
+            onClick={handleReset}
+            disabled={isResetting}
+            className={styles.reset}
+          >
             <img src={icon} alt="Reset Cart" />
           </IconButton>
         </div>
-        <ul>
-          {data.lineItems.map((item) => (
-            <CartProductCard
-              data={item}
-              setData={setData}
-              key={item.id}
-              onDelete={handleDeleteItem}
-              onQuantityChange={handleQuantityChange}
-              isUpdating={isUpdating}
-            />
-          ))}
-        </ul>
-        <div style={{ display: 'none' }}>{JSON.stringify(data)}</div>
       </div>
+      <Divider orientation="horizontal" />
+      <ul>
+        {data.lineItems.map((item) => (
+          <CartProductCard
+            data={item}
+            setData={setData}
+            key={item.id}
+            onDelete={handleDeleteItem}
+            onQuantityChange={handleQuantityChange}
+            isUpdating={isUpdating}
+          />
+        ))}
+      </ul>
+      <div style={{ display: 'none' }}>{JSON.stringify(data)}</div>
     </div>
   );
 }

@@ -1,6 +1,7 @@
 import { Button } from '@mui/material';
 import icon from '../../../assets/icons/void-cart.svg';
 import { useNavigate } from 'react-router-dom';
+import styles from './Cart.module.scss';
 
 export default function VoidCartArea() {
   const navigate = useNavigate();
@@ -10,17 +11,19 @@ export default function VoidCartArea() {
   };
 
   return (
-    <div>
-      <div>
+    <div className={styles.cartTable}>
+      <div className={styles.cartHeader}>
         <h4>Cart</h4>
-        <div>
-          <div>Total: 0</div>
-          <div>No items added</div>
+        <div className={styles.cartHeaderInfo}>
+          <div>Total: $0</div>
+          <div className={styles.items}>No items added</div>
         </div>
-        <img src={icon} alt="Void Cart" />
-        <h3>Cart is empty</h3>
-        <Button onClick={handleClick}>see our catalog</Button>
       </div>
+      <img src={icon} alt="Void Cart" className={styles.voidIcon} />
+      <h3>Cart is empty</h3>
+      <Button onClick={handleClick} className={styles.button}>
+        see our catalog
+      </Button>
     </div>
   );
 }
