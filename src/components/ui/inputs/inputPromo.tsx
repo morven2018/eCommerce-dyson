@@ -7,75 +7,91 @@ import {
   IconButton,
 } from '@mui/material';
 import { useState } from 'react';
-
 import ApplyIcon from '../../../assets/icons/apply-promo.png';
 import CloseIcon from '@mui/icons-material/Close';
 import styles from './input.module.scss';
+import { PromoCode, overAmount } from '@shared/constants/promocode';
 
-export const PromoCodeInput = () => {
-  const INPUT_ID = 'promo-code';
-  const INPUT_LABEL = 'Apply promo';
-  const SUCCESS_MESSAGE = 'Promo code applied successfully!';
-  //const ERROR_MESSAGGE =
-  //  "You don't meet the conditions to apply this promo code";
-  const PROMPT_MESSAGE = 'Enter your promo code';
+interface PromoCodeInputProps {
+  cartTotal: number;
+  onApplyPromo: (code: string) => Promise<boolean>;
+  isLoading?: boolean;
+}
 
-  const [promoCode, setPromoCode] = useState('');
+export const PromoCodeInput = ({
+  cartTotal,
+  onApplyPromo,
+  isLoading = false,
+}: PromoCodeInputProps) => {
+  const [inputValue, setInputValue] = useState('');
   const [isPromoApplied, setIsPromoApplied] = useState(false);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState('');
+  const [helperText, setHelperText] = useState('Enter your promo code');
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setPromoCode(event.target.value);
-    setError(false);
-  };
+  const handleApply = async () => {
+    const normalizedCode = inputValue.trim().toUpperCase();
 
-  const handleApply = () => {
-    if (promoCode.trim()) {
-      setIsPromoApplied(true);
-      setError(false);
-    } else {
-      setError(true);
+    if (!(normalizedCode in PromoCode)) {
+      setError('This promo code does not exist');
+      return;
+    }
+
+    const minAmount = overAmount[normalizedCode as keyof typeof overAmount];
+    if (cartTotal < minAmount) {
+      setError(`Minimum order amount: $${(minAmount / 100).toFixed(2)}`);
+      return;
+    }
+
+    try {
+      const success = await onApplyPromo(normalizedCode);
+      if (success) {
+        setIsPromoApplied(true);
+        setHelperText('Promo code applied!');
+        setError('');
+      } else {
+        setError('Failed to apply promo code');
+      }
+    } catch {
+      setError('Error applying promo code');
     }
   };
 
-  const handleReset = () => {
-    setPromoCode('');
-    setIsPromoApplied(false);
-    setError(false);
+  const handleReset = async () => {
+    try {
+      const success = await onApplyPromo('');
+      if (success) {
+        setIsPromoApplied(false);
+        setInputValue('');
+        setHelperText('Enter your promo code');
+        setError('');
+      }
+    } catch {
+      setError('Error removing promo code');
+    }
   };
 
   return (
-    <FormControl
-      variant="outlined"
-      fullWidth
-      error={error}
-      disabled={isPromoApplied}
-    >
-      <InputLabel htmlFor={INPUT_ID}>{INPUT_LABEL}</InputLabel>
+    <FormControl variant="outlined" fullWidth error={!!error}>
+      <InputLabel>Promo Code</InputLabel>
       <OutlinedInput
-        id={INPUT_ID}
-        type="text"
-        value={promoCode}
-        onChange={handleChange}
-        label={INPUT_LABEL}
-        className={styles.input}
+        value={inputValue}
+        onChange={(e) => {
+          setInputValue(e.target.value);
+          setError('');
+        }}
+        label="Promo Code"
+        disabled={isLoading}
         endAdornment={
           <InputAdornment position="end">
             {isPromoApplied ? (
-              <IconButton
-                aria-label="Reset promo code"
-                onClick={handleReset}
-                edge="end"
-              >
+              <IconButton onClick={handleReset} edge="end" disabled={isLoading}>
                 <CloseIcon />
               </IconButton>
             ) : (
               <IconButton
-                aria-label="Apply promo code"
                 onClick={handleApply}
-                color="primary"
+                disabled={!inputValue.trim() || isLoading}
                 edge="end"
-                disabled={!promoCode.trim()}
               >
                 <img
                   src={ApplyIcon}
@@ -87,11 +103,7 @@ export const PromoCodeInput = () => {
           </InputAdornment>
         }
       />
-      <FormHelperText>
-        {isPromoApplied ? SUCCESS_MESSAGE : PROMPT_MESSAGE}
-      </FormHelperText>
+      <FormHelperText>{error || helperText}</FormHelperText>
     </FormControl>
   );
 };
-
-PromoCodeInput.displayName = 'PromoCodeInput';
