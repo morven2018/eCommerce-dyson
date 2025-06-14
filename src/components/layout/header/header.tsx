@@ -82,7 +82,7 @@ export const Header = () => {
       clearCart();
     }
     setIsUserUnauthorized(!isUserUnauthorized);
-  }, [isUserUnauthorized, setIsUserUnauthorized]);
+  }, [clearCart, isUserUnauthorized, setIsUserUnauthorized]);
 
   const updateNavItems = useCallback(() => {
     const updatedItems = [

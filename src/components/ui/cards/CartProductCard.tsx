@@ -42,7 +42,6 @@ export default function CartProductCard({
   };
 
   const handleQuantityChange = async (newQuantity: number) => {
-    console.log(newQuantity);
     if (onQuantityChange) {
       await onQuantityChange(data.id, newQuantity);
     }

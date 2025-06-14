@@ -127,7 +127,6 @@ export default function CartInfo({ data, setData }: CartInfoProps) {
           />
         ))}
       </ul>
-      <div style={{ display: 'none' }}>{JSON.stringify(data)}</div>
     </div>
   );
 }
