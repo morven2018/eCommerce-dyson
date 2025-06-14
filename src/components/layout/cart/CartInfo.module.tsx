@@ -19,21 +19,34 @@ export default function CartInfo({ data, setData }: CartInfoProps) {
   const [isResetting, setIsResetting] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
   const { setCart } = useCart();
+  const [currentVersion, setCurrentVersion] = useState(data.version);
 
   const handleReset = async () => {
     if (!data.lineItems.length) return;
 
     setIsResetting(true);
     try {
+      let version = currentVersion;
       for (const item of data.lineItems) {
-        await apiDeleteProductFromCart(item.id, item.quantity);
+        const result = await apiDeleteProductFromCart(
+          item.id,
+          item.quantity,
+          version
+        );
+        if (result) {
+          version = result;
+          setCurrentVersion(version);
+        }
       }
 
       const updatedCart = await apiGetCartById();
       setData(updatedCart);
       setCart(updatedCart);
+      setCurrentVersion(updatedCart?.version ?? 1);
     } catch {
       openDialog('Error reset cart', true);
+      const freshCart = await apiGetCartById();
+      setCurrentVersion(freshCart?.version ?? 1);
     } finally {
       setIsResetting(false);
     }
@@ -41,12 +54,18 @@ export default function CartInfo({ data, setData }: CartInfoProps) {
 
   const handleDeleteItem = async (itemId: string) => {
     try {
-      await apiDeleteProductFromCart(itemId);
+      const result = await apiDeleteProductFromCart(itemId, 1, currentVersion);
+      if (result) {
+        setCurrentVersion(result);
+      }
       const updatedCart = await apiGetCartById();
       setData(updatedCart);
       setCart(updatedCart);
-    } catch (error) {
-      console.error('Failed to delete item:', error);
+      setCurrentVersion(updatedCart?.version ?? 1);
+    } catch {
+      openDialog('Failed to delete item', true);
+      const freshCart = await apiGetCartById();
+      setCurrentVersion(freshCart?.version ?? 1);
     }
   };
 
@@ -63,9 +82,12 @@ export default function CartInfo({ data, setData }: CartInfoProps) {
         const updatedCart = await apiGetCartById();
         setData(updatedCart);
         setCart(updatedCart);
+        setCurrentVersion(updatedCart?.version ?? 1);
       }
     } catch {
       openDialog('Failed to update cart', true);
+      const freshCart = await apiGetCartById();
+      setCurrentVersion(freshCart?.version ?? 1);
     } finally {
       setIsUpdating(false);
     }

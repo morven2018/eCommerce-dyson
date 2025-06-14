@@ -7,7 +7,7 @@ export async function apiDeleteProductFromCart(
   lineItemId: string,
   quantity: number = 1,
   version: number = 1
-): Promise<void> {
+): Promise<number | void> {
   const accessToken = getTokenFromLS();
   const cartId = getCartIdFromLS();
 
@@ -31,7 +31,7 @@ export async function apiDeleteProductFromCart(
       ],
     };
 
-    await fetch(url, {
+    const response = await fetch(url, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${accessToken}`,
@@ -39,6 +39,8 @@ export async function apiDeleteProductFromCart(
       },
       body: JSON.stringify(requestBody),
     });
+    const result = await response.json();
+    if (result) return result.version;
   } catch (error) {
     let message = 'Error removing product from cart';
 

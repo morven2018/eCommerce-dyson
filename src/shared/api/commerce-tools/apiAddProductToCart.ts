@@ -2,11 +2,12 @@ import { commercetoolsConfig } from './config';
 import { getTokenFromLS } from '../local-storage/getTokenFromLS';
 import { getCartIdFromLS } from '../local-storage/getCartIdFromLS';
 import { openDialog } from '@services/DialogService';
+import { apiGetCartById } from './apiGetCartById';
 
 export async function apiAddProductToCart(
   productId: string,
   quantity: number = 1,
-  version = 1
+  version?: number
 ): Promise<number | void> {
   const accessToken = getTokenFromLS();
   const cartId = getCartIdFromLS();
@@ -15,13 +16,18 @@ export async function apiAddProductToCart(
     throw new Error('No access token found or cart id');
   }
 
+  const currentCart = await apiGetCartById();
+  if (!currentCart) throw new Error('No access to cart');
+
+  const CurrentVersion = version ?? currentCart.version;
+
   const apiUrl = commercetoolsConfig.apiUrl;
   const projectKey = commercetoolsConfig.projectKey;
   const url = `${apiUrl}/${projectKey}/me/carts/${cartId}`;
 
   try {
     const requestBody = {
-      version: version,
+      version: CurrentVersion,
       actions: [
         {
           action: 'addLineItem',
