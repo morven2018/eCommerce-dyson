@@ -7,6 +7,7 @@ import CartInfo from '@components/layout/cart/CartInfo.module';
 import { getCartIdFromLS } from '@shared/api/local-storage/getCartIdFromLS';
 import { apiCreateNewCart } from '@shared/api/commerce-tools/apiCreateNewCart';
 import styles from '../../components/layout/cart/Cart.module.scss';
+import CartResult from '@components/layout/cart/CartResult';
 
 export const CartPage = () => {
   const [data, setData] = useState<CartData | null>(null);
@@ -64,13 +65,15 @@ export const CartPage = () => {
     return (
       <div className={styles.voidCart}>
         <VoidCartArea />
-        <div></div>
+        <div className={styles.voidResult}>
+          <CartResult />
+        </div>
       </div>
     );
   return (
     <div className={styles.cart}>
       <CartInfo data={data} setData={setData} />
-      <div></div>
+      <CartResult data={data} />
     </div>
   );
 };

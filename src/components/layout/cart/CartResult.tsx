@@ -1,31 +1,51 @@
-import { Divider } from '@mui/material';
+import { PromoCodeInput } from '@components/ui/inputs/inputPromo';
+import { Button, Divider } from '@mui/material';
+import { CartData } from '@shared/types/types';
+import styles from './Cart.module.scss';
+import calculateCartTotals from '@shared/utlis/calculateTotals';
 
-export default function CartResult() {
-  return (
-    <div>
-      <div>
-        <h5>Your order summary</h5>
-        <ul>
-          <li>Sub total: {}</li>
-        </ul>
-        <ul>
-          <li>Shipping: {}</li>
-        </ul>
-        <ul>
-          <li>Tax: included</li>
-        </ul>
-        <ul>
-          <li>Promo code: {}</li>
-        </ul>
+interface CartResultProps {
+  data?: CartData;
+}
+
+export default function CartResult({ data }: CartResultProps) {
+  if (data) {
+    const [total, subTotal, saved] = calculateCartTotals(data);
+    return (
+      <div className={styles.cartResult}>
         <div>
-          <div>Total: 0</div>
-          <div>No items added</div>
+          <h5>Your order summary</h5>
+          <ul>
+            <li>
+              <span>Sub total:</span> <span>{subTotal}</span>
+            </li>
+
+            <li>
+              <span> Shipping:</span> <span>{'$0.00'}</span>
+            </li>
+
+            <li>
+              <span> Tax:</span> <span>included</span>
+            </li>
+
+            <li>
+              <span> Promo code:</span> <span>{}</span>
+            </li>
+          </ul>
+
+          <Divider orientation="horizontal" flexItem />
+          <div className={styles.results}>
+            <h5>
+              <span>Total:</span> {total}
+            </h5>
+            <div className={styles.saved}>
+              <span>You saved</span> {saved}
+            </div>
+            <PromoCodeInput />
+          </div>
         </div>
-        <Divider orientation="horizontal" flexItem />
-        <div>
-          <h5>Total: {}</h5>
-        </div>
+        <Button className={styles.button}>check out</Button>
       </div>
-    </div>
-  );
+    );
+  }
 }

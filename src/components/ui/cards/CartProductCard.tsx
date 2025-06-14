@@ -49,35 +49,42 @@ export default function CartProductCard({
 
   return (
     <li className={styles.productCard}>
-      <img
-        src={imageURL}
-        alt={imageAlt || 'product image'}
-        className={styles.productImage}
-      />
+      <div className={styles.productInfo}>
+        <img
+          src={imageURL}
+          alt={imageAlt || 'product image'}
+          className={styles.productImage}
+        />
 
-      <div className={styles.productNameArea}>
-        <h4>{productName}</h4>
-        <div>{variant}</div>
-      </div>
-      <div className={styles.pricesDiscount}>
-        {discount && <div>{discount}</div>}
-        <div className={!discount ? styles.price : styles.oldPrice}>
-          {price}
+        <div className={styles.productNameArea}>
+          <h4>{productName}</h4>
+          <div>{variant}</div>
         </div>
+      </div>{' '}
+      <div className={styles.counterWrapper}>
+        <div className={styles.pricesDiscount}>
+          {discount && <div>{discount}</div>}
+          <div className={!discount ? styles.price : styles.oldPrice}>
+            {price}
+          </div>
+        </div>
+
+        <Counter
+          price={priceValue ?? price}
+          amount={quantity}
+          onChange={handleQuantityChange}
+          disabled={isUpdating}
+        />
       </div>
-      <Counter
-        price={priceValue ?? price}
-        amount={quantity}
-        onChange={handleQuantityChange}
-        disabled={isUpdating}
-      />
-      <IconButton
-        onClick={handleDelete}
-        aria-label="Delete item"
-        disabled={isDeleting}
-      >
-        <DeleteIcon />
-      </IconButton>
+      <div className={styles.deleteWrapper}>
+        <IconButton
+          onClick={handleDelete}
+          aria-label="Delete item"
+          disabled={isDeleting}
+        >
+          <DeleteIcon />
+        </IconButton>
+      </div>
     </li>
   );
 }
