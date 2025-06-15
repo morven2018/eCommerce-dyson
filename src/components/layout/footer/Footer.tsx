@@ -68,7 +68,7 @@ export default function Footer() {
                 </svg>
                 <span className={styles.name}>Igor Batura</span>
               </a>
-              <span className={styles.jobTitle}>Senior Developer</span>
+              <span className={styles.jobTitle}>Middle Developer</span>
             </div>
             <div className={styles.teamMember}>
               <a

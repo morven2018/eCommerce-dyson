@@ -101,7 +101,7 @@ const TeamMembers: React.FC = () => {
       <img src={goldenCup} className={styles.cup} alt="golden cup" />
       <div className={styles.teamContainer}>
         {teamMembers.map((member, index) => (
-          <div key={index} className={styles.card}>
+          <div key={Math.random() * index} className={styles.card}>
             <div className={styles.cardImage}>
               <img src={member.image} alt={member.name} />
             </div>
@@ -142,7 +142,7 @@ const TeamMembers: React.FC = () => {
                 <h3 className={styles.bioHeader}>About</h3>
                 <div className={styles.bio}>
                   {member.bio.map((line, i) => (
-                    <p key={i}>{line}</p>
+                    <p key={Math.random() * i}>{line}</p>
                   ))}
                 </div>
               </div>
@@ -162,7 +162,10 @@ const TeamMembers: React.FC = () => {
               <div className={styles.cardContent}>
                 <ul className={styles.contributionList}>
                   {member.contributions.map((contribution, i) => (
-                    <li key={i} className={styles.contributionItem}>
+                    <li
+                      key={Math.random() * i}
+                      className={styles.contributionItem}
+                    >
                       ✅ {contribution}
                     </li>
                   ))}

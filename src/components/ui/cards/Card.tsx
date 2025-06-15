@@ -40,6 +40,15 @@ export const Card = ({
       ? description
       : `${description.slice(0, maxProductDescriptionLength)}...`;
 
+  let buttonText: string;
+  if (loading) {
+    buttonText = 'Loading...';
+  } else if (inCart) {
+    buttonText = 'In Cart';
+  } else {
+    buttonText = 'Add to Cart';
+  }
+
   const addToCart = async () => {
     setLoading(true);
 
@@ -95,10 +104,10 @@ export const Card = ({
       </Link>
       <button
         onClick={addToCart}
-        disabled={inCart || loading}
+        disabled={inCart ?? loading}
         className={styles.button}
       >
-        {loading ? 'Loading...' : inCart ? 'In Cart' : 'Add to Cart'}
+        {buttonText}
       </button>
     </div>
   );

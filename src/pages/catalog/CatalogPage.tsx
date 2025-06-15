@@ -149,6 +149,8 @@ export const CatalogPage = () => {
     });
   }
 
+  const sortedColors = [...allColors].sort((a, b) => a.localeCompare(b));
+
   const priceFacet = productsData.facets?.['variants.price.centAmount'];
 
   let minPrice = 0;
@@ -205,7 +207,7 @@ export const CatalogPage = () => {
           />
 
           <ColorRange
-            colors={allColors.sort((a, b) => a.localeCompare(b))}
+            colors={sortedColors}
             selectedColors={selectedColors}
             onChange={(colors) => setSelectedColors(colors)}
           />
