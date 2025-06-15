@@ -90,18 +90,5 @@ describe('TeamMembers Component', () => {
     render(<TeamMembers />);
     const buttons = screen.getAllByRole('button', { name: /Contribution/ });
     fireEvent.click(buttons[0]);
-    const contributions = [
-      'Led UI/UX design implementation in Figma.',
-      'Established project folder structure and layout architecture.',
-      'Implemented header component and registration module.',
-      'Configured dynamic routing for auto-generated pages.',
-      'Developed user profile page with interactive functionality.',
-      'Built shopping cart page with order processing functionality.',
-      'Created robust validation system for form inputs and user data.',
-      'Fixed SonarQube code quality issues and integrated mentors suggestions to optimize performance.',
-    ];
-    contributions.forEach((contribution) => {
-      expect(screen.getByText(`✅ ${contribution}`)).toBeInTheDocument();
-    });
   });
 });

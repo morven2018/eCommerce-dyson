@@ -8,7 +8,7 @@ import { apiAddProductToCart } from '@shared/api/commerce-tools/apiAddProductToC
 import { getCartIdFromLS } from '@shared/api/local-storage/getCartIdFromLS';
 import { apiCreateNewCart } from '@shared/api/commerce-tools/apiCreateNewCart';
 import { apiDeleteProductFromCart } from '@shared/api/commerce-tools/apiDeleteProductFromCart';
-import { useCart } from '@shared/context/cart-context';
+import { useCart } from '@shared/context/cart/useCart';
 import { handleCatchError } from '@components/ui/error/catchError';
 
 interface VariantsData {

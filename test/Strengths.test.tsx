@@ -1,6 +1,7 @@
 import { render, screen } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import Strengths from '../src/components/layout/strengths/Strengths';
+import React from 'react';
 
 // Mock image imports
 vi.mock('../../../assets/images/strength1.jpeg', () => 'test-strength1.jpeg');

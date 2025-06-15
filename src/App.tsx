@@ -14,7 +14,7 @@ import { ProductPage } from '@pages/product/Product';
 import { CategoryPage } from '@pages/catalog/category/CategoryPage';
 import { CatalogPage } from '@pages/catalog/CatalogPage';
 import { CartPage } from '@pages/cart/Cart';
-import { CartProvider } from '@shared/context/cart-context';
+import { CartProvider } from '@shared/context/cart/cartProvider';
 
 const HOME_PATH = '/';
 const RESERVE_HOME_PATH = '/index.html';

@@ -69,9 +69,6 @@ export const CartPage = () => {
     return (
       <div className={styles.voidCart}>
         <VoidCartArea />
-        <div className={styles.voidResult}>
-          <CartResult discountPercentage={discountPercentage} />
-        </div>
       </div>
     );
 
