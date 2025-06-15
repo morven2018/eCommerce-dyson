@@ -83,36 +83,36 @@ export const AddressForm = ({
   };
 
   const handleDefaultShippingChange = (checked: boolean) => {
-    setValue('defaultShipping', checked);
+    setValue('defaultShipping', checked, { shouldDirty: true });
     if (checked && !useAsShipping) {
-      setValue('useAsShipping', true);
+      setValue('useAsShipping', true, { shouldDirty: true });
     }
   };
 
   const handleDefaultBillingChange = (checked: boolean) => {
-    setValue('defaultBilling', checked);
+    setValue('defaultBilling', checked, { shouldDirty: true });
     if (checked && !useAsBilling) {
-      setValue('useAsBilling', true);
+      setValue('useAsBilling', true, { shouldDirty: true });
     }
   };
 
   const handleUseAsShippingChange = (checked: boolean) => {
-    setValue('useAsShipping', checked);
+    setValue('useAsShipping', checked, { shouldDirty: true });
     if (!checked && defaultShipping) {
-      setValue('defaultShipping', false);
+      setValue('defaultShipping', false, { shouldDirty: true });
     }
     if (!checked && !useAsBilling) {
-      setValue('useAsBilling', true);
+      setValue('useAsBilling', true, { shouldDirty: true });
     }
   };
 
   const handleUseAsBillingChange = (checked: boolean) => {
-    setValue('useAsBilling', checked);
+    setValue('useAsBilling', checked, { shouldDirty: true });
     if (!checked && defaultBilling) {
-      setValue('defaultBilling', false);
+      setValue('defaultBilling', false, { shouldDirty: true });
     }
     if (!checked && !useAsShipping) {
-      setValue('useAsShipping', true);
+      setValue('useAsShipping', true, { shouldDirty: true });
     }
   };
 
