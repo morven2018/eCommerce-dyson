@@ -48,6 +48,15 @@ export const Card = ({
       ? description
       : `${description.slice(0, maxProductDescriptionLength)}...`;
 
+  let buttonText: string;
+  if (loading) {
+    buttonText = 'Loading...';
+  } else if (inCart) {
+    buttonText = 'In Cart';
+  } else {
+    buttonText = 'Add to Cart';
+  }
+
   const addToCart = async () => {
     setLoading(true);
 

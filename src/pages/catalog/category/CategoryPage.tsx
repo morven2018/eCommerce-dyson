@@ -3,7 +3,6 @@ import { useState, useEffect } from 'react';
 import { getProductsByIdCategory } from '@shared/api/commerce-tools/getProductsByIdCategory';
 import { getTokenFromLS } from '@shared/api/local-storage/getTokenFromLS';
 import { commercetoolsConfig } from '@shared/api/commerce-tools/config';
-import { openDialog } from '@services/DialogService';
 import {
   ProductsByCategory,
   CardInfo,
@@ -15,6 +14,7 @@ import { Breadcrumbs } from '@components/ui/breadcrumbs/Breadcrumbs';
 import { Pagination } from '@mui/material';
 import { getCartIdFromLS } from '@shared/api/local-storage/getCartIdFromLS';
 import { apiGetCartById } from '@shared/api/commerce-tools/apiGetCartById';
+import { handleCatchError } from '@components/ui/error/catchError';
 
 export const CategoryPage = ({ page }: { page: string }) => {
   const [productsData, setProductsData] = useState<ProductsByCategory | null>(
@@ -64,15 +64,7 @@ export const CategoryPage = ({ page }: { page: string }) => {
         });
         setProductsData(data);
       } catch (error) {
-        let message = 'Error get products category by ID';
-
-        if (error instanceof Error) {
-          message = error.message;
-        } else if (typeof error === 'string') {
-          message = error;
-        }
-
-        openDialog(message);
+        handleCatchError(error, 'Error get products category by ID');
       }
     };
 
@@ -90,15 +82,7 @@ export const CategoryPage = ({ page }: { page: string }) => {
 
         setLineItemsInCart(cart.lineItems);
       } catch (error) {
-        let message = 'Error get cart line items';
-
-        if (error instanceof Error) {
-          message = error.message;
-        } else if (typeof error === 'string') {
-          message = error;
-        }
-
-        openDialog(message, true);
+        handleCatchError(error, 'Error get cart line items');
       }
     };
 
@@ -123,28 +107,37 @@ export const CategoryPage = ({ page }: { page: string }) => {
   return (
     <>
       <Breadcrumbs items={breadcrumbItems} />
-      <div className={styles.container}>
-        {arrCardsInfo.map((card: CardInfo) => (
-          <Card
-            key={card.id}
-            id={card.id}
-            name={card.name['en-US']}
-            description={card.description['en-US']}
-            price={card.masterVariant?.prices?.[0]?.value?.centAmount ?? 0}
-            discountedPrice={
-              card.masterVariant?.prices?.[0]?.discounted?.value?.centAmount ??
-              null
-            }
-            src={card.masterVariant?.images?.[0]?.url ?? '/dyson_icon.svg'}
-            isInCart={lineItemsInCart.some(
-              (item) => item.productId === card.id
-            )}
-          />
-        ))}
+      <div>
+        <div className={styles.container}>
+          {arrCardsInfo.map((card: CardInfo) => (
+            <Card
+              key={card.id}
+              id={card.id}
+              name={card.name['en-US']}
+              description={card.description['en-US']}
+              price={card.masterVariant?.prices?.[0]?.value?.centAmount ?? 0}
+              discountedPrice={
+                card.masterVariant?.prices?.[0]?.discounted?.value
+                  ?.centAmount ?? null
+              }
+              src={card.masterVariant?.images?.[0]?.url ?? '/dyson_icon.svg'}
+              isInCart={lineItemsInCart.some(
+                (item) => item.productId === card.id
+              )}
+            />
+          ))}
+        </div>
         <Pagination
           count={Math.ceil(productsData?.total / 4)}
           onChange={handleChangePageNumber}
           className={styles.pagination}
+          sx={{
+            '& .MuiPagination-ul': {
+              justifyContent: 'end',
+            },
+            display: { xs: 'flex', md: 'block' },
+            justifyContent: 'end',
+          }}
         />
       </div>
     </>

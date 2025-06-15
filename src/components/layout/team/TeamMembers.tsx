@@ -24,18 +24,18 @@ const TeamMembers: React.FC = () => {
       description: 'Team Lead | Project Manager | Frontend Development',
       bio: [
         'Math & Computer Science Genius.',
-        'Skilled Programmer with a Master Degree in Applied Mathematics and Computer Science.',
+        "Skilled Programmer with a Master's Degree in Applied Mathematics and Computer Science.",
         'Excelled in Physics and Chemistry Olympiads during her School Years.',
         'Experience as a Project Manager.',
       ],
       contributions: [
         'Led UI/UX design implementation in Figma.',
-        'Established project folder structure and layout architecture.',
-        'Implemented header component and registration module.',
-        'Configured dynamic routing for auto-generated pages.',
-        'Developed user profile page with interactive functionality.',
-        'Built shopping cart page with order processing functionality.',
-        'Created robust validation system for form inputs and user data.',
+        'Established Project folder structure and Layout Architecture.',
+        'Implemented Header component and Registration Module.',
+        'Configured dynamic Routing for auto-generated pages.',
+        'Developed User Profile page with interactive functionality.',
+        'Built shopping Cart Page with order processing functionality.',
+        'Created robust Validation System for form inputs and user data.',
         'Fixed SonarQube code quality issues and integrated mentors suggestions to optimize performance.',
       ],
       gitHubUrl: 'https://github.com/morven2018',
@@ -53,11 +53,11 @@ const TeamMembers: React.FC = () => {
       contributions: [
         'Partnered with the Team Lead on architectural decisions and task delegation.',
         'Architected and configured all project configuration files.',
-        'Designed and implemented backend infrastructure with secure API endpoints and database connectivity.',
+        'Designed and implemented Backend infrastructure with secure API endpoints and database connectivity.',
         'Developed product Catalog Page with dynamic filtering, sorting, and pagination functionality.',
         'Engineered secure login Authentication system with form validation and error handling.',
         'Fixed SonarQube code quality issues and integrated mentors suggestions to optimize performance.',
-        'Implemented a router for page navigation and redirecting authorized/unauthorized users based on manual browser URL changes.',
+        'Implemented a Router for page navigation and redirecting authorized/unauthorized users based on manual browser URL changes.',
         'Reviewed Junior Developer code, providing constructive feedback and mentorship.',
       ],
       gitHubUrl: 'https://github.com/Ihar-Batura',
@@ -76,11 +76,12 @@ const TeamMembers: React.FC = () => {
       ],
       contributions: [
         'Collaborated on UI/UX design system implementation.',
-        'Built several sections, pages and components.',
+        'Built several sections, pages and components (Promo Code, About Page, Besteseller, Popular, Strengths, Card Component, Footer).',
         'Orchestrated sprint planning via Trello task tracking and executed production deployments.',
         'Configured Commerce Tools platform, optimizing product catalog management.',
         'Established comprehensive testing suite with 30%+ coverage using Jest, Vitest, and React Testing Library.',
         'Conducted manual testing on multiple browsers and devices for reliability.',
+        'Refactored Codebase, fixed SonarQube issues, integrated mentors code review suggestions.',
       ],
       gitHubUrl: 'https://github.com/yuliafire',
     },
@@ -101,7 +102,7 @@ const TeamMembers: React.FC = () => {
       <img src={goldenCup} className={styles.cup} alt="golden cup" />
       <div className={styles.teamContainer}>
         {teamMembers.map((member, index) => (
-          <div key={index} className={styles.card}>
+          <div key={index * 10} className={styles.card}>
             <div className={styles.cardImage}>
               <img src={member.image} alt={member.name} />
             </div>
@@ -142,7 +143,7 @@ const TeamMembers: React.FC = () => {
                 <h3 className={styles.bioHeader}>About</h3>
                 <div className={styles.bio}>
                   {member.bio.map((line, i) => (
-                    <p key={i}>{line}</p>
+                    <p key={i * 100}>{line}</p>
                   ))}
                 </div>
               </div>
@@ -162,8 +163,8 @@ const TeamMembers: React.FC = () => {
               <div className={styles.cardContent}>
                 <ul className={styles.contributionList}>
                   {member.contributions.map((contribution, i) => (
-                    <li key={i} className={styles.contributionItem}>
-                      ✅ {contribution}
+                    <li key={i * 3} className={styles.contributionItem}>
+                       ✓ {contribution}
                     </li>
                   ))}
                 </ul>

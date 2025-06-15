@@ -1,7 +1,7 @@
 import { commercetoolsConfig } from './config';
 import { getTokenFromLS } from '../local-storage/getTokenFromLS';
 import { getCartIdFromLS } from '../local-storage/getCartIdFromLS';
-import { openDialog } from '@services/DialogService';
+import { handleCatchError } from '@components/ui/error/catchError';
 import { CartData } from '@shared/types/types';
 
 export async function apiGetCartById(
@@ -37,15 +37,7 @@ export async function apiGetCartById(
     const result: CartData = await response.json();
     return result;
   } catch (error) {
-    let message = 'Error getting a cart';
-
-    if (error instanceof Error) {
-      message = error.message;
-    } else if (typeof error === 'string') {
-      message = error;
-    }
-
-    openDialog(message, true);
+    handleCatchError(error, 'Error getting a cart');
     return null;
   }
 }

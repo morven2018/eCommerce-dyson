@@ -177,6 +177,9 @@
 }
 
 .contributionList {
+  display: flex;
+  flex-direction: column;
   list-style-type: none;
   font-weight: 500;
+  gap: 13px;
 }

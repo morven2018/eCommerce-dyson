@@ -8,7 +8,8 @@ import { apiAddProductToCart } from '@shared/api/commerce-tools/apiAddProductToC
 import { getCartIdFromLS } from '@shared/api/local-storage/getCartIdFromLS';
 import { apiCreateNewCart } from '@shared/api/commerce-tools/apiCreateNewCart';
 import { apiDeleteProductFromCart } from '@shared/api/commerce-tools/apiDeleteProductFromCart';
-import { useCart } from '@shared/context/cart/useCart';
+import { useCart } from '@shared/context/cart-context';
+import { handleCatchError } from '@components/ui/error/catchError';
 
 interface VariantsData {
   iconUrl: string;
@@ -55,15 +56,7 @@ export default function ProductCard({
           });
         }
       } catch (error) {
-        let message = 'Error get cart data';
-
-        if (error instanceof Error) {
-          message = error.message;
-        } else if (typeof error === 'string') {
-          message = error;
-        }
-
-        openDialog(message, true);
+        handleCatchError(error, 'Error get cart data');
       }
     };
 
@@ -111,15 +104,7 @@ export default function ProductCard({
         setIsProductInCart(true);
       }
     } catch (error) {
-      let message = 'Error adding/removing product';
-
-      if (error instanceof Error) {
-        message = error.message;
-      } else if (typeof error === 'string') {
-        message = error;
-      }
-
-      openDialog(message, true);
+      handleCatchError(error, 'Error adding/removing product');
     }
   };
 
