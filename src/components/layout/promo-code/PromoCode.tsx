@@ -80,7 +80,7 @@ export default function PromoCode() {
                 {code}
               </button>
               {toast?.code === code && (
-                <div className={styles.toast} role="output" aria-live="polite">
+                <output className={styles.toast}>
                   <svg
                     className={styles.checkmark}
                     viewBox="0 0 24 24"
@@ -91,7 +91,7 @@ export default function PromoCode() {
                     <path d="M5 13l4 4L19 7" />
                   </svg>
                   Copied!
-                </div>
+                </output>
               )}
               <div className={styles.conditionText}>
                 Applicable from ${minAmount}

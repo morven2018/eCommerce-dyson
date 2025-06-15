@@ -3,6 +3,8 @@ import { getTokenFromLS } from '../local-storage/getTokenFromLS';
 import { getCartIdFromLS } from '../local-storage/getCartIdFromLS';
 import { openDialog } from '@services/DialogService';
 import { apiGetCartById } from './apiGetCartById';
+import { handleCatchError } from '@components/ui/error/catchError';
+
 
 export async function apiAddProductToCart(
   productId: string,
@@ -57,14 +59,6 @@ export async function apiAddProductToCart(
     const result = await response.json();
     if (result) return result.version;
   } catch (error) {
-    let message = 'Error adding product to cart';
-
-    if (error instanceof Error) {
-      message = error.message;
-    } else if (typeof error === 'string') {
-      message = error;
-    }
-
-    openDialog(message, true);
+    handleCatchError(error, 'Error adding product to cart');
   }
 }

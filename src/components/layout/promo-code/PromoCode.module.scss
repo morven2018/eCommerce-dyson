@@ -6,46 +6,86 @@
   margin: 0 auto;
   background: url(@assets/images/promo-bg.png) center -30% / cover no-repeat;
   height: auto;
-  padding: 80px 40px;
+  padding: 80px 1rem;
   overflow: hidden;
+  box-sizing: border-box;
+
+  @media (max-width: 768px) {
+    padding: 60px 1rem;
+  }
+
+  @media (max-width: 480px) {
+    padding: 40px 0.5rem;
+  }
+
+  @media (min-width: 601px) {
+    padding-left: 2rem;
+  }
 }
 
 .promoTitle {
-  font-size: 3rem;
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  margin-bottom: 1.5rem;
+  line-height: 1.3;
+  text-align: center;
 
   span {
-    font-size: 2.5rem;
+    font-size: clamp(1.4rem, 3.2vw, 2.5rem);
+  }
+
+  @media (max-width: 480px) {
+    margin-bottom: 1rem;
+  }
+
+  @media (min-width: 601px) {
+    text-align: left;
+    margin-left: 1rem;
   }
 }
 
 .promoCards {
   display: flex;
   flex-direction: column;
-  justify-content: flex-start;
-  gap: 20px;
-  margin-top: 20px;
-  width: 25rem;
+  gap: 1.25rem;
+  width: 100%;
+  max-width: 26rem;
+  padding: 0 0.5rem;
+  box-sizing: border-box;
+  margin: 0 auto;
+
+  @media (min-width: 601px) {
+    margin: 0;
+    margin-left: 1rem;
+  }
 }
 
 .card {
   position: relative;
   display: flex;
+  flex-direction: row;
   align-items: center;
-  justify-content: center;
-  gap: 3rem;
+  justify-content: space-between;
+  width: 100%;
   background-color: $primary-white;
-  padding: 15px;
+  padding: 1rem;
   border-radius: $border-radius;
   box-shadow: 0 8px 10px rgba(0, 0, 0, 0.3);
   transition: all 0.5s ease;
+  box-sizing: border-box;
   cursor: pointer;
 
   &:hover {
     @media (hover: hover) and (pointer: fine) {
-      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
       transform: scale(1.02);
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
       border-color: $card-hover-border;
     }
+  }
+
+  @media (max-width: 420px) {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 0.8rem;
   }
 }
 
@@ -62,59 +102,73 @@
 }
 
 .promoImage {
-  width: 9.375rem;
+  width: clamp(6rem, 20vw, 9.375rem);
   height: auto;
+  object-fit: contain;
 }
 
 .buttonWrapper {
   position: relative;
-  display: inline-block;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  min-width: 10rem;
+
+  @media (max-width: 420px) {
+    width: 100%;
+  }
 }
 
 .promoButton {
-  width: 10rem;
-  height: 45px;
+  width: 100%;
+  min-width: 8rem;
+  max-width: 10rem;
+  height: clamp(2.5rem, 6vw, 2.8rem);
   font-weight: 600;
-  font-size: 1.3rem;
+  font-size: clamp(0.9rem, 2vw, 1.3rem);
   text-transform: uppercase;
   border: none;
   border-radius: 10px;
-  background-color: #595079;
+  background-color: $controls;
   color: $primary-white;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: all 0.3s ease;
   z-index: 2;
 
   &:hover {
     @media (hover: hover) and (pointer: fine) {
       background-color: #4c4467;
-      color: $primary-white;
     }
   }
 
   &:focus {
-    outline: 6px solid black;
+    outline: 3px solid black;
     outline-offset: 2px;
   }
 
   &.copied {
     background-color: #4c4467;
   }
+
+  @media (max-width: 420px) {
+    max-width: 100%;
+  }
 }
 
 .toast {
   position: absolute;
-  top: -40px;
+  top: -2.5rem;
   left: 50%;
   transform: translateX(-50%);
   background-color: #4c4467;
   color: $primary-white;
-  padding: 8px 16px;
+  padding: 0.5rem 1rem;
   border-radius: 4px;
   display: flex;
   align-items: center;
-  gap: 8px;
-  font-size: 0.875rem;
+  gap: 0.5rem;
+  font-size: clamp(0.75rem, 2vw, 0.875rem);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
   animation: fadeInOut 1.5s ease-in-out;
   z-index: 3;
@@ -122,23 +176,19 @@
 }
 
 .checkmark {
-  width: 16px;
-  height: 16px;
+  width: 1rem;
+  height: 1rem;
   stroke: $primary-white;
 }
 
 .conditionText {
-  position: absolute;
-  bottom: -33px;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 0.75rem;
+  font-size: clamp(0.65rem, 2vw, 0.75rem);
   color: #6b7280;
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: 0.5px;
   background: rgba(255, 255, 255, 0.8);
-  padding: 4px 8px;
+  padding: 0.25rem 0.5rem;
   border-radius: 4px;
   z-index: 2;
   white-space: nowrap;
@@ -163,59 +213,24 @@
   }
 }
 
-@media (min-width: 381px) and (max-width: 768px) {
-  .promoBlock {
-    max-width: 768px;
-    padding: 40px 20px;
-  }
-
-  .promoCards {
-    width: 31.25rem;
-    align-items: center;
-    margin-left: auto;
-    margin-right: auto;
+@media (max-width: 320px) {
+  .promoTitle {
+    font-size: 1.6rem;
+    span {
+      font-size: 1.2rem;
+    }
   }
 
   .card {
-    max-width: 31.25rem;
-  }
-
-  .toast {
-    top: -35px;
-    font-size: 0.75rem;
-    padding: 6px 12px;
-  }
-}
-
-@media (max-width: 380px) {
-  .promoBlock {
-    max-width: 380px;
-    padding: 40px 10px;
-  }
-
-  .promoCards {
-    width: 18rem;
-  }
-
-  .card {
-    max-width: 18rem;
-    gap: 1.5rem;
-    padding: 10px;
-  }
-
-  .promoImage {
-    width: 7.5rem;
+    padding: 0.6rem;
   }
 
   .promoButton {
-    width: 8rem;
-    height: 40px;
-    font-size: 1.1rem;
+    height: 2.3rem;
+    font-size: 0.85rem;
   }
 
-  .toast {
-    top: -30px;
-    font-size: 0.75rem;
-    padding: 6px 12px;
+  .conditionText {
+    font-size: 0.6rem;
   }
 }

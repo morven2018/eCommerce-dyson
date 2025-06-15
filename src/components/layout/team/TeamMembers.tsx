@@ -24,7 +24,7 @@ const TeamMembers: React.FC = () => {
       description: 'Team Lead | Project Manager | Frontend Development',
       bio: [
         'Math & Computer Science Genius.',
-        'Skilled Programmer with a Master Degree in Applied Mathematics and Computer Science.',
+        "Skilled Programmer with a Master's Degree in Applied Mathematics and Computer Science.",
         'Excelled in Physics and Chemistry Olympiads during her School Years.',
         'Experience as a Project Manager.',
       ],
@@ -101,7 +101,7 @@ const TeamMembers: React.FC = () => {
       <img src={goldenCup} className={styles.cup} alt="golden cup" />
       <div className={styles.teamContainer}>
         {teamMembers.map((member, index) => (
-          <div key={index} className={styles.card}>
+          <div key={index * 10} className={styles.card}>
             <div className={styles.cardImage}>
               <img src={member.image} alt={member.name} />
             </div>
@@ -142,7 +142,7 @@ const TeamMembers: React.FC = () => {
                 <h3 className={styles.bioHeader}>About</h3>
                 <div className={styles.bio}>
                   {member.bio.map((line, i) => (
-                    <p key={i}>{line}</p>
+                    <p key={i * 100}>{line}</p>
                   ))}
                 </div>
               </div>
@@ -162,7 +162,7 @@ const TeamMembers: React.FC = () => {
               <div className={styles.cardContent}>
                 <ul className={styles.contributionList}>
                   {member.contributions.map((contribution, i) => (
-                    <li key={i} className={styles.contributionItem}>
+                    <li key={i * 3} className={styles.contributionItem}>
                       ✅ {contribution}
                     </li>
                   ))}
