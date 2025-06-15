@@ -62,8 +62,7 @@ export async function removePromoCode(): Promise<boolean> {
     localStorage.removeItem('PromoCode');
 
     return removeResponse.ok;
-  } catch (error) {
-    console.error('Error removing promo code:', error);
+  } catch {
     return false;
   }
 }
