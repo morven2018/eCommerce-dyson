@@ -213,13 +213,12 @@ $breakpoint420: 420px;
   }
 
   ul {
-    list-style-type: none;
     padding-left: 0;
-    margin: 0;
+    margin: 30px auto;
     display: flex;
     flex-direction: column;
     gap: 20px;
-    margin: 30px auto;
+    list-style-type: none;
 
     li {
       display: flex;
