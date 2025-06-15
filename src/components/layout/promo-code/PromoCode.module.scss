@@ -142,11 +142,6 @@
     }
   }
 
-  &:focus {
-    outline: 3px solid black;
-    outline-offset: 2px;
-  }
-
   &.copied {
     background-color: #4c4467;
   }
