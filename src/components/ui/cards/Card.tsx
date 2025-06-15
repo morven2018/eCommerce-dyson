@@ -4,8 +4,8 @@ import { getCartIdFromLS } from '@shared/api/local-storage/getCartIdFromLS';
 import { useState } from 'react';
 import { apiCreateNewCart } from '@shared/api/commerce-tools/apiCreateNewCart';
 import { apiAddProductToCart } from '@shared/api/commerce-tools/apiAddProductToCart';
-import { useCart } from '@shared/context/cart-context';
 import { apiGetCartById } from '@shared/api/commerce-tools/apiGetCartById';
+import { useCart } from '@shared/context/cart/useCart';
 
 interface Card {
   id: string;

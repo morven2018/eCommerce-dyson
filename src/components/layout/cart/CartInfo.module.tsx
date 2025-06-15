@@ -7,9 +7,9 @@ import { useState } from 'react';
 import { openDialog } from '@services/DialogService';
 import CartProductCard from '@components/ui/cards/CartProductCard';
 import { apiUpdateCart } from '@shared/api/commerce-tools/cart/updateNumberOfItems';
-import { useCart } from '@shared/context/cart-context';
 import styles from './Cart.module.scss';
 import calculateCartTotals from '@shared/utlis/calculateTotals';
+import { useCart } from '@shared/context/cart/useCart';
 
 interface CartInfoProps {
   data: CartData;
