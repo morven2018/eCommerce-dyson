@@ -5,13 +5,16 @@ $breakpoint850: 850px;
 $breakpoint750: 750px;
 $breakpoint420: 420px;
 
+.cart {
+  display: grid;
+  align-items: start;
+  grid-template-columns: auto 308px;
+}
+
 .cart,
 .voidCart {
   width: 100vw;
   max-width: 1200px;
-  display: grid;
-  align-items: start;
-  grid-template-columns: auto 308px;
   gap: 10px;
   border-radius: $border-radius;
   border: 1px solid $form-background;
@@ -244,12 +247,7 @@ $breakpoint420: 420px;
 }
 
 @media screen and (max-width: $breakpoint1250) {
-  .voidResult {
-    display: none;
-  }
-
-  .cart,
-  .voidCart {
+  .cart {
     display: flex;
     flex-direction: column;
     align-items: center;
