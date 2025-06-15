@@ -64,7 +64,7 @@ export const applyPromoCode = async (
 
     if (!updateResponse.ok) {
       const errorData = await updateResponse.json();
-      throw new Error(errorData.message || 'Failed to update promo codes');
+      throw new Error(errorData.message ?? 'Failed to update promo codes');
     }
 
     return true;

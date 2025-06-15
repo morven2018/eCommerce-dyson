@@ -21,7 +21,7 @@ export default function CartResult({
   data,
   onCartUpdate,
   discountPercentage,
-}: CartResultProps) {
+}: Readonly<CartResultProps>) {
   const [appliedPromo, setAppliedPromo] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [promoInputValue, setPromoInputValue] = useState('');

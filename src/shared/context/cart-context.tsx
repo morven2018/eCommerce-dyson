@@ -26,7 +26,7 @@ const CartContext = createContext<CartContextType>({
 export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   const [cart, setCart] = useState<CartData | null>(null);
   const cartItemsCount =
-    cart?.lineItems.reduce((sum, item) => sum + item.quantity, 0) || 0;
+    cart?.lineItems.reduce((sum, item) => sum + item.quantity, 0) ?? 0;
   const isCartEmpty = cartItemsCount === 0;
 
   const clearCartMemoized = useCallback(() => {

@@ -35,7 +35,7 @@ export async function getCustomerCart(
 
     localStorage.setItem('cartIdDyson', data.results[0].id);
 
-    return data.results[0] || null;
+    return data.results[0] ?? null;
   } catch (error) {
     const message =
       error instanceof Error ? error.message : 'Failed to get customer cart';

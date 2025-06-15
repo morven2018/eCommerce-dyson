@@ -8,8 +8,8 @@ export async function apiGetCartById(
   token?: string,
   id?: string
 ): Promise<CartData | null> {
-  const accessToken = token || getTokenFromLS();
-  const cartId = id || getCartIdFromLS();
+  const accessToken = token ?? getTokenFromLS();
+  const cartId = id ?? getCartIdFromLS();
 
   if (!accessToken || !cartId) {
     throw new Error('No access token found or cart id');

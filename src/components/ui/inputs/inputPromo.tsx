@@ -48,7 +48,7 @@ export const PromoCodeInput = ({
 
     const validation = validatePromoCode(inputValue, cartTotal);
     if (!validation.isValid) {
-      setError(validation.error || 'Invalid promo code');
+      setError(validation.error ?? 'Invalid promo code');
       setIsProcessing(false);
       return;
     }
@@ -123,7 +123,7 @@ export const PromoCodeInput = ({
         }
       />
       <FormHelperText>
-        {error || (isApplied ? 'Promo code applied' : 'Enter your promo code')}
+        {error ?? (isApplied ? 'Promo code applied' : 'Enter your promo code')}
       </FormHelperText>
     </FormControl>
   );

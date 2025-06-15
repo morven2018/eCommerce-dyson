@@ -22,7 +22,7 @@ export default function CartProductCard({
   isDeleting = false,
   isUpdating = false,
   usePromo,
-}: CartProductProps) {
+}: Readonly<CartProductProps>) {
   const imageURL = data.variant.images[0].url;
   const imageAlt = data.variant.images[0].label;
   const productName = data.name['en-US'];

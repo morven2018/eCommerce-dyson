@@ -211,7 +211,7 @@ export interface CartData {
 
 export interface DiscountCodeInfo {
   discountCode: DiscountCodeReference;
-  state: 'MatchesCart' | 'DoesNotMatchCart' | 'NotActive' | string;
+  state: 'MatchesCart' | 'DoesNotMatchCart' | 'NotActive';
 }
 
 interface DiscountCodeReference {
