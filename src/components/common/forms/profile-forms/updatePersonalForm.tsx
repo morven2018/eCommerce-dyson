@@ -26,6 +26,8 @@ import { userAuthorization } from '@shared/api/commerce-tools/authorization';
 import { PasswordConfirmModal } from '@components/ui/modals/ModalWithPassword';
 import styles from '../register-form/RegisterForm.module.scss';
 import ShowDialog from '@components/ui/modals/Modal';
+import { loadPassword } from '@shared/api/local-storage/getPasswordFromLS';
+import { encryptData } from '@shared/lib/password/encryption';
 
 interface PersonalInfoFormProps {
   customer: Customer;
@@ -54,6 +56,7 @@ export const PersonalInfoForm = ({
   const [passwordError, setPasswordError] = useState<string | undefined>(
     undefined
   );
+  const [savedPassword, setSavedPassword] = useState(loadPassword());
   const [passwordModalOpen, setPasswordModalOpen] = useState(false);
   const [pendingPassword, setPendingPassword] = useState<string>('');
   const [error, setError] = useState<{
@@ -97,6 +100,10 @@ export const PersonalInfoForm = ({
   });
 
   const formValues = watch();
+
+  useEffect(() => {
+    setValue('password', savedPassword, { shouldDirty: false });
+  }, [savedPassword, setValue]);
 
   useEffect(() => {
     const validatePassword = async () => {
@@ -239,6 +246,9 @@ export const PersonalInfoForm = ({
         'Password updated successfully'
       );
 
+      localStorage.setItem('password', encryptData(pendingPassword));
+      setSavedPassword(pendingPassword);
+
       if (!authResponse) throw new Error('Authorization failed');
 
       localStorage.setItem('authDysonToken', authResponse.access_token);
@@ -247,10 +257,10 @@ export const PersonalInfoForm = ({
         password: pendingPassword,
         version: newVersion,
       });
-
       setPasswordModalOpen(false);
-      setPendingPassword('');
-      reset({ ...formValues, password: '' });
+      setPendingPassword(loadPassword());
+
+      reset({ ...formValues });
     } catch {
       setError({
         text: 'Password confirmation failed',

@@ -13,6 +13,7 @@ import { getTokenFromLS } from '@shared/api/local-storage/getTokenFromLS';
 import { getCartIdFromLS } from '@shared/api/local-storage/getCartIdFromLS';
 import { getCurrentCustomer } from '@shared/api/commerce-tools/getUserInfo';
 import { getCustomerCart } from '@shared/api/commerce-tools/cart/getCustomerCart';
+import { encryptData } from '@shared/lib/password/encryption';
 
 export default function LoginForm() {
   const navigate = useNavigate();
@@ -39,6 +40,8 @@ export default function LoginForm() {
       const user = await getCurrentCustomer();
 
       if (!user) throw new Error('Can not get user information');
+
+      localStorage.setItem('password', encryptData(data.password));
 
       if (oldCartId)
         await mergeCartsOnLogin(oldToken ?? '', user?.id, oldCartId);
