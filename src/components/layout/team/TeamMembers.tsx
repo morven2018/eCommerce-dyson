@@ -164,7 +164,7 @@ const TeamMembers: React.FC = () => {
                 <ul className={styles.contributionList}>
                   {member.contributions.map((contribution, i) => (
                     <li key={i * 3} className={styles.contributionItem}>
-                       ✓ {contribution}
+                      ✓ {contribution}
                     </li>
                   ))}
                 </ul>

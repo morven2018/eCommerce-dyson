@@ -1,10 +1,8 @@
 import { commercetoolsConfig } from './config';
 import { getTokenFromLS } from '../local-storage/getTokenFromLS';
 import { getCartIdFromLS } from '../local-storage/getCartIdFromLS';
-import { openDialog } from '@services/DialogService';
 import { apiGetCartById } from './apiGetCartById';
 import { handleCatchError } from '@components/ui/error/catchError';
-
 
 export async function apiAddProductToCart(
   productId: string,
