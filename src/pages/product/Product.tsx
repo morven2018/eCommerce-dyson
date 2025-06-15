@@ -8,7 +8,7 @@ import ProductCard from '@components/layout/product/card/ProductCard';
 import { Slider } from '@components/layout/product/slider/Slider';
 import { ProductData, ProductImage } from '@shared/types/types';
 import Benefits from '@components/layout/product/benefits/Benefits';
-import { openDialog } from '@services/DialogService';
+import { handleCatchError } from '@components/ui/error/catchError';
 import { useParams } from 'react-router-dom';
 import { Breadcrumbs } from '@components/ui/breadcrumbs/Breadcrumbs';
 import { catalogCategories } from '@shared/constants/categories';
@@ -29,15 +29,7 @@ export const ProductPage = () => {
         const data = await getProductDataById({ id: productId, token });
         setProductData(data);
       } catch (error) {
-        let message = 'Error get product by ID';
-
-        if (error instanceof Error) {
-          message = error.message;
-        } else if (typeof error === 'string') {
-          message = error;
-        }
-
-        openDialog(message, true);
+        handleCatchError(error, 'Error get product by ID');
       }
     };
 

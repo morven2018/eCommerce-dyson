@@ -1,7 +1,7 @@
 import { commercetoolsConfig } from './config';
 import { getTokenFromLS } from '../local-storage/getTokenFromLS';
 import { getCartIdFromLS } from '../local-storage/getCartIdFromLS';
-import { openDialog } from '@services/DialogService';
+import { handleCatchError } from '@components/ui/error/catchError';
 
 export async function apiDeleteProductFromCart(
   lineItemId: string,
@@ -39,14 +39,6 @@ export async function apiDeleteProductFromCart(
       body: JSON.stringify(requestBody),
     });
   } catch (error) {
-    let message = 'Error removing product from cart';
-
-    if (error instanceof Error) {
-      message = error.message;
-    } else if (typeof error === 'string') {
-      message = error;
-    }
-
-    openDialog(message, true);
+    handleCatchError(error, 'Error removing product from cart');
   }
 }
