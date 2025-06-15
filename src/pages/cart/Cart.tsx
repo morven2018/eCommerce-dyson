@@ -4,8 +4,6 @@ import { CartData, CartDiscount } from '@shared/types/types';
 import { openDialog } from '@services/DialogService';
 import VoidCartArea from '@components/layout/cart/VoidCartArea.module';
 import CartInfo from '@components/layout/cart/CartInfo.module';
-import { getCartIdFromLS } from '@shared/api/local-storage/getCartIdFromLS';
-import { apiCreateNewCart } from '@shared/api/commerce-tools/apiCreateNewCart';
 import styles from '../../components/layout/cart/Cart.module.scss';
 import CartResult from '@components/layout/cart/CartResult';
 import { getDiscountDetails } from '@shared/api/commerce-tools/getDiscountDetails';
@@ -40,42 +38,23 @@ export const CartPage = () => {
 
   useEffect(() => {
     const initializeCart = async () => {
+      setIsLoading(true);
       try {
-        const cartId = getCartIdFromLS();
-        if (!cartId) {
-          const newCart = await apiCreateNewCart();
-          if (!newCart) throw new Error('Failed to create cart');
-          const id = newCart.id;
-          if (id) localStorage.setItem('cartIdDyson', id);
-        }
-
-        const cart = await apiGetCartById();
-        setData(cart);
-      } catch {
-        openDialog('The cart is unaccessible', true);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    initializeCart();
-  }, []);
-
-  useEffect(() => {
-    const initializeCart = async () => {
-      try {
+        // This will automatically:
+        // 1. Check for cart ID in localStorage
+        // 2. If not found, create a new cart
+        // 3. If found, fetch the existing cart
         const cartData = await apiGetCartById();
         setData(cartData);
       } catch (error) {
         let message = 'Error getting cart data';
-
         if (error instanceof Error) {
           message = error.message;
         } else if (typeof error === 'string') {
           message = error;
         }
-
         openDialog(message, true);
+        setData(null);
       } finally {
         setIsLoading(false);
       }
@@ -95,6 +74,7 @@ export const CartPage = () => {
         </div>
       </div>
     );
+
   return (
     <div className={styles.cart}>
       <CartInfo

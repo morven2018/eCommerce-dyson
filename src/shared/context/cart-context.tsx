@@ -1,3 +1,4 @@
+import { CartData } from '@shared/types/types';
 import {
   createContext,
   useCallback,
@@ -5,7 +6,6 @@ import {
   useMemo,
   useState,
 } from 'react';
-import { CartData } from '@shared/types/types';
 
 interface CartContextType {
   cart: CartData | null;
