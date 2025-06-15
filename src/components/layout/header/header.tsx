@@ -78,6 +78,7 @@ export const Header = () => {
       const tokenName = 'authDysonToken';
       localStorage.removeItem(tokenName);
       localStorage.removeItem('cartIdDyson');
+      localStorage.removeItem('password');
       addAnonymousSessionTokenToLS();
       clearCart();
     }
