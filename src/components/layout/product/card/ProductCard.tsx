@@ -11,7 +11,6 @@ import { apiDeleteProductFromCart } from '@shared/api/commerce-tools/apiDeletePr
 import { useCart } from '@shared/context/cart-context';
 import { handleCatchError } from '@components/ui/error/catchError';
 
-
 interface VariantsData {
   iconUrl: string;
   name: string;
