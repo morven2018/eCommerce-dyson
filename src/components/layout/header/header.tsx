@@ -25,7 +25,7 @@ import { ProfileMenu } from '@components/ui/burger/menu/profile-menu';
 import { ButtonList } from './button-list/ButtonList';
 import { useAuth } from '@shared/context/auth-hooks';
 import { addAnonymousSessionTokenToLS } from '@shared/utlis/token/addAnonymousSessionTokenToLS';
-import { useCart } from '@shared/context/cart-context';
+import { useCart } from '@shared/context/cart/useCart';
 
 export interface INavItems {
   text: string;
