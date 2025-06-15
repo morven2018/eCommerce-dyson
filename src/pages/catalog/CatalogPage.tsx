@@ -7,7 +7,6 @@ import {
 } from '@shared/types/types';
 import { getTokenFromLS } from '@shared/api/local-storage/getTokenFromLS';
 import { getSearchedProducts } from '@shared/api/commerce-tools/getSearchedProducts';
-import { openDialog } from '@services/DialogService';
 
 import { Card } from '@components/ui/cards/Card';
 import { SortByComponent } from '@components/ui/sort/SortByComponent';
@@ -19,6 +18,7 @@ import { Breadcrumbs } from '@components/ui/breadcrumbs/Breadcrumbs';
 import { buildSearchParams } from '@shared/utlis/searchParamsBuilder';
 import { apiGetCartById } from '@shared/api/commerce-tools/apiGetCartById';
 import { getCartIdFromLS } from '@shared/api/local-storage/getCartIdFromLS';
+import { handleCatchError } from '@components/ui/error/catchError';
 
 export type SortOption =
   | 'price_asc'
@@ -64,10 +64,7 @@ export const CatalogPage = () => {
           const data = await getSearchedProducts({ params, token });
           setProductsData(data);
         } catch (error) {
-          let message = 'Error fetching search products';
-          if (error instanceof Error) message = error.message;
-          else if (typeof error === 'string') message = error;
-          openDialog(message);
+          handleCatchError(error, 'Error fetching search products');
         }
       };
 
@@ -95,15 +92,7 @@ export const CatalogPage = () => {
 
         setLineItemsInCart(cart.lineItems);
       } catch (error) {
-        let message = 'Error get cart line items';
-
-        if (error instanceof Error) {
-          message = error.message;
-        } else if (typeof error === 'string') {
-          message = error;
-        }
-
-        openDialog(message, true);
+        handleCatchError(error, 'Error get cart line items');
       }
     };
 

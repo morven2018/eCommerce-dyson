@@ -1,5 +1,5 @@
 import { commercetoolsConfig } from './config';
-import { openDialog } from '@services/DialogService';
+import { handleCatchError } from '@components/ui/error/catchError';
 import { ProductData } from '@shared/types/types';
 
 interface EnterData {
@@ -32,16 +32,7 @@ export async function getProductDataById(
     const result: ProductData = await response.json();
     return result;
   } catch (error) {
-    let message = 'Error retrieving product data';
-
-    if (error instanceof Error) {
-      message = error.message;
-    } else if (typeof error === 'string') {
-      message = error;
-    }
-
-    openDialog(message, true);
-
+    handleCatchError(error, 'Error retrieving product data');
     return null;
   }
 }

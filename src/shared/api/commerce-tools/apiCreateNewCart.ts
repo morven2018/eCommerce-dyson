@@ -1,6 +1,6 @@
 import { commercetoolsConfig } from './config';
 import { getTokenFromLS } from '../local-storage/getTokenFromLS';
-import { openDialog } from '@services/DialogService';
+import { handleCatchError } from '@components/ui/error/catchError';
 
 interface CartData {
   type: string;
@@ -78,15 +78,7 @@ export async function apiCreateNewCart(): Promise<CartData | null> {
 
     return result;
   } catch (error) {
-    let message = 'Error creating cart';
-
-    if (error instanceof Error) {
-      message = error.message;
-    } else if (typeof error === 'string') {
-      message = error;
-    }
-
-    openDialog(message, true);
+    handleCatchError(error, 'Error creating cart');
 
     return null;
   }
