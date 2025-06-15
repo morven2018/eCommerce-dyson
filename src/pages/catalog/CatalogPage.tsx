@@ -246,6 +246,13 @@ export const CatalogPage = () => {
               count={Math.ceil(productsData?.total / 12)}
               onChange={handleChangePageNumber}
               className={styles.pagination}
+              sx={{
+                '& .MuiPagination-ul': {
+                  justifyContent: 'end',
+                },
+                display: { xs: 'flex', md: 'block' },
+                justifyContent: 'end',
+              }}
             />
           </div>
         </div>

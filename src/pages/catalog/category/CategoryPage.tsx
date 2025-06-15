@@ -107,28 +107,37 @@ export const CategoryPage = ({ page }: { page: string }) => {
   return (
     <>
       <Breadcrumbs items={breadcrumbItems} />
-      <div className={styles.container}>
-        {arrCardsInfo.map((card: CardInfo) => (
-          <Card
-            key={card.id}
-            id={card.id}
-            name={card.name['en-US']}
-            description={card.description['en-US']}
-            price={card.masterVariant?.prices?.[0]?.value?.centAmount ?? 0}
-            discountedPrice={
-              card.masterVariant?.prices?.[0]?.discounted?.value?.centAmount ??
-              null
-            }
-            src={card.masterVariant?.images?.[0]?.url ?? '/dyson_icon.svg'}
-            isInCart={lineItemsInCart.some(
-              (item) => item.productId === card.id
-            )}
-          />
-        ))}
+      <div>
+        <div className={styles.container}>
+          {arrCardsInfo.map((card: CardInfo) => (
+            <Card
+              key={card.id}
+              id={card.id}
+              name={card.name['en-US']}
+              description={card.description['en-US']}
+              price={card.masterVariant?.prices?.[0]?.value?.centAmount ?? 0}
+              discountedPrice={
+                card.masterVariant?.prices?.[0]?.discounted?.value
+                  ?.centAmount ?? null
+              }
+              src={card.masterVariant?.images?.[0]?.url ?? '/dyson_icon.svg'}
+              isInCart={lineItemsInCart.some(
+                (item) => item.productId === card.id
+              )}
+            />
+          ))}
+        </div>
         <Pagination
           count={Math.ceil(productsData?.total / 4)}
           onChange={handleChangePageNumber}
           className={styles.pagination}
+          sx={{
+            '& .MuiPagination-ul': {
+              justifyContent: 'end',
+            },
+            display: { xs: 'flex', md: 'block' },
+            justifyContent: 'end',
+          }}
         />
       </div>
     </>
