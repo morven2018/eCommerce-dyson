@@ -55,6 +55,15 @@ $breakpoint420: 420px;
   flex-direction: column;
   align-items: center;
   gap: 10px;
+
+  .promoRow {
+    display: flex;
+    align-items: center;
+  }
+
+  .resetPromo {
+    width: 30px;
+  }
 }
 
 .cartTable {
@@ -156,6 +165,9 @@ $breakpoint420: 420px;
         display: flex;
         flex-direction: column;
       }
+      .deleteWrapper {
+        transform: translateX(-10px);
+      }
 
       @media screen and (max-width: $breakpoint850) {
         h4 {
@@ -240,6 +252,16 @@ $breakpoint420: 420px;
   .cart,
   .voidCart {
     display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+.counterWrapper {
+  display: flex;
+}
+@media screen and (max-width: $breakpoint420) {
+  .counterWrapper {
     flex-direction: column;
     align-items: center;
   }

@@ -2,7 +2,8 @@ import { CartData } from '@shared/types/types';
 import formatPrice from './price-formatter';
 
 export default function calculateCartTotals(
-  cart: CartData
+  cart: CartData,
+  discountPercentage: number
 ): [string, string, string] {
   let totalWithDiscount = 0;
   let totalWithoutDiscount = 0;
@@ -21,6 +22,11 @@ export default function calculateCartTotals(
       totalWithDiscount += itemOriginalPrice;
     }
   });
+
+  console.log(totalWithDiscount, totalSavings);
+  totalWithDiscount *= 1 - discountPercentage / 100;
+  totalSavings = totalWithoutDiscount - totalWithDiscount;
+  console.log(totalWithDiscount, totalSavings);
 
   return [
     formatPrice({ centAmount: totalWithDiscount }),

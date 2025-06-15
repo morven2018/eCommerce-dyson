@@ -1,7 +1,6 @@
 import { CartData, CartLineItem } from '@shared/types/types';
 import formatPrice from '@shared/utlis/price-formatter';
 import Counter from '../counter/Counter';
-import { useState } from 'react';
 import { IconButton } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import styles from '../../layout/cart/Cart.module.scss';
@@ -13,6 +12,7 @@ interface CartProductProps {
   onQuantityChange?: (itemId: string, quantity: number) => Promise<void>;
   isDeleting?: boolean;
   isUpdating?: boolean;
+  usePromo: number;
 }
 
 export default function CartProductCard({
@@ -21,18 +21,26 @@ export default function CartProductCard({
   onQuantityChange,
   isDeleting = false,
   isUpdating = false,
+  usePromo,
 }: CartProductProps) {
-  const [quantity] = useState(1);
   const imageURL = data.variant.images[0].url;
   const imageAlt = data.variant.images[0].label;
   const productName = data.name['en-US'];
   const variant = data.variant.key;
   const price = formatPrice(data.price.value);
-  const discount = data.price.discounted
-    ? formatPrice(data.price.discounted.value)
-    : '';
-  const priceValue = data.price.discounted
-    ? data.price.discounted.value.centAmount / 100
+  const discountedPrice = data.price.discounted?.value || data.price.value;
+  const delta = (discountedPrice.centAmount * usePromo) / 10000;
+  const finalDiscountedPrice = {
+    ...discountedPrice,
+    centAmount: Math.round(discountedPrice.centAmount - delta),
+  };
+  const discount =
+    finalDiscountedPrice.centAmount < data.price.value.centAmount
+      ? formatPrice(finalDiscountedPrice)
+      : '';
+
+  const priceValue = discount
+    ? finalDiscountedPrice.centAmount / 100
     : data.price.value.centAmount / 100;
 
   const handleDelete = () => {
@@ -40,7 +48,6 @@ export default function CartProductCard({
       onDelete(data.id);
     }
   };
-
   const handleQuantityChange = async (newQuantity: number) => {
     if (onQuantityChange) {
       await onQuantityChange(data.id, newQuantity);
@@ -60,7 +67,7 @@ export default function CartProductCard({
           <h4>{productName}</h4>
           <div>{variant}</div>
         </div>
-      </div>{' '}
+      </div>
       <div className={styles.counterWrapper}>
         <div className={styles.pricesDiscount}>
           {discount && <div>{discount}</div>}
@@ -71,7 +78,7 @@ export default function CartProductCard({
 
         <Counter
           price={priceValue ?? price}
-          amount={quantity}
+          amount={data.quantity}
           onChange={handleQuantityChange}
           disabled={isUpdating}
         />

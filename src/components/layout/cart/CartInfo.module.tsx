@@ -1,7 +1,6 @@
 import { Divider, IconButton } from '@mui/material';
 import icon from '../../../assets/icons/reset.svg';
 import { CartData } from '@shared/types/types';
-import formatPrice from '@shared/utlis/price-formatter';
 import { apiDeleteProductFromCart } from '@shared/api/commerce-tools/apiDeleteProductFromCart';
 import { apiGetCartById } from '@shared/api/commerce-tools/apiGetCartById';
 import { useState } from 'react';
@@ -10,13 +9,19 @@ import CartProductCard from '@components/ui/cards/CartProductCard';
 import { apiUpdateCart } from '@shared/api/commerce-tools/cart/updateNumberOfItems';
 import { useCart } from '@shared/context/cart-context';
 import styles from './Cart.module.scss';
+import calculateCartTotals from '@shared/utlis/calculateTotals';
 
 interface CartInfoProps {
   data: CartData;
   setData: React.Dispatch<React.SetStateAction<CartData | null>>;
+  discountPercentage: number;
 }
 
-export default function CartInfo({ data, setData }: CartInfoProps) {
+export default function CartInfo({
+  data,
+  setData,
+  discountPercentage,
+}: CartInfoProps) {
   const [isResetting, setIsResetting] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
   const { setCart } = useCart();
@@ -76,14 +81,18 @@ export default function CartInfo({ data, setData }: CartInfoProps) {
       const item = data.lineItems.find((item) => item.id === itemId);
       if (!item) return;
 
-      const quantityDifference = newQuantity - item.quantity;
+      const cart = await apiGetCartById();
+      if (cart) {
+        setCurrentVersion(cart.version);
+      }
 
-      if (quantityDifference !== 0) {
-        await apiUpdateCart(itemId, newQuantity);
-        const updatedCart = await apiGetCartById();
+      await apiUpdateCart(itemId, newQuantity, currentVersion);
+
+      const updatedCart = await apiGetCartById();
+      if (updatedCart) {
         setData(updatedCart);
         setCart(updatedCart);
-        setCurrentVersion(updatedCart?.version ?? 1);
+        setCurrentVersion(updatedCart.version);
       }
     } catch {
       openDialog('Failed to update cart', true);
@@ -95,7 +104,8 @@ export default function CartInfo({ data, setData }: CartInfoProps) {
   };
 
   const items = data.lineItems.reduce((sum, item) => (sum += item.quantity), 0);
-  const total = formatPrice(data.totalPrice);
+  const total = calculateCartTotals(data, discountPercentage)[0];
+
   return (
     <div className={styles.cartTable}>
       <div className={styles.cartHeader}>
@@ -124,6 +134,7 @@ export default function CartInfo({ data, setData }: CartInfoProps) {
             onDelete={handleDeleteItem}
             onQuantityChange={handleQuantityChange}
             isUpdating={isUpdating}
+            usePromo={discountPercentage ?? 0}
           />
         ))}
       </ul>

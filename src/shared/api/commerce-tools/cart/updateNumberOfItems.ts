@@ -5,7 +5,8 @@ import { getTokenFromLS } from '@shared/api/local-storage/getTokenFromLS';
 
 export async function apiUpdateCart(
   productId: string,
-  quantity: number = 1
+  quantity: number = 1,
+  version: number
 ): Promise<void> {
   const accessToken = getTokenFromLS();
   const cartId = getCartIdFromLS();
@@ -20,7 +21,7 @@ export async function apiUpdateCart(
 
   try {
     const requestBody = {
-      version: 1,
+      version: version,
       actions: [
         {
           action: 'changeLineItemQuantity',
