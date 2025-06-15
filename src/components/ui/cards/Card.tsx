@@ -17,6 +17,11 @@ interface Card {
   isInCart: boolean;
 }
 
+function getButtonText(loading: boolean, inCart: boolean): string {
+  if (loading) return 'Loading...';
+  return inCart ? 'In Cart' : 'Add to Cart';
+}
+
 export const Card = ({
   id,
   name,
@@ -101,10 +106,10 @@ export const Card = ({
       </Link>
       <button
         onClick={addToCart}
-        disabled={inCart || loading}
+        disabled={inCart ?? loading}
         className={styles.button}
       >
-        {loading ? 'Loading...' : inCart ? 'In Cart' : 'Add to Cart'}
+        {getButtonText(loading, inCart)}
       </button>
     </div>
   );

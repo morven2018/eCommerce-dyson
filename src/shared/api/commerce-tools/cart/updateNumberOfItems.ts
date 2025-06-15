@@ -5,8 +5,8 @@ import { getTokenFromLS } from '@shared/api/local-storage/getTokenFromLS';
 
 export async function apiUpdateCart(
   productId: string,
-  quantity: number = 1,
-  version: number
+  version: number,
+  quantity: number = 1
 ): Promise<void> {
   const accessToken = getTokenFromLS();
   const cartId = getCartIdFromLS();

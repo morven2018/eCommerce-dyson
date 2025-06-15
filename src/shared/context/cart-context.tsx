@@ -1,4 +1,10 @@
-import { createContext, useCallback, useContext, useState } from 'react';
+import {
+  createContext,
+  useCallback,
+  useContext,
+  useMemo,
+  useState,
+} from 'react';
 import { CartData } from '@shared/types/types';
 
 interface CartContextType {
@@ -23,13 +29,22 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     cart?.lineItems.reduce((sum, item) => sum + item.quantity, 0) || 0;
   const isCartEmpty = cartItemsCount === 0;
 
-  const clearCart = useCallback(() => {
+  const clearCartMemoized = useCallback(() => {
     setCart(null);
   }, []);
 
   return (
     <CartContext.Provider
-      value={{ cart, setCart, cartItemsCount, isCartEmpty, clearCart }}
+      value={useMemo(
+        () => ({
+          cart,
+          setCart,
+          cartItemsCount,
+          isCartEmpty,
+          clearCart: clearCartMemoized,
+        }),
+        [cart, setCart, cartItemsCount, isCartEmpty, clearCartMemoized]
+      )}
     >
       {children}
     </CartContext.Provider>

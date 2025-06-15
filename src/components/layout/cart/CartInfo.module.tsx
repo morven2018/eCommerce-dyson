@@ -86,7 +86,7 @@ export default function CartInfo({
         setCurrentVersion(cart.version);
       }
 
-      await apiUpdateCart(itemId, newQuantity, currentVersion);
+      await apiUpdateCart(itemId, currentVersion, newQuantity);
 
       const updatedCart = await apiGetCartById();
       if (updatedCart) {
@@ -103,7 +103,7 @@ export default function CartInfo({
     }
   };
 
-  const items = data.lineItems.reduce((sum, item) => (sum += item.quantity), 0);
+  const items = data.lineItems.reduce((sum, item) => sum + item.quantity, 0);
   const total = calculateCartTotals(data, discountPercentage)[0];
 
   return (

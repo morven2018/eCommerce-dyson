@@ -80,6 +80,36 @@ export const PromoCodeInput = ({
   const showResetButton = (inputValue && !isProcessing) || isApplied;
   const isInputDisabled = isApplied || disabled || isLoading;
 
+  const renderEndAdornment = () => {
+    if (isProcessing) {
+      return <CircularProgress size={24} />;
+    }
+    if (showApplyButton) {
+      return (
+        <IconButton
+          onClick={handleApply}
+          edge="end"
+          aria-label="Apply promo code"
+        >
+          <img src={ApplyIcon} alt="Apply" className={styles.applyImage} />
+        </IconButton>
+      );
+    }
+    if (showResetButton) {
+      return (
+        <IconButton
+          onClick={handleRemove}
+          edge="end"
+          disabled={isLoading}
+          aria-label="Remove promo code"
+        >
+          <CloseIcon />
+        </IconButton>
+      );
+    }
+    return null;
+  };
+
   return (
     <FormControl variant="outlined" fullWidth error={!!error}>
       <InputLabel>Promo Code</InputLabel>
@@ -89,32 +119,7 @@ export const PromoCodeInput = ({
         label="Promo Code"
         disabled={isInputDisabled}
         endAdornment={
-          <InputAdornment position="end">
-            {isProcessing ? (
-              <CircularProgress size={24} />
-            ) : showApplyButton ? (
-              <IconButton
-                onClick={handleApply}
-                edge="end"
-                aria-label="Apply promo code"
-              >
-                <img
-                  src={ApplyIcon}
-                  alt="Apply"
-                  className={styles.applyImage}
-                />
-              </IconButton>
-            ) : showResetButton ? (
-              <IconButton
-                onClick={handleRemove}
-                edge="end"
-                disabled={isLoading}
-                aria-label="Remove promo code"
-              >
-                <CloseIcon />
-              </IconButton>
-            ) : null}
-          </InputAdornment>
+          <InputAdornment position="end">{renderEndAdornment()}</InputAdornment>
         }
       />
       <FormHelperText>

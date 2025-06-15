@@ -106,7 +106,7 @@ export default function CartResult({
             <li className={styles.promoRow}>
               <span>Promo code:</span>
               <span>
-                {appliedPromo || 'None'}
+                {appliedPromo ?? 'None'}
                 {appliedPromo && (
                   <IconButton
                     onClick={handleResetPromo}
