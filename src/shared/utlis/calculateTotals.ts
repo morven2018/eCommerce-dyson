@@ -23,10 +23,8 @@ export default function calculateCartTotals(
     }
   });
 
-  console.log(totalWithDiscount, totalSavings);
   totalWithDiscount *= 1 - discountPercentage / 100;
   totalSavings = totalWithoutDiscount - totalWithDiscount;
-  console.log(totalWithDiscount, totalSavings);
 
   return [
     formatPrice({ centAmount: totalWithDiscount }),

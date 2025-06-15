@@ -58,7 +58,6 @@ export const getDiscountDetails = async (discountCode: string) => {
       throw new Error(`Discount code '${discountCode}' not found`);
     }
 
-    // 4. Получаем ID связанной скидки
     const cartDiscountId = targetDiscount.cartDiscounts[0]?.id;
     if (!cartDiscountId) {
       throw new Error('No cart discount associated with this code');
@@ -80,8 +79,7 @@ export const getDiscountDetails = async (discountCode: string) => {
     }
 
     return await discountResponse.json();
-  } catch (error) {
-    console.error('Error in getDiscountDetails:', error);
-    throw error;
+  } catch {
+    throw new Error('Can not get discount value');
   }
 };

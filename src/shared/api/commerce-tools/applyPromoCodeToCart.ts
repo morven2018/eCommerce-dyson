@@ -43,7 +43,6 @@ export const applyPromoCode = async (
       }
     }
 
-    // 3. Добавляем action для применения нового промокода
     if (promoCode) {
       actions.push({
         action: 'addDiscountCode',
@@ -65,13 +64,11 @@ export const applyPromoCode = async (
 
     if (!updateResponse.ok) {
       const errorData = await updateResponse.json();
-      console.error('API Error:', errorData);
       throw new Error(errorData.message || 'Failed to update promo codes');
     }
 
     return true;
-  } catch (error) {
-    console.error('Error in applyPromoCode:', error);
-    throw error;
+  } catch {
+    throw new Error(`Error in applyPromoCode`);
   }
 };

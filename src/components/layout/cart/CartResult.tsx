@@ -9,6 +9,7 @@ import { apiGetCartById } from '@shared/api/commerce-tools/apiGetCartById';
 import { useCart } from '@shared/context/cart-context';
 import icon from '../../../assets/icons/reset.svg';
 import { removePromoCode } from '@shared/api/commerce-tools/resetPromocode';
+import { openDialog } from '@services/DialogService';
 
 interface CartResultProps {
   data?: CartData;
@@ -53,8 +54,8 @@ export default function CartResult({
         }
       }
       return success;
-    } catch (error) {
-      console.error('Failed to apply promo:', error);
+    } catch {
+      openDialog('Failed to apply promo');
       return false;
     } finally {
       setIsLoading(false);
@@ -76,8 +77,8 @@ export default function CartResult({
         setCart(updatedCart);
         onCartUpdate?.(updatedCart);
       }
-    } catch (error) {
-      console.error('Failed to remove promo:', error);
+    } catch {
+      openDialog('Failed to remove promo', true);
     } finally {
       setIsLoading(false);
     }
