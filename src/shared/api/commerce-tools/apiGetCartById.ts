@@ -4,9 +4,12 @@ import { getCartIdFromLS } from '../local-storage/getCartIdFromLS';
 import { handleCatchError } from '@components/ui/error/catchError';
 import { CartData } from '@shared/types/types';
 
-export async function apiGetCartById(): Promise<CartData | null> {
-  const accessToken = getTokenFromLS();
-  const cartId = getCartIdFromLS();
+export async function apiGetCartById(
+  token?: string,
+  id?: string
+): Promise<CartData | null> {
+  const accessToken = token ?? getTokenFromLS();
+  const cartId = id ?? getCartIdFromLS();
 
   if (!accessToken || !cartId) {
     throw new Error('No access token found or cart id');

@@ -156,17 +156,22 @@ export interface ProductsData {
   results: ProductData[];
 }
 
+interface PriceValue {
+  centAmount: number;
+  currencyCode: string;
+  fractionDigits: number;
+  type: string;
+}
+
 export interface CartLineItem {
   id: string;
   name: {
     'en-US': string;
   };
   price: {
-    value: {
-      centAmount: number;
-      currencyCode: string;
-      fractionDigits: number;
-      type: string;
+    value: PriceValue;
+    discounted?: {
+      value: PriceValue;
     };
   };
   productId: string;
@@ -180,12 +185,66 @@ export interface CartLineItem {
   variant: {
     id: number;
     key: string;
+    images: {
+      url: string;
+      label: string;
+    }[];
   };
   quantity: number;
+}
+
+interface TotalPrice {
+  type: string;
+  currencyCode: string;
+  centAmount: number;
+  fractionDigits: number;
 }
 
 export interface CartData {
   cartState: string;
   id: string;
   lineItems: CartLineItem[];
+  totalPrice: TotalPrice;
+  version: number;
+  discountCodes?: DiscountCodeInfo[];
+}
+
+export interface DiscountCodeInfo {
+  discountCode: DiscountCodeReference;
+  state: 'MatchesCart' | 'DoesNotMatchCart' | 'NotActive';
+}
+
+interface DiscountCodeReference {
+  typeId: 'discount-code';
+  id: string;
+  code?: string;
+}
+
+export interface DiscountCode {
+  id: string;
+  code: string;
+  cartDiscounts: Array<{
+    typeId: string;
+    id: string;
+  }>;
+  isActive: boolean;
+}
+
+export interface CartDiscount {
+  id: string;
+  value: {
+    type: 'relative' | 'absolute';
+    permyriad?: number;
+    money?: Array<{
+      centAmount: number;
+      currencyCode: string;
+    }>;
+  };
+  name: {
+    'en-US': string;
+  };
+  description: {
+    'en-US': string;
+  };
+  isActive: boolean;
 }

@@ -1,12 +1,16 @@
 import { commercetoolsConfig } from './config';
 import { getTokenFromLS } from '../local-storage/getTokenFromLS';
 import { getCartIdFromLS } from '../local-storage/getCartIdFromLS';
+import { openDialog } from '@services/DialogService';
+import { apiGetCartById } from './apiGetCartById';
 import { handleCatchError } from '@components/ui/error/catchError';
+
 
 export async function apiAddProductToCart(
   productId: string,
-  quantity: number = 1
-): Promise<void> {
+  quantity: number = 1,
+  version?: number
+): Promise<number | void> {
   const accessToken = getTokenFromLS();
   const cartId = getCartIdFromLS();
 
@@ -14,13 +18,18 @@ export async function apiAddProductToCart(
     throw new Error('No access token found or cart id');
   }
 
+  const currentCart = await apiGetCartById();
+  if (!currentCart) throw new Error('No access to cart');
+
+  const CurrentVersion = version ?? currentCart.version;
+
   const apiUrl = commercetoolsConfig.apiUrl;
   const projectKey = commercetoolsConfig.projectKey;
   const url = `${apiUrl}/${projectKey}/me/carts/${cartId}`;
 
   try {
     const requestBody = {
-      version: 1,
+      version: CurrentVersion,
       actions: [
         {
           action: 'addLineItem',
@@ -39,7 +48,7 @@ export async function apiAddProductToCart(
       ],
     };
 
-    await fetch(url, {
+    const response = await fetch(url, {
       method: 'POST',
       headers: {
         Authorization: `Bearer ${accessToken}`,
@@ -47,6 +56,8 @@ export async function apiAddProductToCart(
       },
       body: JSON.stringify(requestBody),
     });
+    const result = await response.json();
+    if (result) return result.version;
   } catch (error) {
     handleCatchError(error, 'Error adding product to cart');
   }

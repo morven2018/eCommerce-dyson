@@ -26,7 +26,7 @@ export const getAnonymousSessionToken =
     body.append('grant_type', 'client_credentials');
     body.append(
       'scope',
-      `view_published_products:${projectKey} manage_my_orders:${projectKey} manage_my_profile:${projectKey} view_products:${projectKey}`
+      `view_published_products:${projectKey} manage_my_orders:${projectKey} manage_my_profile:${projectKey} view_products:${projectKey} manage_orders:${projectKey}`
     );
 
     try {

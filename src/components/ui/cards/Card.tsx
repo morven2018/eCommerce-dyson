@@ -4,6 +4,8 @@ import { getCartIdFromLS } from '@shared/api/local-storage/getCartIdFromLS';
 import { useState } from 'react';
 import { apiCreateNewCart } from '@shared/api/commerce-tools/apiCreateNewCart';
 import { apiAddProductToCart } from '@shared/api/commerce-tools/apiAddProductToCart';
+import { useCart } from '@shared/context/cart-context';
+import { apiGetCartById } from '@shared/api/commerce-tools/apiGetCartById';
 
 interface Card {
   id: string;
@@ -13,6 +15,11 @@ interface Card {
   discountedPrice?: number | null;
   src: string;
   isInCart: boolean;
+}
+
+function getButtonText(loading: boolean, inCart: boolean): string {
+  if (loading) return 'Loading...';
+  return inCart ? 'In Cart' : 'Add to Cart';
 }
 
 export const Card = ({
@@ -26,6 +33,7 @@ export const Card = ({
 }: Card) => {
   const [inCart, setInCart] = useState(isInCart);
   const [loading, setLoading] = useState(false);
+  const { setCart } = useCart();
 
   const alt = 'Product picture';
   const maxProductNameLength = 30;
@@ -62,7 +70,10 @@ export const Card = ({
       }
     }
 
-    apiAddProductToCart(id);
+    await apiAddProductToCart(id);
+
+    const updatedCart = await apiGetCartById();
+    setCart(updatedCart);
 
     setLoading(false);
     setInCart(true);
@@ -107,7 +118,7 @@ export const Card = ({
         disabled={inCart ?? loading}
         className={styles.button}
       >
-        {buttonText}
+        {getButtonText(loading, inCart)}
       </button>
     </div>
   );

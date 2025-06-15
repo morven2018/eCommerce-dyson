@@ -3,6 +3,7 @@ import styles from './PromoCode.module.scss';
 import discountTen from '@assets/images/discount-10.jpg';
 import discountTwenty from '@assets/images/discount-20.jpg';
 import discountThirty from '@assets/images/discount-30.jpg';
+import { openDialog } from '@services/DialogService';
 
 interface Toast {
   code: string;
@@ -44,7 +45,7 @@ export default function PromoCode() {
         timeoutRef.current = null;
       }, 1500);
     } catch (err) {
-      console.error('Copy error: ', err);
+      openDialog(`Copy error: ${err}`);
     }
   };
 

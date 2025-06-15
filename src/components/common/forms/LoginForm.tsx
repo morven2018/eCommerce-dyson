@@ -8,6 +8,11 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import * as yup from 'yup';
 import { userAuthorization } from '@shared/api/commerce-tools/authorization';
 import { useAuth } from '@shared/context/auth-hooks';
+import { mergeCartsOnLogin } from '@shared/api/commerce-tools/cart/mergeCarts';
+import { getTokenFromLS } from '@shared/api/local-storage/getTokenFromLS';
+import { getCartIdFromLS } from '@shared/api/local-storage/getCartIdFromLS';
+import { getCurrentCustomer } from '@shared/api/commerce-tools/getUserInfo';
+import { getCustomerCart } from '@shared/api/commerce-tools/cart/getCustomerCart';
 
 export default function LoginForm() {
   const navigate = useNavigate();
@@ -25,8 +30,19 @@ export default function LoginForm() {
     const result = await userAuthorization(data);
     if (result) {
       const tokenName = 'authDysonToken';
+      const oldToken = getTokenFromLS();
       localStorage.setItem(tokenName, result.access_token);
       setIsUserUnauthorized(false);
+
+      const oldCartId = getCartIdFromLS();
+
+      const user = await getCurrentCustomer();
+
+      if (!user) throw new Error('Can not get user information');
+
+      if (oldCartId)
+        await mergeCartsOnLogin(oldToken ?? '', user?.id, oldCartId);
+      else await getCustomerCart(user?.id);
       navigate('/');
     }
   };
