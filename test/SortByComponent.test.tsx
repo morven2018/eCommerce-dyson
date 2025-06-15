@@ -3,6 +3,7 @@ import { SortByComponent } from '../src/components/ui/sort/SortByComponent';
 import { vi, describe, it, expect, beforeEach } from 'vitest';
 import { createElement } from 'react';
 import '@testing-library/jest-dom/vitest';
+import React from 'react';
 
 type SortOption =
   | 'normal'
