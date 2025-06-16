@@ -6,7 +6,13 @@ export default function Logo() {
     <div className="rsschool">
       <h3 className={styles.title}> Our Collaboration</h3>
       <p className={styles.collab}>
-      Before each sprint, our team defined and assigned core tasks to ensure clear responsibilities. We used a Telegram group chat for real-time communication, enabling rapid troubleshooting of issues. For project management, we maintained a Trello board, providing a clear, visual overview of tasks (e.g., ‘To Do,’ ‘In Progress,’ ‘Done’) for efficient progress tracking. To enhance code quality and collaboration, we conducted code reviews for all pull requests.
+        Before each sprint, our team defined and assigned core tasks to ensure
+        clear responsibilities. We used a Telegram group chat for real-time
+        communication, enabling rapid troubleshooting of issues. For project
+        management, we maintained a Trello board, providing a clear, visual
+        overview of tasks (e.g., ‘To Do,’ ‘In Progress,’ ‘Done’) for efficient
+        progress tracking. To enhance code quality and collaboration, we
+        conducted code reviews for all pull requests.
       </p>
       <hr className={styles.divider} />
       <p className={styles.project}>

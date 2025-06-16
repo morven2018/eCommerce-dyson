@@ -12,7 +12,7 @@
   background: $whitesmoke;
 }
 
-.title  {
+.title {
   padding-top: 35px;
   text-align: center;
   font-size: 2rem;
@@ -20,7 +20,7 @@
 
   @media (max-width: 31.25rem) {
     font-size: 1.2rem;
-   }
+  }
 }
 
 .project {
@@ -33,7 +33,7 @@
 
   @media (max-width: 31.25rem) {
     font-size: 12px;
-   }
+  }
 }
 
 .collab {
@@ -47,14 +47,13 @@
 
   @media (max-width: 31.25rem) {
     font-size: 12px;
-   }
+  }
 }
 
 .divider {
   height: 1px;
   background: $product-benefits-background;
   width: 30%;
-  margin: 1.875rem 0;
   border: none;
   margin: 0 auto;
 }
