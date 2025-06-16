@@ -10,6 +10,8 @@ import { apiUpdateCart } from '@shared/api/commerce-tools/cart/updateNumberOfIte
 import styles from './Cart.module.scss';
 import calculateCartTotals from '@shared/utlis/calculateTotals';
 import { useCart } from '@shared/context/cart/useCart';
+import { removePromoCode } from '@shared/api/commerce-tools/resetPromocode';
+import { ConfirmResetDialog } from '@components/ui/modals/ConfirmResetDialog';
 
 interface CartInfoProps {
   data: CartData;
@@ -26,6 +28,7 @@ export default function CartInfo({
   const [isUpdating, setIsUpdating] = useState(false);
   const { setCart } = useCart();
   const [currentVersion, setCurrentVersion] = useState(data.version);
+  const [showResetDialog, setShowResetDialog] = useState(false);
 
   const handleReset = async () => {
     if (!data.lineItems.length) return;
@@ -33,6 +36,11 @@ export default function CartInfo({
     setIsResetting(true);
     try {
       let version = currentVersion;
+
+      const response = await apiGetCartById();
+      if (response) version = response.version;
+
+      // 2. Очищаем корзину
       for (const item of data.lineItems) {
         const result = await apiDeleteProductFromCart(
           item.id,
@@ -45,15 +53,23 @@ export default function CartInfo({
         }
       }
 
+      // 3. Обновляем состояние
       const updatedCart = await apiGetCartById();
       setData(updatedCart);
       setCart(updatedCart);
       setCurrentVersion(updatedCart?.version ?? 1);
-    } catch {
-      openDialog('Error reset cart', true);
+    } catch (error) {
+      console.error('Error resetting cart:', error);
+      openDialog('Error resetting cart. Please try again.', true);
+
+      // Восстанавливаем актуальное состояние
       const freshCart = await apiGetCartById();
-      setCurrentVersion(freshCart?.version ?? 1);
+      if (freshCart) {
+        setData(freshCart);
+        setCurrentVersion(freshCart.version);
+      }
     } finally {
+      await removePromoCode();
       setIsResetting(false);
     }
   };
@@ -123,7 +139,7 @@ export default function CartInfo({
             <div className={styles.items}>{`${items} items`}</div>
           </div>
           <IconButton
-            onClick={handleReset}
+            onClick={() => setShowResetDialog(true)}
             disabled={isResetting}
             className={styles.reset}
           >
@@ -145,6 +161,11 @@ export default function CartInfo({
           />
         ))}
       </ul>
+      <ConfirmResetDialog
+        open={showResetDialog}
+        onClose={() => setShowResetDialog(false)}
+        onConfirm={handleReset}
+      />
     </div>
   );
 }
