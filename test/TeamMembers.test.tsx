@@ -2,6 +2,7 @@ import React from 'react';
 import { render, screen, fireEvent } from '@testing-library/react';
 import { describe, it, expect, vi } from 'vitest';
 import TeamMembers from '../src/components/layout/team/TeamMembers';
+import '@testing-library/jest-dom/vitest';
 
 // Mock the image imports
 vi.mock('../../../assets/images/junior.jpg', () => ({}));
@@ -23,12 +24,12 @@ describe('TeamMembers Component', () => {
       expect(screen.getByText(name)).toBeInTheDocument();
     });
     expect(
-      screen.getByText('Team Lead | Project Manager | Frontend Development')
+      screen.getByText('Team Lead | UI/UX Design | Frontend Development')
     ).toBeInTheDocument();
     expect(screen.getByText('Senior Fullstack Developer')).toBeInTheDocument();
     expect(
       screen.getByText(
-        'UI/UX Design | English Translation | Automated Testing (Jest/Vitest) | Frontend Development'
+        'Project Manager | English Translation | Automated Testing (Jest/Vitest) | Frontend Development'
       )
     ).toBeInTheDocument();
   });

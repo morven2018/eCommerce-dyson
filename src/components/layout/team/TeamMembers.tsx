@@ -37,6 +37,7 @@ const TeamMembers: React.FC = () => {
         'Built shopping Cart Page with order processing functionality.',
         'Created robust Validation System for form inputs and user data.',
         'Fixed SonarQube code quality issues and integrated mentors suggestions to optimize performance.',
+        'Conducted code reviews to foster successful collaboration among developers, significantly enhancing code quality by identifying and resolving issues.',
       ],
       gitHubUrl: 'https://github.com/morven2018',
     },
@@ -66,12 +67,11 @@ const TeamMembers: React.FC = () => {
       name: 'Yulia Podgurskaia',
       image: yuliaImage,
       description:
-        'Project Manager | English Translation | Automated Testing (Jest/Vitest) | Frontend Development',
+        'Project Manager | English Translation | Automated Testing | Frontend Development',
       bio: [
         'Trilingual Frontend Developer: English, Chinese, Russian.',
         'Excelled in Math, Chemistry, Russian, English Olympiads and Music Competitions.',
-        'Received a Medal for Academic Excellence.',
-        'Graduated with Two Diplomas with Honors.',
+        'Received a Medal for Academic Excellence. Graduated with Two Diplomas with Honors.',
         'Pianist, Dancer & Athlete.',
       ],
       contributions: [
@@ -82,6 +82,7 @@ const TeamMembers: React.FC = () => {
         'Established comprehensive testing suite with 30%+ coverage using Jest, Vitest, and React Testing Library.',
         'Conducted manual testing on multiple browsers and devices for reliability.',
         'Refactored Codebase, fixed SonarQube issues, integrated mentors code review suggestions.',
+        'Conducted code reviews to promote effective team collaboration and improve code quality.',
       ],
       gitHubUrl: 'https://github.com/yuliafire',
     },
