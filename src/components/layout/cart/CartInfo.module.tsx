@@ -60,7 +60,14 @@ export default function CartInfo({
 
   const handleDeleteItem = async (itemId: string) => {
     try {
-      const result = await apiDeleteProductFromCart(itemId, 1, currentVersion);
+      const itemToDelete = data.lineItems.find((item) => item.id === itemId);
+      if (!itemToDelete) return;
+
+      const result = await apiDeleteProductFromCart(
+        itemId,
+        itemToDelete.quantity,
+        currentVersion
+      );
       if (result) {
         setCurrentVersion(result);
       }
