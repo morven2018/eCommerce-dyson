@@ -22,6 +22,7 @@ export const CategoryPage = ({ page }: { page: string }) => {
   );
   const [offset, setOffset] = useState(0);
   const [lineItemsInCart, setLineItemsInCart] = useState<CartLineItem[]>([]);
+  const [currentPage, setCurrentPage] = useState(1);
 
   const path = `/catalog/${page}`;
 
@@ -30,6 +31,11 @@ export const CategoryPage = ({ page }: { page: string }) => {
     { path: '/catalog', name: 'Catalog' },
     { path: '', name: getNameByPath(path) },
   ];
+
+  useEffect(() => {
+    setOffset(0);
+    setCurrentPage(1);
+  }, [page]);
 
   useEffect(() => {
     const fetchProductsData = async () => {
@@ -102,6 +108,7 @@ export const CategoryPage = ({ page }: { page: string }) => {
     const offset = page === 1 ? 0 : (page - 1) * 4;
 
     setOffset(offset);
+    setCurrentPage(page);
   };
 
   return (
@@ -131,6 +138,7 @@ export const CategoryPage = ({ page }: { page: string }) => {
           count={Math.ceil(productsData?.total / 4)}
           onChange={handleChangePageNumber}
           className={styles.pagination}
+          page={currentPage}
           sx={{
             '& .MuiPagination-ul': {
               justifyContent: 'end',
