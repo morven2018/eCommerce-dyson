@@ -1,24 +1,18 @@
 import { useState, useEffect } from 'react';
 import { apiGetCartById } from '@shared/api/commerce-tools/apiGetCartById';
-import { CartData, CartDiscount } from '@shared/types/types';
+import { CartData } from '@shared/types/types';
 import { openDialog } from '@services/DialogService';
 import VoidCartArea from '@components/layout/cart/VoidCartArea.module';
 import CartInfo from '@components/layout/cart/CartInfo.module';
 import styles from '../../components/layout/cart/Cart.module.scss';
 import CartResult from '@components/layout/cart/CartResult';
 import { getDiscountDetails } from '@shared/api/commerce-tools/getDiscountDetails';
+import { getDiscountPercentage } from '@shared/utlis/calculatePercentage';
 
 export const CartPage = () => {
   const [data, setData] = useState<CartData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [discountPercentage, setDiscountPercentage] = useState<number>(0);
-
-  const getDiscountPercentage = (cartDiscount: CartDiscount): number => {
-    if (cartDiscount.value?.type === 'relative') {
-      return (cartDiscount.value.permyriad ?? 0) / 100;
-    }
-    return 0;
-  };
 
   useEffect(() => {
     const fetchDiscount = async () => {
@@ -40,10 +34,6 @@ export const CartPage = () => {
     const initializeCart = async () => {
       setIsLoading(true);
       try {
-        // This will automatically:
-        // 1. Check for cart ID in localStorage
-        // 2. If not found, create a new cart
-        // 3. If found, fetch the existing cart
         const cartData = await apiGetCartById();
         setData(cartData);
       } catch (error) {
@@ -79,7 +69,11 @@ export const CartPage = () => {
         setData={setData}
         discountPercentage={discountPercentage}
       />
-      <CartResult data={data} discountPercentage={discountPercentage} />
+      <CartResult
+        data={data}
+        discountPercentage={discountPercentage}
+        setDiscountPercentage={setDiscountPercentage}
+      />
     </div>
   );
 };

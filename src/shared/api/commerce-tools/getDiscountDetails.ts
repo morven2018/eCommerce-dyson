@@ -79,8 +79,6 @@ export const getDiscountDetails = async (discountCode: string) => {
       );
     }
 
-    console.log(discountResponse);
-
     return await discountResponse.json();
   } catch {
     throw new Error('Can not get discount value');

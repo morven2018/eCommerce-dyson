@@ -10,17 +10,22 @@ import icon from '../../../assets/icons/reset.svg';
 import { removePromoCode } from '@shared/api/commerce-tools/resetPromocode';
 import { openDialog } from '@services/DialogService';
 import { useCart } from '@shared/context/cart/useCart';
+import { getDiscountDetails } from '@shared/api/commerce-tools/getDiscountDetails';
+import { getDiscountPercentage } from '@shared/utlis/calculatePercentage';
+import { overAmount } from '@shared/constants/promocode';
 
 interface CartResultProps {
-  data?: CartData;
+  data: CartData;
   onCartUpdate?: (cart: CartData) => void;
   discountPercentage: number;
+  setDiscountPercentage: (value: number) => void;
 }
 
 export default function CartResult({
   data,
   onCartUpdate,
   discountPercentage,
+  setDiscountPercentage,
 }: Readonly<CartResultProps>) {
   const [appliedPromo, setAppliedPromo] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -36,26 +41,46 @@ export default function CartResult({
   }, [data]);
 
   const handleApplyPromo = async (code: string): Promise<boolean> => {
-    if (!data) return false;
+    if (!data || !code.trim()) return false;
+
+    const normalizedCode = code.toUpperCase();
+    if (appliedPromo === normalizedCode) return true;
 
     setIsLoading(true);
     try {
-      const success = await applyPromoCode(data.id, code.toUpperCase());
-
-      if (success) {
-        setAppliedPromo(code);
-        setPromoInputValue(code);
-        localStorage.setItem('PromoCode', code);
-
-        const updatedCart = await apiGetCartById();
-        if (updatedCart) {
-          setCart(updatedCart);
-          onCartUpdate?.(updatedCart);
-        }
+      const minAmount = overAmount[normalizedCode as keyof typeof overAmount];
+      if (minAmount && data.totalPrice.centAmount < minAmount) {
+        openDialog(
+          `Minimum order amount for this promo is $${minAmount / 100}`
+        );
+        return false;
       }
-      return success;
-    } catch {
-      openDialog('Failed to apply promo');
+
+      const result = await applyPromoCode(data.id, normalizedCode);
+      if (!result) {
+        throw new Error('Failed to apply promo code');
+      }
+
+      let discountValue = 0;
+      try {
+        const discountDetails = await getDiscountDetails(normalizedCode);
+        discountValue = getDiscountPercentage(discountDetails);
+      } catch {
+        openDialog('Failed to get discount');
+      }
+
+      setAppliedPromo(normalizedCode);
+      setPromoInputValue(normalizedCode);
+      localStorage.setItem('PromoCode', normalizedCode);
+      setCart(result.updatedCart ?? null);
+      if (result.updatedCart) onCartUpdate?.(result.updatedCart);
+      setDiscountPercentage(discountValue);
+
+      return true;
+    } catch (error) {
+      openDialog(
+        error instanceof Error ? error.message : 'Failed to apply promo'
+      );
       return false;
     } finally {
       setIsLoading(false);
@@ -76,6 +101,7 @@ export default function CartResult({
       if (updatedCart) {
         setCart(updatedCart);
         onCartUpdate?.(updatedCart);
+        setDiscountPercentage(0);
       }
     } catch {
       openDialog('Failed to remove promo', true);
