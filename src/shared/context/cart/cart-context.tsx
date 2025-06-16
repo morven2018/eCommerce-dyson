@@ -1,4 +1,3 @@
-// CartContext.tsx
 import { createContext } from 'react';
 import { CartData } from '@shared/types/types';
 
@@ -8,6 +7,7 @@ interface CartContextType {
   cartItemsCount: number;
   isCartEmpty: boolean;
   clearCart: () => void;
+  updateCart: () => Promise<void>;
 }
 export const CartContext = createContext<CartContextType>({
   cart: null,
@@ -15,4 +15,5 @@ export const CartContext = createContext<CartContextType>({
   cartItemsCount: 0,
   isCartEmpty: true,
   clearCart: () => {},
+  updateCart: async () => {},
 });

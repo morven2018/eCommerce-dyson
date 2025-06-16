@@ -16,10 +16,12 @@ import { getCustomerCart } from '@shared/api/commerce-tools/cart/getCustomerCart
 import { encryptData } from '@shared/lib/password/encryption';
 import { apiCreateNewCart } from '@shared/api/commerce-tools/apiCreateNewCart';
 import { convertToUserCart } from '@shared/api/commerce-tools/cart/convertToUserCart';
+import { useCart } from '@shared/context/cart/useCart';
 
 export default function LoginForm() {
   const navigate = useNavigate();
   const { setIsUserUnauthorized } = useAuth();
+  const { updateCart } = useCart();
 
   const form = useForm({
     resolver: yupResolver(defaultSchema),
@@ -59,6 +61,7 @@ export default function LoginForm() {
       if (cart && oldCartId)
         await mergeCartsOnLogin(oldToken ?? '', user?.id, oldCartId);
 
+      updateCart();
       navigate('/');
     }
   };

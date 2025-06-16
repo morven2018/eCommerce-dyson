@@ -40,7 +40,6 @@ export default function CartInfo({
       const response = await apiGetCartById();
       if (response) version = response.version;
 
-      // 2. Очищаем корзину
       for (const item of data.lineItems) {
         const result = await apiDeleteProductFromCart(
           item.id,
@@ -53,16 +52,13 @@ export default function CartInfo({
         }
       }
 
-      // 3. Обновляем состояние
       const updatedCart = await apiGetCartById();
       setData(updatedCart);
       setCart(updatedCart);
       setCurrentVersion(updatedCart?.version ?? 1);
-    } catch (error) {
-      console.error('Error resetting cart:', error);
+    } catch {
       openDialog('Error resetting cart. Please try again.', true);
 
-      // Восстанавливаем актуальное состояние
       const freshCart = await apiGetCartById();
       if (freshCart) {
         setData(freshCart);
