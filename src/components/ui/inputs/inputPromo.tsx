@@ -102,8 +102,10 @@ export const PromoCodeInput = ({
           <IconButton
             onClick={handleApply}
             edge="end"
+            title="Apply"
             aria-label="Apply promo code"
             disabled={!inputValue.trim()}
+            className={styles.applyButton}
           >
             <img src={ApplyIcon} alt="Apply" className={styles.applyImage} />
           </IconButton>
@@ -114,6 +116,7 @@ export const PromoCodeInput = ({
           <IconButton
             onClick={handleRemove}
             edge="end"
+            title="Clear promo"
             aria-label="Remove promo code"
           >
             <CloseIcon />

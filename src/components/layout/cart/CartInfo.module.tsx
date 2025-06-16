@@ -1,5 +1,4 @@
-import { Divider, IconButton } from '@mui/material';
-import icon from '../../../assets/icons/reset.svg';
+import { Button, Divider } from '@mui/material';
 import { CartData } from '@shared/types/types';
 import { apiDeleteProductFromCart } from '@shared/api/commerce-tools/apiDeleteProductFromCart';
 import { apiGetCartById } from '@shared/api/commerce-tools/apiGetCartById';
@@ -171,13 +170,14 @@ export default function CartInfo({
             <div>Total: {total}</div>
             <div className={styles.items}>{`${items} items`}</div>
           </div>
-          <IconButton
+          <Button
             onClick={() => setShowResetDialog(true)}
             disabled={isResetting}
+            title="Clear Cart"
             className={styles.reset}
           >
-            <img src={icon} alt="Reset Cart" />
-          </IconButton>
+            Clear Cart
+          </Button>
         </div>
       </div>
       <Divider orientation="horizontal" />
