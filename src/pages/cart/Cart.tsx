@@ -69,7 +69,7 @@ export const CartPage = () => {
     if (data) {
       checkAndResetPromo();
     }
-  }, [data.totalPrice.centAmount, checkAndResetPromo]);
+  }, [data?.totalPrice.centAmount, checkAndResetPromo]);
 
   useEffect(() => {
     const initializeCart = async () => {
