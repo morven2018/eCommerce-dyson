@@ -35,7 +35,7 @@ export default function CartResult({
   useEffect(() => {
     const storedPromo = localStorage.getItem('PromoCode');
     setAppliedPromo(storedPromo);
-    setPromoInputValue(storedPromo || '');
+    setPromoInputValue(storedPromo ?? '');
   }, [discountPercentage]);
 
   useEffect(() => {

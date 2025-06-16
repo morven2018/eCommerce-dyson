@@ -26,7 +26,7 @@ export default function CartInfo({
   setData,
   discountPercentage,
   setDiscountPercentage,
-}: CartInfoProps) {
+}: Readonly<CartInfoProps>) {
   const [isResetting, setIsResetting] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
   const { setCart } = useCart();
