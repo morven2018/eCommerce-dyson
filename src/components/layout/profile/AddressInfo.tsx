@@ -10,6 +10,7 @@ import CloseIcon from '@mui/icons-material/Close';
 import { addAddress } from '@shared/api/commerce-tools/updateFields/updateAddresses/addAddresses';
 import ShowDialog from '@components/ui/modals/Modal';
 import { AddressCard } from '@components/ui/cards/addressCard';
+import './profile.scss';
 
 interface AddressRemovedParams {
   removedAddressId: string;
