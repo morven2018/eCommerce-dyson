@@ -14,6 +14,8 @@ import { getCartIdFromLS } from '@shared/api/local-storage/getCartIdFromLS';
 import { getCurrentCustomer } from '@shared/api/commerce-tools/getUserInfo';
 import { getCustomerCart } from '@shared/api/commerce-tools/cart/getCustomerCart';
 import { encryptData } from '@shared/lib/password/encryption';
+import { apiCreateNewCart } from '@shared/api/commerce-tools/apiCreateNewCart';
+import { convertToUserCart } from '@shared/api/commerce-tools/cart/convertToUserCart';
 
 export default function LoginForm() {
   const navigate = useNavigate();
@@ -43,9 +45,20 @@ export default function LoginForm() {
 
       localStorage.setItem('password', encryptData(data.password));
 
-      if (oldCartId)
+      const cart = await getCustomerCart(user?.id);
+      if (!cart) {
+        const newCart = !oldCartId
+          ? await apiCreateNewCart()
+          : await convertToUserCart(oldCartId, oldToken ?? '');
+        if (!newCart || !('id' in newCart))
+          throw new Error('Fail of creating customers cart');
+
+        localStorage.setItem('cartIdDyson', newCart.id);
+      }
+
+      if (cart && oldCartId)
         await mergeCartsOnLogin(oldToken ?? '', user?.id, oldCartId);
-      else await getCustomerCart(user?.id);
+
       navigate('/');
     }
   };
