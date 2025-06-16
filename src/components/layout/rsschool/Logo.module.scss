@@ -12,13 +12,51 @@
   background: $whitesmoke;
 }
 
-.project,
-.collab {
+.title  {
+  padding-top: 35px;
+  text-align: center;
+  font-size: 2rem;
+  color: $button-dark;
+
+  @media (max-width: 31.25rem) {
+    font-size: 1.2rem;
+   }
+}
+
+.project {
   text-align: center;
   margin-top: 30px;
   font-weight: 800;
   padding-left: 30px;
   padding-right: 30px;
+  color: $button-dark;
+
+  @media (max-width: 31.25rem) {
+    font-size: 12px;
+   }
+}
+
+.collab {
+  padding-top: 20px;
+  text-align: justify;
+  width: 50%;
+  margin: 0 auto;
+  font-weight: 800;
+  padding-bottom: 50px;
+  color: $product-benefits-background;
+
+  @media (max-width: 31.25rem) {
+    font-size: 12px;
+   }
+}
+
+.divider {
+  height: 1px;
+  background: $product-benefits-background;
+  width: 30%;
+  margin: 1.875rem 0;
+  border: none;
+  margin: 0 auto;
 }
 
 .schoolLogo {
@@ -31,7 +69,7 @@
 }
 
 .logoImage {
-  margin: 30px auto;
+  margin: 5px auto;
   cursor: pointer;
   transition: all ease 0.3s;
   width: 110px;
