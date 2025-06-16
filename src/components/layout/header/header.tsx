@@ -79,6 +79,7 @@ export const Header = () => {
       localStorage.removeItem(tokenName);
       localStorage.removeItem('cartIdDyson');
       localStorage.removeItem('password');
+      localStorage.removeItem('PromoCode');
       addAnonymousSessionTokenToLS();
       clearCart();
     }

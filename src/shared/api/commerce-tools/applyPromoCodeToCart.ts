@@ -1,37 +1,53 @@
 import { getTokenFromLS } from '../local-storage/getTokenFromLS';
 import { commercetoolsConfig } from './config';
+import { CartData } from '@shared/types/types';
 
 const EXCLUSIVE_PROMO_CODES = ['LUCKY-30', 'DYSON-20', 'SUMMER-10'];
+
+interface ApplyPromoCodeResponse {
+  success: boolean;
+  updatedCart?: CartData;
+  error?: string;
+}
 
 export const applyPromoCode = async (
   cartId: string,
   promoCode: string
-): Promise<boolean> => {
+): Promise<ApplyPromoCodeResponse> => {
   try {
     const accessToken = getTokenFromLS();
     if (!accessToken) {
-      throw new Error('No access token found');
+      return {
+        success: false,
+        error: 'No access token found',
+      };
     }
 
-    const url = `${commercetoolsConfig.apiUrl}/${commercetoolsConfig.projectKey}/carts/${cartId}`;
+    const baseUrl = `${commercetoolsConfig.apiUrl}/${commercetoolsConfig.projectKey}`;
+    const cartUrl = `${baseUrl}/carts/${cartId}`;
 
-    const cartResponse = await fetch(url, {
+    const getCartResponse = await fetch(cartUrl, {
       headers: {
         'Content-Type': 'application/json',
         Authorization: `Bearer ${accessToken}`,
       },
     });
 
-    if (!cartResponse.ok) {
-      throw new Error('Failed to fetch cart data');
+    if (!getCartResponse.ok) {
+      const errorData = await getCartResponse.json();
+      return {
+        success: false,
+        error: errorData.message ?? 'Failed to fetch cart data',
+      };
     }
 
-    const cart = await cartResponse.json();
+    const cart: CartData = await getCartResponse.json();
     const actions = [];
 
     if (cart.discountCodes && cart.discountCodes.length > 0) {
       for (const discount of cart.discountCodes) {
-        if (EXCLUSIVE_PROMO_CODES.includes(discount.discountCode.code)) {
+        const discountCode = discount.discountCode.code;
+        if (discountCode && EXCLUSIVE_PROMO_CODES.includes(discountCode)) {
           actions.push({
             action: 'removeDiscountCode',
             discountCode: {
@@ -43,14 +59,12 @@ export const applyPromoCode = async (
       }
     }
 
-    if (promoCode) {
-      actions.push({
-        action: 'addDiscountCode',
-        code: promoCode,
-      });
-    }
+    actions.push({
+      action: 'addDiscountCode',
+      code: promoCode,
+    });
 
-    const updateResponse = await fetch(url, {
+    const updateResponse = await fetch(cartUrl, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -58,17 +72,52 @@ export const applyPromoCode = async (
       },
       body: JSON.stringify({
         version: cart.version,
-        actions: actions,
+        actions,
       }),
     });
 
     if (!updateResponse.ok) {
       const errorData = await updateResponse.json();
-      throw new Error(errorData.message ?? 'Failed to update promo codes');
+      return {
+        success: false,
+        error: errorData.message ?? 'Failed to update promo codes',
+      };
     }
 
-    return true;
+    const updatedCartResponse = await fetch(cartUrl, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    if (!updatedCartResponse.ok) {
+      return {
+        success: false,
+        error: 'Failed to fetch updated cart',
+      };
+    }
+
+    const updatedCart: CartData = await updatedCartResponse.json();
+
+    const isApplied = updatedCart.discountCodes?.some(
+      (dc) => dc.discountCode.code === promoCode && dc.state === 'MatchesCart'
+    );
+
+    if (!isApplied) {
+      return {
+        success: false,
+        error: 'Promo code could not be applied',
+      };
+    }
+
+    return {
+      success: true,
+      updatedCart,
+    };
   } catch {
-    throw new Error(`Error in applyPromoCode`);
+    return {
+      success: false,
+      error: 'Can not apply promocode',
+    };
   }
 };

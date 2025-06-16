@@ -1,26 +1,18 @@
 import { useState, useEffect } from 'react';
 import { apiGetCartById } from '@shared/api/commerce-tools/apiGetCartById';
-import { CartData, CartDiscount } from '@shared/types/types';
+import { CartData } from '@shared/types/types';
 import { openDialog } from '@services/DialogService';
 import VoidCartArea from '@components/layout/cart/VoidCartArea.module';
 import CartInfo from '@components/layout/cart/CartInfo.module';
-import { getCartIdFromLS } from '@shared/api/local-storage/getCartIdFromLS';
-import { apiCreateNewCart } from '@shared/api/commerce-tools/apiCreateNewCart';
 import styles from '../../components/layout/cart/Cart.module.scss';
 import CartResult from '@components/layout/cart/CartResult';
 import { getDiscountDetails } from '@shared/api/commerce-tools/getDiscountDetails';
+import { getDiscountPercentage } from '@shared/utlis/calculatePercentage';
 
 export const CartPage = () => {
   const [data, setData] = useState<CartData | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [discountPercentage, setDiscountPercentage] = useState<number>(0);
-
-  const getDiscountPercentage = (cartDiscount: CartDiscount): number => {
-    if (cartDiscount.value?.type === 'relative') {
-      return (cartDiscount.value.permyriad ?? 0) / 100;
-    }
-    return 0;
-  };
 
   useEffect(() => {
     const fetchDiscount = async () => {
@@ -40,42 +32,19 @@ export const CartPage = () => {
 
   useEffect(() => {
     const initializeCart = async () => {
-      try {
-        const cartId = getCartIdFromLS();
-        if (!cartId) {
-          const newCart = await apiCreateNewCart();
-          if (!newCart) throw new Error('Failed to create cart');
-          const id = newCart.id;
-          if (id) localStorage.setItem('cartIdDyson', id);
-        }
-
-        const cart = await apiGetCartById();
-        setData(cart);
-      } catch {
-        openDialog('The cart is unaccessible', true);
-      } finally {
-        setIsLoading(false);
-      }
-    };
-
-    initializeCart();
-  }, []);
-
-  useEffect(() => {
-    const initializeCart = async () => {
+      setIsLoading(true);
       try {
         const cartData = await apiGetCartById();
         setData(cartData);
       } catch (error) {
         let message = 'Error getting cart data';
-
         if (error instanceof Error) {
           message = error.message;
         } else if (typeof error === 'string') {
           message = error;
         }
-
         openDialog(message, true);
+        setData(null);
       } finally {
         setIsLoading(false);
       }
@@ -92,6 +61,7 @@ export const CartPage = () => {
         <VoidCartArea />
       </div>
     );
+
   return (
     <div className={styles.cart}>
       <CartInfo
@@ -99,7 +69,11 @@ export const CartPage = () => {
         setData={setData}
         discountPercentage={discountPercentage}
       />
-      <CartResult data={data} discountPercentage={discountPercentage} />
+      <CartResult
+        data={data}
+        discountPercentage={discountPercentage}
+        setDiscountPercentage={setDiscountPercentage}
+      />
     </div>
   );
 };

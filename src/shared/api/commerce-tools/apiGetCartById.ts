@@ -3,6 +3,8 @@ import { getTokenFromLS } from '../local-storage/getTokenFromLS';
 import { getCartIdFromLS } from '../local-storage/getCartIdFromLS';
 import { handleCatchError } from '@components/ui/error/catchError';
 import { CartData } from '@shared/types/types';
+import { getAnonymousSessionToken } from './getAnonymousSessionToken';
+import { apiCreateNewCart } from './apiCreateNewCart';
 
 export async function apiGetCartById(
   token?: string,
@@ -11,8 +13,20 @@ export async function apiGetCartById(
   const accessToken = token ?? getTokenFromLS();
   const cartId = id ?? getCartIdFromLS();
 
-  if (!accessToken || !cartId) {
-    throw new Error('No access token found or cart id');
+  if (!accessToken) {
+    const token = await getAnonymousSessionToken();
+
+    if (!token) throw new Error('No access token found');
+
+    localStorage.setItem('AnonymousDysonToken', token.access_token);
+  }
+
+  if (!cartId) {
+    const cart = await apiCreateNewCart();
+    if (!cart) throw new Error('No cart id found');
+
+    localStorage.setItem('cartIdDyson', cart.id);
+    return cart;
   }
 
   const apiUrl = commercetoolsConfig.apiUrl;

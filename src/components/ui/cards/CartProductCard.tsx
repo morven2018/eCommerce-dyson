@@ -29,7 +29,7 @@ export default function CartProductCard({
   const variant = data.variant.key;
   const price = formatPrice(data.price.value);
   const discountedPrice = data.price.discounted?.value || data.price.value;
-  const delta = (discountedPrice.centAmount * usePromo) / 10000;
+  const delta = (discountedPrice.centAmount * usePromo) / 100;
   const finalDiscountedPrice = {
     ...discountedPrice,
     centAmount: Math.round(discountedPrice.centAmount - delta),

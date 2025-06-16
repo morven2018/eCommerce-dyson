@@ -23,6 +23,8 @@ interface PromoCodeInputProps {
   disabled?: boolean;
 }
 
+type InputState = 'ready' | 'error' | 'applied';
+
 export const PromoCodeInput = ({
   cartTotal,
   onApply,
@@ -35,10 +37,12 @@ export const PromoCodeInput = ({
   const [inputValue, setInputValue] = useState(value);
   const [error, setError] = useState('');
   const [isProcessing, setIsProcessing] = useState(false);
+  const [currentState, setCurrentState] = useState<InputState>('ready');
 
   useEffect(() => {
     setInputValue(value);
-  }, [value]);
+    setCurrentState(isApplied ? 'applied' : 'ready');
+  }, [value, isApplied]);
 
   const handleApply = async () => {
     if (!inputValue.trim() || isProcessing) return;
@@ -49,17 +53,22 @@ export const PromoCodeInput = ({
     const validation = validatePromoCode(inputValue, cartTotal);
     if (!validation.isValid) {
       setError(validation.error ?? 'Invalid promo code');
+      setCurrentState('error');
       setIsProcessing(false);
       return;
     }
 
     try {
       const success = await onApply(inputValue);
-      if (!success) {
+      if (success) {
+        setCurrentState('applied');
+      } else {
         setError('Failed to apply promo code');
+        setCurrentState('error');
       }
     } catch {
       setError('Error applying promo code');
+      setCurrentState('error');
     } finally {
       setIsProcessing(false);
     }
@@ -68,63 +77,88 @@ export const PromoCodeInput = ({
   const handleRemove = () => {
     setInputValue('');
     setError('');
+    setCurrentState('ready');
     onReset();
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInputValue(e.target.value);
-    setError('');
-  };
+    const newValue = e.target.value;
+    setInputValue(newValue);
 
-  const showApplyButton = !isApplied && inputValue && !isProcessing && !error;
-  const showResetButton = (inputValue && !isProcessing) || isApplied;
-  const isInputDisabled = isApplied || disabled || isLoading;
+    if (currentState === 'error') {
+      setError('');
+      setCurrentState('ready');
+    }
+  };
 
   const renderEndAdornment = () => {
     if (isProcessing) {
       return <CircularProgress size={24} />;
     }
-    if (showApplyButton) {
-      return (
-        <IconButton
-          onClick={handleApply}
-          edge="end"
-          aria-label="Apply promo code"
-        >
-          <img src={ApplyIcon} alt="Apply" className={styles.applyImage} />
-        </IconButton>
-      );
+
+    switch (currentState) {
+      case 'ready':
+        return (
+          <IconButton
+            onClick={handleApply}
+            edge="end"
+            aria-label="Apply promo code"
+            disabled={!inputValue.trim()}
+          >
+            <img src={ApplyIcon} alt="Apply" className={styles.applyImage} />
+          </IconButton>
+        );
+
+      case 'error':
+        return (
+          <IconButton
+            onClick={handleRemove}
+            edge="end"
+            aria-label="Remove promo code"
+          >
+            <CloseIcon />
+          </IconButton>
+        );
+
+      case 'applied':
+        return null;
+
+      default:
+        return null;
     }
-    if (showResetButton) {
-      return (
-        <IconButton
-          onClick={handleRemove}
-          edge="end"
-          disabled={isLoading}
-          aria-label="Remove promo code"
-        >
-          <CloseIcon />
-        </IconButton>
-      );
+  };
+
+  const getHelperText = () => {
+    switch (currentState) {
+      case 'applied':
+        return 'Promo code applied';
+      case 'error':
+        return error;
+      default:
+        return inputValue.trim()
+          ? 'Press apply to use promo code'
+          : 'Enter your promo code';
     }
-    return null;
   };
 
   return (
-    <FormControl variant="outlined" fullWidth error={!!error}>
+    <FormControl
+      variant="outlined"
+      fullWidth
+      error={currentState === 'error'}
+      className={styles.promoCodeControl}
+    >
       <InputLabel>Promo Code</InputLabel>
       <OutlinedInput
         value={inputValue}
         onChange={handleChange}
         label="Promo Code"
-        disabled={isInputDisabled}
+        disabled={currentState === 'applied' || disabled || isLoading}
         endAdornment={
           <InputAdornment position="end">{renderEndAdornment()}</InputAdornment>
         }
       />
-      <FormHelperText>
-        {error ?? (isApplied ? 'Promo code applied' : 'Enter your promo code')}
-      </FormHelperText>
+      <FormHelperText>{getHelperText()}</FormHelperText>
     </FormControl>
   );
 };

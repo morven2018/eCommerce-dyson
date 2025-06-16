@@ -1,5 +1,6 @@
 import { DiscountCode } from '@shared/types/types';
 import { commercetoolsConfig } from './config';
+import { getTokenFromLS } from '../local-storage/getTokenFromLS';
 
 function isDiscountCode(obj: unknown): obj is DiscountCode {
   return (
@@ -26,7 +27,7 @@ function isDiscountCode(obj: unknown): obj is DiscountCode {
 }
 
 export const getDiscountDetails = async (discountCode: string) => {
-  const accessToken = localStorage.getItem('authDysonToken');
+  const accessToken = getTokenFromLS();
   if (!accessToken) throw new Error('No access token found');
 
   const { apiUrl, projectKey } = commercetoolsConfig;
