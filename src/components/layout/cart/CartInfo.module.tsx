@@ -174,6 +174,7 @@ export default function CartInfo({
           <IconButton
             onClick={() => setShowResetDialog(true)}
             disabled={isResetting}
+            title="Clear Cart"
             className={styles.reset}
           >
             <img src={icon} alt="Reset Cart" />

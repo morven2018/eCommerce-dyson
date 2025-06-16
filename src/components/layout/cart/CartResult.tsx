@@ -186,7 +186,7 @@ export default function CartResult({
           </div>
         </div>
         <Button className={styles.button} disabled={isLoading}>
-          {isLoading ? 'Processing...' : 'Check out'}
+          {isLoading ? 'Processing...' : 'PLACE ORDER'}
         </Button>
       </div>
     );
