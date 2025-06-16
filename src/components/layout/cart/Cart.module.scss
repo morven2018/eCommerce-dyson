@@ -39,6 +39,12 @@ $breakpoint420: 420px;
     cursor: pointer;
     transition: all ease 0.5s;
 
+    &:disabled {
+      color: $primary-white;
+      background-color: $controls;
+      cursor: not-allowed;
+    }
+
     &:hover {
       @media (hover: hover) and (pointer: fine) {
         transform: scale(1.05);

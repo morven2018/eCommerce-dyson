@@ -2,13 +2,13 @@ import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router';
 import { App } from './App';
 import './index.scss';
-import { addAnonymousSessionTokenToLS } from '@shared/utlis/token/addAnonymousSessionTokenToLS';
+import { initializeAnonymousSession } from '@shared/api/commerce-tools/anonymousSessionService';
+import { getAnonymousSessionToken } from '@shared/api/commerce-tools/getAnonymousSessionToken';
 
-const tokenName = 'authDysonToken';
-const existingToken = localStorage.getItem(tokenName);
-if (!existingToken) {
-  addAnonymousSessionTokenToLS();
-  localStorage.removeItem('cartIdDyson'); // Временное решение может быть изменено !!!
+try {
+  await initializeAnonymousSession();
+} catch {
+  getAnonymousSessionToken();
 }
 
 createRoot(document.getElementById('root')!).render(
