@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { apiGetCartById } from '@shared/api/commerce-tools/apiGetCartById';
 import { CartData } from '@shared/types/types';
 import { openDialog } from '@services/DialogService';
@@ -29,6 +29,47 @@ export const CartPage = () => {
 
     fetchDiscount();
   }, []);
+
+  const checkAndResetPromo = useCallback(async () => {
+    const promocode = localStorage.getItem('PromoCode');
+    if (!promocode) return;
+
+    try {
+      const details = await getDiscountDetails(promocode);
+      const newDiscount = getDiscountPercentage(details);
+      setDiscountPercentage(newDiscount);
+
+      if (newDiscount === 0) {
+        localStorage.removeItem('PromoCode');
+      }
+    } catch {
+      setDiscountPercentage(0);
+      localStorage.removeItem('PromoCode');
+    }
+  }, []);
+
+  useEffect(() => {
+    const initializeCart = async () => {
+      setIsLoading(true);
+      try {
+        const cartData = await apiGetCartById();
+        setData(cartData);
+        if (cartData) await checkAndResetPromo();
+      } catch {
+        openDialog('Can not reset promocode');
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    initializeCart();
+  }, [checkAndResetPromo]);
+
+  useEffect(() => {
+    if (data) {
+      checkAndResetPromo();
+    }
+  }, [data.totalPrice.centAmount, checkAndResetPromo]);
 
   useEffect(() => {
     const initializeCart = async () => {
@@ -68,6 +109,7 @@ export const CartPage = () => {
         data={data}
         setData={setData}
         discountPercentage={discountPercentage}
+        setDiscountPercentage={setDiscountPercentage}
       />
       <CartResult
         data={data}

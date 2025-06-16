@@ -12,17 +12,20 @@ import calculateCartTotals from '@shared/utlis/calculateTotals';
 import { useCart } from '@shared/context/cart/useCart';
 import { removePromoCode } from '@shared/api/commerce-tools/resetPromocode';
 import { ConfirmResetDialog } from '@components/ui/modals/ConfirmResetDialog';
+import validatePromoCode from '@shared/utlis/validatePromocode';
 
 interface CartInfoProps {
   data: CartData;
   setData: React.Dispatch<React.SetStateAction<CartData | null>>;
   discountPercentage: number;
+  setDiscountPercentage: (value: number) => void;
 }
 
 export default function CartInfo({
   data,
   setData,
   discountPercentage,
+  setDiscountPercentage,
 }: CartInfoProps) {
   const [isResetting, setIsResetting] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
@@ -71,26 +74,47 @@ export default function CartInfo({
   };
 
   const handleDeleteItem = async (itemId: string) => {
+    if (isUpdating) return;
+
+    setIsUpdating(true);
     try {
-      const itemToDelete = data.lineItems.find((item) => item.id === itemId);
+      const currentCart = await apiGetCartById();
+      if (!currentCart) throw new Error('Cart not found');
+
+      const itemToDelete = currentCart.lineItems.find(
+        (item) => item.id === itemId
+      );
       if (!itemToDelete) return;
 
-      const result = await apiDeleteProductFromCart(
+      await apiDeleteProductFromCart(
         itemId,
         itemToDelete.quantity,
-        currentVersion
+        currentCart.version
       );
-      if (result) {
-        setCurrentVersion(result);
-      }
+
       const updatedCart = await apiGetCartById();
+      if (!updatedCart) throw new Error('Failed to get updated cart');
+
       setData(updatedCart);
       setCart(updatedCart);
-      setCurrentVersion(updatedCart?.version ?? 1);
+      setCurrentVersion(updatedCart.version);
+
+      const promocode = localStorage.getItem('PromoCode');
+      if (promocode) {
+        const validation = validatePromoCode(
+          promocode,
+          updatedCart.totalPrice.centAmount
+        );
+        if (!validation.isValid) {
+          localStorage.removeItem('PromoCode');
+          setDiscountPercentage(0);
+          openDialog('Promo code is no longer valid');
+        }
+      }
     } catch {
-      openDialog('Failed to delete item', true);
-      const freshCart = await apiGetCartById();
-      setCurrentVersion(freshCart?.version ?? 1);
+      openDialog('Failed to delete item. Please try again.', true);
+    } finally {
+      setIsUpdating(false);
     }
   };
 
@@ -112,6 +136,19 @@ export default function CartInfo({
         setData(updatedCart);
         setCart(updatedCart);
         setCurrentVersion(updatedCart.version);
+
+        const promocode = localStorage.getItem('PromoCode');
+        if (promocode) {
+          const validation = validatePromoCode(
+            promocode,
+            updatedCart.totalPrice.centAmount
+          );
+          if (!validation.isValid) {
+            localStorage.removeItem('PromoCode');
+            setDiscountPercentage(0);
+            openDialog('Promo code is no longer valid');
+          }
+        }
       }
     } catch {
       openDialog('Failed to update cart', true);
