@@ -37,7 +37,7 @@ export const applyPromoCode = async (
       const errorData = await getCartResponse.json();
       return {
         success: false,
-        error: errorData.message || 'Failed to fetch cart data',
+        error: errorData.message ?? 'Failed to fetch cart data',
       };
     }
 
@@ -80,7 +80,7 @@ export const applyPromoCode = async (
       const errorData = await updateResponse.json();
       return {
         success: false,
-        error: errorData.message || 'Failed to update promo codes',
+        error: errorData.message ?? 'Failed to update promo codes',
       };
     }
 
@@ -114,10 +114,10 @@ export const applyPromoCode = async (
       success: true,
       updatedCart,
     };
-  } catch (error) {
+  } catch {
     return {
       success: false,
-      error: error instanceof Error ? error.message : 'Unknown error',
+      error: 'Can not apply promocode',
     };
   }
 };
