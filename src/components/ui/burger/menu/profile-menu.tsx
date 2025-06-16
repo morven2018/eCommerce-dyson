@@ -3,6 +3,8 @@ import { ListItemText, Menu, MenuItem } from '@mui/material';
 import styles from './ProfileMenu.module.scss';
 import { INavItems } from '@components/layout/header/header';
 import { useNavigate } from 'react-router-dom';
+import { useCart } from '@shared/context/cart/useCart';
+import { NavText } from '@shared/constants/text-fields';
 
 interface ProfileMenuProps {
   anchorEl: HTMLElement | null;
@@ -18,6 +20,7 @@ export const ProfileMenu = ({
   items,
 }: ProfileMenuProps) => {
   const navigate = useNavigate();
+  const { cartItemsCount } = useCart();
   return (
     <Menu
       anchorEl={anchorEl}
@@ -41,6 +44,11 @@ export const ProfileMenu = ({
           className={styles.menuItem}
         >
           <ListItemText className={styles.listItem}>{item.text}</ListItemText>
+          <span className={styles.quantity}>
+            {item.text === NavText.Cart && cartItemsCount > 0
+              ? `   ${cartItemsCount}`
+              : ''}
+          </span>
         </MenuItem>
       ))}
     </Menu>

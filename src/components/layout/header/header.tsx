@@ -40,6 +40,7 @@ const NonBreakingText = ({ text }: { text: string }) => (
 
 const ItemList = ({ text, icon, path, onClick }: INavItems) => {
   const navigate = useNavigate();
+  const { isCartEmpty, cartItemsCount } = useCart();
 
   const handleClick = () => {
     onClick();
@@ -59,6 +60,10 @@ const ItemList = ({ text, icon, path, onClick }: INavItems) => {
         ) : (
           <ListItemText primary={<NonBreakingText text={text} />} />
         )}
+
+        <span className={styles.quantity}>
+          {text === NavText.Cart && !isCartEmpty ? `   ${cartItemsCount}` : ''}
+        </span>
       </ListItemButton>
     </ListItem>
   );

@@ -27,6 +27,8 @@ $mobile-width: 700px;
 .menuItem {
   padding: 10px 16px;
   margin: 0 4px;
+  display: flex;
+  flex-direction: row;
 
   border-radius: $border-radius;
   text-transform: uppercase;
