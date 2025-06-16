@@ -88,6 +88,7 @@ export default function CartProductCard({
           onClick={handleDelete}
           aria-label="Delete item"
           disabled={isDeleting}
+          title="Remove from Cart"
         >
           <DeleteIcon />
         </IconButton>

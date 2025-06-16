@@ -21,7 +21,7 @@ const TeamMembers: React.FC = () => {
     {
       name: 'Alena Pudina',
       image: alenaImage,
-      description: 'Team Lead | Project Manager | Frontend Development',
+      description: 'Team Lead | UI/UX Design | Frontend Development',
       bio: [
         'Math & Computer Science Genius.',
         "Skilled Programmer with a Master's Degree in Applied Mathematics and Computer Science.",
@@ -66,7 +66,7 @@ const TeamMembers: React.FC = () => {
       name: 'Yulia Podgurskaia',
       image: yuliaImage,
       description:
-        'UI/UX Design | English Translation | Automated Testing (Jest/Vitest) | Frontend Development',
+        'Project Manager | English Translation | Automated Testing (Jest/Vitest) | Frontend Development',
       bio: [
         'Trilingual Frontend Developer: English, Chinese, Russian.',
         'Excelled in Math, Chemistry, Russian, English Olympiads and Music Competitions.',
