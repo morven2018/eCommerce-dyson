@@ -66,7 +66,7 @@ const ItemList = ({ text, icon, path, onClick }: INavItems) => {
 
 export const Header = () => {
   const location = useLocation();
-  const { isCartEmpty, clearCart } = useCart();
+  const { isCartEmpty, clearCart, updateCart } = useCart();
 
   const { isUserUnauthorized, setIsUserUnauthorized } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -82,9 +82,10 @@ export const Header = () => {
       localStorage.removeItem('PromoCode');
       addAnonymousSessionTokenToLS();
       clearCart();
+      updateCart();
     }
     setIsUserUnauthorized(!isUserUnauthorized);
-  }, [clearCart, isUserUnauthorized, setIsUserUnauthorized]);
+  }, [clearCart, isUserUnauthorized, setIsUserUnauthorized, updateCart]);
 
   const updateNavItems = useCallback(() => {
     const updatedItems = [

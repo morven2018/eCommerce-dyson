@@ -1,6 +1,7 @@
 import { CartData } from '@shared/types/types';
 import { useCallback, useMemo, useState } from 'react';
 import { CartContext } from './cart-context';
+import { apiGetCartById } from '@shared/api/commerce-tools/apiGetCartById';
 
 export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   const [cart, setCart] = useState<CartData | null>(null);
@@ -12,6 +13,15 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     setCart(null);
   }, []);
 
+  const updateCart = useCallback(async () => {
+    try {
+      const cartData = await apiGetCartById();
+      setCart(cartData);
+    } catch {
+      setCart(null);
+    }
+  }, []);
+
   const value = useMemo(
     () => ({
       cart,
@@ -19,8 +29,9 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
       cartItemsCount,
       isCartEmpty,
       clearCart: clearCartMemoized,
+      updateCart,
     }),
-    [cart, cartItemsCount, isCartEmpty, clearCartMemoized]
+    [cart, cartItemsCount, isCartEmpty, clearCartMemoized, updateCart]
   );
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

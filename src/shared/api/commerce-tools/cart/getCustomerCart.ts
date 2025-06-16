@@ -28,12 +28,15 @@ export async function getCustomerCart(
       if (response.status === 404) {
         return null;
       }
+
       throw new Error(`Failed to fetch customer cart: ${response.statusText}`);
     }
 
     const data = await response.json();
 
-    localStorage.setItem('cartIdDyson', data.results[0].id);
+    if (data.results.length !== 0) {
+      localStorage.setItem('cartIdDyson', data.results[0].id);
+    }
 
     return data.results[0] ?? null;
   } catch (error) {
