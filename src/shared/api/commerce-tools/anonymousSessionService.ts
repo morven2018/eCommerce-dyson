@@ -11,8 +11,6 @@ export async function initializeAnonymousSession(): Promise<void> {
   const existingToken = localStorage.getItem(TOKEN_NAME);
   const existingCartId = localStorage.getItem(CART_ID_NAME);
 
-  localStorage.clear();
-
   if (!existingToken) {
     const newToken = await getAnonymousSessionToken();
     if (newToken) {
