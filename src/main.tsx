@@ -8,12 +8,6 @@ import { checkTokenValidity } from '@shared/api/commerce-tools/checkToken';
 import { getCurrentCustomer } from '@shared/api/commerce-tools/getUserInfo';
 
 (async () => {
-  const existingToken = localStorage.getItem('AnonymousDysonToken');
-
-  if (!existingToken) {
-    await getAnonymousSessionToken();
-  }
-
   try {
     if (!localStorage.getItem('authDysonToken')) {
       await initializeAnonymousSession();
