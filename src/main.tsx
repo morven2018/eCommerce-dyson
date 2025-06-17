@@ -4,10 +4,19 @@ import { App } from './App';
 import './index.scss';
 import { initializeAnonymousSession } from '@shared/api/commerce-tools/anonymousSessionService';
 import { getAnonymousSessionToken } from '@shared/api/commerce-tools/getAnonymousSessionToken';
+import { checkTokenValidity } from '@shared/api/commerce-tools/checkToken';
 
 (async () => {
   try {
-    await initializeAnonymousSession();
+    if (!localStorage.getItem('authDysonToken'))
+      await initializeAnonymousSession();
+    else {
+      const check = await checkTokenValidity();
+      if (!check) {
+        getAnonymousSessionToken();
+        localStorage.removeItem('authDysonToken');
+      }
+    }
   } catch {
     getAnonymousSessionToken();
   }
