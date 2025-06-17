@@ -2,6 +2,7 @@ import { render, fireEvent, cleanup } from '@testing-library/react';
 import { expect, describe, it, vi, afterEach } from 'vitest';
 import '@testing-library/jest-dom/vitest';
 import { Burger } from '../src/components/ui/burger/burger/burger';
+import React from 'react';
 
 describe('Burger Component', () => {
   afterEach(() => {

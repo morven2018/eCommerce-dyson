@@ -29,7 +29,7 @@ describe('TeamMembers Component', () => {
     expect(screen.getByText('Senior Fullstack Developer')).toBeInTheDocument();
     expect(
       screen.getByText(
-        'Project Manager | English Translation | Automated Testing (Jest/Vitest) | Frontend Development'
+        'Project Manager | English Translation | Automated Testing | Frontend Development'
       )
     ).toBeInTheDocument();
   });
