@@ -1,6 +1,7 @@
 import { commercetoolsConfig } from './config';
 import { handleCatchError } from '@components/ui/error/catchError';
 import { ProductsByCategory } from '@shared/types/types';
+import { getAnonymousSessionToken } from './getAnonymousSessionToken';
 
 interface EnterData {
   idCategory: string | null;
@@ -17,20 +18,12 @@ export async function getProductsByIdCategory(
   const url = `${apiUrl}/${projectKey}/product-projections/search?filter=categories.id:"${data.idCategory}"&limit=${limit}&offset=${data.offset}`;
 
   try {
-    const response = await fetch(url, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        Authorization: `Bearer ${data.token}`,
-      },
-    });
-
+    let response = await makeResponse(url, data.token);
     if (!response.ok) {
-      const errorDetails = await response.json();
-      const errorMessage = errorDetails.message;
-      throw new Error(
-        `Request failed while fetching products: ${errorMessage}`
-      );
+      if (localStorage.getItem('authDysonToken')) localStorage.clear();
+      const token = await getAnonymousSessionToken();
+
+      if (!token) response = await makeResponse(url, token);
     }
 
     const result: ProductsByCategory = await response.json();
@@ -39,4 +32,17 @@ export async function getProductsByIdCategory(
     handleCatchError(error, 'Error retrieving products data');
     return null;
   }
+}
+
+async function makeResponse(
+  url: string,
+  token: string | null
+): Promise<Response> {
+  return await fetch(url, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      Authorization: `Bearer ${token}`,
+    },
+  });
 }
