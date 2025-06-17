@@ -6,7 +6,6 @@ import { initializeAnonymousSession } from '@shared/api/commerce-tools/anonymous
 import { getAnonymousSessionToken } from '@shared/api/commerce-tools/getAnonymousSessionToken';
 import { checkTokenValidity } from '@shared/api/commerce-tools/checkToken';
 import { getCurrentCustomer } from '@shared/api/commerce-tools/getUserInfo';
-import { off } from 'process';
 
 (async () => {
   try {
