@@ -11,14 +11,14 @@ export async function initializeAnonymousSession(): Promise<void> {
   const existingToken = localStorage.getItem(TOKEN_NAME);
   const existingCartId = localStorage.getItem(CART_ID_NAME);
 
-  if (!existingToken) {
+  if (!existingToken || !existingCartId) {
     const newToken = await getAnonymousSessionToken();
     if (newToken) {
       localStorage.setItem(TOKEN_NAME, newToken.access_token);
       const cart = await apiCreateNewCart();
       setCartIdToLS(CART_ID_NAME, cart);
     }
-  } else if (existingCartId) {
+  } else {
     const cart = await apiGetCartById(existingToken, existingCartId);
     if (!cart) {
       const newToken = await getAnonymousSessionToken();
