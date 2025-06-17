@@ -1,6 +1,7 @@
 import { commercetoolsConfig } from './config';
 import { handleCatchError } from '@components/ui/error/catchError';
 import { ProductsByCategory } from '@shared/types/types';
+import { getAnonymousSessionToken } from './getAnonymousSessionToken';
 
 interface EnterData {
   idCategory: string | null;
@@ -17,7 +18,7 @@ export async function getProductsByIdCategory(
   const url = `${apiUrl}/${projectKey}/product-projections/search?filter=categories.id:"${data.idCategory}"&limit=${limit}&offset=${data.offset}`;
 
   try {
-    const response = await fetch(url, {
+    let response = await fetch(url, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -26,11 +27,17 @@ export async function getProductsByIdCategory(
     });
 
     if (!response.ok) {
-      const errorDetails = await response.json();
-      const errorMessage = errorDetails.message;
-      throw new Error(
-        `Request failed while fetching products: ${errorMessage}`
-      );
+      if (localStorage.getItem('authDysonToken')) localStorage.clear();
+      const token = await getAnonymousSessionToken();
+
+      if (!token)
+        response = await fetch(url, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            Authorization: `Bearer ${token}`,
+          },
+        });
     }
 
     const result: ProductsByCategory = await response.json();

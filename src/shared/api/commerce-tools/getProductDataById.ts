@@ -1,6 +1,7 @@
 import { commercetoolsConfig } from './config';
 import { handleCatchError } from '@components/ui/error/catchError';
 import { ProductData } from '@shared/types/types';
+import { getAnonymousSessionToken } from './getAnonymousSessionToken';
 
 interface EnterData {
   id: string | null;
@@ -15,7 +16,7 @@ export async function getProductDataById(
   const url = `${apiUrl}/${projectKey}/products/${data.id}`;
 
   try {
-    const response = await fetch(url, {
+    let response = await fetch(url, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/x-www-form-urlencoded',
@@ -24,9 +25,17 @@ export async function getProductDataById(
     });
 
     if (!response.ok) {
-      const errorDetails = await response.json();
-      const errorMessage = errorDetails.message;
-      throw new Error(`Request failed while fetching product: ${errorMessage}`);
+      if (localStorage.getItem('authDysonToken')) localStorage.clear();
+      const token = await getAnonymousSessionToken();
+
+      if (!token)
+        response = await fetch(url, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/x-www-form-urlencoded',
+            Authorization: `Bearer ${data.token}`,
+          },
+        });
     }
 
     const result: ProductData = await response.json();
