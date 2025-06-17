@@ -4,7 +4,7 @@ import { apiCreateNewCart } from './apiCreateNewCart';
 import { applyPromoCode } from './applyPromoCodeToCart';
 import { openDialog } from '@services/DialogService';
 
-export const TOKEN_NAME = 'authDysonToken';
+export const TOKEN_NAME = 'AnonymousDysonToken';
 export const CART_ID_NAME = 'cartIdDyson';
 export const PROMO_CODE_NAME = 'PromoCode';
 

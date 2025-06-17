@@ -1,4 +1,3 @@
-import { getTokenFromLS } from '../local-storage/getTokenFromLS';
 import { commercetoolsConfig } from './config';
 
 export async function checkTokenValidity() {
@@ -13,7 +12,7 @@ export async function checkTokenValidity() {
 
   const introspectUrl = `${authUrl}/oauth/introspect`;
 
-  const token = getTokenFromLS();
+  const token = localStorage.getItem('authDysonToken');
   if (!token) return false;
 
   try {
