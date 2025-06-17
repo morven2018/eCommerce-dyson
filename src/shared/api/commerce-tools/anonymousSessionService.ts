@@ -13,16 +13,12 @@ export async function initializeAnonymousSession(): Promise<void> {
   const existingCartId = localStorage.getItem(CART_ID_NAME);
   const existingPromoCode = localStorage.getItem(PROMO_CODE_NAME);
 
-  try {
-    if (!existingToken) {
-      await handleNewSession(existingCartId, existingPromoCode);
-    } else if (existingCartId) {
-      await handleExistingSession(existingPromoCode);
-    } else {
-      await createNewCartWithPromo(existingPromoCode);
-    }
-  } catch {
-    openDialog('Failed to initialize anonymous session');
+  if (!existingToken) {
+    await handleNewSession(existingCartId, existingPromoCode);
+  } else if (existingCartId) {
+    await handleExistingSession(existingPromoCode);
+  } else {
+    await createNewCartWithPromo(existingPromoCode);
   }
 }
 
