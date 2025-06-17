@@ -15,6 +15,9 @@ import { checkTokenValidity } from '@shared/api/commerce-tools/checkToken';
       if (!check) {
         getAnonymousSessionToken();
         localStorage.removeItem('authDysonToken');
+        localStorage.removeItem('cartIdDyson');
+        localStorage.removeItem('password');
+        localStorage.removeItem('PromoCode');
       }
     }
   } catch {
