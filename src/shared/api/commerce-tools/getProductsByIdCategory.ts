@@ -18,26 +18,12 @@ export async function getProductsByIdCategory(
   const url = `${apiUrl}/${projectKey}/product-projections/search?filter=categories.id:"${data.idCategory}"&limit=${limit}&offset=${data.offset}`;
 
   try {
-    let response = await fetch(url, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        Authorization: `Bearer ${data.token}`,
-      },
-    });
-
+    let response = await makeResponse(url, data.token);
     if (!response.ok) {
       if (localStorage.getItem('authDysonToken')) localStorage.clear();
       const token = await getAnonymousSessionToken();
 
-      if (!token)
-        response = await fetch(url, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            Authorization: `Bearer ${token}`,
-          },
-        });
+      if (!token) response = await makeResponse(url, token);
     }
 
     const result: ProductsByCategory = await response.json();
@@ -46,4 +32,17 @@ export async function getProductsByIdCategory(
     handleCatchError(error, 'Error retrieving products data');
     return null;
   }
+}
+
+async function makeResponse(
+  url: string,
+  token: string | null
+): Promise<Response> {
+  return await fetch(url, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      Authorization: `Bearer ${token}`,
+    },
+  });
 }
