@@ -16,26 +16,13 @@ export async function getProductDataById(
   const url = `${apiUrl}/${projectKey}/products/${data.id}`;
 
   try {
-    let response = await fetch(url, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        Authorization: `Bearer ${data.token}`,
-      },
-    });
+    let response = await makeResponse(url, data.token);
 
     if (!response.ok) {
       if (localStorage.getItem('authDysonToken')) localStorage.clear();
       const token = await getAnonymousSessionToken();
 
-      if (!token)
-        response = await fetch(url, {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/x-www-form-urlencoded',
-            Authorization: `Bearer ${data.token}`,
-          },
-        });
+      if (!token) response = await await makeResponse(url, token);
     }
 
     const result: ProductData = await response.json();
@@ -44,4 +31,17 @@ export async function getProductDataById(
     handleCatchError(error, 'Error retrieving product data');
     return null;
   }
+}
+
+async function makeResponse(
+  url: string,
+  token: string | null
+): Promise<Response> {
+  return await fetch(url, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      Authorization: `Bearer ${token}`,
+    },
+  });
 }
