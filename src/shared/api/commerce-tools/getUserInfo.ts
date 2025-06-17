@@ -1,4 +1,5 @@
 import { commercetoolsConfig } from './config';
+import { getAnonymousSessionToken } from './getAnonymousSessionToken';
 
 interface Customer {
   id: string;
@@ -25,10 +26,15 @@ export async function getCurrentCustomer(): Promise<Customer | null> {
   });
 
   if (!response.ok) {
-    if (response.status === 401) {
-      localStorage.removeItem('access_token');
+    if (response.status === 401 || response.status === 403) {
+      localStorage.removeItem('authDysonToken');
+      getAnonymousSessionToken();
+      localStorage.removeItem('cartIdDyson');
+      localStorage.removeItem('password');
+      localStorage.removeItem('PromoCode');
+      throw new Error('Session expired. Please log in again.');
     }
-    throw new Error(`Failed to fetch customer data: ${response.status}`);
+    throw new Error(`Failed to fetch customer data (HTTP ${response.status})`);
   }
 
   return await response.json();
