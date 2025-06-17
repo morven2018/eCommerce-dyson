@@ -96,8 +96,10 @@ $breakpoint420: 420px;
       gap: 40px;
 
       .reset {
+        border-radius: $border-radius;
+        border: 1px solid $cart-border;
         width: 120px;
-        height: 40px;
+        height: 48px;
         color: $button-dark;
       }
     }

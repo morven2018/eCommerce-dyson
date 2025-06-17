@@ -42,14 +42,11 @@ export async function apiGetCartById(
       },
     });
 
-    if (!response.ok) {
-      const errorDetails = await response.json();
-      const errorMessage = errorDetails.message;
-      throw new Error(`Request failed while getting a cart: ${errorMessage}`);
+    if (response.ok) {
+      const result: CartData = await response.json();
+      return result;
     }
-
-    const result: CartData = await response.json();
-    return result;
+    return null;
   } catch (error) {
     handleCatchError(error, 'Error getting a cart');
     return null;
