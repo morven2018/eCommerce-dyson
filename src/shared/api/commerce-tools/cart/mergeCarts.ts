@@ -62,7 +62,6 @@ async function mergeCarts(
     return updatedCart;
   }
 
-  // Находим уникальные товары в анонимной корзине
   const uniqueItems = anonymousCart.lineItems
     .filter(
       (anonymousItem) =>
