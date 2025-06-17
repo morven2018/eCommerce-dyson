@@ -22,7 +22,7 @@ export async function getProductDataById(
       if (localStorage.getItem('authDysonToken')) localStorage.clear();
       const token = await getAnonymousSessionToken();
 
-      if (!token) response = await await makeResponse(url, token);
+      if (!token) response = await makeResponse(url, token);
     }
 
     const result: ProductData = await response.json();
