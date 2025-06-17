@@ -1,6 +1,7 @@
 import { getAnonymousSessionToken } from './getAnonymousSessionToken';
 import { apiGetCartById } from './apiGetCartById';
 import { apiCreateNewCart } from './apiCreateNewCart';
+import { CartData } from '@shared/types/types';
 
 export const TOKEN_NAME = 'AnonymousDysonToken';
 export const CART_ID_NAME = 'cartIdDyson';
@@ -10,14 +11,12 @@ export async function initializeAnonymousSession(): Promise<void> {
   const existingToken = localStorage.getItem(TOKEN_NAME);
   const existingCartId = localStorage.getItem(CART_ID_NAME);
 
-  localStorage.clear();
-
   if (!existingToken) {
     const newToken = await getAnonymousSessionToken();
     if (newToken) {
       localStorage.setItem(TOKEN_NAME, newToken.access_token);
       const cart = await apiCreateNewCart();
-      if (cart) localStorage.setItem(CART_ID_NAME, cart.id);
+      setCartIdToLS(CART_ID_NAME, cart);
     }
   } else if (existingCartId) {
     const cart = await apiGetCartById(existingToken, existingCartId);
@@ -26,8 +25,12 @@ export async function initializeAnonymousSession(): Promise<void> {
       if (newToken) {
         localStorage.setItem(TOKEN_NAME, newToken.access_token);
         const cart = await apiCreateNewCart();
-        if (cart) localStorage.setItem(CART_ID_NAME, cart.id);
+        setCartIdToLS(CART_ID_NAME, cart);
       }
     }
   }
+}
+
+function setCartIdToLS(field: string, cart: CartData | null) {
+  if (cart) localStorage.setItem(field, cart.id);
 }
