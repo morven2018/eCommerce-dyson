@@ -8,7 +8,9 @@ interface CartContextType {
   isCartEmpty: boolean;
   clearCart: () => void;
   updateCart: () => Promise<void>;
+  error: Error | null;
 }
+
 export const CartContext = createContext<CartContextType>({
   cart: null,
   setCart: () => {},
@@ -16,4 +18,5 @@ export const CartContext = createContext<CartContextType>({
   isCartEmpty: true,
   clearCart: () => {},
   updateCart: async () => {},
+  error: null,
 });
