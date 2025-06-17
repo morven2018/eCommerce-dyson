@@ -5,23 +5,22 @@ import './index.scss';
 import { initializeAnonymousSession } from '@shared/api/commerce-tools/anonymousSessionService';
 import { getAnonymousSessionToken } from '@shared/api/commerce-tools/getAnonymousSessionToken';
 import { checkTokenValidity } from '@shared/api/commerce-tools/checkToken';
+import { getCurrentCustomer } from '@shared/api/commerce-tools/getUserInfo';
 
 (async () => {
   try {
-    if (!localStorage.getItem('authDysonToken'))
+    if (!localStorage.getItem('authDysonToken')) {
       await initializeAnonymousSession();
-    else {
+    } else {
       const check = await checkTokenValidity();
-      if (!check) {
-        getAnonymousSessionToken();
-        localStorage.removeItem('authDysonToken');
-        localStorage.removeItem('cartIdDyson');
-        localStorage.removeItem('password');
-        localStorage.removeItem('PromoCode');
+      const checkProfile = await getCurrentCustomer();
+      if (!check || !checkProfile) {
+        localStorage.clear();
+        await initializeAnonymousSession();
       }
     }
   } catch {
-    getAnonymousSessionToken();
+    await getAnonymousSessionToken();
   }
 
   createRoot(document.getElementById('root')!).render(
