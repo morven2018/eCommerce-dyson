@@ -7,7 +7,10 @@ export async function checkTokenValidity() {
   const clientId = commercetoolsConfig.clientId;
   const clientSecret = commercetoolsConfig.clientSecret;
 
-  const authHeader = `Basic ${btoa(`${clientId}:${clientSecret}`)}`;
+  const credentials = `${clientId}:${clientSecret}`;
+  const base64Credentials = btoa(credentials);
+  const authHeader = `Basic ${base64Credentials}`;
+
   const introspectUrl = `${authUrl}/oauth/introspect`;
 
   const token = getTokenFromLS();
