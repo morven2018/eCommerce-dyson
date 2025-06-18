@@ -1,0 +1,86 @@
+import { describe, it, expect, vi, beforeEach, afterEach } from 'vitest';
+import {
+  commercetoolsConfig,
+  validateConfig,
+} from '../src/shared/api/commerce-tools/config';
+
+declare global {
+  interface ImportMeta {
+    env: Record<string, string | undefined>;
+  }
+}
+
+describe('commercetoolsConfig', () => {
+  const originalEnv = { ...import.meta.env };
+
+  beforeEach(() => {
+    import.meta.env = {
+      VITE_CTP_AUTH_URL: 'https://auth.europe-west1.gcp.commercetools.com',
+      VITE_CTP_API_URL: 'https://api.europe-west1.gcp.commercetools.com',
+      VITE_CTP_PROJECT_KEY: 'test-project',
+      VITE_CTP_CLIENT_ID: 'test-client-id',
+      VITE_CTP_CLIENT_SECRET: 'test-client-secret',
+      VITE_CTP_ID_CATEGORY_HEADPHONES: 'headphones-category',
+      VITE_CTP_ID_CATEGORY_VACUUMS_FLOOR_CLEANERS: 'vacuums-category',
+      VITE_CTP_ID_CATEGORY_AIR_HEATERS: 'air-heaters-category',
+      VITE_CTP_ID_CATEGORY_HAIR_BEAUTY: 'hair-beauty-category',
+      VITE_CTP_ID_CATEGORY_LIGHTING: 'lighting-category',
+    };
+  });
+
+  afterEach(() => {
+    import.meta.env = originalEnv;
+  });
+
+  it('should correctly map environment variables to config object', () => {
+    expect(commercetoolsConfig).toEqual({
+      authUrl: 'https://auth.europe-west1.gcp.commercetools.com',
+      apiUrl: 'https://api.europe-west1.gcp.commercetools.com',
+      projectKey: 'test-project',
+      clientId: 'test-client-id',
+      clientSecret: 'test-client-secret',
+      idCategoryHeadphones: 'headphones-category',
+      idCategoryVacuums: 'vacuums-category',
+      idCategoryAirHeaters: 'air-heaters-category',
+      idCategoryHairBeauty: 'hair-beauty-category',
+      idCategoryLighting: 'lighting-category',
+    });
+  });
+
+  describe('validateConfig', () => {
+    it('should not throw error when all required config values are present', () => {
+      expect(() => validateConfig()).not.toThrow();
+    });
+
+    it.each([
+      'VITE_CTP_AUTH_URL',
+      'VITE_CTP_PROJECT_KEY',
+      'VITE_CTP_CLIENT_ID',
+      'VITE_CTP_CLIENT_SECRET',
+      'VITE_CTP_ID_CATEGORY_HEADPHONES',
+      'VITE_CTP_ID_CATEGORY_VACUUMS_FLOOR_CLEANERS',
+      'VITE_CTP_ID_CATEGORY_AIR_HEATERS',
+      'VITE_CTP_ID_CATEGORY_HAIR_BEAUTY',
+      'VITE_CTP_ID_CATEGORY_LIGHTING',
+    ])('should throw error when %s is missing', (envVar) => {
+      const originalValue = import.meta.env[envVar];
+      delete import.meta.env[envVar];
+
+      expect(() => validateConfig()).toThrow(
+        'Missing Commercetools configuration'
+      );
+
+      import.meta.env[envVar] = originalValue;
+    });
+
+    it('should throw error when multiple required values are missing', () => {
+      delete import.meta.env.VITE_CTP_AUTH_URL;
+      delete import.meta.env.VITE_CTP_CLIENT_ID;
+      delete import.meta.env.VITE_CTP_ID_CATEGORY_HEADPHONES;
+
+      expect(() => validateConfig()).toThrow(
+        'Missing Commercetools configuration'
+      );
+    });
+  });
+});
