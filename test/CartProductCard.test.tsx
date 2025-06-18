@@ -2,8 +2,7 @@ import { describe, it, expect, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import CartProductCard from '../src/components/ui/cards/CartProductCard';
-import { CartLineItem } from '../src/shared/types/types';
-import { TotalPrice } from '../src/shared/types/types';
+import { CartLineItem, TotalPrice } from '../src/shared/types/types';
 
 vi.mock('../../layout/cart/Cart.module.scss', () => ({
   default: {
