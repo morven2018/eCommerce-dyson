@@ -26,6 +26,7 @@ import { ButtonList } from './button-list/ButtonList';
 import { useAuth } from '@shared/context/auth-hooks';
 import { addAnonymousSessionTokenToLS } from '@shared/utlis/token/addAnonymousSessionTokenToLS';
 import { useCart } from '@shared/context/cart/useCart';
+import { apiGetCartById } from '@shared/api/commerce-tools/apiGetCartById';
 
 export interface INavItems {
   text: string;
@@ -71,7 +72,7 @@ const ItemList = ({ text, icon, path, onClick }: INavItems) => {
 
 export const Header = () => {
   const location = useLocation();
-  const { isCartEmpty, clearCart, updateCart } = useCart();
+  const { isCartEmpty, clearCart, updateCart, setCart } = useCart();
 
   const { isUserUnauthorized, setIsUserUnauthorized } = useAuth();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -134,8 +135,20 @@ export const Header = () => {
   }, [isUserUnauthorized, isCartEmpty, toggleAuthStatus, location.pathname]);
 
   useEffect(() => {
+    const fetchCartData = async () => {
+      try {
+        const cartData = await apiGetCartById();
+        if (cartData) {
+          setCart(cartData);
+        }
+      } catch {
+        setCart(null);
+      }
+    };
+
+    fetchCartData();
     updateNavItems();
-  }, [updateNavItems]);
+  }, [setCart, updateNavItems]);
 
   const toggleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);

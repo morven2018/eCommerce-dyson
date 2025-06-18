@@ -193,7 +193,7 @@ export interface CartLineItem {
   quantity: number;
 }
 
-interface TotalPrice {
+export interface TotalPrice {
   type: string;
   currencyCode: string;
   centAmount: number;

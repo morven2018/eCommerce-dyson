@@ -5,19 +5,24 @@ import { apiGetCartById } from '@shared/api/commerce-tools/apiGetCartById';
 
 export const CartProvider = ({ children }: { children: React.ReactNode }) => {
   const [cart, setCart] = useState<CartData | null>(null);
+  const [error, setError] = useState<Error | null>(null);
+
   const cartItemsCount =
     cart?.lineItems.reduce((sum, item) => sum + item.quantity, 0) ?? 0;
-  const isCartEmpty = cartItemsCount === 0;
+  const isCartEmpty = cartItemsCount === 0 || error !== null;
 
   const clearCartMemoized = useCallback(() => {
     setCart(null);
+    setError(null);
   }, []);
 
   const updateCart = useCallback(async () => {
     try {
       const cartData = await apiGetCartById();
       setCart(cartData);
-    } catch {
+      setError(null);
+    } catch (err) {
+      setError(err instanceof Error ? err : new Error('Failed to fetch cart'));
       setCart(null);
     }
   }, []);
@@ -26,12 +31,13 @@ export const CartProvider = ({ children }: { children: React.ReactNode }) => {
     () => ({
       cart,
       setCart,
-      cartItemsCount,
+      cartItemsCount: error ? 0 : cartItemsCount,
       isCartEmpty,
       clearCart: clearCartMemoized,
       updateCart,
+      error,
     }),
-    [cart, cartItemsCount, isCartEmpty, clearCartMemoized, updateCart]
+    [cart, cartItemsCount, isCartEmpty, clearCartMemoized, updateCart, error]
   );
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;
