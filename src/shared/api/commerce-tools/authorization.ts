@@ -1,6 +1,7 @@
 import { Buffer } from 'buffer';
 import { commercetoolsConfig } from './config';
 import { openDialog } from '@services/DialogService';
+import { handleCatchError } from '@components/ui/error/catchError';
 
 interface UserData {
   email: string;
@@ -35,7 +36,7 @@ export async function userAuthorization(
   body.append('password', data.password);
   body.append(
     'scope',
-    `view_published_products:${projectKey} manage_my_orders:${projectKey} manage_my_profile:${projectKey} view_products:${projectKey} manage_customers:${projectKey}`
+    `view_published_products:${projectKey} manage_my_orders:${projectKey} manage_my_profile:${projectKey} view_products:${projectKey} manage_customers:${projectKey} manage_orders:${projectKey}`
   );
 
   try {
@@ -59,16 +60,7 @@ export async function userAuthorization(
     openDialog(dialogMessage);
     return result;
   } catch (error) {
-    let message = 'Error customer authorization';
-
-    if (error instanceof Error) {
-      message = error.message;
-    } else if (typeof error === 'string') {
-      message = error;
-    }
-
-    openDialog(message);
-
+    handleCatchError(error, 'Error customer authorization');
     return null;
   }
 }

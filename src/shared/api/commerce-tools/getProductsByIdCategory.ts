@@ -1,10 +1,12 @@
 import { commercetoolsConfig } from './config';
-import { openDialog } from '@services/DialogService';
+import { handleCatchError } from '@components/ui/error/catchError';
 import { ProductsByCategory } from '@shared/types/types';
+import { getAnonymousSessionToken } from './getAnonymousSessionToken';
 
 interface EnterData {
   idCategory: string | null;
   token: string | null;
+  offset: number;
 }
 
 export async function getProductsByIdCategory(
@@ -12,38 +14,35 @@ export async function getProductsByIdCategory(
 ): Promise<ProductsByCategory | null> {
   const apiUrl = commercetoolsConfig.apiUrl;
   const projectKey = commercetoolsConfig.projectKey;
-  const url = `${apiUrl}/${projectKey}/product-projections/search?filter=categories.id:"${data.idCategory}"`;
+  const limit = 4;
+  const url = `${apiUrl}/${projectKey}/product-projections/search?filter=categories.id:"${data.idCategory}"&limit=${limit}&offset=${data.offset}`;
 
   try {
-    const response = await fetch(url, {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        Authorization: `Bearer ${data.token}`,
-      },
-    });
-
+    let response = await makeResponse(url, data.token);
     if (!response.ok) {
-      const errorDetails = await response.json();
-      const errorMessage = errorDetails.message;
-      throw new Error(
-        `Request failed while fetching products: ${errorMessage}`
-      );
+      if (localStorage.getItem('authDysonToken')) localStorage.clear();
+      const token = await getAnonymousSessionToken();
+
+      if (!token) response = await makeResponse(url, token);
     }
 
     const result: ProductsByCategory = await response.json();
     return result;
   } catch (error) {
-    let message = 'Error retrieving products data';
-
-    if (error instanceof Error) {
-      message = error.message;
-    } else if (typeof error === 'string') {
-      message = error;
-    }
-
-    openDialog(message);
-
+    handleCatchError(error, 'Error retrieving products data');
     return null;
   }
+}
+
+async function makeResponse(
+  url: string,
+  token: string | null
+): Promise<Response> {
+  return await fetch(url, {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/x-www-form-urlencoded',
+      Authorization: `Bearer ${token}`,
+    },
+  });
 }

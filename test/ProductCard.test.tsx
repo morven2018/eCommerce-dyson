@@ -1,7 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { expect, describe, it, vi } from 'vitest';
 import ProductCard from '../src/components/layout/product/card/ProductCard';
-import React from 'react';
 import '@testing-library/jest-dom';
 
 vi.mock('@components/ui/counter/Counter', () => ({

@@ -1,6 +1,7 @@
 @use '@assets/styles/globals' as *;
 
 $header-width: 500px;
+$breakpoint: 700px;
 
 .registerBlock {
   padding: 145px 30px;
@@ -21,6 +22,10 @@ $header-width: 500px;
   text-align: left;
   line-height: $line-height;
   color: $button-dark;
+
+  @media screen and (max-width: $breakpoint) {
+    font-size: $typography-header-mobile;
+  }
 }
 .form {
   background-color: $form-background;
@@ -33,6 +38,10 @@ $header-width: 500px;
   font-size: $typography-subheader;
   font-weight: $base-weight;
   color: $primary-black;
+
+  @media screen and (max-width: $breakpoint) {
+    font-size: $typography-big-text-mobile;
+  }
 }
 
 .passwordWrapper {

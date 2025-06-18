@@ -31,6 +31,28 @@ $breakpoint400: 400px;
   }
 }
 
+.confirmModal {
+  .button {
+    background-color: $button-dark;
+    border-radius: $border-radius;
+    color: $primary-white;
+    padding: 0 20px;
+    height: 48px;
+    border: none;
+
+    &:disabled {
+      background-color: $disable-button-dark;
+      color: $primary-white;
+      cursor: not-allowed;
+    }
+  }
+
+  .buttonClose {
+    color: $controls;
+    height: 48px;
+    padding: 0 20px;
+  }
+}
 @media screen and (max-width: $breakpoint400) {
   .buttonList {
     display: flex;

@@ -1,7 +1,6 @@
 import { render, screen, fireEvent } from '@testing-library/react';
 import { expect, describe, it, vi } from 'vitest';
 import { Slider } from '../src/components/layout/product/slider/Slider';
-import React from 'react';
 import '@testing-library/jest-dom';
 
 vi.mock('swiper/react', () => ({

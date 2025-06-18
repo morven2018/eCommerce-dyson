@@ -2,7 +2,6 @@ import { render, screen } from '@testing-library/react';
 import { describe, it, expect } from 'vitest';
 import { MemoryRouter } from 'react-router-dom';
 import Bestseller from '../src/components/layout/bestseller/Bestseller';
-import React from 'react';
 
 describe('Bestseller Component', () => {
   it('renders the component with all content', () => {

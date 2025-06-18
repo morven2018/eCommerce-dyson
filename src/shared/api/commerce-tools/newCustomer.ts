@@ -58,7 +58,7 @@ async function getToken(): Promise<string | null> {
     },
     body: new URLSearchParams({
       grant_type: 'client_credentials',
-      scope: `manage_customers:${commercetoolsConfig.projectKey} manage_types:${commercetoolsConfig.projectKey}`,
+      scope: `manage_customers:${commercetoolsConfig.projectKey} manage_types:${commercetoolsConfig.projectKey} manage_orders:${commercetoolsConfig.projectKey}`,
     }),
   });
 

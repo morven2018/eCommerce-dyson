@@ -6,7 +6,13 @@
   gap: 20px;
   width: 100%;
   max-width: 1440px;
-  padding: 40px 10px;
+  padding: 40px 10px 70px;
+}
+
+.textLoading {
+  font-size: 40px;
+  margin: 300px 0;
+  color: $primary-black;
 }
 
 .filterContainer {
@@ -27,6 +33,7 @@
 }
 
 .cardsContainer {
+  position: relative;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -42,6 +49,12 @@
   .container {
     flex-direction: column;
   }
+}
+
+.pagination {
+  position: absolute;
+  bottom: -50px;
+  right: 0;
 }
 
 .button {

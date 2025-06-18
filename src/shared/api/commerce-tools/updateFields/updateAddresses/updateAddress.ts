@@ -59,8 +59,12 @@ export async function updateAddress(
     const isBilling = addressType === 'billing' || addressType === 'both';
     const isShipping = addressType === 'shipping' || addressType === 'both';
 
-    const previousBilling = addressId in customer.billingAddressIdList;
-    const previousShipping = addressId in customer.shippingAddressIds;
+    const previousBilling = customer.billingAddressIds
+      ? customer.billingAddressIds.includes(addressId)
+      : false;
+    const previousShipping = customer.shippingAddressIds
+      ? customer.shippingAddressIds.includes(addressId)
+      : false;
 
     if (isBilling && !previousBilling) {
       response = await manageCustomerAddress(

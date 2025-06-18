@@ -133,6 +133,7 @@ export const birthValidationSchema = yup
   .date()
   .required('This field is mandatory')
   .max(dayjs().subtract(18, 'year').toDate(), 'Age must be over 18')
+  .min(dayjs().subtract(100, 'year').toDate(), 'Age must be less than 100')
   .typeError('Please enter a valid date');
 
 export const zipCodeValidationSchema = yup

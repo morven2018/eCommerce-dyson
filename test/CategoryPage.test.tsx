@@ -1,7 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import { CategoryPage } from '../src/pages/catalog/category/CategoryPage';
 import { vi, describe, it, beforeEach, afterEach, expect } from 'vitest';
-import React from 'react';
 import '@testing-library/jest-dom/vitest';
 
 vi.mock('@shared/api/commerce-tools/getProductsByIdCategory', () => ({

@@ -1,0 +1,9 @@
+.MuiDialog-root {
+  .MuiDialogContent-root {
+    width: calc(100% - 30px);
+  }
+  .MuiDialog-paper {
+    display: flex;
+    align-items: flex-end;
+  }
+}

@@ -63,12 +63,16 @@ export const buildSearchParams = ({
   priceRange,
   discount,
   selectedColors,
+  paginationOffset,
+  limit,
 }: {
   searchText: string;
   sortOption: SortOption;
   priceRange: number[];
   discount: boolean;
   selectedColors: string[];
+  paginationOffset: number;
+  limit: number;
 }) => {
   const paramsArray: string[] = [];
 
@@ -78,6 +82,10 @@ export const buildSearchParams = ({
   addDiscountFilter(paramsArray, discount);
   addColorFilter(paramsArray, selectedColors);
 
-  paramsArray.push('limit=50');
+  paramsArray.push('facet=variants.price.centAmount: range(0 to *)');
+  paramsArray.push('facet=variants.attributes.color');
+  paramsArray.push(`offset=${paginationOffset}`);
+  paramsArray.push(`limit=${limit}`);
+
   return paramsArray.join('&');
 };
