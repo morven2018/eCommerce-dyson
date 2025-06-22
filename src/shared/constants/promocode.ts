@@ -9,3 +9,9 @@ export enum overAmount {
   'DYSON-20' = 100000,
   'SUMMER-10' = 50000,
 }
+
+export enum promoValue {
+  'LUCKY-30' = 0.3,
+  'DYSON-20' = 0.2,
+  'SUMMER-10' = 0.1,
+}
