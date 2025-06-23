@@ -1,12 +1,14 @@
 import { useState, useEffect } from 'react';
 import styles from './Counter.module.scss';
 import formatPrice from '@shared/utlis/price-formatter';
+import { CartData } from '@shared/types/types';
 
 interface CounterProps {
   readonly price: number;
   readonly amount: number;
   readonly disabled?: boolean;
   readonly onChange?: (value: number) => void;
+  readonly cart?: CartData;
 }
 
 export default function Counter({
@@ -14,6 +16,7 @@ export default function Counter({
   amount,
   disabled,
   onChange,
+  cart,
 }: CounterProps) {
   const [quantity, setQuantity] = useState(amount);
 
@@ -33,7 +36,10 @@ export default function Counter({
     onChange?.(quantity + 1);
   };
 
-  const totalSum = quantity * price;
+  const totalSum =
+    cart?.lineItems.length === 1
+      ? cart.totalPrice.centAmount / 100
+      : quantity * price;
 
   return (
     <div className={styles.container}>

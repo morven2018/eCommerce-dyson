@@ -185,6 +185,7 @@ export default function CartInfo({
         {data.lineItems.map((item) => (
           <CartProductCard
             data={item}
+            cart={data}
             setData={setData}
             key={item.id}
             onDelete={handleDeleteItem}
