@@ -112,18 +112,22 @@ export const CatalogPage = () => {
 
   const handleSortChange = (option: SortOption) => {
     setSortOption(option);
+    setPaginationOffset(0);
   };
 
   const handleSearchChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchText(event.target.value);
+    setPaginationOffset(0);
   };
 
   const handlePriceChange = (newValues: [number, number]) => {
     setPriceRange(newValues);
+    setPaginationOffset(0);
   };
 
   const toggleDiscount = () => {
     setDiscount(!discount);
+    setPaginationOffset(0);
   };
 
   const handleClearFilter = () => {
@@ -131,6 +135,7 @@ export const CatalogPage = () => {
     setPriceRange([0, 0]);
     setDiscount(false);
     setSelectedColors([]);
+    setPaginationOffset(0);
   };
 
   const handleChangePageNumber = (
@@ -139,6 +144,7 @@ export const CatalogPage = () => {
   ) => {
     const offset = page === 1 ? 0 : (page - 1) * 12;
     setPaginationOffset(offset);
+    setPaginationOffset(0);
   };
 
   const colorFacet = productsData.facets?.['variants.attributes.color'];
