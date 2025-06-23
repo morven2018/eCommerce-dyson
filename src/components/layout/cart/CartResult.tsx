@@ -6,7 +6,7 @@ import calculateCartTotals from '@shared/utlis/calculateTotals';
 import { useState, useEffect } from 'react';
 import { applyPromoCode } from '@shared/api/commerce-tools/applyPromoCodeToCart';
 import { apiGetCartById } from '@shared/api/commerce-tools/apiGetCartById';
-import icon from '../../../assets/icons/reset.svg';
+import icon from '@assets/icons/reset.svg';
 import { removePromoCode } from '@shared/api/commerce-tools/resetPromocode';
 import { openDialog } from '@services/DialogService';
 import { useCart } from '@shared/context/cart/useCart';

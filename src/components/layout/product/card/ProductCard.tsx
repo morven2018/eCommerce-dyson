@@ -90,7 +90,8 @@ export default function ProductCard({
         const response = await apiGetCartById();
         setCart(response);
 
-        setQuantity(1);
+        const defaultQuantity = 1;
+        setQuantity(defaultQuantity);
         setIsProductInCart(false);
       } else if (id) {
         const cartId = getCartIdFromLS();

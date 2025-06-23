@@ -1,4 +1,5 @@
 import { commercetoolsConfig } from './config';
+import { handleCatchError } from '@components/ui/error/catchError';
 
 export async function checkTokenValidity() {
   const authUrl = commercetoolsConfig.authUrl;
@@ -31,12 +32,9 @@ export async function checkTokenValidity() {
 
     const data = await response.json();
 
-    if (data.active) {
-      return true;
-    } else {
-      return false;
-    }
-  } catch {
+    return !!data.active;
+  } catch (error) {
+    handleCatchError(error, 'Error check is token active');
     return false;
   }
 }
