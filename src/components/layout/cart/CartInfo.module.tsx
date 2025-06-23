@@ -12,6 +12,7 @@ import { useCart } from '@shared/context/cart/useCart';
 import { removePromoCode } from '@shared/api/commerce-tools/resetPromocode';
 import { ConfirmResetDialog } from '@components/ui/modals/ConfirmResetDialog';
 import validatePromoCode from '@shared/utlis/validatePromocode';
+import { apiClearCart } from '@shared/api/commerce-tools/cart/clearCart';
 
 interface CartInfoProps {
   data: CartData;
@@ -37,23 +38,7 @@ export default function CartInfo({
 
     setIsResetting(true);
     try {
-      let version = currentVersion;
-
-      const response = await apiGetCartById();
-      if (response) version = response.version;
-
-      for (const item of data.lineItems) {
-        const result = await apiDeleteProductFromCart(
-          item.id,
-          item.quantity,
-          version
-        );
-        if (result) {
-          version = result;
-          setCurrentVersion(version);
-        }
-      }
-
+      await apiClearCart();
       const updatedCart = await apiGetCartById();
       setData(updatedCart);
       setCart(updatedCart);
