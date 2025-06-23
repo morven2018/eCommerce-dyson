@@ -1,5 +1,5 @@
 import { Button } from '@mui/material';
-import icon from '../../../assets/icons/void-cart.svg';
+import icon from '@assets/icons/void-cart.svg';
 import { useNavigate } from 'react-router-dom';
 import styles from './Cart.module.scss';
 

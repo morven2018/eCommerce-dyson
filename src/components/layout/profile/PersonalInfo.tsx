@@ -88,7 +88,6 @@ export const PersonalInfo = ({ customer, onSave }: PersonalInfoProps) => {
     }
   }, [reset, getValues]);
 
-  // Отслеживание изменений в localStorage
   useEffect(() => {
     const handleStorageChange = (e: StorageEvent) => {
       if (e.key === 'password') {

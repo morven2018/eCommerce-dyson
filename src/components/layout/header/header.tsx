@@ -27,6 +27,7 @@ import { useAuth } from '@shared/context/auth-hooks';
 import { addAnonymousSessionTokenToLS } from '@shared/utlis/token/addAnonymousSessionTokenToLS';
 import { useCart } from '@shared/context/cart/useCart';
 import { apiGetCartById } from '@shared/api/commerce-tools/apiGetCartById';
+import { handleCatchError } from '@components/ui/error/catchError';
 
 export interface INavItems {
   text: string;
@@ -141,7 +142,8 @@ export const Header = () => {
         if (cartData) {
           setCart(cartData);
         }
-      } catch {
+      } catch (error) {
+        handleCatchError(error, 'Error getting cart data');
         setCart(null);
       }
     };
