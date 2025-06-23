@@ -7,6 +7,7 @@ import styles from '../../layout/cart/Cart.module.scss';
 
 interface CartProductProps {
   data: CartLineItem;
+  cart: CartData;
   setData?: React.Dispatch<React.SetStateAction<CartData | null>>;
   onDelete?: (itemId: string) => void;
   onQuantityChange?: (itemId: string, quantity: number) => Promise<void>;
@@ -17,6 +18,7 @@ interface CartProductProps {
 
 export default function CartProductCard({
   data,
+  cart,
   onDelete,
   onQuantityChange,
   isDeleting = false,
@@ -81,6 +83,7 @@ export default function CartProductCard({
           amount={data.quantity}
           onChange={handleQuantityChange}
           disabled={isUpdating}
+          cart={cart}
         />
       </div>
       <div className={styles.deleteWrapper}>

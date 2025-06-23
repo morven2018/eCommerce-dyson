@@ -1,4 +1,4 @@
-import { overAmount } from '@shared/constants/promocode';
+import { overAmount, promoValue } from '@shared/constants/promocode';
 
 type ValidPromoCode = keyof typeof overAmount;
 
@@ -26,9 +26,11 @@ export default function validatePromoCode(
     };
   }
 
+  const coeficient = 1 - (promoValue[normalizedCode] ?? 0);
+
   const minAmount = overAmount[normalizedCode];
 
-  if (cartTotalCents < minAmount) {
+  if (cartTotalCents / coeficient < minAmount) {
     return {
       isValid: false,
       error: `Minimum order amount for this promo: $${(minAmount / 100).toFixed(2)}`,

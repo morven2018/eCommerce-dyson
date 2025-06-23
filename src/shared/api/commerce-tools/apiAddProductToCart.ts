@@ -36,11 +36,11 @@ export async function apiAddProductToCart(
           quantity: quantity,
           supplyChannel: {
             typeId: 'channel',
-            id: '03371898-0c7c-4ef1-97e0-f677e704aaac',
+            id: '503a42e4-5c75-4582-9393-13687c7e98e4',
           },
           distributionChannel: {
             typeId: 'channel',
-            id: '1b29c225-1540-46de-bc0c-11116a384586',
+            id: '85a5da0a-9e37-4856-a1ca-1965381b31b7',
           },
         },
       ],
