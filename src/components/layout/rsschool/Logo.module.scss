@@ -1,0 +1,81 @@
+@use '@assets/styles/globals' as *;
+
+.rsschool {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-around;
+  width: 100%;
+  height: auto;
+  max-width: 90rem;
+  margin: 50px auto;
+  background: $whitesmoke;
+}
+
+.title {
+  padding-top: 35px;
+  text-align: center;
+  font-size: 2rem;
+  color: $button-dark;
+
+  @media (max-width: 31.25rem) {
+    font-size: 1.2rem;
+  }
+}
+
+.project {
+  text-align: center;
+  margin-top: 30px;
+  font-weight: 800;
+  padding-left: 30px;
+  padding-right: 30px;
+  color: $button-dark;
+
+  @media (max-width: 31.25rem) {
+    font-size: 12px;
+  }
+}
+
+.collab {
+  padding-top: 20px;
+  text-align: justify;
+  width: 50%;
+  margin: 0 auto;
+  font-weight: 800;
+  padding-bottom: 50px;
+  color: $product-benefits-background;
+
+  @media (max-width: 31.25rem) {
+    font-size: 12px;
+  }
+}
+
+.divider {
+  height: 1px;
+  background: $product-benefits-background;
+  width: 30%;
+  border: none;
+  margin: 0 auto;
+}
+
+.schoolLogo {
+  position: relative;
+  left: 50%;
+  transform: translateX(-50%);
+  display: inline-block;
+  line-height: 0;
+  margin: 30px 0;
+}
+
+.logoImage {
+  margin: 5px auto;
+  cursor: pointer;
+  transition: all ease 0.3s;
+  width: 110px;
+
+  &:hover {
+    @media (hover: hover) and (pointer: fine) {
+      transform: scale(1.05);
+    }
+  }
+}

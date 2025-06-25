@@ -1,0 +1,43 @@
+@use '@assets/styles/globals' as *;
+
+$width: 220px;
+$mobile-width: 700px;
+
+.menuList {
+  width: $width;
+  max-width: 100%;
+  border-radius: $border-radius;
+  overflow: hidden;
+
+  ul {
+    background-color: $primary-black;
+    box-shadow: 0px 4px 12px $primary-white;
+    color: $primary-white;
+
+    .listItem {
+      transition: text-decoration 0.3s ease;
+
+      &:hover {
+        text-decoration: underline;
+      }
+    }
+  }
+}
+
+.menuItem {
+  padding: 10px 16px;
+  margin: 0 4px;
+  display: flex;
+  flex-direction: row;
+
+  border-radius: $border-radius;
+  text-transform: uppercase;
+
+  transition: background-color 0.2s ease;
+}
+
+@media screen and (min-width: $mobile-width) {
+  .menuList {
+    display: none;
+  }
+}

@@ -1,0 +1,123 @@
+@use '@assets/styles/globals' as *;
+
+.container {
+  position: relative;
+  width: 232px;
+  height: 508px;
+  border-radius: $border-radius;
+  border: 1px solid $modal-border;
+
+  transition: all ease 0.5s;
+  cursor: pointer;
+
+  &:hover {
+    @media (hover: hover) and (pointer: fine) {
+      box-shadow: 0 8px 24px $shadow-color;
+      transform: scale(1.02);
+      border-color: $card-hover-border;
+    }
+  }
+}
+
+.linkContainer {
+  text-decoration: none;
+}
+
+.cardImage {
+  width: 232px;
+  height: 200px;
+  object-fit: contain;
+  padding: 15px;
+}
+
+.cardInfo {
+  width: 100%;
+  height: 308px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding: 16px;
+  background-color: $button-secondary;
+  border-radius: $border-radius;
+}
+
+.cardInfoWrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.price {
+  font-size: 24px;
+  font-weight: 600;
+  color: $button-dark;
+}
+
+.priceContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: baseline;
+  margin-bottom: 8px;
+}
+
+.strikethrough {
+  text-decoration: line-through;
+  color: $label;
+  font-size: 20px;
+  opacity: 0.7;
+}
+
+.line {
+  background-color: $button-dark;
+  height: 0.3px;
+  width: 100%;
+  margin-top: 8px;
+}
+
+.discountedPrice {
+  font-size: 24px;
+  font-weight: 600;
+  color: $discounted-price;
+}
+
+.name {
+  font-size: 22px;
+  font-weight: 600;
+  color: $button-dark;
+  padding-bottom: 10px;
+  line-height: normal;
+}
+
+.description {
+  font-size: 16px;
+  color: $label;
+  margin-top: 13px;
+}
+
+.button {
+  position: absolute;
+  bottom: 16px;
+  left: 16px;
+  right: 16px;
+  display: block;
+  height: 32px;
+  border: none;
+  border-radius: 5px;
+  background-color: $button-dark;
+  color: $card-color;
+  transition: all ease 0.5s;
+  cursor: pointer;
+
+  &:hover {
+    @media (hover: hover) and (pointer: fine) {
+      transform: scale(1.05);
+      background-color: $card-btn-hover;
+    }
+  }
+
+  &[disabled] {
+    transform: none;
+    background-color: $button-dark;
+    cursor: not-allowed;
+  }
+}

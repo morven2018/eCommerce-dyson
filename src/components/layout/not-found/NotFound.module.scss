@@ -1,0 +1,96 @@
+@use '@assets/styles/globals' as *;
+
+$header-width: 500px;
+$button-container: 550px;
+$button-width: 250px;
+$button-height: 34px;
+$breakpoint1: 1440px;
+$breakpoint2: 850px;
+$breakpoint3: 760px;
+$breakpoint4: 450px;
+$breakpoint5: 350px;
+
+.main {
+  width: 100%;
+  max-width: 1440px;
+  background: url('@assets/images/404.png') center center / cover no-repeat;
+
+  .content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    max-width: $content-width;
+    margin: 0 auto;
+    padding: 86px 40px 290px 40px;
+  }
+}
+
+.pageHeader {
+  display: block;
+  max-width: $header-width;
+  margin-bottom: 120px;
+  font-size: $typography-header;
+  font-weight: $base-weight;
+  text-align: left;
+  line-height: $line-height;
+  color: $primary-white;
+}
+
+.buttonWrapper {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  max-width: $button-container;
+  width: 100%;
+
+  .button {
+    width: $button-width;
+    height: $button-height;
+    border-radius: $border-radius;
+    border: none;
+    background-color: $light-header;
+    color: $primary-black;
+
+    &:hover {
+      @media (hover: hover) and (pointer: fine) {
+        background-color: $primary-white;
+        color: $controls;
+      }
+    }
+  }
+}
+
+@media screen and (max-width: $breakpoint2) {
+  .main {
+    .content {
+      align-items: center;
+    }
+
+    .buttonWrapper {
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+    }
+  }
+}
+
+@media screen and (max-width: $breakpoint3) {
+  .content {
+    padding-bottom: 150px;
+  }
+}
+
+@media screen and (max-width: $breakpoint4) {
+  .pageHeader {
+    margin-bottom: 24px;
+    font-size: $typography-header-mobile;
+  }
+}
+
+@media screen and (max-width: $breakpoint5) {
+  .main {
+    .content {
+      padding-bottom: 50px;
+    }
+  }
+}

@@ -1,0 +1,97 @@
+@use '@assets/styles/globals' as *;
+
+$breakpoint1: 700px;
+$breakpoint2: 450px;
+
+.help {
+  width: 100%;
+  max-width: 90rem;
+  min-height: 38.5625rem;
+  padding: 80px 40px;
+  background: url(@assets/images/support.png) center center / cover no-repeat;
+  margin: 0 auto;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+}
+
+.title {
+  font-size: $typography-header;
+  color: $primary-black;
+  text-align: center;
+}
+
+.wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  margin-top: 6.25rem;
+}
+
+.paragraph {
+  max-width: 26.25rem;
+  font-size: 20px;
+  color: $primary-white;
+  border: 1.5px solid $primary-white;
+  background-color: $button-secondary;
+  border-radius: 8px;
+  padding: 30px;
+  margin-top: 50px;
+  margin-bottom: 16px;
+
+  @media (max-width: $breakpoint1) {
+    font-size: $typography-text;
+  }
+
+  @media (max-width: $breakpoint2) {
+    font-size: 12px;
+  }
+}
+
+.linksContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1.5625rem;
+}
+
+.linkText {
+  font-size: 18px;
+  font-weight: $subheader-weight;
+  color: $primary-white;
+}
+
+.link {
+  text-decoration: none;
+  font-weight: 600;
+  color: $secondary-light;
+  transition: transform 0.3s ease;
+
+  &:hover {
+    @media (hover: hover) and (pointer: fine) {
+      transform: scale(1.1);
+    }
+  }
+}
+
+@media (max-width: 700px) {
+  .title {
+    font-size: $typography-header-mobile;
+  }
+
+  .wrapper {
+    flex-direction: column;
+    align-items: center;
+    gap: 3.125rem;
+    margin-top: 2.25rem;
+  }
+
+  .linksContainer {
+    align-self: flex-start;
+    margin-left: 1.875rem;
+  }
+}

@@ -1,0 +1,53 @@
+@use '@assets/styles/globals.scss' as *;
+
+$breakpoint400: 400px;
+
+.container {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+
+  @media screen and (max-width: $breakpoint400) {
+    flex-direction: column;
+  }
+}
+
+.counter {
+  display: flex;
+  gap: 10px;
+  padding: 5px 10px;
+  border: 1px solid $modal-border;
+  border-radius: $border-radius;
+}
+
+.button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 40px;
+  height: 40px;
+  font-size: 25px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+
+  &:disabled {
+    cursor: not-allowed;
+  }
+}
+
+.input {
+  font-size: 18px;
+  font-weight: 500;
+  width: 60px;
+  height: 40px;
+  padding-left: 10px;
+  text-align: center;
+  border: none;
+  border-radius: 5px;
+}
+
+.sum {
+  margin-left: 10px;
+  font-weight: bold;
+}
