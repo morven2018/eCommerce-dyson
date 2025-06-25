@@ -1,6 +1,6 @@
 import { Buffer } from 'buffer';
 import { commercetoolsConfig } from './config';
-import { openDialog } from '@services/DialogService';
+import { handleCatchError } from '@components/ui/error/catchError';
 
 interface AnonymousTokenResponse {
   access_token: string;
@@ -26,7 +26,7 @@ export const getAnonymousSessionToken =
     body.append('grant_type', 'client_credentials');
     body.append(
       'scope',
-      `view_published_products:${projectKey} manage_my_orders:${projectKey} manage_my_profile:${projectKey} view_products:${projectKey}`
+      `view_published_products:${projectKey} manage_my_orders:${projectKey} manage_my_profile:${projectKey} view_products:${projectKey} manage_orders:${projectKey}`
     );
 
     try {
@@ -47,15 +47,7 @@ export const getAnonymousSessionToken =
 
       return await response.json();
     } catch (error) {
-      let message = 'Error customer authorization';
-
-      if (error instanceof Error) {
-        message = error.message;
-      } else if (typeof error === 'string') {
-        message = error;
-      }
-
-      openDialog(message);
+      handleCatchError(error, 'Error customer authorization');
       return null;
     }
   };

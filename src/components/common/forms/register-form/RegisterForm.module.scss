@@ -3,6 +3,7 @@
 $breakpoint800: 800px;
 $breakpoint700: 700px;
 $breakpoint500: 500px;
+$breakpoint350: 350px;
 
 .registerForm {
   display: flex;
@@ -162,6 +163,7 @@ $breakpoint500: 500px;
   }
   h5 {
     text-align: center;
+    font-size: $typography-big-text-mobile;
   }
 }
 
@@ -169,5 +171,13 @@ $breakpoint500: 500px;
   text-align: center;
   & > * {
     text-decoration: none;
+  }
+}
+
+@media screen and (max-width: $breakpoint500) {
+  .form {
+    h5 {
+      padding: 10px;
+    }
   }
 }

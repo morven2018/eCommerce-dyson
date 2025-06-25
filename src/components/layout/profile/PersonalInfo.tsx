@@ -1,6 +1,6 @@
 import { Button, Dialog, DialogContent, IconButton } from '@mui/material';
 import { Customer } from '@pages/profile/Profile';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import CancelIcon from '@mui/icons-material/Cancel';
 import { InputText } from '@components/ui/inputs/inputText';
 import InputPhone from '@components/ui/inputs/inputPhone';
@@ -28,6 +28,8 @@ import { PersonalInfoForm } from '@components/common/forms/profile-forms/updateP
 import CloseIcon from '@mui/icons-material/Close';
 import styles from './profile.module.scss';
 import ShowDialog from '@components/ui/modals/Modal';
+import { decryptData, encryptData } from '@shared/lib/password/encryption';
+import { loadPassword } from '@shared/api/local-storage/getPasswordFromLS';
 
 interface PersonalInfoProps {
   customer: Customer;
@@ -46,6 +48,7 @@ interface FormValues {
 export const PersonalInfo = ({ customer, onSave }: PersonalInfoProps) => {
   const [version, setVersion] = useState(customer.version ?? 1);
   const [passwordModalOpen, setPasswordModalOpen] = useState(false);
+  const [savedPassword, setSavedPassword] = useState<string>('');
   const [isFormOpen, setIsFormOpen] = useState(false);
   const [error, setError] = useState<{
     text: string;
@@ -68,12 +71,34 @@ export const PersonalInfo = ({ customer, onSave }: PersonalInfoProps) => {
       lastName: customer.lastName ?? '',
       email: customer.email ?? '',
       phone: customer.custom?.fields.phone ?? '',
+      password: savedPassword,
       dateOfBirth: customer.dateOfBirth
         ? new Date(customer.dateOfBirth)
         : new Date(dayjs().subtract(18, 'year').toDate()),
     },
     mode: 'onChange',
   });
+
+  useEffect(() => {
+    const encryptedPassword = localStorage.getItem('password');
+    if (encryptedPassword) {
+      const decryptedPassword = decryptData(encryptedPassword);
+      setSavedPassword(decryptedPassword);
+      reset({ ...getValues(), password: decryptedPassword });
+    }
+  }, [reset, getValues]);
+
+  useEffect(() => {
+    const handleStorageChange = (e: StorageEvent) => {
+      if (e.key === 'password') {
+        const newPassword = e.newValue ? decryptData(e.newValue) : '';
+        setSavedPassword(newPassword);
+        reset({ ...getValues(), password: newPassword });
+      }
+    };
+    window.addEventListener('storage', handleStorageChange);
+    return () => window.removeEventListener('storage', handleStorageChange);
+  }, [reset, getValues]);
 
   const [editingStates, setEditingStates] = useState({
     firstName: false,
@@ -117,6 +142,9 @@ export const PersonalInfo = ({ customer, onSave }: PersonalInfoProps) => {
         const tokenName = 'authDysonToken';
         localStorage.setItem(tokenName, authResponse.access_token);
       }
+
+      localStorage.setItem('password', encryptData(newPassword));
+      setSavedPassword(newPassword);
     } catch (error) {
       const errorMessage =
         error instanceof Error ? error.message : 'Password confirmation failed';
@@ -129,7 +157,7 @@ export const PersonalInfo = ({ customer, onSave }: PersonalInfoProps) => {
       firstName: customer.firstName ?? '',
       lastName: customer.lastName ?? '',
       email: customer.email ?? '',
-      password: '',
+      password: localStorage.getItem('password') ?? '',
       phone: customer.custom?.fields.phone ?? '',
       dateOfBirth: customer.dateOfBirth
         ? new Date(customer.dateOfBirth)
@@ -248,7 +276,6 @@ export const PersonalInfo = ({ customer, onSave }: PersonalInfoProps) => {
 
   const handleCloseForm = () => {
     setIsFormOpen(false);
-    reset();
   };
 
   const setDate = (date: string | undefined, customer: Customer): Date => {
@@ -411,6 +438,7 @@ export const PersonalInfo = ({ customer, onSave }: PersonalInfoProps) => {
               onClick={() => handleCancel('password')}
               size="small"
               className={styles.closeBtn}
+              value={localStorage.getItem('password') ?? ''}
             >
               <CancelIcon />
             </IconButton>
@@ -519,7 +547,7 @@ export const PersonalInfo = ({ customer, onSave }: PersonalInfoProps) => {
                     customer.custom?.fields.phone ??
                     '',
                   dateOfBirth: setDate(updatedData.dateOfBirth, customer),
-                  password: '',
+                  password: loadPassword(),
                 });
                 if (updatedData.version) {
                   setVersion(updatedData.version);

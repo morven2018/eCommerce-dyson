@@ -43,6 +43,10 @@ import { register } from '@shared/api/commerce-tools/newCustomer';
 import ShowDialog from '@components/ui/modals/Modal';
 import { userAuthorization } from '@shared/api/commerce-tools/authorization';
 import { useAuth } from '@shared/context/auth-hooks';
+import { apiCreateNewCart } from '@shared/api/commerce-tools/apiCreateNewCart';
+import { getCartIdFromLS } from '@shared/api/local-storage/getCartIdFromLS';
+import { convertToUserCart } from '@shared/api/commerce-tools/cart/convertToUserCart';
+import { getTokenFromLS } from '@shared/api/local-storage/getTokenFromLS';
 
 const steps = ['Contact Information', 'Shipping Address', 'Billing Address'];
 
@@ -787,15 +791,30 @@ export const RegisterForm = () => {
       'Customer with this email already exists. Please login instead';
     try {
       const result = await register(data);
+
+      const oldCart = getCartIdFromLS();
+
       if (result) {
         const authResponse = await userAuthorization(
           result.authData,
           'Your account has been successfully created'
         );
+
         if (authResponse) {
           const tokenName = 'authDysonToken';
+          const oldToken = getTokenFromLS();
           localStorage.setItem(tokenName, authResponse.access_token);
           setIsUserUnauthorized(false);
+
+          const cart = !oldCart
+            ? await apiCreateNewCart()
+            : await convertToUserCart(oldCart, oldToken ?? '');
+
+          if (!cart || !('id' in cart))
+            throw new Error('Fail of creating customers cart');
+
+          localStorage.setItem('cartIdDyson', cart.id);
+
           navigate('/');
           window.scrollTo(0, 0);
         }

@@ -1,5 +1,8 @@
 @use '@assets/styles/globals' as *;
 
+$breakpoint1: 700px;
+$breakpoint2: 450px;
+
 .help {
   width: 100%;
   max-width: 90rem;
@@ -38,6 +41,14 @@
   padding: 30px;
   margin-top: 50px;
   margin-bottom: 16px;
+
+  @media (max-width: $breakpoint1) {
+    font-size: $typography-text;
+  }
+
+  @media (max-width: $breakpoint2) {
+    font-size: 12px;
+  }
 }
 
 .linksContainer {

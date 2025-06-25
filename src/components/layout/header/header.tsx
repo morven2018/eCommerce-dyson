@@ -25,6 +25,9 @@ import { ProfileMenu } from '@components/ui/burger/menu/profile-menu';
 import { ButtonList } from './button-list/ButtonList';
 import { useAuth } from '@shared/context/auth-hooks';
 import { addAnonymousSessionTokenToLS } from '@shared/utlis/token/addAnonymousSessionTokenToLS';
+import { useCart } from '@shared/context/cart/useCart';
+import { apiGetCartById } from '@shared/api/commerce-tools/apiGetCartById';
+import { handleCatchError } from '@components/ui/error/catchError';
 
 export interface INavItems {
   text: string;
@@ -39,6 +42,7 @@ const NonBreakingText = ({ text }: { text: string }) => (
 
 const ItemList = ({ text, icon, path, onClick }: INavItems) => {
   const navigate = useNavigate();
+  const { isCartEmpty, cartItemsCount } = useCart();
 
   const handleClick = () => {
     onClick();
@@ -58,6 +62,10 @@ const ItemList = ({ text, icon, path, onClick }: INavItems) => {
         ) : (
           <ListItemText primary={<NonBreakingText text={text} />} />
         )}
+
+        <span className={styles.quantity}>
+          {text === NavText.Cart && !isCartEmpty ? `   ${cartItemsCount}` : ''}
+        </span>
       </ListItemButton>
     </ListItem>
   );
@@ -65,9 +73,9 @@ const ItemList = ({ text, icon, path, onClick }: INavItems) => {
 
 export const Header = () => {
   const location = useLocation();
+  const { isCartEmpty, clearCart, updateCart, setCart } = useCart();
 
   const { isUserUnauthorized, setIsUserUnauthorized } = useAuth();
-  const [isCartEmpty] = useState(true);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const [navItems, setNavItems] = useState<INavItems[]>([]);
@@ -76,10 +84,15 @@ export const Header = () => {
     if (!isUserUnauthorized) {
       const tokenName = 'authDysonToken';
       localStorage.removeItem(tokenName);
+      localStorage.removeItem('cartIdDyson');
+      localStorage.removeItem('password');
+      localStorage.removeItem('PromoCode');
       addAnonymousSessionTokenToLS();
+      clearCart();
+      updateCart();
     }
     setIsUserUnauthorized(!isUserUnauthorized);
-  }, [isUserUnauthorized, setIsUserUnauthorized]);
+  }, [clearCart, isUserUnauthorized, setIsUserUnauthorized, updateCart]);
 
   const updateNavItems = useCallback(() => {
     const updatedItems = [
@@ -123,8 +136,21 @@ export const Header = () => {
   }, [isUserUnauthorized, isCartEmpty, toggleAuthStatus, location.pathname]);
 
   useEffect(() => {
+    const fetchCartData = async () => {
+      try {
+        const cartData = await apiGetCartById();
+        if (cartData) {
+          setCart(cartData);
+        }
+      } catch (error) {
+        handleCatchError(error, 'Error getting cart data');
+        setCart(null);
+      }
+    };
+
+    fetchCartData();
     updateNavItems();
-  }, [updateNavItems]);
+  }, [setCart, updateNavItems]);
 
   const toggleMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorEl(event.currentTarget);
